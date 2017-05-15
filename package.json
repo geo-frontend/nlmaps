@@ -1,0 +1,26 @@
+{
+  "name": "nlmaps",
+  "version": "1.0.0",
+  "description": "easily add PDOK sources to common Javascript mapping libaries",
+  "main": "index.js",
+  "scripts": {
+    "test": "tape test/index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@gitlab.com/wm2017/nlmaps.git"
+  },
+  "keywords": [
+    "Leaflet",
+    "OpenLayers",
+    "Mapbox.js",
+    "GoogleMaps",
+    "BRT-Achtergrondkaart"
+  ],
+  "author": "Hans Fast",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://gitlab.com/wm2017/nlmaps/issues"
+  },
+  "homepage": "https://gitlab.com/wm2017/nlmaps#README"
+}

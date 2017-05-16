@@ -1,0 +1,36 @@
+{
+  "name": "nlmaps-leaflet",
+  "version": "1.0.0",
+  "description": "",
+  "main": "build/index.js",
+  "scripts": {
+    "test": "node test/test.js",
+    "build": "rollup -c config/rollup.cjs.js && BROWSER=true rollup -c config/rollup.iife.js",
+    "watch-test": "nodemon --watch test --watch build --exec 'npm run test'",
+    "watch-code": "nodemon --watch src --exec npm run build",
+    "watch-all": "npm-run-all --parallel watch-code watch-test",
+    "watch-browser-test": "nodemon --watch test/browser-test.js --watch test/test.html --exec 'npm-run-all --parallel browser-test build-browser-test'",
+    "browser-test": "node liveserver.js",
+    "build-browser-test": "rollup -c config/rollup.test.js && cp test/test.html build/test.html"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@gitlab.com/wm2017/nlmaps.git"
+  },
+  "author": "Hans Fast",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://gitlab.com/wm2017/nlmaps/issues"
+  },
+  "homepage": "https://gitlab.com/wm2017/nlmaps#README",
+  "devDependencies": {
+    "rollup-plugin-node-builtins": "^2.1.2",
+    "rollup-plugin-node-globals": "^1.1.0",
+    "tape": "^4.6.3"
+  },
+  "dependencies": {
+    "leaflet": "^1.0.3",
+    "leaflet-headless": "^0.2.5",
+    "openlayers": "^4.1.1"
+  }
+}

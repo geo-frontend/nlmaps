@@ -1,26 +1,32 @@
 {
   "name": "nlmaps",
   "version": "1.0.0",
-  "description": "easily add PDOK sources to common Javascript mapping libaries",
+  "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "tape test/index.js"
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "repository": {
-    "type": "git",
-    "url": "git+ssh://git@gitlab.com/wm2017/nlmaps.git"
-  },
-  "keywords": [
-    "Leaflet",
-    "OpenLayers",
-    "Mapbox.js",
-    "GoogleMaps",
-    "BRT-Achtergrondkaart"
-  ],
-  "author": "Hans Fast",
+  "author": "",
   "license": "ISC",
-  "bugs": {
-    "url": "https://gitlab.com/wm2017/nlmaps/issues"
-  },
-  "homepage": "https://gitlab.com/wm2017/nlmaps#README"
+  "devDependencies": {
+    "babel-cli": "^6.24.1",
+    "babel-preset-es2015-rollup": "^3.0.0",
+    "browserify": "^14.3.0",
+    "buffertools": "^2.1.6",
+    "live-server": "^1.2.0",
+    "nodemon": "^1.11.0",
+    "npm-run-all": "^4.0.2",
+    "rollup": "^0.41.6",
+    "rollup-plugin-babel": "^2.7.1",
+    "rollup-plugin-commonjs": "^8.0.2",
+    "rollup-plugin-eslint": "^3.0.0",
+    "rollup-plugin-node-builtins": "^2.1.2",
+    "rollup-plugin-node-globals": "^1.1.0",
+    "rollup-plugin-node-resolve": "^3.0.0",
+    "rollup-plugin-replace": "^1.1.1",
+    "rollup-plugin-resolve": "0.0.1-predev.1",
+    "rollup-plugin-uglify": "^1.0.2",
+    "tap": "^10.3.2",
+    "tape": "^4.6.3"
+  }
 }

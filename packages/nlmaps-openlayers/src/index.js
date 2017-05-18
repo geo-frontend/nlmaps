@@ -1,32 +1,21 @@
 import getProvider from '../../lib/providers.js';
+let baseTileUrl = 'http://tiles.energielabelatlas.nl/v2/osm';
+const BRTAkAttr = 'Kaartgegevens &copy; <a href="cbs.nl">CBS</a>, <a href="kadaster.nl">Kadaster</a>, <a href="openstreetmap.org">OpenStreetMap contributors</a>'; 
 
 function makeOpenLayersLayer() {
   if (typeof ol === "object") {
+    return new ol.layer.Tile({
+      source: new ol.source.XYZ({
+        url: `${baseTileUrl}/{z}/{x}/{y}.png`,
+        attributions: [
+          new ol.Attribution({
+            html: BRTAkAttr
+          })
+        ]
+      })
+    })
 
-    // based on http://www.bostongis.com/PrinterFriendly.aspx?content_name=using_custom_osm_tiles
-    ol.Layer.nlmapsBgLayer = ol.Class(ol.Layer.OSM, {
-      initialize: function(name, options) {
-        var provider = getProvider(name),
-        url = provider.url,
-        subdomains = provider.subdomains,
-        hosts = [];
-        hosts.push(url);
-        var options = OpenLayers.Util.extend({
-        "numZoomLevels":        provider.maxZoom,
-        "buffer":               0,
-        "transitionEffect":     "resize",
-        // see: <http://dev.openlayers.org/apidocs/files/OpenLayers/Layer/OSM-js.html#OpenLayers.Layer.OSM.tileOptions>
-        // and: <http://dev.openlayers.org/apidocs/files/OpenLayers/Tile/Image-js.html#OpenLayers.Tile.Image.crossOriginKeyword>
-        "tileOptions": {
-          "crossOriginKeyword": null
-        },
-        "attribution": provider.attribution
-      }, options);
-      return ol.Layer.OSM.prototype.initialize.call(this, name, hosts, options);
-    }
-  });
+  }
 }
-}
-
 
 export default makeOpenLayersLayer;

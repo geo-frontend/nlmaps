@@ -10,7 +10,7 @@ export default config => {
   return {
     entry: 'src/index.js',
     format: config.format,
-    moduleName: 'makeLeafletLayer',
+    moduleName: 'makeGMLayer',
     dest: config.dest,
     plugins: [
       commonjs(),

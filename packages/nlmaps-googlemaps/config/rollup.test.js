@@ -11,7 +11,7 @@ import globals from 'rollup-plugin-node-globals';
 export default {
   entry: 'test/browser-test.js',
   format: 'iife',
-  moduleName: 'testing',
+  moduleName: 'browserTest',
   dest: 'build/browser-test.js',
   plugins: [
     commonjs(),

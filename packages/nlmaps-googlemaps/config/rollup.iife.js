@@ -2,6 +2,6 @@ import config from './rollup.config';
 
 export default config({
   format: 'iife',
-  dest: 'build/nlmaps-leaflet.iife.js',
+  dest: 'build/nlmaps-googlemaps.iife.js',
   browser: true
 })

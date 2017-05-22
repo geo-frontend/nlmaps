@@ -1,17 +1,41 @@
 let test = require('tape');
+
+
 let URL = 'http://tiles.energielabelatlas.nl/v2/osm/{z}/{x}/{y}.png';
 let ATTR = 'Kaartgegevens &copy; <a href="cbs.nl">CBS</a>, <a href="kadaster.nl">Kadaster</a>, <a href="openstreetmap.org">OpenStreetMap contributors</a>';
 
-module.exports = function  browserTest(){
-  test('including nlmGm initializes and provides a function to create bglayer', function(t){
-    t.assert(typeof bgLayer === 'function', 'imported thing is a function');
-    t.assert(typeof google === 'object', 'can access google object from test scope');
-    map = new google.maps.Map(document.getElementById('map'), {
+
+test('nlmaps can populate Leaflet in two-line version', function(t){
+  t.assert(typeof L.nlmapsBgLayer === 'function', 'nlmaps has populated property on L');
+  t.end()
+
+
+});
+test('nlmaps can populate leaflet in one-line version', function(t){
+  t.assert(typeof L === 'object', 'L object created this way');
+  t.assert(typeof L.nlmapsBgLayer === 'function', 'nlmaps has populated property on L');
+  t.end()
+
+});
+
+test('nlmaps can create a leaflet layer object', function(t) {
+  let map = L.map('mapL').setView([52, 5], 10);
+  let foo = nlmaps.leaflet.bgLayer('osm');
+  foo.addTo(map);
+  t.assert(typeof foo === 'object', 'foo layer has been created');
+  t.assert(typeof foo.addTo === 'function', 'foo has the addTo method');
+  t.assert(map.hasLayer(foo), 'map now has layer foo');
+  t.equals(foo._url, URL, 'foos url matches what is expected');
+  t.equals(foo.options.attribution, ATTR, 'attribution is correct');
+  t.end();
+})
+
+test('nlmaps can create a googlemaps layer object and add it to the map', function(t){
+    let map = new google.maps.Map(document.getElementById('mapGM'), {
       center: {lat: 52, lng: 5},
       zoom: 8
     });
-    let ElaMap = bgLayer();
-
+    let ElaMap = nlmaps.googlemaps.bgLayer();
     function AttributionControl(controlDiv) {
       // Set CSS for the control border.
       let controlUI = document.createElement('div');
@@ -49,17 +73,21 @@ module.exports = function  browserTest(){
     centerControlDiv.index = 1;
     map.controls[google.maps.ControlPosition.BOTTOM_RIGHT].push(centerControl);
 
+    t.pass('ok hahaha');
     t.end();
+});
+
+test('nlmaps can create an openlayers layer object and add it to the map', function(t){
+  let map = new ol.Map({
+    view: new ol.View({
+      center: [664197,6838137],
+      zoom: 10
+    }),
+    target: 'mapOL'
   });
-
-  test('error handling if google is not loaded', function(t){
-//    google = {};
-//    google.maps = 'a string';
-//    let errorstring = 'google is not defined';
-//    t.throws(bgLayer, errorstring, 'if google has no maps prop bgLayer throws exception');
-//    t.end();
-  });
-}  
-
-
-
+  let layer = nlmaps.openlayers.bgLayer();
+  map.addLayer(layer);
+  t.assert(typeof layer === 'object' && map.getLayers().a[0] === layer, 'layer is first entry in map layers list');
+  //t.test('can add the returned layer to an openlayers map')
+  t.end();
+});

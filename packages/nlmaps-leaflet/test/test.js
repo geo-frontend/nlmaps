@@ -6,24 +6,25 @@ let ATTR = 'Kaartgegevens &copy; <a href="cbs.nl">CBS</a>, <a href="kadaster.nl"
 
 test('nlmaps can populate Leaflet in two-line version', function(t){
   let L = require('leaflet-headless');
-  require('../build/nlmaps-leaflet.cjs.js')(L);
+  let bgLayer = require('../build/nlmaps-leaflet.cjs.js')(L);
   t.assert(typeof L.nlmapsBgLayer === 'function', 'nlmaps has populated property on L');
   t.end()
 
 
 });
 test('nlmaps can populate leaflet in one-line version', function(t){
-  let L = require('../build/nlmaps-leaflet.cjs.js')(require('leaflet-headless'));
-  t.assert(typeof L === 'object', 'L object created this way');
+  let bgLayer = require('../build/nlmaps-leaflet.cjs.js')(require('leaflet-headless'));
+  t.assert(typeof bgLayer === 'function', 'bgLayer function created');
   t.assert(typeof L.nlmapsBgLayer === 'function', 'nlmaps has populated property on L');
   t.end()
 
 });
 
 test('nlmaps can create a layer object', function(t) {
-  let L = require('../build/nlmaps-leaflet.cjs.js')(require('leaflet-headless'));
+  let L = require('leaflet-headless');
+  let bgLayer = require('../build/nlmaps-leaflet.cjs.js')(L);
   let map = L.map(document.createElement('div')).setView([52, 4], 10);
-  let foo = L.nlmapsBgLayer('osm');
+  let foo = bgLayer('osm');
   t.assert(typeof foo === 'object', 'foo layer has been created');
   t.assert(typeof foo.addTo === 'function', 'foo has the addTo method');
   t.doesNotThrow(foo.addTo(map), 'can add the foo layer to the map');

@@ -1,5 +1,7 @@
 'use strict';
 
+Object.defineProperty(exports, '__esModule', { value: true });
+
 let baseurl = 'http://tiles.energielabelatlas.nl/v2/';
 let attr = 'Kaartgegevens &copy; <a href="cbs.nl">CBS</a>, <a href="kadaster.nl">Kadaster</a>, <a href="openstreetmap.org">OpenStreetMap contributors</a>';
 let SUBDOMAINS = "a. b. c. d.".split(" ");
@@ -17,62 +19,225 @@ let PROVIDERS = {
   "osm": MAKE_PROVIDER("osm", "png", 0, 20)
 };
 
-var URL = 'http://tiles.energielabelatlas.nl/v2/osm';
-var ATTR = 'Kaartgegevens &copy; <a href="cbs.nl">CBS</a>, <a href="kadaster.nl">Kadaster</a>, <a href="openstreetmap.org">OpenStreetMap contributors</a>';
+var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) {
+  return typeof obj;
+} : function (obj) {
+  return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj;
+};
 
-function nlmGM() {
-  map = new google.maps.Map(document.getElementById('map'), {
-    center: { lat: 52, lng: 5 },
-    zoom: 8
-  });
-  var ElaMap = new google.maps.ImageMapType({
-    getTileUrl: function getTileUrl(coord, zoom) {
-      var url = URL + '/' + zoom + '/' + coord.x + '/' + coord.y + '.png';
-      return url;
-    },
-    tileSize: new google.maps.Size(256, 256),
-    isPng: true,
-    name: 'ELA',
-    maxZoom: 22,
-    minZoom: 8
-  });
 
-  function AttributionControl(controlDiv) {
-    // Set CSS for the control border.
-    var controlUI = document.createElement('div');
-    controlUI.style.backgroundColor = '#fff';
-    controlUI.style.opacity = '0.7';
-    controlUI.style.border = '2px solid #fff';
-    controlUI.style.cursor = 'pointer';
-    controlDiv.appendChild(controlUI);
 
-    // Set CSS for the control interior.
-    var controlText = document.createElement('div');
-    controlText.style.color = 'rgb(25,25,25)';
-    controlText.style.fontFamily = 'Roboto,Arial,sans-serif';
-    controlText.style.fontSize = '10px';
-    controlText.innerHTML = ATTR;
-    controlUI.appendChild(controlText);
-    return controlDiv;
+
+
+var asyncGenerator = function () {
+  function AwaitValue(value) {
+    this.value = value;
   }
 
-  var mapTypeIds = ['Energielabelatlas', 'roadmap'];
-  map.mapTypes.set('Energielabelatlas', ElaMap);
-  map.setOptions({
-    mapTypeControl: true,
-    mapTypeControlOptions: {
-      mapTypeIds: mapTypeIds
+  function AsyncGenerator(gen) {
+    var front, back;
+
+    function send(key, arg) {
+      return new Promise(function (resolve, reject) {
+        var request = {
+          key: key,
+          arg: arg,
+          resolve: resolve,
+          reject: reject,
+          next: null
+        };
+
+        if (back) {
+          back = back.next = request;
+        } else {
+          front = back = request;
+          resume(key, arg);
+        }
+      });
     }
 
-  });
-  map.setMapTypeId('Energielabelatlas');
-  // Create the DIV to hold the control and call the CenterControl()
-  // constructor passing in this DIV.
-  var centerControlDiv = document.createElement('div');
-  var centerControl = new AttributionControl(centerControlDiv, map);
+    function resume(key, arg) {
+      try {
+        var result = gen[key](arg);
+        var value = result.value;
 
-  centerControlDiv.index = 1;
-  map.controls[google.maps.ControlPosition.BOTTOM_RIGHT].push(centerControl);
+        if (value instanceof AwaitValue) {
+          Promise.resolve(value.value).then(function (arg) {
+            resume("next", arg);
+          }, function (arg) {
+            resume("throw", arg);
+          });
+        } else {
+          settle(result.done ? "return" : "normal", result.value);
+        }
+      } catch (err) {
+        settle("throw", err);
+      }
+    }
+
+    function settle(type, value) {
+      switch (type) {
+        case "return":
+          front.resolve({
+            value: value,
+            done: true
+          });
+          break;
+
+        case "throw":
+          front.reject(value);
+          break;
+
+        default:
+          front.resolve({
+            value: value,
+            done: false
+          });
+          break;
+      }
+
+      front = front.next;
+
+      if (front) {
+        resume(front.key, front.arg);
+      } else {
+        back = null;
+      }
+    }
+
+    this._invoke = send;
+
+    if (typeof gen.return !== "function") {
+      this.return = undefined;
+    }
+  }
+
+  if (typeof Symbol === "function" && Symbol.asyncIterator) {
+    AsyncGenerator.prototype[Symbol.asyncIterator] = function () {
+      return this;
+    };
+  }
+
+  AsyncGenerator.prototype.next = function (arg) {
+    return this._invoke("next", arg);
+  };
+
+  AsyncGenerator.prototype.throw = function (arg) {
+    return this._invoke("throw", arg);
+  };
+
+  AsyncGenerator.prototype.return = function (arg) {
+    return this._invoke("return", arg);
+  };
+
+  return {
+    wrap: function (fn) {
+      return function () {
+        return new AsyncGenerator(fn.apply(this, arguments));
+      };
+    },
+    await: function (value) {
+      return new AwaitValue(value);
+    }
+  };
+}();
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+var get = function get(object, property, receiver) {
+  if (object === null) object = Function.prototype;
+  var desc = Object.getOwnPropertyDescriptor(object, property);
+
+  if (desc === undefined) {
+    var parent = Object.getPrototypeOf(object);
+
+    if (parent === null) {
+      return undefined;
+    } else {
+      return get(parent, property, receiver);
+    }
+  } else if ("value" in desc) {
+    return desc.value;
+  } else {
+    var getter = desc.get;
+
+    if (getter === undefined) {
+      return undefined;
+    }
+
+    return getter.call(receiver);
+  }
+};
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+var set = function set(object, property, value, receiver) {
+  var desc = Object.getOwnPropertyDescriptor(object, property);
+
+  if (desc === undefined) {
+    var parent = Object.getPrototypeOf(object);
+
+    if (parent !== null) {
+      set(parent, property, value, receiver);
+    }
+  } else if ("value" in desc && desc.writable) {
+    desc.value = value;
+  } else {
+    var setter = desc.set;
+
+    if (setter !== undefined) {
+      setter.call(receiver, value);
+    }
+  }
+
+  return value;
+};
+
+var URL = 'http://tiles.energielabelatlas.nl/v2/osm';
+function bgLayer() {
+  if ((typeof google === 'undefined' ? 'undefined' : _typeof(google)) === 'object' && _typeof(google.maps) === 'object') {
+    var ElaMap = new google.maps.ImageMapType({
+      getTileUrl: function getTileUrl(coord, zoom) {
+        var url = URL + '/' + zoom + '/' + coord.x + '/' + coord.y + '.png';
+        return url;
+      },
+      tileSize: new google.maps.Size(256, 256),
+      isPng: true,
+      name: 'ELA',
+      maxZoom: 22,
+      minZoom: 8
+    });
+    return ElaMap;
+  } else {
+    var error = 'google is not defined';
+    throw error;
+  }
 }
 
-module.exports = nlmGM;
+exports.bgLayer = bgLayer;

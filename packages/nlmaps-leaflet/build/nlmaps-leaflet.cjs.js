@@ -1,5 +1,7 @@
 'use strict';
 
+Object.defineProperty(exports, '__esModule', { value: true });
+
 let baseurl = 'http://tiles.energielabelatlas.nl/v2/';
 let attr = 'Kaartgegevens &copy; <a href="cbs.nl">CBS</a>, <a href="kadaster.nl">Kadaster</a>, <a href="openstreetmap.org">OpenStreetMap contributors</a>';
 let SUBDOMAINS = "a. b. c. d.".split(" ");
@@ -34,38 +36,32 @@ function getProvider(name) {
   }
 }
 
-function makeLeafletLayer() {
-  {
-    return function (L) {
-      L.NlmapsBgLayer = L.TileLayer.extend({
-        initialize: function initialize(name, options) {
-          var provider = getProvider(name),
-              url = provider.url.replace(/({[A-Z]})/g, function (s) {
-            return s.toLowerCase();
-          }),
-              opts = L.Util.extend({}, options, {
-            'minZoom': provider.minZoom,
-            'maxZoom': provider.maxZoom,
-            'subdomains': provider.subdomains,
-            'scheme': 'xyz',
-            'attribution': provider.attribution,
-            sa_id: name
-          });
-          L.TileLayer.prototype.initialize.call(this, url, opts);
-        }
-      });
-
-      /*
-       *      * Factory function for consistency with Leaflet conventions
-       *           */
-      L.nlmapsBgLayer = function (options, source) {
-        return new L.NlmapsBgLayer(options, source);
-      };
-      return L;
-    };
+L.NlmapsBgLayer = L.TileLayer.extend({
+  initialize: function initialize(name, options) {
+    var provider = getProvider(name),
+        url = provider.url.replace(/({[A-Z]})/g, function (s) {
+      return s.toLowerCase();
+    }),
+        opts = L.Util.extend({}, options, {
+      'minZoom': provider.minZoom,
+      'maxZoom': provider.maxZoom,
+      'subdomains': provider.subdomains,
+      'scheme': 'xyz',
+      'attribution': provider.attribution,
+      sa_id: name
+    });
+    L.TileLayer.prototype.initialize.call(this, url, opts);
   }
+});
+/*
+ *      * Factory function for consistency with Leaflet conventions
+ *           */
+L.nlmapsBgLayer = function (options, source) {
+  return new L.NlmapsBgLayer(options, source);
+};
+
+function bgLayer(name) {
+  return L.nlmapsBgLayer(name);
 }
 
-var index = makeLeafletLayer();
-
-module.exports = index;
+exports.bgLayer = bgLayer;

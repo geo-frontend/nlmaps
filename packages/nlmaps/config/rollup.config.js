@@ -8,9 +8,9 @@ import uglify from '../../../node_modules/rollup-plugin-uglify/dist/rollup-plugi
 
 export default config => {
   return {
-    entry: config.format === 'iife' ? 'src/browser.js' : 'src/index.js',
+    entry: 'src/index.js',
     format: config.format,
-    moduleName: 'bgLayer',
+    moduleName: 'nlmaps',
     dest: config.dest,
     plugins: [
       commonjs(),

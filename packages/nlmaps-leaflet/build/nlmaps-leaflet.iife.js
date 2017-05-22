@@ -1,4 +1,4 @@
-var makeLeafletLayer = (function () {
+var bgLayer = (function () {
 'use strict';
 
 let baseurl = 'http://tiles.energielabelatlas.nl/v2/';
@@ -35,39 +35,34 @@ function getProvider(name) {
   }
 }
 
-function makeLeafletLayer() {
-  {
-    return function () {
-      L.NlmapsBgLayer = L.TileLayer.extend({
-        initialize: function initialize(name, options) {
-          var provider = getProvider(name),
-              url = provider.url.replace(/({[A-Z]})/g, function (s) {
-            return s.toLowerCase();
-          }),
-              opts = L.Util.extend({}, options, {
-            'minZoom': provider.minZoom,
-            'maxZoom': provider.maxZoom,
-            'subdomains': provider.subdomains,
-            'scheme': 'xyz',
-            'attribution': provider.attribution,
-            sa_id: name
-          });
-          L.TileLayer.prototype.initialize.call(this, url, opts);
-        }
-      });
-
-      /*
-       *      * Factory function for consistency with Leaflet conventions
-       *           */
-      L.nlmapsBgLayer = function (options, source) {
-        return new L.NlmapsBgLayer(options, source);
-      };
-    };
+L.NlmapsBgLayer = L.TileLayer.extend({
+  initialize: function initialize(name, options) {
+    var provider = getProvider(name),
+        url = provider.url.replace(/({[A-Z]})/g, function (s) {
+      return s.toLowerCase();
+    }),
+        opts = L.Util.extend({}, options, {
+      'minZoom': provider.minZoom,
+      'maxZoom': provider.maxZoom,
+      'subdomains': provider.subdomains,
+      'scheme': 'xyz',
+      'attribution': provider.attribution,
+      sa_id: name
+    });
+    L.TileLayer.prototype.initialize.call(this, url, opts);
   }
+});
+/*
+ *      * Factory function for consistency with Leaflet conventions
+ *           */
+L.nlmapsBgLayer = function (options, source) {
+  return new L.NlmapsBgLayer(options, source);
+};
+
+function bgLayer$1(name) {
+  return L.nlmapsBgLayer(name);
 }
 
-var index = makeLeafletLayer();
-
-return index;
+return bgLayer$1;
 
 }());

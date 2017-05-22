@@ -2,7 +2,7 @@ import getProvider from '../../lib/providers.js';
 let baseTileUrl = 'http://tiles.energielabelatlas.nl/v2/osm';
 const BRTAkAttr = 'Kaartgegevens &copy; <a href="cbs.nl">CBS</a>, <a href="kadaster.nl">Kadaster</a>, <a href="openstreetmap.org">OpenStreetMap contributors</a>'; 
 
-function makeOpenLayersLayer() {
+function bgLayer() {
   if (typeof ol === "object") {
     return new ol.layer.Tile({
       source: new ol.source.XYZ({
@@ -15,7 +15,9 @@ function makeOpenLayersLayer() {
       })
     })
 
+  } else {
+    throw 'openlayers is not defined';
   }
 }
 
-export default makeOpenLayersLayer;
+export { bgLayer };

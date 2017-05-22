@@ -1,76 +1,6 @@
 var testing = (function () {
 'use strict';
 
-var baseurl = 'http://tiles.energielabelatlas.nl/v2/';
-var attr = 'Kaartgegevens &copy; <a href="cbs.nl">CBS</a>, <a href="kadaster.nl">Kadaster</a>, <a href="openstreetmap.org">OpenStreetMap contributors</a>';
-var SUBDOMAINS = "a. b. c. d.".split(" ");
-var MAKE_PROVIDER = function MAKE_PROVIDER(layer, type, minZoom, maxZoom) {
-  return {
-    "url": [baseurl, layer, "/{z}/{x}/{y}.", type].join(""),
-    "type": type,
-    "subdomains": SUBDOMAINS.slice(),
-    "minZoom": minZoom,
-    "maxZoom": maxZoom,
-    "attribution": attr
-  };
-};
-var PROVIDERS = {
-  "osm": MAKE_PROVIDER("osm", "png", 0, 20)
-};
-
-/*
- *  * Get the named provider, or throw an exception if it doesn't exist.
- *   */
-function getProvider(name) {
-  if (name in PROVIDERS) {
-    var provider = PROVIDERS[name];
-
-    if (provider.deprecated && console && console.warn) {
-      console.warn(name + " is a deprecated style; it will be redirected to its replacement. For performance improvements, please change your reference.");
-    }
-
-    return provider;
-  } else {
-    throw 'No such provider (' + name + ')';
-  }
-}
-
-function makeLeafletLayer() {
-  {
-    return function (L) {
-      L.NlmapsBgLayer = L.TileLayer.extend({
-        initialize: function initialize(name, options) {
-          var provider = getProvider(name),
-              url = provider.url.replace(/({[A-Z]})/g, function (s) {
-            return s.toLowerCase();
-          }),
-              opts = L.Util.extend({}, options, {
-            'minZoom': provider.minZoom,
-            'maxZoom': provider.maxZoom,
-            'subdomains': provider.subdomains,
-            'scheme': 'xyz',
-            'attribution': provider.attribution,
-            sa_id: name
-          });
-          L.TileLayer.prototype.initialize.call(this, url, opts);
-        }
-      });
-
-      /*
-       *      * Factory function for consistency with Leaflet conventions
-       *           */
-      L.nlmapsBgLayer = function (options, source) {
-        return new L.NlmapsBgLayer(options, source);
-      };
-      return L;
-    };
-  }
-}
-
-var index = makeLeafletLayer();
-
-var nlmapsLeaflet_cjs = index;
-
 var global$1 = typeof global !== "undefined" ? global :
             typeof self !== "undefined" ? self :
             typeof window !== "undefined" ? window : {}
@@ -5313,7 +5243,7 @@ var stream = Object.freeze({
 
 var Stream$2 = ( stream && stream['default'] ) || stream;
 
-var index$3 = createCommonjsModule(function (module, exports) {
+var index$2 = createCommonjsModule(function (module, exports) {
 // through
 //
 // a stream that does nothing but re-emit the input.
@@ -5470,9 +5400,9 @@ var implementation = function bind(that) {
     return bound;
 };
 
-var index$7 = Function.prototype.bind || implementation;
+var index$6 = Function.prototype.bind || implementation;
 
-var index$5 = index$7.call(Function.call, Object.prototype.hasOwnProperty);
+var index$4 = index$6.call(Function.call, Object.prototype.hasOwnProperty);
 
 var hasMap = typeof Map === 'function' && Map.prototype;
 var mapSizeDescriptor = Object.getOwnPropertyDescriptor && hasMap ? Object.getOwnPropertyDescriptor(Map.prototype, 'size') : null;
@@ -5485,7 +5415,7 @@ var setForEach = hasSet && Set.prototype.forEach;
 var booleanValueOf = Boolean.prototype.valueOf;
 var objectToString$1 = Object.prototype.toString;
 
-var index$9 = function inspect_ (obj, opts, depth, seen) {
+var index$8 = function inspect_ (obj, opts, depth, seen) {
     if (typeof obj === 'undefined') {
         return 'undefined';
     }
@@ -5711,8 +5641,8 @@ var nextTick$2 = typeof setImmediate !== 'undefined'
     ? setImmediate
     : nextTick;
 
-var index$11 = function (write, end) {
-    var tr = index$3(write, end);
+var index$10 = function (write, end) {
+    var tr = index$2(write, end);
     tr.pause();
     var resume = tr.resume;
     var pause = tr.pause;
@@ -5770,7 +5700,7 @@ var EventEmitter$2 = require$$0.EventEmitter;
 
 
 
-var regexpTest = index$7.call(Function.call, RegExp.prototype.test);
+var regexpTest = index$6.call(Function.call, RegExp.prototype.test);
 var yamlIndicators = /\:|\-|\?/;
 var nextTick$1 = typeof setImmediate !== 'undefined'
     ? setImmediate
@@ -5784,7 +5714,7 @@ function Results () {
     this.count = 0;
     this.fail = 0;
     this.pass = 0;
-    this._stream = index$3();
+    this._stream = index$2();
     this.tests = [];
     this._only = null;
 }
@@ -5794,7 +5724,7 @@ Results.prototype.createStream = function (opts) {
     var self = this;
     var output, testId = 0;
     if (opts.objectMode) {
-        output = index$3();
+        output = index$2();
         self.on('_push', function ontest (t, extra) {
             if (!extra) extra = {};
             var id = testId++;
@@ -5804,7 +5734,7 @@ Results.prototype.createStream = function (opts) {
                     name: t.name,
                     id: id
                 };
-                if (index$5(extra, 'parent')) {
+                if (index$4(extra, 'parent')) {
                     row.parent = extra.parent;
                 }
                 output.queue(row);
@@ -5824,7 +5754,7 @@ Results.prototype.createStream = function (opts) {
         self.on('done', function () { output.queue(null) });
     }
     else {
-        output = index$11();
+        output = index$10();
         output.queue('TAP version 13\n');
         self._stream.pipe(output);
     }
@@ -5905,9 +5835,9 @@ function encodeResult (res, count) {
     output += outer + '---\n';
     output += inner + 'operator: ' + res.operator + '\n';
     
-    if (index$5(res, 'expected') || index$5(res, 'actual')) {
-        var ex = index$9(res.expected, {depth: res.objectPrintDepth});
-        var ac = index$9(res.actual, {depth: res.objectPrintDepth});
+    if (index$4(res, 'expected') || index$4(res, 'actual')) {
+        var ex = index$8(res.expected, {depth: res.objectPrintDepth});
+        var ac = index$8(res.actual, {depth: res.objectPrintDepth});
         
         if (Math.max(ex.length, ac.length) > 65 || invalidYaml(ex) || invalidYaml(ac)) {
             output += inner + 'expected: |-\n' + inner + '  ' + ex + '\n';
@@ -5953,7 +5883,7 @@ function invalidYaml (str) {
 
 var __dirname = '/home/hans/wm/prj/nlmaps/packages/nlmaps-leaflet/node_modules/tape/lib';
 
-var index$15 = isFunction$1
+var index$14 = isFunction$1
 
 var toString$3 = Object.prototype.toString
 
@@ -5969,13 +5899,13 @@ function isFunction$1 (fn) {
       fn === window.prompt))
 }
 
-var index$13 = forEach$2
+var index$12 = forEach$2
 
 var toString$2 = Object.prototype.toString
 var hasOwnProperty$1 = Object.prototype.hasOwnProperty
 
 function forEach$2(list, iterator, context) {
-    if (!index$15(iterator)) {
+    if (!index$14(iterator)) {
         throw new TypeError('iterator must be a function')
     }
 
@@ -6043,7 +5973,7 @@ var fnClass = '[object Function]';
 var genClass = '[object GeneratorFunction]';
 var hasToStringTag = typeof Symbol === 'function' && typeof Symbol.toStringTag === 'symbol';
 
-var index$19 = function isCallable(value) {
+var index$18 = function isCallable(value) {
 	if (!value) { return false; }
 	if (typeof value !== 'function' && typeof value !== 'object') { return false; }
 	if (hasToStringTag) { return tryFunctionObject(value); }
@@ -6071,7 +6001,7 @@ var ES5internalSlots = {
 			var methods = actualHint === String ? ['toString', 'valueOf'] : ['valueOf', 'toString'];
 			var value, i;
 			for (i = 0; i < methods.length; ++i) {
-				if (index$19(O[methods[i]])) {
+				if (index$18(O[methods[i]])) {
 					value = O[methods[i]]();
 					if (isPrimitive$1(value)) {
 						return value;
@@ -6151,7 +6081,7 @@ var ES5 = {
 		}
 		return value;
 	},
-	IsCallable: index$19,
+	IsCallable: index$18,
 	SameValue: function SameValue(x, y) {
 		if (x === y) { // 0 === -0, but they are not identical.
 			if (x === 0) { return 1 / x === 1 / y; }
@@ -6185,7 +6115,7 @@ var ES5 = {
 
 var es5 = ES5;
 
-var replace = index$7.call(Function.call, String.prototype.replace);
+var replace = index$6.call(Function.call, String.prototype.replace);
 
 var leftWhitespace = /^[\x09\x0A\x0B\x0C\x0D\x20\xA0\u1680\u180E\u2000\u2001\u2002\u2003\u2004\u2005\u2006\u2007\u2008\u2009\u200A\u202F\u205F\u3000\u2028\u2029\uFEFF]+/;
 var rightWhitespace = /[\x09\x0A\x0B\x0C\x0D\x20\xA0\u1680\u180E\u2000\u2001\u2002\u2003\u2004\u2005\u2006\u2007\u2008\u2009\u200A\u202F\u205F\u3000\u2028\u2029\uFEFF]+$/;
@@ -6207,7 +6137,7 @@ var polyfill = function getPolyfill() {
 var hasOwn$1 = Object.prototype.hasOwnProperty;
 var toString$4 = Object.prototype.toString;
 
-var index$23 = function forEach (obj, fn, ctx) {
+var index$22 = function forEach (obj, fn, ctx) {
     if (toString$4.call(fn) !== '[object Function]') {
         throw new TypeError('iterator must be a function');
     }
@@ -6378,7 +6308,7 @@ keysShim.shim = function shimObjectKeys() {
 	return Object.keys || keysShim;
 };
 
-var index$25 = keysShim;
+var index$24 = keysShim;
 
 var hasSymbols = typeof Symbol === 'function' && typeof Symbol() === 'symbol';
 
@@ -6420,34 +6350,34 @@ var defineProperty = function (object, name, value, predicate) {
 
 var defineProperties = function (object, map) {
 	var predicates = arguments.length > 2 ? arguments[2] : {};
-	var props = index$25(map);
+	var props = index$24(map);
 	if (hasSymbols) {
 		props = props.concat(Object.getOwnPropertySymbols(map));
 	}
-	index$23(props, function (name) {
+	index$22(props, function (name) {
 		defineProperty(object, name, map[name], predicates[name]);
 	});
 };
 
 defineProperties.supportsDescriptors = !!supportsDescriptors;
 
-var index$21 = defineProperties;
+var index$20 = defineProperties;
 
 var shim = function shimStringTrim() {
 	var polyfill$$1 = polyfill();
-	index$21(String.prototype, { trim: polyfill$$1 }, { trim: function () { return String.prototype.trim !== polyfill$$1; } });
+	index$20(String.prototype, { trim: polyfill$$1 }, { trim: function () { return String.prototype.trim !== polyfill$$1; } });
 	return polyfill$$1;
 };
 
-var boundTrim = index$7.call(Function.call, polyfill());
+var boundTrim = index$6.call(Function.call, polyfill());
 
-index$21(boundTrim, {
+index$20(boundTrim, {
 	getPolyfill: polyfill,
 	implementation: implementation$3,
 	shim: shim
 });
 
-var index$17 = boundTrim;
+var index$16 = boundTrim;
 
 // Copyright Joyent, Inc. and other Node contributors.
 //
@@ -6698,7 +6628,7 @@ var path$1 = Object.freeze({
 	default: path
 });
 
-var index$27 = function () {
+var index$26 = function () {
     for (var i = 0; i < arguments.length; i++) {
         if (arguments[i] !== undefined) return arguments[i];
     }
@@ -6739,7 +6669,7 @@ function shim (obj) {
 }
 });
 
-var index$29 = createCommonjsModule(function (module) {
+var index$28 = createCommonjsModule(function (module) {
 var pSlice = Array.prototype.slice;
 
 
@@ -6843,7 +6773,7 @@ var EventEmitter$3 = require$$0.EventEmitter;
 
 
 
-var isEnumerable = index$7.call(Function.call, Object.prototype.propertyIsEnumerable);
+var isEnumerable = index$6.call(Function.call, Object.prototype.propertyIsEnumerable);
 
 var test = Test;
 
@@ -6895,7 +6825,7 @@ function Test (name_, opts_, cb_) {
     this._ok = true;
 
     for (var prop in this) {
-        this[prop] = (function index$7(self, val) {
+        this[prop] = (function index$6(self, val) {
             if (typeof val === 'function') {
                 return function bound() {
                     return val.apply(self, arguments);
@@ -6946,8 +6876,8 @@ Test.prototype.test = function (name, opts, cb) {
 
 Test.prototype.comment = function (msg) {
     var that = this;
-    index$13(index$17(msg).split('\n'), function (aMsg) {
-        that.emit('result', index$17(aMsg).replace(/^#\s*/, ''));
+    index$12(index$16(msg).split('\n'), function (aMsg) {
+        that.emit('result', index$16(aMsg).replace(/^#\s*/, ''));
     });
 };
 
@@ -7035,21 +6965,21 @@ Test.prototype._assert = function assert (ok, opts) {
     var res = {
         id : self.assertCount ++,
         ok : Boolean(ok),
-        skip : index$27(extra.skip, opts.skip),
-        name : index$27(extra.message, opts.message, '(unnamed assert)'),
-        operator : index$27(extra.operator, opts.operator),
+        skip : index$26(extra.skip, opts.skip),
+        name : index$26(extra.message, opts.message, '(unnamed assert)'),
+        operator : index$26(extra.operator, opts.operator),
         objectPrintDepth : self._objectPrintDepth
     };
-    if (index$5(opts, 'actual') || index$5(extra, 'actual')) {
-        res.actual = index$27(extra.actual, opts.actual);
+    if (index$4(opts, 'actual') || index$4(extra, 'actual')) {
+        res.actual = index$26(extra.actual, opts.actual);
     }
-    if (index$5(opts, 'expected') || index$5(extra, 'expected')) {
-        res.expected = index$27(extra.expected, opts.expected);
+    if (index$4(opts, 'expected') || index$4(extra, 'expected')) {
+        res.expected = index$26(extra.expected, opts.expected);
     }
     this._ok = Boolean(this._ok && ok);
     
     if (!ok) {
-        res.error = index$27(extra.error, opts.error, new Error(res.name));
+        res.error = index$26(extra.error, opts.error, new Error(res.name));
     }
     
     if (!ok) {
@@ -7143,7 +7073,7 @@ Test.prototype.ok
 = Test.prototype.assert
 = function (value, msg, extra) {
     this._assert(value, {
-        message : index$27(msg, 'should be truthy'),
+        message : index$26(msg, 'should be truthy'),
         operator : 'ok',
         expected : true,
         actual : value,
@@ -7156,7 +7086,7 @@ Test.prototype.notOk
 = Test.prototype.notok
 = function (value, msg, extra) {
     this._assert(!value, {
-        message : index$27(msg, 'should be falsy'),
+        message : index$26(msg, 'should be falsy'),
         operator : 'notOk',
         expected : false,
         actual : value,
@@ -7170,7 +7100,7 @@ Test.prototype.error
 = Test.prototype.iferror
 = function (err, msg, extra) {
     this._assert(!err, {
-        message : index$27(msg, String(err)),
+        message : index$26(msg, String(err)),
         operator : 'error',
         actual : err,
         extra : extra
@@ -7185,7 +7115,7 @@ Test.prototype.equal
 = Test.prototype.strictEquals
 = function (a, b, msg, extra) {
     this._assert(a === b, {
-        message : index$27(msg, 'should be equal'),
+        message : index$26(msg, 'should be equal'),
         operator : 'equal',
         actual : a,
         expected : b,
@@ -7204,7 +7134,7 @@ Test.prototype.notEqual
 = Test.prototype.isInequal
 = function (a, b, msg, extra) {
     this._assert(a !== b, {
-        message : index$27(msg, 'should not be equal'),
+        message : index$26(msg, 'should not be equal'),
         operator : 'notEqual',
         actual : a,
         notExpected : b,
@@ -7217,8 +7147,8 @@ Test.prototype.deepEqual
 = Test.prototype.isEquivalent
 = Test.prototype.same
 = function (a, b, msg, extra) {
-    this._assert(index$29(a, b, { strict: true }), {
-        message : index$27(msg, 'should be equivalent'),
+    this._assert(index$28(a, b, { strict: true }), {
+        message : index$26(msg, 'should be equivalent'),
         operator : 'deepEqual',
         actual : a,
         expected : b,
@@ -7230,8 +7160,8 @@ Test.prototype.deepLooseEqual
 = Test.prototype.looseEqual
 = Test.prototype.looseEquals
 = function (a, b, msg, extra) {
-    this._assert(index$29(a, b), {
-        message : index$27(msg, 'should be equivalent'),
+    this._assert(index$28(a, b), {
+        message : index$26(msg, 'should be equivalent'),
         operator : 'deepLooseEqual',
         actual : a,
         expected : b,
@@ -7248,8 +7178,8 @@ Test.prototype.notDeepEqual
 = Test.prototype.isNotEquivalent
 = Test.prototype.isInequivalent
 = function (a, b, msg, extra) {
-    this._assert(!index$29(a, b, { strict: true }), {
-        message : index$27(msg, 'should not be equivalent'),
+    this._assert(!index$28(a, b, { strict: true }), {
+        message : index$26(msg, 'should not be equivalent'),
         operator : 'notDeepEqual',
         actual : a,
         notExpected : b,
@@ -7261,8 +7191,8 @@ Test.prototype.notDeepLooseEqual
 = Test.prototype.notLooseEqual
 = Test.prototype.notLooseEquals
 = function (a, b, msg, extra) {
-    this._assert(!index$29(a, b), {
-        message : index$27(msg, 'should be equivalent'),
+    this._assert(!index$28(a, b), {
+        message : index$26(msg, 'should be equivalent'),
         operator : 'notDeepLooseEqual',
         actual : a,
         expected : b,
@@ -7282,7 +7212,7 @@ Test.prototype['throws'] = function (fn, expected, msg, extra) {
         fn();
     } catch (err) {
         caught = { error : err };
-        if ((err != null) && (!isEnumerable(err, 'message') || !index$5(err, 'message'))) {
+        if ((err != null) && (!isEnumerable(err, 'message') || !index$4(err, 'message'))) {
             var message = err.message;
             delete err.message;
             err.message = message;
@@ -7302,7 +7232,7 @@ Test.prototype['throws'] = function (fn, expected, msg, extra) {
     }
 
     this._assert(typeof fn === 'function' && passed, {
-        message : index$27(msg, 'should throw'),
+        message : index$26(msg, 'should throw'),
         operator : 'throws',
         actual : caught && caught.error,
         expected : expected,
@@ -7324,7 +7254,7 @@ Test.prototype.doesNotThrow = function (fn, expected, msg, extra) {
         caught = { error : err };
     }
     this._assert(!caught, {
-        message : index$27(msg, 'should not throw'),
+        message : index$26(msg, 'should not throw'),
         operator : 'throws',
         actual : caught && caught.error,
         expected : expected,
@@ -7352,7 +7282,7 @@ var fs = ( empty$1 && empty$1['default'] ) || empty$1;
 
 var default_stream = function () {
     var line = '';
-    var stream = index$3(write, flush);
+    var stream = index$2(write, flush);
     return stream;
     
     function write (buf) {
@@ -7378,7 +7308,7 @@ var default_stream = function () {
     }
 };
 
-var index$1 = createCommonjsModule(function (module, exports) {
+var index = createCommonjsModule(function (module, exports) {
 var canEmitExit = typeof process !== 'undefined' && process
     && typeof process.on === 'function' && browser$1 !== true;
 var canExit = typeof process !== 'undefined' && process
@@ -7401,7 +7331,7 @@ exports = module.exports = (function () {
     lazyLoad.createStream = function (opts) {
         if (!opts) opts = {};
         if (!harness) {
-            var output = index$3();
+            var output = index$2();
             getHarness({ stream: output, objectMode: opts.objectMode });
             return output;
         }
@@ -7427,7 +7357,7 @@ exports = module.exports = (function () {
 function createExitHarness (conf) {
     if (!conf) conf = {};
     var harness = createHarness({
-        autoclose: index$27(conf.autoclose, false)
+        autoclose: index$26(conf.autoclose, false)
     });
     
     var stream = harness.createStream({ objectMode: conf.objectMode });
@@ -7726,20 +7656,14 @@ var set = function set(object, property, value, receiver) {
 var URL = 'http://tiles.energielabelatlas.nl/v2/osm/{z}/{x}/{y}.png';
 var ATTR = 'Kaartgegevens &copy; <a href="cbs.nl">CBS</a>, <a href="kadaster.nl">Kadaster</a>, <a href="openstreetmap.org">OpenStreetMap contributors</a>';
 
-index$1('nlmaps can populate Leaflet in two-line version', function (t) {
-  nlmapsLeaflet_cjs(L);
-  t.assert(typeof L.nlmapsBgLayer === 'function', 'nlmaps has populated property on L');
-  t.end();
-});
-index$1('nlmaps can populate leaflet in one-line version', function (t) {
-  t.assert((typeof L === 'undefined' ? 'undefined' : _typeof(L)) === 'object', 'L object created this way');
-  t.assert(typeof L.nlmapsBgLayer === 'function', 'nlmaps has populated property on L');
+index('including nlmaps-leaflet creates a bgLayer function', function (t) {
+  t.assert(typeof bgLayer === 'function', 'bgLayer is a function');
   t.end();
 });
 
-index$1('nlmaps can create a layer object', function (t) {
+index('nlmaps can create a layer object', function (t) {
   var map = L.map('map').setView([52, 5], 10);
-  var foo = L.nlmapsBgLayer('osm');
+  var foo = bgLayer('osm');
   t.assert((typeof foo === 'undefined' ? 'undefined' : _typeof(foo)) === 'object', 'foo layer has been created');
   t.assert(typeof foo.addTo === 'function', 'foo has the addTo method');
   foo.addTo(map);

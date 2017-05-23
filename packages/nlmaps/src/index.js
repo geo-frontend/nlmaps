@@ -20,12 +20,27 @@ let mapdefaults = {
 };
 
 
-function isMapDef(name) {
+function mapLibDefined() {
+  if (typeof L === 'object') {
+    return 'L';
+  
+  };
+  if (typeof google === 'object' && typeof google.maps === 'object'){
+    return 'google.maps';
+  }
+  if (typeof ol === 'object') {
+    return 'ol';
+  }
+};
+
+
+function optsForLib(opts, lib) {
 
 };
 
 nlmaps.createMap = function(options) {
   
+
 
 };
 

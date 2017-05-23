@@ -7653,7 +7653,7 @@ var set = function set(object, property, value, receiver) {
   return value;
 };
 
-var ATTR = 'Kaartgegevens &copy; <a href="cbs.nl">CBS</a>, <a href="kadaster.nl">Kadaster</a>, <a href="openstreetmap.org">OpenStreetMap contributors</a>';
+var ATTR = 'Kaartgegevens &copy; <a href="kadaster.nl">Kadaster</a>';
 
 var browserTest = function browserTest() {
   index('including nlmGm initializes and provides a function to create bglayer', function (t) {

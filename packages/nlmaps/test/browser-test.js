@@ -20,7 +20,7 @@ test('nlmaps can populate leaflet in one-line version', function(t){
 
 test('nlmaps can create a leaflet layer object', function(t) {
   let map = L.map('mapL').setView([52, 5], 10);
-  let foo = nlmaps.leaflet.bgLayer('osm');
+  let foo = nlmaps.leaflet.bgLayer();
   foo.addTo(map);
   t.assert(typeof foo === 'object', 'foo layer has been created');
   t.assert(typeof foo.addTo === 'function', 'foo has the addTo method');
@@ -91,3 +91,4 @@ test('nlmaps can create an openlayers layer object and add it to the map', funct
   //t.test('can add the returned layer to an openlayers map')
   t.end();
 });
+

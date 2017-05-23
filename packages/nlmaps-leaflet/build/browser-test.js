@@ -7653,8 +7653,8 @@ var set = function set(object, property, value, receiver) {
   return value;
 };
 
-var URL = 'http://tiles.energielabelatlas.nl/v2/osm/{z}/{x}/{y}.png';
-var ATTR = 'Kaartgegevens &copy; <a href="cbs.nl">CBS</a>, <a href="kadaster.nl">Kadaster</a>, <a href="openstreetmap.org">OpenStreetMap contributors</a>';
+var URL = 'https://geodata.nationaalgeoregister.nl/tiles/service/wmts/brtachtergrondkaart/EPSG:3857/{z}/{x}/{y}.png';
+var ATTR = 'Kaartgegevens &copy; <a href="kadaster.nl">Kadaster</a>';
 
 index('including nlmaps-leaflet creates a bgLayer function', function (t) {
   t.assert(typeof bgLayer === 'function', 'bgLayer is a function');
@@ -7663,13 +7663,19 @@ index('including nlmaps-leaflet creates a bgLayer function', function (t) {
 
 index('nlmaps can create a layer object', function (t) {
   var map = L.map('map').setView([52, 5], 10);
-  var foo = bgLayer('osm');
-  t.assert((typeof foo === 'undefined' ? 'undefined' : _typeof(foo)) === 'object', 'foo layer has been created');
-  t.assert(typeof foo.addTo === 'function', 'foo has the addTo method');
-  foo.addTo(map);
-  t.assert(map.hasLayer(foo), 'map now has layer foo');
-  t.equals(foo._url, URL, 'foos url matches what is expected');
-  t.equals(foo.options.attribution, ATTR, 'attribution is correct');
+  var layers = {
+    standaard: bgLayer()
+  };
+  t.assert(_typeof(layers.standaard) === 'object', 'standaard layer has been created -- with NO user-passed layername argument');
+  t.assert(typeof layers.standaard.addTo === 'function', 'standaard has the addTo method');
+  layers.standaard.addTo(map);
+  t.assert(map.hasLayer(layers.standaard), 'map now has layer standaard');
+  t.equals(layers.standaard._url, URL, 'standaard url matches what is expected');
+  t.equals(layers.standaard.options.attribution, ATTR, 'attribution is correct');
+
+  layers.pastel = bgLayer('pastel');
+  layers.grijs = bgLayer('grijs');
+  L.control.layers(layers).addTo(map);
   t.end();
 });
 

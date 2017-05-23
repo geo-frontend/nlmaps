@@ -1,12 +1,10 @@
-import getProvider from '../../lib/providers.js';
+import { getProvider } from '../../lib/index.js';
+
 
 L.NlmapsBgLayer = L.TileLayer.extend({
-  initialize: function(name, options) {
-    var provider = getProvider(name),
-    url = provider.url.replace(/({[A-Z]})/g, function(s) {
-      return s.toLowerCase();
-    }),
-    opts = L.Util.extend({}, options, {
+  initialize: function(name='standaard', options) {
+    const provider = getProvider(name);
+    const opts = L.Util.extend({}, options, {
       'minZoom':      provider.minZoom,
       'maxZoom':      provider.maxZoom,
       'subdomains':   provider.subdomains,
@@ -14,7 +12,7 @@ L.NlmapsBgLayer = L.TileLayer.extend({
       'attribution':  provider.attribution,
       sa_id:          name
     });
-    L.TileLayer.prototype.initialize.call(this, url, opts);
+    L.TileLayer.prototype.initialize.call(this, provider.url, opts);
   }
 });
 /*

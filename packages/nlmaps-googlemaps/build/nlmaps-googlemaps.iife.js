@@ -1,22 +1,67 @@
 var bgLayer = (function () {
 'use strict';
 
-let baseurl = 'http://tiles.energielabelatlas.nl/v2/';
-let attr = 'Kaartgegevens &copy; <a href="cbs.nl">CBS</a>, <a href="kadaster.nl">Kadaster</a>, <a href="openstreetmap.org">OpenStreetMap contributors</a>';
-let SUBDOMAINS = "a. b. c. d.".split(" ");
-let MAKE_PROVIDER = function (layer, type, minZoom, maxZoom) {
+/*parts copied from maps.stamen.com: https://github.com/stamen/maps.stamen.com/blob/master/js/tile.stamen.js
+ * copyright (c) 2012, Stamen Design
+ * under BSD 3-Clause license: https://github.com/stamen/maps.stamen.com/blob/master/LICENSE
+ */
+const baseurl = 'https://geodata.nationaalgeoregister.nl/tiles/service/wmts/brtachtergrondkaart';
+const servicecrs = '/EPSG:3857';
+const attr = 'Kaartgegevens &copy; <a href="kadaster.nl">Kadaster</a>';
+const SUBDOMAINS = "a. b. c. d.".split(" ");
+let makeProvider = function (name, format, minZoom, maxZoom) {
+  const urlname = mapLayerName(name);
   return {
-    "url": [baseurl, layer, "/{z}/{x}/{y}.", type].join(""),
-    "type": type,
+    "bare_url": [baseurl, urlname, servicecrs].join(""),
+    "url": [baseurl, urlname, servicecrs, "/{z}/{x}/{y}.", format].join(""),
+    "format": format,
     "subdomains": SUBDOMAINS.slice(),
     "minZoom": minZoom,
     "maxZoom": maxZoom,
-    "attribution": attr
+    "attribution": attr,
+    "name": `BRT Achtergrondkaart ${name}`
   };
 };
 let PROVIDERS = {
-  "osm": MAKE_PROVIDER("osm", "png", 0, 20)
+  "standaard": makeProvider("standaard", "png", 6, 20),
+  "pastel": makeProvider("pastel", "png", 6, 20),
+  "grijs": makeProvider("grijs", "png", 6, 20)
 };
+
+function mapLayerName(layername) {
+  let name;
+  switch (layername) {
+    case 'standaard':
+      name = '';
+      break;
+    case 'grijs':
+      name = 'grijs';
+      break;
+    case 'pastel':
+      name = 'pastel';
+      break;
+    default:
+      name = '';
+  }
+  return name;
+}
+
+/*
+ *  * Get the named provider, or throw an exception if it doesn't exist.
+ *   */
+function getProvider(name) {
+  if (name in PROVIDERS) {
+    var provider = PROVIDERS[name];
+
+    if (provider.deprecated && console && console.warn) {
+      console.warn(name + " is a deprecated style; it will be redirected to its replacement. For performance improvements, please change your reference.");
+    }
+
+    return provider;
+  } else {
+    throw 'No such provider (' + name + ')';
+  }
+}
 
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) {
   return typeof obj;
@@ -218,21 +263,23 @@ var set = function set(object, property, value, receiver) {
   return value;
 };
 
-var URL = 'http://tiles.energielabelatlas.nl/v2/osm';
 function bgLayer$1() {
+  var name = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 'standaard';
+
   if ((typeof google === 'undefined' ? 'undefined' : _typeof(google)) === 'object' && _typeof(google.maps) === 'object') {
-    var ElaMap = new google.maps.ImageMapType({
+    var provider = getProvider(name);
+    var layer = new google.maps.ImageMapType({
       getTileUrl: function getTileUrl(coord, zoom) {
-        var url = URL + '/' + zoom + '/' + coord.x + '/' + coord.y + '.png';
+        var url = provider.bare_url + '/' + zoom + '/' + coord.x + '/' + coord.y + '.png';
         return url;
       },
       tileSize: new google.maps.Size(256, 256),
       isPng: true,
-      name: 'ELA',
-      maxZoom: 22,
-      minZoom: 8
+      name: provider.name,
+      maxZoom: provider.maxZoom,
+      minZoom: provider.minZoom
     });
-    return ElaMap;
+    return layer;
   } else {
     var error = 'google is not defined';
     throw error;

@@ -1,6 +1,7 @@
 import { bgLayer as bgL } from '../../nlmaps-leaflet/src/index.js';
 import { bgLayer as bgOL } from '../../nlmaps-openlayers/src/index.js';
 import { bgLayer as bgGM } from '../../nlmaps-googlemaps/src/index.js';
+import { DEFAULT_CLIENT_CONFIGS } from '../../lib/index.js';
 
 let nlmaps = {
   leaflet: {
@@ -14,7 +15,7 @@ let nlmaps = {
   }
 };
 
-let opts = {
+let mapdefaults = {
 
 };
 
@@ -23,7 +24,7 @@ function isMapDef(name) {
 
 };
 
-nlmaps.createMap = function(opts) {
+nlmaps.createMap = function(options) {
   
 
 };

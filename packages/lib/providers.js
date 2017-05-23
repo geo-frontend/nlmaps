@@ -1,21 +1,48 @@
-let baseurl = 'http://tiles.energielabelatlas.nl/v2/';
-let attr = 'Kaartgegevens &copy; <a href="cbs.nl">CBS</a>, <a href="kadaster.nl">Kadaster</a>, <a href="openstreetmap.org">OpenStreetMap contributors</a>';
-let SUBDOMAINS = "a. b. c. d.".split(" ");
-let MAKE_PROVIDER = function(layer, type, minZoom, maxZoom) {
+/*parts copied from maps.stamen.com: https://github.com/stamen/maps.stamen.com/blob/master/js/tile.stamen.js
+ * copyright (c) 2012, Stamen Design
+ * under BSD 3-Clause license: https://github.com/stamen/maps.stamen.com/blob/master/LICENSE
+ */
+const baseurl = 'https://geodata.nationaalgeoregister.nl/tiles/service/wmts/brtachtergrondkaart';
+const servicecrs = '/EPSG:3857';
+const attr = 'Kaartgegevens &copy; <a href="kadaster.nl">Kadaster</a>';
+const SUBDOMAINS = "a. b. c. d.".split(" ");
+let makeProvider = function(name, format, minZoom, maxZoom) {
+  const urlname = mapLayerName(name);
   return {
-    "url":          [baseurl, layer, "/{z}/{x}/{y}.", type].join(""),
-    "type":         type,
+    "bare_url":      [baseurl, urlname, servicecrs].join(""),
+    "url":          [baseurl, urlname, servicecrs, "/{z}/{x}/{y}.", format].join(""),
+    "format":         format,
     "subdomains":   SUBDOMAINS.slice(),
     "minZoom":      minZoom,
     "maxZoom":      maxZoom,
-    "attribution":    attr
+    "attribution":  attr,
+    "name":         `BRT Achtergrondkaart ${name}`
   };
 };
 let PROVIDERS =  {
-  "osm":        MAKE_PROVIDER("osm", "png", 0, 20)
+  "standaard":    makeProvider("standaard", "png", 6, 20),
+  "pastel":       makeProvider("pastel", "png", 6, 20),
+  "grijs":        makeProvider("grijs", "png", 6, 20)
 };
 
 
+function mapLayerName(layername){
+  let name;
+  switch (layername) {
+    case 'standaard':
+      name = '';
+      break;
+    case 'grijs':
+      name = 'grijs';
+      break;
+    case 'pastel' :
+      name = 'pastel';
+      break;
+    default:
+      name = '';
+  }
+  return name;
+}
 
 /*
  *  * Get the named provider, or throw an exception if it doesn't exist.

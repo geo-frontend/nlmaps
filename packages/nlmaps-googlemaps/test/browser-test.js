@@ -1,6 +1,6 @@
 let test = require('tape');
 let URL = 'http://tiles.energielabelatlas.nl/v2/osm/{z}/{x}/{y}.png';
-let ATTR = 'Kaartgegevens &copy; <a href="cbs.nl">CBS</a>, <a href="kadaster.nl">Kadaster</a>, <a href="openstreetmap.org">OpenStreetMap contributors</a>';
+let ATTR = 'Kaartgegevens &copy; <a href="kadaster.nl">Kadaster</a>';
 
 module.exports = function  browserTest(){
   test('including nlmGm initializes and provides a function to create bglayer', function(t){

@@ -18,10 +18,16 @@ test('create layer and add it to the map', function(t){
     }),
     target: 'map'
   });
+  console.log('add a layer with no name argument')
   let layer = bgLayer();
   map.addLayer(layer);
   t.assert(typeof layer === 'object' && map.getLayers().a[0] === layer, 'layer is first entry in map layers list');
   //t.test('can add the returned layer to an openlayers map')
+  console.log('add a layer with name argument');
+  let layer2 = bgLayer('pastel');
+  map.removeLayer(layer);
+  map.addLayer(layer2);
+
   t.end();
 
 });

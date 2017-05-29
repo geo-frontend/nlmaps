@@ -1,6 +1,6 @@
 {
   "name": "nlmaps",
-  "version": "1.0.0",
+  "version": "0.9.0",
   "description": "easily add PDOK sources to common Javascript mapping libaries",
   "main": "build/nlmaps.cjs.js",
   "scripts": {

@@ -12,7 +12,7 @@ the `nlmaps` libary allows you to create layers for Leaflet, Google Maps or Open
 
 **Web browser:**
 
-include the nlmaps script in your web page. You can download it [here].
+include the nlmaps script in your web page. You can download it [here](https://gitlab.com/wm2017/nlmaps/raw/master/dist/nlmaps.iife.js).
 
 **NodeJS:**
 
@@ -31,7 +31,7 @@ If you have no clue how web maps work, or you just want to get it working as sim
 
 `<script>`-tag:
 
-Download nlmaps.min.js from dist/ and include it in your page.
+Download nlmaps.min.js [here](https://gitlab.com/wm2017/nlmaps/raw/master/dist/nlmaps.iife.js) and include it in your page.
 
 Also include your map library of choice in the page, _before_ nlmaps. Nlmaps will then auto-configure to use the included library.
 
@@ -100,7 +100,7 @@ If you want to save as many bytes as possible, you can also include the sub-modu
 
 **Web browser:**
 
-    download the appropriate `nlmaps-<maplib>.min.js` from [here].
+download the appropriate `nlmaps-<maplib>.min.js` from [here](https://gitlab.com/wm2017/nlmaps/blob/master/dist/nlmaps-leaflet.iife.js) (select the appropriate file and click on the 'download raw' button from the top right section above the file).
 
 **NodeJS:**
 

@@ -25,7 +25,7 @@ include the nlmaps script in your web page. You can download it [here].
     import nlmaps from 'nlmaps';
 
 
-### just give me a map (TODO)
+### just give me a map
 
 If you have no clue how web maps work, or you just want to get it working as simply as possible, take the top-level 'nlmaps' package.
 

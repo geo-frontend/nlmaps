@@ -79,6 +79,18 @@ function addLayerToMap(lib, layer, map) {
       map.addLayer(layer);
       break;
     case 'googlemaps':
+      let mapTypeIds = [layer.name, 'roadmap']
+      map.setOptions({
+        mapTypeControl: true,
+        mapTypeControlOptions: {
+          mapTypeIds: mapTypeIds
+        }
+
+      });
+      //add your map to the available layers
+      map.mapTypes.set(layer.name, layer);
+      //set it as active layer
+      map.setMapTypeId(layer.name);
       break;
     case 'openlayers':
       map.addLayer(layer);

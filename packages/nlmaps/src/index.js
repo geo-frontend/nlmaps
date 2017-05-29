@@ -73,6 +73,22 @@ function initMap(lib, opts){
 
 };
 
+function addLayerToMap(lib, layer, map) {
+  switch (lib) {
+    case 'leaflet':
+      map.addLayer(layer);
+      break;
+    case 'googlemaps':
+      break;
+    case 'openlayers':
+      map.addLayer(layer);
+      break;
+
+  }
+  
+
+}
+
 nlmaps.createMap = function(useropts = {}) {
   const opts = Object.assign({}, mapdefaults, useropts);
   let lib = testWhichLib();
@@ -81,7 +97,8 @@ nlmaps.createMap = function(useropts = {}) {
     return;
   }
   let map = initMap(lib, opts);
-  nlmaps[lib].bgLayer(opts.layer);
+  let layer = nlmaps[lib].bgLayer(opts.layer);
+  addLayerToMap(lib, layer, map);
   return map;
 };
 

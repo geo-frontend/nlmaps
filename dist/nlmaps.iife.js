@@ -63,34 +63,6 @@ function getProvider(name) {
   }
 }
 
-L.NlmapsBgLayer = L.TileLayer.extend({
-  initialize: function initialize() {
-    var name = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 'standaard';
-    var options = arguments[1];
-
-    var provider = getProvider(name);
-    var opts = L.Util.extend({}, options, {
-      'minZoom': provider.minZoom,
-      'maxZoom': provider.maxZoom,
-      'subdomains': provider.subdomains,
-      'scheme': 'xyz',
-      'attribution': provider.attribution,
-      sa_id: name
-    });
-    L.TileLayer.prototype.initialize.call(this, provider.url, opts);
-  }
-});
-/*
- *      * Factory function for consistency with Leaflet conventions
- *           */
-L.nlmapsBgLayer = function (options, source) {
-  return new L.NlmapsBgLayer(options, source);
-};
-
-function bgLayer(name) {
-  return L.nlmapsBgLayer(name);
-}
-
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) {
   return typeof obj;
 } : function (obj) {
@@ -291,6 +263,38 @@ var set = function set(object, property, value, receiver) {
   return value;
 };
 
+if (typeof L !== 'undefined' && (typeof L === 'undefined' ? 'undefined' : _typeof(L)) === 'object') {
+  L.NlmapsBgLayer = L.TileLayer.extend({
+    initialize: function initialize() {
+      var name = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 'standaard';
+      var options = arguments[1];
+
+      var provider = getProvider(name);
+      var opts = L.Util.extend({}, options, {
+        'minZoom': provider.minZoom,
+        'maxZoom': provider.maxZoom,
+        'subdomains': provider.subdomains,
+        'scheme': 'xyz',
+        'attribution': provider.attribution,
+        sa_id: name
+      });
+      L.TileLayer.prototype.initialize.call(this, provider.url, opts);
+    }
+  });
+  /*
+   *      * Factory function for consistency with Leaflet conventions
+   *           */
+  L.nlmapsBgLayer = function (options, source) {
+    return new L.NlmapsBgLayer(options, source);
+  };
+}
+
+function bgLayer(name) {
+  if (typeof L !== 'undefined' && (typeof L === 'undefined' ? 'undefined' : _typeof(L)) === 'object') {
+    return L.nlmapsBgLayer(name);
+  }
+}
+
 function bgLayer$1() {
   var name = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 'standaard';
 
@@ -399,6 +403,20 @@ function initMap(lib, opts) {
   return map;
 }
 
+function addLayerToMap(lib, layer, map) {
+  switch (lib) {
+    case 'leaflet':
+      map.addLayer(layer);
+      break;
+    case 'googlemaps':
+      break;
+    case 'openlayers':
+      map.addLayer(layer);
+      break;
+
+  }
+}
+
 nlmaps.createMap = function () {
   var useropts = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
 
@@ -409,7 +427,8 @@ nlmaps.createMap = function () {
     return;
   }
   var map = initMap(lib, opts);
-  nlmaps[lib].bgLayer(opts.layer);
+  var layer = nlmaps[lib].bgLayer(opts.layer);
+  addLayerToMap(lib, layer, map);
   return map;
 };
 

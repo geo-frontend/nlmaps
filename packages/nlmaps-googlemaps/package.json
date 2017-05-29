@@ -1,5 +1,5 @@
 {
-  "name": "nlmaps-leaflet",
+  "name": "nlmaps-googlemaps",
   "version": "0.9.0",
   "description": "",
   "main": "build/nlmaps-googlemaps.cjs.js",

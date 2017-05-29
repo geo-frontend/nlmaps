@@ -2,27 +2,34 @@
 
 Object.defineProperty(exports, '__esModule', { value: true });
 
+/*parts copied from maps.stamen.com: https://github.com/stamen/maps.stamen.com/blob/master/js/tile.stamen.js
+ * copyright (c) 2012, Stamen Design
+ * under BSD 3-Clause license: https://github.com/stamen/maps.stamen.com/blob/master/LICENSE
+ */
 const baseurl = 'https://geodata.nationaalgeoregister.nl/tiles/service/wmts/brtachtergrondkaart';
 const servicecrs = '/EPSG:3857';
 const attr = 'Kaartgegevens &copy; <a href="kadaster.nl">Kadaster</a>';
 const SUBDOMAINS = "a. b. c. d.".split(" ");
-let MAKE_PROVIDER = function (layer, format, minZoom, maxZoom) {
+let makeProvider = function (name, format, minZoom, maxZoom) {
+  const urlname = mapLayerName(name);
   return {
-    "url": [baseurl, mapLayerName$1(layer), servicecrs, "/{z}/{x}/{y}.", format].join(""),
-    "type": format,
+    "bare_url": [baseurl, urlname, servicecrs].join(""),
+    "url": [baseurl, urlname, servicecrs, "/{z}/{x}/{y}.", format].join(""),
+    "format": format,
     "subdomains": SUBDOMAINS.slice(),
     "minZoom": minZoom,
     "maxZoom": maxZoom,
-    "attribution": attr
+    "attribution": attr,
+    "name": `BRT Achtergrondkaart ${name}`
   };
 };
 let PROVIDERS = {
-  "standaard": MAKE_PROVIDER("standaard", "png", 6, 20),
-  "pastel": MAKE_PROVIDER("pastel", "png", 6, 20),
-  "grijs": MAKE_PROVIDER("grijs", "png", 6, 20)
+  "standaard": makeProvider("standaard", "png", 6, 20),
+  "pastel": makeProvider("pastel", "png", 6, 20),
+  "grijs": makeProvider("grijs", "png", 6, 20)
 };
 
-function mapLayerName$1(layername) {
+function mapLayerName(layername) {
   let name;
   switch (layername) {
     case 'standaard':
@@ -56,15 +63,6 @@ function getProvider(name) {
     throw 'No such provider (' + name + ')';
   }
 }
-
-function baseUrl(layername) {
-  return `https://geodata.nationaalgeoregister.nl/tiles/service/wmts/brtachtergrondkaart${mapLayerName(layername)}/EPSG:3857/`;
-}
-
-const config = {
-  a: 'a',
-  b: 'b'
-};
 
 L.NlmapsBgLayer = L.TileLayer.extend({
   initialize: function initialize() {

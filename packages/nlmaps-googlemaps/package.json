@@ -2,10 +2,10 @@
   "name": "nlmaps-leaflet",
   "version": "1.0.0",
   "description": "",
-  "main": "build/index.js",
+  "main": "build/nlmaps-googlemaps.cjs.js",
   "scripts": {
     "test": "node test/test.js",
-    "build": "rollup -c config/rollup.cjs.js && BROWSER=true rollup -c config/rollup.iife.js",
+    "build": "rollup -c config/rollup.cjs.js && BROWSER=true rollup -c config/rollup.iife.js && cp build/nlmaps-googlemaps.iife.js ../../dist/",
     "watch-test": "nodemon --watch test --watch build --exec 'npm run test'",
     "watch-code": "nodemon --watch src --exec npm run build",
     "watch-all": "npm-run-all --parallel watch-code watch-test",

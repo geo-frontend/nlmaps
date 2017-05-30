@@ -60,7 +60,8 @@ Creates a map using Leaflet, OpenLayers or Google Maps, with a given BRT Achterg
 
 * style: _string_ (optional). one of `'standaard'`, `'pastel'` or `'grijs'`, default `'standaard'`.
 * target: _string_ (required). ID of the div in which to create the map.
-* position: _object_ (optional). object with zoom, latitude and longitude properties for setting the initial viewpoint.
+* center: _object_ (optional). object with latitude and longitude properties for setting the initial viewpoint. Defaults to a position near the centre of the Netherlands.
+* zoom: _number_ (optional). Zoom level at which to initialize the viewpoint. Defaults to `8`.
 
 returns a `map` object.
 
@@ -93,7 +94,7 @@ Returns a `layer` object.
 
 
 ## Advanced usage
-If you're already using a mapping library in your project, you can use the library-specific `bgLayer()` function to create a layer object which you can add to your existing map. All you'll need to do first is create a map and set the view. the `createMap()` function is just a wrapper which does this with some default settings.
+If you're already using a mapping library in your project, you can use the library-specific `bgLayer()` function to create a layer object which you can add to your existing map. All you'll need to do first is create a map and set the view. This is what the `createMap()` function does under the hood, with some default values.
 
 ### Leaflet
 

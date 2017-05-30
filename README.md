@@ -7,48 +7,32 @@ Automatically configure BRT Achtergrond map layers in Leaflet, Google Maps and O
 * [What it's for](#what-its-for)
 * [Usage example](#usage-example)
 * [Getting set up](#getting-set-up)
-* [API Documentation](api-documentation)
-* [Advanced Usage](advanced-usage)
+* [API Documentation](#api-documentation)
+* [Advanced Usage](#advanced-usage)
+* [Raw Tile URLS](#raw-tile-urls)
 
 ## What it's for
 
 the `nlmaps` libary allows you to create layers for Leaflet, Google Maps or OpenLayers pre-configured to use the BRT Achtergrondkaart layers. So you don't need to figure out the tile urls yourself. To make it even easier, it can automatically detect which map library you're using and create a map with your chosen layer already loaded.
 
 ## Usage example
-    let map = nlmaps.createMap({layer: 'grijs', target: 'mapdiv'});
+    let map = nlmaps.createMap({style: 'grijs', target: 'mapdiv'});
 
 ## Getting set up
 
 ### Wizard
-The nlmaps website has a [wizard](https://nlmaps.nl/gebruik-nlmaps) that makes it super easy to get started with your choice of map library and map style. It gives you a complete html example that shows you how to include the Javascript and CSS mentioned below.
+The nlmaps website has a [wizard](https://nlmaps.nl/#wizard) that makes it super easy to get started with your choice of map library and map style. It gives you a complete html example that shows you how to include the Javascript and CSS to get a working map. It is recommended that you refer to the wizard output even if you are doing things manually.
 
 ### Manual browser configuration
-You need _one_ of Leaflet, Google Maps, or OpenLayers available in your webpage. `nlmaps` autodetects which one is present, and currently considers it an error if more than one is present. Typically you would include one of the following lines in your html page before you include the `nlmaps` script:
-
-    //for OpenLayers
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/openlayers/4.1.1/ol.js"></script>
-    
-    //for Google Maps, fill in your API key instead of YOUR_API_KEY
-    <script src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY"></script>
-    
-    //for Leaflet
-    <script src="https://unpkg.com/leaflet@1.0.3/dist/leaflet.js"></script>
-    
-Read about getting a Google API key [here](https://developers.google.com/maps/documentation/javascript/get-api-key).
-
-If using Leaflet or OpenLayers, you also need the respective CSS. For Leaflet, you would use `https://unpkg.com/leaflet@1.0.3/dist/leaflet.css` and for OpenLayers, `https://cdnjs.cloudflare.com/ajax/libs/openlayers/4.1.1/ol.css`.
-
-Finally, you will need the `nlmaps` library itself.
-
-    <script src="url_of_nlmaps.min.js"></script>
-
-
-For further information on using the respective libraries, refer to their documentation:
+You need _one_ of Leaflet, Google Maps, or OpenLayers available in your webpage. `nlmaps` autodetects which one is present, and currently considers it an error if more than one is present. For further information on using the respective libraries, refer to their documentation:
 
 * [Leaflet](https://leafletjs.com/examples.html)
 * [OpenLayers](http://openlayers.org/en/latest/doc/quickstart.html)
 * [Google Maps](https://developers.google.com/maps/documentation/javascript/)
 
+Finally, you will need the `nlmaps` library itself.
+
+    <script src="url_of_nlmaps.min.js"></script>
 
 ### NodeJS
 
@@ -66,7 +50,7 @@ For further information on using the respective libraries, refer to their docume
 ### `nlmaps.createMap(options<object>)`
 Creates a map using Leaflet, OpenLayers or Google Maps, with a given BRT Achtergrondkaart layer already added as a background layer. Configured with an options object with the following properties:
 
-* layer: _string_ (optional). one of `'standaard'`, `'pastel'` or `'grijs'`, default `'standaard'`.
+* style: _string_ (optional). one of `'standaard'`, `'pastel'` or `'grijs'`, default `'standaard'`.
 * target: _string_ (required). ID of the div in which to create the map.
 * position: _object_ (optional). object with zoom, latitude and longitude properties for setting the initial viewpoint.
 
@@ -75,33 +59,29 @@ returns a `map` object.
 **Example**
 
     const opts = {
-        layer: 'grijs',
-        target: 'mapdiv',
-        position: {
-            latitude: 5.4534,
-            longitude: 52.3112,
-            zoom: 15
-        }
+      style: 'grijs',
+      target: 'mapdiv',
+      center: {
+        latitude: 5.4534,
+        longitude: 52.3112
+      },
+      zoom: 15
     };
     let map = nlmaps.createMap(opts);
 
-### `nlmaps.<maplib>.bgLayer([layer<string>])`
-Where `<maplib>` is one of `leaflet`, `openlayers` or `googlemaps`, create a layer for the given library configured to fetch tiles for `layer` tilesource, or if `layer` is omitted, for the 'standaard' tilesource.
+### `nlmaps.<maplib>.bgLayer([style<string>])`
+Where `<maplib>` is one of `leaflet`, `openlayers` or `googlemaps`, create a layer for the given library configured to fetch tiles for `style` tilesource, or if `style` is omitted, for the 'standaard' tilesource.
 
 Arguments:
 
-* layer: _string_ (optional). Name of tilesource to load. One of `'standaard'`, `'pastel'` or `'grijs'`; defaults to `'standaard'`.
+* style: _string_ (optional). Name of tilesource to load. One of `'standaard'`, `'pastel'` or `'grijs'`; defaults to `'standaard'`.
 
 Returns a `layer` object.
 
 **Example**
 
-    const layer = nlmaps.openlayers.bgLayer();;
+    const layer = nlmaps.openlayers.bgLayer();
     layer.addTo(map);
-
- * 'standaard': the standard BRT Achtergrondkaart in full colour. This is the default; you can also leave 'layer' empty.
- * 'pastel': in pastel tints
- * 'grijs': in very low saturation.
 
 
 ## Advanced usage
@@ -121,7 +101,7 @@ If you're already using a mapping library in your project, you can use the libra
       }),
       target: 'map'
     });
-    let layer = nlmaps.openlayers.bgLayer(); //calling bgLayer with no argument defaults to the 'standaard' layer
+    let layer = nlmaps.openlayers.bgLayer(); //calling bgLayer with no argument defaults to the 'standaard' style
     map.addLayer(layer);
 
 ### Google Maps
@@ -160,7 +140,7 @@ If you want to save as many bytes as possible, you can also include the sub-modu
 
 **Web browser:**
 
-download the appropriate `nlmaps-<maplib>.min.js` from [here](https://gitlab.com/wm2017/nlmaps/blob/master/dist/nlmaps-leaflet.iife.js) (select the appropriate file and click on the 'download raw' button from the top right section above the file).
+download the appropriate `nlmaps-<maplib>.min.js` from [here](https://gitlab.com/wm2017/nlmaps/blob/master/dist/nlmaps-leaflet.iife.js) (select the appropriate file and click on the 'download raw' button from the top right section above the file). When you include the script in your web page, you will have a `bgLayer()` function available which works with the respective map library.
 
 **NodeJS:**
 
@@ -172,8 +152,9 @@ download the appropriate `nlmaps-<maplib>.min.js` from [here](https://gitlab.com
     //ES2015
     import { bgLayer } from 'nlmaps-leaflet';
 
-this `bgLayer()` function can subsequently be used in the same way as `nlmaps.maplib.bgLayer()` from the parent package. Note that of course you will have to have the corresponding map library available.
+this `bgLayer()` function can subsequently be used in the same way as `nlmaps.maplib.bgLayer()` from the parent package.
 
-### Use in NodeJS / when transpiling for browser
-The [leaflet-headless](https://www.npmjs.com/package/leaflet-headless) and [google-maps](https://www.npmjs.com/package/google-maps) NPM packages can be used in nodejs. Alternatively (and for OpenLayers) you can include the library via a `<script>` tag so that when you transpile your code to the browser it will find the global `L`, `google.maps` or `ol` objects.
+## Raw tile URLS
+The tile URLS which `nlmaps` configures for you follow the following template:
 
+    https://geodata.nationaalgeoregister.nl/tiles/service/wmts/{stylename}/EPSG:3857/{z}/{x}/{y}.png

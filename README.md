@@ -18,6 +18,12 @@ the `nlmaps` libary allows you to create layers for Leaflet, Google Maps or Open
 ## Usage example
     let map = nlmaps.createMap({style: 'grijs', target: 'mapdiv'});
 
+Available styles:
+
+* `standaard`: the standard BRT Achtergrondkaart in color
+* `pastel`: in pastel tints
+* `grijs`: in very low saturation
+
 ## Getting set up
 
 ### Wizard

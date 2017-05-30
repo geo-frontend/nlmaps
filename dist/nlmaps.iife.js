@@ -349,7 +349,7 @@ var nlmaps = {
 };
 
 var mapdefaults = {
-  layer: 'standaard',
+  style: 'standaard',
   center: {
     latitude: 52,
     longitude: 5

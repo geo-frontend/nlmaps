@@ -350,8 +350,8 @@ var nlmaps = {
 var mapdefaults = {
   style: 'standaard',
   center: {
-    latitude: 52,
-    longitude: 5
+    latitude: 51.9984,
+    longitude: 4.996
   },
   zoom: 8
 };

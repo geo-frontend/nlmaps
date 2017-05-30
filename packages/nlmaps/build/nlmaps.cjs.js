@@ -353,7 +353,7 @@ var mapdefaults = {
     latitude: 52,
     longitude: 5
   },
-  zoom: 10
+  zoom: 8
 };
 
 function testWhichLib() {
@@ -402,24 +402,25 @@ function initMap(lib, opts) {
   return map;
 }
 
+function addGoogleLayer(layer, map) {
+  var mapTypeIds = [layer.name, 'roadmap'];
+  map.setOptions({
+    mapTypeControl: true,
+    mapTypeControlOptions: {
+      mapTypeIds: mapTypeIds
+    }
+  });
+  map.mapTypes.set(layer.name, layer);
+  map.setMapTypeId(layer.name);
+}
+
 function addLayerToMap(lib, layer, map) {
   switch (lib) {
     case 'leaflet':
       map.addLayer(layer);
       break;
     case 'googlemaps':
-      var mapTypeIds = [layer.name, 'roadmap'];
-      map.setOptions({
-        mapTypeControl: true,
-        mapTypeControlOptions: {
-          mapTypeIds: mapTypeIds
-        }
-
-      });
-      //add your map to the available layers
-      map.mapTypes.set(layer.name, layer);
-      //set it as active layer
-      map.setMapTypeId(layer.name);
+      addGoogleLayer(layer, map);
       break;
     case 'openlayers':
       map.addLayer(layer);

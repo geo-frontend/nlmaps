@@ -49,6 +49,8 @@ Finally, you will need the `nlmaps` library itself.
     
     //ES2015+ Modules
     import nlmaps from 'nlmaps';
+
+Leaflet, Google Maps, or OpenLayers will also need to be available in your final web browser scope.
    
     
 ## API Documentation

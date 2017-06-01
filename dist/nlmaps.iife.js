@@ -12,7 +12,6 @@ const lufostring = 'luchtfoto/rgb';
 const brtstring = 'tiles/service';
 const servicecrs = '/EPSG:3857';
 const attr = 'Kaartgegevens &copy; <a href="kadaster.nl">Kadaster</a>';
-const SUBDOMAINS = "a. b. c. d.".split(" ");
 
 function baseUrl(name) {
   return `https://geodata.nationaalgeoregister.nl/${name === 'luchtfoto' ? lufostring : brtstring}/wmts/`;
@@ -46,7 +45,6 @@ function makeProvider(name, format, minZoom, maxZoom) {
     "bare_url": [baseurl, urlname, servicecrs].join(""),
     "url": [baseurl, urlname, servicecrs, "/{z}/{x}/{y}.", format].join(""),
     "format": format,
-    "subdomains": SUBDOMAINS.slice(),
     "minZoom": minZoom,
     "maxZoom": maxZoom,
     "attribution": attr,

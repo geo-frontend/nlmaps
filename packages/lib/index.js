@@ -75,4 +75,7 @@ function getProvider(name) {
     throw 'No such provider (' + name + ')';
   }
 };
-export default getProvider;
+
+//use named export instead of default because we might want
+//more exports from 'lib' in the future
+export { getProvider };

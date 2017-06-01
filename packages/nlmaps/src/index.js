@@ -111,7 +111,7 @@ nlmaps.createMap = function(useropts = {}) {
     return;
   }
   let map = initMap(lib, opts);
-  let layer = nlmaps[lib].bgLayer(opts.layer);
+  let layer = nlmaps[lib].bgLayer(opts.style);
   addLayerToMap(lib, layer, map);
   return map;
 };

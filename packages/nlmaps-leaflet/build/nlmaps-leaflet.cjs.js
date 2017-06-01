@@ -6,11 +6,41 @@ Object.defineProperty(exports, '__esModule', { value: true });
  * copyright (c) 2012, Stamen Design
  * under BSD 3-Clause license: https://github.com/stamen/maps.stamen.com/blob/master/LICENSE
  */
-const baseurl = 'https://geodata.nationaalgeoregister.nl/tiles/service/wmts/brtachtergrondkaart';
+//https://geodata.nationaalgeoregister.nl/tiles/service/wmts/
+//https://geodata.nationaalgeoregister.nl/luchtfoto/rgb/wmts/
+
+const lufostring = 'luchtfoto/rgb';
+const brtstring = 'tiles/service';
 const servicecrs = '/EPSG:3857';
 const attr = 'Kaartgegevens &copy; <a href="kadaster.nl">Kadaster</a>';
 const SUBDOMAINS = "a. b. c. d.".split(" ");
-let makeProvider = function (name, format, minZoom, maxZoom) {
+
+function baseUrl(name) {
+  return `https://geodata.nationaalgeoregister.nl/${name === 'luchtfoto' ? lufostring : brtstring}/wmts/`;
+}
+
+function mapLayerName(layername) {
+  let name;
+  switch (layername) {
+    case 'standaard':
+      name = 'brtachtergrondkaart';
+      break;
+    case 'grijs':
+      name = 'brtachtergrondkaartgrijs';
+      break;
+    case 'pastel':
+      name = 'brtachtergrondkaartpastel';
+      break;
+    case 'luchtfoto':
+      name = 'luchtfoto_rgb25';
+    default:
+      name = 'brtachtergrondkaart';
+  }
+  return name;
+}
+
+function makeProvider(name, format, minZoom, maxZoom) {
+  const baseurl = baseUrl(name);
   const urlname = mapLayerName(name);
   return {
     "bare_url": [baseurl, urlname, servicecrs].join(""),
@@ -22,30 +52,14 @@ let makeProvider = function (name, format, minZoom, maxZoom) {
     "attribution": attr,
     "name": `BRT Achtergrondkaart ${name}`
   };
-};
-let PROVIDERS = {
+}
+
+const PROVIDERS = {
   "standaard": makeProvider("standaard", "png", 6, 20),
   "pastel": makeProvider("pastel", "png", 6, 20),
-  "grijs": makeProvider("grijs", "png", 6, 20)
+  "grijs": makeProvider("grijs", "png", 6, 20),
+  "luchtfoto": makeProvider("luchtfoto", "png", 6, 20)
 };
-
-function mapLayerName(layername) {
-  let name;
-  switch (layername) {
-    case 'standaard':
-      name = '';
-      break;
-    case 'grijs':
-      name = 'grijs';
-      break;
-    case 'pastel':
-      name = 'pastel';
-      break;
-    default:
-      name = '';
-  }
-  return name;
-}
 
 /*
  *  * Get the named provider, or throw an exception if it doesn't exist.

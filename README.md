@@ -164,6 +164,9 @@ download the appropriate `nlmaps-<maplib>.min.js` from [here](https://gitlab.com
 
 this `bgLayer()` function can subsequently be used in the same way as `nlmaps.maplib.bgLayer()` from the parent package.
 
+### Removing or further manipulating the map or layer
+If you want to remove your map object or layer, you can just use the standard method provided by your library. The objects returned from `createMap()` and `bgLayer()` are just standard `map` and `layer` objects for the appropriate libraries. For example, Leaflet has a `map.remove()` function which destroys the map and clears all event listeners.
+
 ## Raw tile URLS
 The tile URLS which `nlmaps` configures for you follow the templates:
 

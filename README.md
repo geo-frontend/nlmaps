@@ -23,6 +23,7 @@ Available styles:
 * `standaard`: the standard BRT Achtergrondkaart in color
 * `pastel`: in pastel tints
 * `grijs`: in very low saturation
+* `luchtfoto`: aerial imagery
 
 ## Getting set up
 
@@ -58,7 +59,7 @@ Leaflet, Google Maps, or OpenLayers will also need to be available in your final
 ### `nlmaps.createMap(options<object>)`
 Creates a map using Leaflet, OpenLayers or Google Maps, with a given BRT Achtergrondkaart layer already added as a background layer. Configured with an options object with the following properties:
 
-* style: _string_ (optional). one of `'standaard'`, `'pastel'` or `'grijs'`, default `'standaard'`.
+* style: _string_ (optional). one of `'standaard'`, `'pastel'`, '`grijs'` or `'luchtfoto'`, default `'standaard'`.
 * target: _string_ (required). ID of the div in which to create the map.
 * center: _object_ (optional). object with latitude and longitude properties for setting the initial viewpoint. Defaults to a position near the centre of the Netherlands.
 * zoom: _number_ (optional). Zoom level at which to initialize the viewpoint. Defaults to `8`.
@@ -83,7 +84,7 @@ Where `<maplib>` is one of `leaflet`, `openlayers` or `googlemaps`, create a lay
 
 Arguments:
 
-* style: _string_ (optional). Name of tilesource to load. One of `'standaard'`, `'pastel'` or `'grijs'`; defaults to `'standaard'`.
+* style: _string_ (optional). Name of tilesource to load. One of `'standaard'`, `'pastel'`,`'grijs'` or '`luchtfoto`'; default `'standaard'`.
 
 Returns a `layer` object.
 
@@ -164,6 +165,12 @@ download the appropriate `nlmaps-<maplib>.min.js` from [here](https://gitlab.com
 this `bgLayer()` function can subsequently be used in the same way as `nlmaps.maplib.bgLayer()` from the parent package.
 
 ## Raw tile URLS
-The tile URLS which `nlmaps` configures for you follow the following template:
+The tile URLS which `nlmaps` configures for you follow the templates:
+
+For BRT-Achtergrondkaart series:
 
     https://geodata.nationaalgeoregister.nl/tiles/service/wmts/{stylename}/EPSG:3857/{z}/{x}/{y}.png
+
+For aerial imagery:
+
+    https://geodata.nationaalgeoregister.nl/luchtfoto/rgb/wmts/1.0.0/2016_ortho25/EPSG:3857/{z}/{x}/{y}.png

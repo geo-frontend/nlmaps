@@ -16,14 +16,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+ssh://git@gitlab.com/wm2017/nlmaps.git"
+    "url": "git+ssh://git@github.com:hpfast/nlmaps.git"
   },
   "author": "Hans Fast",
   "license": "ISC",
   "bugs": {
-    "url": "https://gitlab.com/wm2017/nlmaps/issues"
+    "url": "https://github.com:hpfast/nlmaps/issues"
   },
-  "homepage": "https://gitlab.com/wm2017/nlmaps#README",
+  "homepage": "https://github.com:hpfast/nlmaps#README",
   "devDependencies": {
     "rollup-plugin-node-builtins": "^2.1.2",
     "rollup-plugin-node-globals": "^1.1.0",

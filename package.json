@@ -13,6 +13,7 @@
     "babel-preset-es2015-rollup": "^3.0.0",
     "browserify": "^14.3.0",
     "buffertools": "^2.1.6",
+    "lerna": "^2.0.0-rc.5",
     "live-server": "^1.2.0",
     "nodemon": "^1.11.0",
     "npm-run-all": "^4.0.2",

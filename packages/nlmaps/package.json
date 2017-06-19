@@ -17,7 +17,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+ssh://git@gitlab.com/wm2017/nlmaps.git"
+    "url": "git+ssh://git@github.com:hpfast/nlmaps.git"
   },
   "files": [
     "README.md"
@@ -37,7 +37,7 @@
     "tape": "^4.6.3"
   },
   "bugs": {
-    "url": "https://gitlab.com/wm2017/nlmaps/issues"
+    "url": "https://github.com:hpfast/nlmaps/issues"
   },
-  "homepage": "https://gitlab.com/wm2017/nlmaps#README"
+  "homepage": "https://github.com:hpfast/nlmaps/README"
 }

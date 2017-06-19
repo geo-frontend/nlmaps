@@ -6,12 +6,14 @@ import commonjs from '../../../node_modules/rollup-plugin-commonjs/dist/rollup-p
 import replace from '../../../node_modules/rollup-plugin-replace/dist/rollup-plugin-replace.es.js';
 import uglify from '../../../node_modules/rollup-plugin-uglify/dist/rollup-plugin-uglify.es.js';
 
+
 export default config => {
   return {
     entry: 'src/index.js',
     format: config.format,
     moduleName: 'nlmaps',
     dest: config.dest,
+    external: config.external,
     plugins: [
       commonjs(),
       resolve({

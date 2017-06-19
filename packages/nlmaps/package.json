@@ -6,7 +6,7 @@
   "module": "build/nlmaps.es.js",
   "scripts": {
     "test": "node test/test.js",
-    "build": "rollup -c config/rollup.cjs.js && BROWSER=true rollup -c config/rollup.iife.js && cp build/nlmaps.iife.js ../../dist/",
+    "build": "rollup -c config/rollup.es.js  && rollup -c config/rollup.cjs.js && BROWSER=true rollup -c config/rollup.iife.js && cp build/nlmaps.iife.js ../../dist/",
     "watch-test": "nodemon --watch test --watch build --exec 'npm run test'",
     "watch-code": "nodemon --watch src --exec npm run build",
     "watch-all": "npm-run-all --parallel watch-code watch-test",
@@ -31,6 +31,11 @@
   ],
   "author": "Hans Fast",
   "license": "ISC",
+  "dependencies": {
+    "nlmaps-leaflet": "^1.0.0-0",
+    "nlmaps-googlemaps": "^1.0.0-0",
+    "nlmaps-openlayers": "^1.0.0-0"
+  },
   "devDependencies": {
     "rollup-plugin-node-builtins": "^2.1.2",
     "rollup-plugin-node-globals": "^1.1.0",

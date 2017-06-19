@@ -10,6 +10,7 @@ Automatically configure BRT Achtergrond map layers in Leaflet, Google Maps and O
 * [API Documentation](#api-documentation)
 * [Advanced Usage](#advanced-usage)
 * [Raw Tile URLS](#raw-tile-urls)
+* [Developing](#developing)
 
 ## What it's for
 
@@ -177,3 +178,11 @@ For BRT-Achtergrondkaart series:
 For aerial imagery:
 
     https://geodata.nationaalgeoregister.nl/luchtfoto/rgb/wmts/1.0.0/2016_ortho25/EPSG:3857/{z}/{x}/{y}.png
+
+## Developing
+Lerna is used for automating version bumping and stuff. But because of some seeming subtleties of Rollup's interaction with Lerna or NPM, there is a different build script. Use the following procedure to publish the packages:
+
+    node build-all.js #can't use npm run or lerna run because rollup can't handle non-externalized dependencies when lerna is symlinking them.
+    lerna exec npm -- install #I think, to install updated package versions if other packages have changed?
+    lerna publish   #choose version numbers for each changed package
+    git push

@@ -38,9 +38,9 @@ You need _one_ of Leaflet, Google Maps, or OpenLayers available in your webpage.
 * [OpenLayers](http://openlayers.org/en/latest/doc/quickstart.html)
 * [Google Maps](https://developers.google.com/maps/documentation/javascript/)
 
-Finally, you will need the `nlmaps` library itself.
+Finally, you will need the `nlmaps` library itself, which you can download from Github [here](https://github.com/hpfast/nlmaps/releases/latest). Download and extract the source code and select the file `nlmaps.iife.js` from the `dist` directory. Include it on your webpage like this:
 
-    <script src="url_of_nlmaps.min.js"></script>
+    <script src="url_of_nlmaps.iife.js"></script>
 
 ### NodeJS
 
@@ -49,7 +49,7 @@ Finally, you will need the `nlmaps` library itself.
     //CommonJS
     let nlmaps = require('nlmaps');
     
-    //ES2015+ Modules
+    //ES2015 Modules
     import nlmaps from 'nlmaps';
 
 Leaflet, Google Maps, or OpenLayers will also need to be available in your final web browser scope.
@@ -151,7 +151,7 @@ If you want to save as many bytes as possible, you can also include the sub-modu
 
 **Web browser:**
 
-download the appropriate `nlmaps-<maplib>.min.js` from [here](https://gitlab.com/wm2017/nlmaps/blob/master/dist/nlmaps-leaflet.iife.js) (select the appropriate file and click on the 'download raw' button from the top right section above the file). When you include the script in your web page, you will have a `bgLayer()` function available which works with the respective map library.
+download the appropriate `nlmaps-<maplib>.min.js` from [here](https://github.com/hpfast/nlmaps/releases/latest) (Download and extract the source code and select the appropriate file from the `dist` directory). When you include the script in your web page, you will have a `bgLayer()` function available which works with the respective map library.
 
 **NodeJS:**
 

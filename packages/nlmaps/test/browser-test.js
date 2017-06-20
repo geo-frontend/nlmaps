@@ -38,4 +38,3 @@ test('nlmaps.createMap configures googlemaps if its the only one defined',functi
   L = Lbk; ol = olbk;
   t.end();
 });
-

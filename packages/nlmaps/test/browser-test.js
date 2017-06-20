@@ -38,3 +38,7 @@ test('nlmaps.createMap configures googlemaps if its the only one defined',functi
   L = Lbk; ol = olbk;
   t.end();
 });
+test('nlmaps.createMap configures leaflet if more than one lib is defined', function(t) {;
+  t.end();
+
+});

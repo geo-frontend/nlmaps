@@ -287,7 +287,6 @@ if (typeof L !== 'undefined' && (typeof L === 'undefined' ? 'undefined' : _typeo
       var opts = L.Util.extend({}, options, {
         'minZoom': provider.minZoom,
         'maxZoom': provider.maxZoom,
-        'subdomains': provider.subdomains,
         'scheme': 'xyz',
         'attribution': provider.attribution,
         sa_id: name

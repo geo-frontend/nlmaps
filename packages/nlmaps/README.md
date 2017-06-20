@@ -14,6 +14,6 @@ or if you already have a map, you can use the library-specific function to creat
     layer.addTo(map);
 
 
-## Documentation
+##  Documentation
 
 See the top-level readme https://github.com/nlmaps/nlmaps for full documentation.

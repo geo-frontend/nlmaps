@@ -8,7 +8,6 @@ L.NlmapsBgLayer = L.TileLayer.extend({
     const opts = L.Util.extend({}, options, {
       'minZoom':      provider.minZoom,
       'maxZoom':      provider.maxZoom,
-      'subdomains':   provider.subdomains,
       'scheme':       'xyz',
       'attribution':  provider.attribution,
       sa_id:          name

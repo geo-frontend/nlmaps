@@ -187,4 +187,4 @@ Lerna is used for automating version bumping and stuff. But because of some seem
     lerna publish   #choose version numbers for each changed package
     git push
 
-Then go to the release page and annotate the latest release for the 'nlmaps' package.
+Then go to the release page and annotate the latest release for the 'nlmaps' package. Annotating the release seems to make it a 'real' release and it gets the 'latest' tag.

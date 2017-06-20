@@ -1,6 +1,6 @@
 {
   "name": "nlmaps-openlayers",
-  "version": "1.0.0-0.2",
+  "version": "1.0.0-0.3",
   "description": "",
   "main": "build/nlmaps-openlayers.cjs.js",
   "module": "build/nlmaps-openlayers.es.js",
@@ -31,8 +31,6 @@
     "tape": "^4.6.3"
   },
   "dependencies": {
-    "leaflet": "^1.0.3",
-    "leaflet-headless": "^0.2.5",
     "openlayers": "^4.1.1"
   }
 }

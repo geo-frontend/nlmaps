@@ -142,7 +142,7 @@ To comply with Google's [terms of service](https://developers.google.com/maps/te
 
     });
 
-**Attribution:** Leaflet and OpenLayers both automatically create an attribution control if you supply an `attribution` option to the layer (which `nlmaps` does.) With Google we have to create it ourselves; see [here]() for an example.
+**Attribution:** Leaflet and OpenLayers both automatically create an attribution control if you supply an `attribution` option to the layer (which `nlmaps` does.) With Google we have to create it ourselves; see [here](examples/googlemaps-attribution.js) for an example.
 
 
 ### Include only your library-specific `bgLayer` function

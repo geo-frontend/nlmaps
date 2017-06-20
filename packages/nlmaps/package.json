@@ -1,6 +1,6 @@
 {
   "name": "nlmaps",
-  "version": "1.0.0-0.7",
+  "version": "1.0.0-0.8",
   "description": "easily add PDOK sources to common Javascript mapping libaries",
   "main": "build/nlmaps.cjs.js",
   "module": "build/nlmaps.es.js",
@@ -30,7 +30,7 @@
   "license": "ISC",
   "dependencies": {
     "nlmaps-googlemaps": "^1.0.0-0.2",
-    "nlmaps-leaflet": "^1.0.0-0.3",
+    "nlmaps-leaflet": "^1.0.0-0.4",
     "nlmaps-openlayers": "^1.0.0-0.3"
   },
   "devDependencies": {

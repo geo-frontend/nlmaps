@@ -186,3 +186,5 @@ Lerna is used for automating version bumping and stuff. But because of some seem
     lerna exec npm -- install #I think, to install updated package versions if other packages have changed?
     lerna publish   #choose version numbers for each changed package
     git push
+
+Then go to the release page and annotate the latest release for the 'nlmaps' package.

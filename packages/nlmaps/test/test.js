@@ -1,4 +1,4 @@
-let test = require('../../node_modules/tap').test;
+let test = require('../../../node_modules/tap').test;
 
 
 //makeMap should be default?

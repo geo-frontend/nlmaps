@@ -1,27 +1,28 @@
-# NLMAPS
+# NL Maps
 
-Automatically configure BRT Achtergrond map layers in Leaflet, Google Maps and OpenLayers. https://nlmaps.nl
+Automatically configure BRT-Achtergrond map layers in [Leaflet](http://leafletjs.com/), [Google Maps](https://developers.google.com/maps/documentation/javascript/), [Mapbox](https://www.mapbox.com/mapbox.js/), or [OpenLayers](http://openlayers.org/).
 
 **Table of Contents**
 
 * [What it's for](#what-its-for)
 * [Usage example](#usage-example)
 * [Getting set up](#getting-set-up)
-* [API Documentation](#api-documentation)
-* [Advanced Usage](#advanced-usage)
-* [Raw Tile URLS](#raw-tile-urls)
+* [API documentation](#api-documentation)
+* [Advanced usage](#advanced-usage)
+* [Raw tile URLs](#raw-tile-urls)
 * [Developing](#developing)
 
 ## What it's for
 
-the `nlmaps` libary allows you to create layers for Leaflet, Google Maps or OpenLayers pre-configured to use the BRT Achtergrondkaart layers. So you don't need to figure out the tile urls yourself. To make it even easier, it can automatically detect which map library you're using and create a map with your chosen layer already loaded.
+The `nlmaps` JavaScript libary allows you to create layers for Leaflet, Google Maps, Mapbox, or OpenLayers pre-configured to use the BRT-Achtergrondkaart layers. You don't need to figure out the tile URLs yourself. To make it even easier, it automatically detect which map library you're using and creates a map with your chosen layer already loaded.
 
 ## Usage example
-    let map = nlmaps.createMap({style: 'grijs', target: 'mapdiv'});
 
-Available styles:
+    let map = nlmaps.createMap({style: 'grijs', target: 'nlmaps-holder'});
 
-* `standaard`: the standard BRT Achtergrondkaart in color
+Available map styles:
+
+* `standaard`: the default BRT-Achtergrondkaart in color
 * `pastel`: in pastel tints
 * `grijs`: in very low saturation
 * `luchtfoto`: aerial imagery
@@ -29,18 +30,21 @@ Available styles:
 ## Getting set up
 
 ### Wizard
-The nlmaps website has a [wizard](https://nlmaps.nl/#wizard) that makes it super easy to get started with your choice of map library and map style. It gives you a complete html example that shows you how to include the Javascript and CSS to get a working map. It is recommended that you refer to the wizard output even if you are doing things manually.
+
+The [NL Maps wizard](https://nlmaps.nl/#wizard) makes it super easy to get started with your choice of map library and map style. It gives you a code example that shows you how to include the HTML and JavaScript code to get a working map. It is recommended that you refer to the wizard output even if you are doing things manually.
 
 ### Manual browser configuration
-You need _one_ of Leaflet, Google Maps, or OpenLayers available in your webpage. `nlmaps` autodetects which one is present, and currently considers it an error if more than one is present. For further information on using the respective libraries, refer to their documentation:
+
+You need _one_ of Leaflet, Google Maps, Mapbox, or OpenLayers available in your web page. `nlmaps` autodetects which one is present (and currently considers it an error if more than one is present). For further information on using the respective libraries, refer to their documentation:
 
 * [Leaflet](https://leafletjs.com/examples.html)
-* [OpenLayers](http://openlayers.org/en/latest/doc/quickstart.html)
 * [Google Maps](https://developers.google.com/maps/documentation/javascript/)
+* [Mapbox](https://www.mapbox.com/mapbox.js/example/)
+* [OpenLayers](http://openlayers.org/en/latest/doc/quickstart.html)
 
-Finally, you will need the `nlmaps` library itself.
+Finally, you will need the `nlmaps` library itself, which you can download from [Github](https://github.com/kadaster/nlmaps/releases/latest). Download and extract the source code and select the file `nlmaps.iife.js` from the `dist` directory. Include it on your web page like this:
 
-    <script src="url_of_nlmaps.min.js"></script>
+    <script src="url_of_nlmaps.iife.js"></script>
 
 ### NodeJS
 
@@ -52,16 +56,16 @@ Finally, you will need the `nlmaps` library itself.
     //ES2015+ Modules
     import nlmaps from 'nlmaps';
 
-Leaflet, Google Maps, or OpenLayers will also need to be available in your final web browser scope.
-   
-    
-## API Documentation
+Leaflet, Google Maps, Mapbox, or OpenLayers will also need to be available in your final web browser scope.
+
+## API documentation
 
 ### `nlmaps.createMap(options<object>)`
-Creates a map using Leaflet, OpenLayers or Google Maps, with a given BRT Achtergrondkaart layer already added as a background layer. Configured with an options object with the following properties:
+
+Creates a map using Leaflet, Google Maps, Mapbox, or OpenLayers with a given BRT-Achtergrondkaart layer already added as a background layer. Configured with an options object with the following properties:
 
 * style: _string_ (optional). one of `'standaard'`, `'pastel'`, '`grijs'` or `'luchtfoto'`, default `'standaard'`.
-* target: _string_ (required). ID of the div in which to create the map.
+* target: _string_ (required). id of the `div` in which to create the map.
 * center: _object_ (optional). object with latitude and longitude properties for setting the initial viewpoint. Defaults to a position near the centre of the Netherlands.
 * zoom: _number_ (optional). Zoom level at which to initialize the viewpoint. Defaults to `8`.
 
@@ -71,7 +75,7 @@ returns a `map` object.
 
     const opts = {
       style: 'grijs',
-      target: 'mapdiv',
+      target: 'nlmaps-holder',
       center: {
         latitude: 5.4534,
         longitude: 52.3112
@@ -81,7 +85,8 @@ returns a `map` object.
     let map = nlmaps.createMap(opts);
 
 ### `nlmaps.<maplib>.bgLayer([style<string>])`
-Where `<maplib>` is one of `leaflet`, `openlayers` or `googlemaps`, create a layer for the given library configured to fetch tiles for `style` tilesource, or if `style` is omitted, for the 'standaard' tilesource.
+
+Where `<maplib>` is one of `leaflet`, `openlayers` or `googlemaps`, create a layer for the given library configured to fetch tiles for `style` tile source, or if `style` is omitted, for the 'standaard' tilesource. In order to use the `nlmaps` library in conjunction with Mapbox, select `leaflet`.
 
 Arguments:
 
@@ -96,6 +101,7 @@ Returns a `layer` object.
 
 
 ## Advanced usage
+
 If you're already using a mapping library in your project, you can use the library-specific `bgLayer()` function to create a layer object which you can add to your existing map. All you'll need to do first is create a map and set the view. This is what the `createMap()` function does under the hood, with some default values.
 
 ### Leaflet
@@ -116,6 +122,7 @@ If you're already using a mapping library in your project, you can use the libra
     map.addLayer(layer);
 
 ### Google Maps
+
 Google Maps requires a bit more code, since we have to add our layer to the `mapTypes` list manually. 
 
     let map = new google.maps.Map(document.getElementById('map'), {
@@ -130,7 +137,7 @@ Google Maps requires a bit more code, since we have to add our layer to the `map
     //set it as active layer
     map.setMapTypeId(mylayer.name);
     
-To comply with Google's [terms of service](https://developers.google.com/maps/terms?hl=en#10-license-restrictions) we will also add a layer switcher control so the standard map is available.
+To comply with Google Maps JavaScript API [Terms of Service](https://developers.google.com/maps/terms?hl=en#10-license-restrictions) we will also add a layer switcher control so the standard map is available.
 
     //add control for switching between layers
     let mapTypeIds = [mylayer.name, 'roadmap']
@@ -139,19 +146,17 @@ To comply with Google's [terms of service](https://developers.google.com/maps/te
       mapTypeControlOptions: {
         mapTypeIds: mapTypeIds
       }
-
     });
 
-**Attribution:** Leaflet and OpenLayers both automatically create an attribution control if you supply an `attribution` option to the layer (which `nlmaps` does.) With Google we have to create it ourselves; see [here]() for an example.
-
+**Attribution:** Leaflet, Mapbox, and OpenLayers both automatically create an attribution control if you supply an `attribution` option to the layer (which `nlmaps` does). With Google Maps we have to create it ourselves; see the [examples](examples/googlemaps-attribution.js) folder for some inspiration.
 
 ### Include only your library-specific `bgLayer` function
 
-If you want to save as many bytes as possible, you can also include the sub-module for your map library instead of the whole `nlmaps` package. Each of these modules provides a `bgLayer()` function which will return a layer for the corresponding map library.
+If you want to save as many bytes as possible, simply include the sub-module for your map library instead of the whole `nlmaps` package. Each of these modules provides a `bgLayer()` function which will return a layer for the corresponding map library.
 
 **Web browser:**
 
-download the appropriate `nlmaps-<maplib>.min.js` from [here](https://gitlab.com/wm2017/nlmaps/blob/master/dist/nlmaps-leaflet.iife.js) (select the appropriate file and click on the 'download raw' button from the top right section above the file). When you include the script in your web page, you will have a `bgLayer()` function available which works with the respective map library.
+Download the appropriate `nlmaps-<maplib>.min.js` [release](https://github.com/kadaster/nlmaps/releases/latest) Download and extract the source code and select the appropriate file from the `dist` directory. Upon including the script in your web page, you will have a `bgLayer()` function available which works with the respective map library. In order to use the `nlmaps` library in conjunction with Mapbox, select `leaflet`.
 
 **NodeJS:**
 
@@ -166,10 +171,12 @@ download the appropriate `nlmaps-<maplib>.min.js` from [here](https://gitlab.com
 this `bgLayer()` function can subsequently be used in the same way as `nlmaps.maplib.bgLayer()` from the parent package.
 
 ### Removing or further manipulating the map or layer
+
 If you want to remove your map object or layer, you can just use the standard method provided by your library. The objects returned from `createMap()` and `bgLayer()` are just standard `map` and `layer` objects for the appropriate libraries. For example, Leaflet has a `map.remove()` function which destroys the map and clears all event listeners.
 
-## Raw tile URLS
-The tile URLS which `nlmaps` configures for you follow the templates:
+## Raw tile URLs
+
+The tile URLs which `nlmaps` configures for you follow these templates:
 
 For BRT-Achtergrondkaart series:
 
@@ -180,9 +187,12 @@ For aerial imagery:
     https://geodata.nationaalgeoregister.nl/luchtfoto/rgb/wmts/1.0.0/2016_ortho25/EPSG:3857/{z}/{x}/{y}.png
 
 ## Developing
-Lerna is used for automating version bumping and stuff. But because of some seeming subtleties of Rollup's interaction with Lerna or NPM, there is a different build script. Use the following procedure to publish the packages:
 
-    node build-all.js #can't use npm run or lerna run because rollup can't handle non-externalized dependencies when lerna is symlinking them.
-    lerna exec npm -- install #I think, to install updated package versions if other packages have changed?
-    lerna publish   #choose version numbers for each changed package
-    git push
+[Lerna](https://lernajs.io/) is used for optimise the workflow around managing multi-package JavaScript projects with git and npm. Because of some seeming subtleties of Rollup's interaction with Lerna or NPM, there is a different build script. Use the following procedure to publish the packages:
+
+1. `node build-all.js` can't use npm run or lerna run because rollup can't handle non-externalized dependencies when lerna is symlinking them.
+2. `lerna exec npm -- install` I think, to install updated package versions if other packages have changed?
+3. `lerna publish`   choose version numbers for each changed package
+4. `git push`
+
+Then go to the release page and annotate the latest release for the 'nlmaps' package. Annotating the release seems to make it a 'real' release and it gets the 'latest' tag.

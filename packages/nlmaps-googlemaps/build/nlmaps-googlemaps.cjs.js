@@ -73,7 +73,7 @@ function getProvider(name) {
 
     return provider;
   } else {
-    throw 'You asked for a style which does not exist! Available styles: ' + Object.keys(PROVIDERS).join(', ');
+    console.error('NL Maps error: You asked for a style which does not exist! Available styles: ' + Object.keys(PROVIDERS).join(', '));
   }
 }
 

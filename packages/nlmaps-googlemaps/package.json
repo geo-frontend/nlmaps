@@ -1,6 +1,6 @@
 {
   "name": "nlmaps-googlemaps",
-  "version": "1.0.0-0.3",
+  "version": "1.0.0-0.4",
   "description": "",
   "main": "build/nlmaps-googlemaps.cjs.js",
   "module": "build/nlmaps-googlemaps.es.js",

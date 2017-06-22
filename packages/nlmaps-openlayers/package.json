@@ -1,6 +1,6 @@
 {
   "name": "nlmaps-openlayers",
-  "version": "1.0.0-0.3",
+  "version": "1.0.0-0.4",
   "description": "",
   "main": "build/nlmaps-openlayers.cjs.js",
   "module": "build/nlmaps-openlayers.es.js",
@@ -26,9 +26,9 @@
   },
   "homepage": "https://github.com:hpfast/nlmaps#README",
   "devDependencies": {
+    "openlayers": "^4.1.1",
     "rollup-plugin-node-builtins": "^2.1.2",
     "rollup-plugin-node-globals": "^1.1.0",
-    "openlayers": "^4.1.1",
     "tape": "^4.6.3"
   }
 }

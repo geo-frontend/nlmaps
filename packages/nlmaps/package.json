@@ -1,7 +1,9 @@
 {
   "name": "nlmaps",
-  "version": "1.0.0-0.8",
-  "engines": { "node" : ">=6.0.0 <=6.11" } ,
+  "version": "1.0.0-0.9",
+  "engines": {
+    "node": ">=6.0.0 <=6.11"
+  },
   "description": "easily add PDOK sources to common Javascript mapping libaries",
   "main": "build/nlmaps.cjs.js",
   "module": "build/nlmaps.es.js",
@@ -30,9 +32,9 @@
   "author": "Hans Fast <hans@webmapper.net>",
   "license": "MIT",
   "dependencies": {
-    "nlmaps-googlemaps": "^1.0.0-0.2",
-    "nlmaps-leaflet": "^1.0.0-0.4",
-    "nlmaps-openlayers": "^1.0.0-0.3"
+    "nlmaps-googlemaps": "^1.0.0-0.3",
+    "nlmaps-leaflet": "^1.0.0-0.5",
+    "nlmaps-openlayers": "^1.0.0-0.4"
   },
   "devDependencies": {
     "tape": "^4.6.3"

@@ -14,7 +14,7 @@ Automatically configure BRT-Achtergrond map layers in [Leaflet](http://leafletjs
 
 ## What it's for
 
-The `nlmaps` JavaScript libary allows you to create layers for Leaflet, Google Maps, Mapbox, or OpenLayers pre-configured to use the BRT-Achtergrondkaart layers. You don't need to figure out the tile URLs yourself. To make it even easier, it automatically detect which map library you're using and creates a map with your chosen layer already loaded.
+The `nlmaps` JavaScript libary allows you to create layers for Leaflet, Google Maps, Mapbox, or OpenLayers pre-configured to use the BRT Achtergrondkaart layers. You don't need to figure out the tile URLs yourself. To make it even easier, it automatically detect which map library you're using and creates a map pre-loaded with one of the BRT Achtergrondkaart layers.
 
 ## Usage example
 
@@ -37,16 +37,17 @@ The [NL Maps wizard](https://nlmaps.nl/#wizard) makes it super easy to get start
 
 You need _one_ of Leaflet, Google Maps, Mapbox, or OpenLayers available in your web page. `nlmaps` autodetects which one is present (and currently considers it an error if more than one is present). For further information on using the respective libraries, refer to their documentation:
 
-* [Leaflet](https://leafletjs.com/examples.html)
+* [Leaflet](http://leafletjs.com/examples.html)
 * [Google Maps](https://developers.google.com/maps/documentation/javascript/)
-* [Mapbox](https://www.mapbox.com/mapbox.js/example/)
+* [Mapbox](https://www.mapbox.com/mapbox.js/api/v3.1.1/)
 * [OpenLayers](http://openlayers.org/en/latest/doc/quickstart.html)
 
-Finally, you will need the `nlmaps` library itself, which you can download from [Github](https://github.com/kadaster/nlmaps/releases/latest). Download and extract the source code and select the file `nlmaps.iife.js` from the `dist` directory. Include it on your web page like this:
+Finally, you will need the `nlmaps` library itself, which you can download from the [latest release on Github](https://github.com/kadaster/nlmaps/releases/latest). Download and extract the source code and select the file `dist/nlmaps.iife.js` Include it on your web page like this:
 
     <script src="url_of_nlmaps.iife.js"></script>
 
 ### NodeJS
+`nlmaps` has been developed against NodeJS version 6.x.
 
     npm install -S nlmaps
     
@@ -56,7 +57,9 @@ Finally, you will need the `nlmaps` library itself, which you can download from 
     //ES2015 Modules
     import nlmaps from 'nlmaps';
 
-Leaflet, Google Maps, Mapbox, or OpenLayers will also need to be available in your final web browser scope.
+Leaflet, Google Maps, Mapbox, or OpenLayers will also need to be available in your final web browser scope. One way you can do this is to install a package that wraps your map library for Node; in that case `npm install -S` it (for example, [leaflet-headless](https://www.npmjs.com/package/leaflet-headless), [google-maps](https://www.npmjs.com/package/google-maps) or [openlayers](https://www.npmjs.com/package/openlayers)). You can also include it as a script in the html file that loads your final app output.
+
+**Note on using Mapbox:** if you are using the Mapbox library, follow the instructions here for Leaflet. Since Mapbox includes the Leaflet library it will work the same.
 
 ## API documentation
 
@@ -77,8 +80,8 @@ returns a `map` object.
       style: 'grijs',
       target: 'nlmaps-holder',
       center: {
-        latitude: 5.4534,
-        longitude: 52.3112
+        longitude: 5.4534,
+        latitude: 52.3112
       },
       zoom: 15
     };

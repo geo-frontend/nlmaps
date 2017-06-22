@@ -73,7 +73,7 @@ function getProvider(name) {
 
     return provider;
   } else {
-    throw 'You asked for a style which does not exist! Available styles: ' + PROVIDERS.keys().join(', ');
+    throw 'You asked for a style which does not exist! Available styles: ' + Object.keys(PROVIDERS).join(', ');
   }
 }
 

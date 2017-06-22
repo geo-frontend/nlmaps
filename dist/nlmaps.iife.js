@@ -272,7 +272,7 @@ function getProvider(name) {
 
     return provider;
   } else {
-    throw 'You asked for a style which does not exist! Available styles: ' + PROVIDERS.keys().join(', ');
+    throw 'You asked for a style which does not exist! Available styles: ' + Object.keys(PROVIDERS).join(', ');
   }
 }
 
@@ -544,7 +544,7 @@ function getProvider$1(name) {
 
     return provider;
   } else {
-    throw 'You asked for a style which does not exist! Available styles: ' + PROVIDERS$1.keys().join(', ');
+    throw 'You asked for a style which does not exist! Available styles: ' + Object.keys(PROVIDERS$1).join(', ');
   }
 }
 
@@ -803,7 +803,7 @@ function getProvider$2(name) {
 
     return provider;
   } else {
-    throw 'You asked for a style which does not exist! Available styles: ' + PROVIDERS$2.keys().join(', ');
+    throw 'You asked for a style which does not exist! Available styles: ' + Object.keys(PROVIDERS$2).join(', ');
   }
 }
 

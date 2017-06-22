@@ -303,9 +303,13 @@ nlmaps.createMap = function () {
 
   var opts = Object.assign({}, mapdefaults, useropts);
   var lib = testWhichLib();
-  if (lib === 'too many libs' || lib === 'too few libs') {
-    throw { message: 'one and only one map library can be defined. Please Refer to the documentation to see which map libraries are supported.' };
-    return;
+  try {
+    if (lib === 'too many libs' || lib === 'too few libs') {
+      throw { message: 'one and only one map library can be defined. Please Refer to the documentation to see which map libraries are supported.' };
+      return;
+    }
+  } catch (e) {
+    console.error(e.message);
   }
   var map = initMap(lib, opts);
   var layer = nlmaps[lib].bgLayer(opts.style);

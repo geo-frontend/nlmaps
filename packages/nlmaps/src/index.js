@@ -105,9 +105,14 @@ function addLayerToMap(lib, layer, map) {
 nlmaps.createMap = function(useropts = {}) {
   const opts = Object.assign({}, mapdefaults, useropts);
   let lib = testWhichLib();
+  try {
   if (lib === 'too many libs' || lib === 'too few libs') {
     throw({message:'one and only one map library can be defined. Please Refer to the documentation to see which map libraries are supported.'});
     return;
+  }
+  } catch (e) {
+    console.error(e.message)
+  
   }
   let map = initMap(lib, opts);
   let layer = nlmaps[lib].bgLayer(opts.style);

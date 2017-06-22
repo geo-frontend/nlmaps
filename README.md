@@ -194,7 +194,8 @@ For aerial imagery:
 [Lerna](https://lernajs.io/) is used for optimising the workflow around managing multi-package JavaScript projects with git and npm. Because of some seeming subtleties of Rollup's interaction with Lerna or NPM, there is a different build script. Use the following procedure to publish the packages:
 
 1. `node build-all.js` can't use npm run or lerna run because rollup can't handle non-externalized dependencies when lerna is symlinking them.
-2. `lerna exec npm -- install` I think, to install updated package versions if other packages have changed?
-3. `lerna publish`   choose version numbers for each changed package
+2. `lerna exec npm -- install` If you need to update dependencies
+3. git `add` and `commit`
+4. `lerna publish`   choose version numbers for each changed package
 
-Then go to the release page and annotate the latest release for the 'nlmaps' package. Annotating the release seems to make it a 'real' release and it gets the 'latest' tag.
+Then go to the release page and annotate the latest release for the 'nlmaps' package.

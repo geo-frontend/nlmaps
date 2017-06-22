@@ -17,14 +17,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+ssh://git@github.com:hpfast/nlmaps.git"
+    "url": "git+ssh://git@github.com:kadaster/nlmaps.git"
   },
   "author": "Hans Fast",
-  "license": "ISC",
+  "license": "MIT",
   "bugs": {
-    "url": "https://github.com:hpfast/nlmaps/issues"
+    "url": "https://github.com:kadaster/nlmaps/issues"
   },
-  "homepage": "https://github.com:hpfast/nlmaps#README",
+  "homepage": "https://github.com:kadaster/nlmaps#README",
   "devDependencies": {
     "leaflet": "^1.0.3",
     "leaflet-headless": "^0.2.5",

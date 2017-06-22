@@ -20,7 +20,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+ssh://git@github.com:hpfast/nlmaps.git"
+    "url": "git+ssh://git@github.com:kadaster/nlmaps.git"
   },
   "keywords": [
     "Leaflet",
@@ -40,7 +40,7 @@
     "tape": "^4.6.3"
   },
   "bugs": {
-    "url": "https://github.com:hpfast/nlmaps/issues"
+    "url": "https://github.com:kadaster/nlmaps/issues"
   },
-  "homepage": "https://github.com:hpfast/nlmaps/README"
+  "homepage": "https://github.com:kadaster/nlmaps/README"
 }

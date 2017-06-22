@@ -53,10 +53,10 @@ function makeProvider(name, format, minZoom, maxZoom) {
 }
 
 const PROVIDERS = {
-  "standaard": makeProvider("standaard", "png", 6, 20),
-  "pastel": makeProvider("pastel", "png", 6, 20),
-  "grijs": makeProvider("grijs", "png", 6, 20),
-  "luchtfoto": makeProvider("luchtfoto", "png", 6, 20)
+  "standaard": makeProvider("standaard", "png", 6, 19),
+  "pastel": makeProvider("pastel", "png", 6, 19),
+  "grijs": makeProvider("grijs", "png", 6, 19),
+  "luchtfoto": makeProvider("luchtfoto", "jpeg", 6, 19)
 };
 
 /*
@@ -72,7 +72,7 @@ function getProvider(name) {
 
     return provider;
   } else {
-    throw 'No such provider (' + name + ')';
+    throw 'You asked for a style which does not exist! Available styles: ' + PROVIDERS.keys().join(', ');
   }
 }
 

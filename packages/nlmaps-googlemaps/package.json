@@ -28,11 +28,7 @@
   "devDependencies": {
     "rollup-plugin-node-builtins": "^2.1.2",
     "rollup-plugin-node-globals": "^1.1.0",
-    "tape": "^4.6.3"
-  },
-  "dependencies": {
     "google-maps": "^3.2.1",
-    "leaflet": "^1.0.3",
-    "leaflet-headless": "^0.2.5"
+    "tape": "^4.6.3"
   }
 }

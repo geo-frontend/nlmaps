@@ -28,9 +28,7 @@
   "devDependencies": {
     "rollup-plugin-node-builtins": "^2.1.2",
     "rollup-plugin-node-globals": "^1.1.0",
+    "openlayers": "^4.1.1",
     "tape": "^4.6.3"
-  },
-  "dependencies": {
-    "openlayers": "^4.1.1"
   }
 }

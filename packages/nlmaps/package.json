@@ -1,0 +1,46 @@
+{
+  "name": "nlmaps",
+  "version": "1.0.1",
+  "engines": {
+    "node": ">=6.0.0 <=6.11"
+  },
+  "description": "easily add PDOK sources to common Javascript mapping libaries",
+  "main": "build/nlmaps.cjs.js",
+  "module": "build/nlmaps.es.js",
+  "scripts": {
+    "test": "node test/test.js",
+    "build": "rollup -c config/rollup.es.js  && rollup -c config/rollup.cjs.js && BROWSER=true rollup -c config/rollup.iife.js && cp build/nlmaps.iife.js ../../dist/",
+    "watch-test": "nodemon --watch test --watch build --exec 'npm run test'",
+    "watch-code": "nodemon --watch src --exec npm run build",
+    "watch-all": "npm-run-all --parallel watch-code watch-test",
+    "_watch-browser-test": "nodemon --watch test/browser-test.js --watch test/test.html --watch test/greentest.html --exec 'npm run build-browser-test'",
+    "watch-browser-test": "npm-run-all --parallel browser-test _watch-browser-test",
+    "browser-test": "node liveserver.js",
+    "build-browser-test": "rollup -c config/rollup.test.js && cp test/*.html build/"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com:kadaster/nlmaps.git"
+  },
+  "keywords": [
+    "Leaflet",
+    "OpenLayers",
+    "Mapbox.js",
+    "GoogleMaps",
+    "BRT-Achtergrondkaart"
+  ],
+  "author": "Hans Fast <hans@webmapper.net>",
+  "license": "MIT",
+  "dependencies": {
+    "nlmaps-googlemaps": "^1.0.0",
+    "nlmaps-leaflet": "^1.0.0",
+    "nlmaps-openlayers": "^1.0.0"
+  },
+  "devDependencies": {
+    "tape": "^4.6.3"
+  },
+  "bugs": {
+    "url": "https://github.com:kadaster/nlmaps/issues"
+  },
+  "homepage": "https://github.com:kadaster/nlmaps/README"
+}

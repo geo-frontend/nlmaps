@@ -14,7 +14,7 @@ Automatically configure BRT-Achtergrond map layers in [Leaflet](http://leafletjs
 
 ## What it's for
 
-The `nlmaps` JavaScript libary allows you to create layers for Leaflet, Google Maps, Mapbox, or OpenLayers pre-configured to use the BRT Achtergrondkaart layers. You don't need to figure out the tile URLs yourself. To make it even easier, it automatically detect which map library you're using and creates a map pre-loaded with one of the BRT Achtergrondkaart layers.
+The `nlmaps` JavaScript library allows you to create layers for Leaflet, Google Maps, Mapbox, or OpenLayers pre-configured to use the BRT Achtergrondkaart layers. You don't need to figure out the tile URLs yourself. To make it even easier, it automatically detects which map library you're using and creates a map pre-loaded with one of the BRT Achtergrondkaart layers.
 
 ## Usage example
 
@@ -69,7 +69,7 @@ Creates a map using Leaflet, Google Maps, Mapbox, or OpenLayers with a given BRT
 
 * style: _string_ (optional). one of `'standaard'`, `'pastel'`, '`grijs'` or `'luchtfoto'`, default `'standaard'`.
 * target: _string_ (required). id of the `div` in which to create the map.
-* center: _object_ (optional). object with latitude and longitude properties for setting the initial viewpoint. Defaults to a position near the centre of the Netherlands.
+* center: _object_ (optional). object with latitude and longitude properties for setting the initial viewpoint. Defaults to a position near the center of the Netherlands.
 * zoom: _number_ (optional). Zoom level at which to initialize the viewpoint. Defaults to `8`.
 
 returns a `map` object.
@@ -191,7 +191,7 @@ For aerial imagery:
 
 ## Developing
 
-[Lerna](https://lernajs.io/) is used for optimising the workflow around managing multi-package JavaScript projects with git and npm. Because of some seeming subtleties of Rollup's interaction with Lerna or NPM, there is a different build script. Use the following procedure to publish the packages:
+[Lerna](https://lernajs.io/) is used for optimizing the workflow around managing multi-package JavaScript projects with git and npm. Because of some seeming subtleties of Rollup's interaction with Lerna or NPM, there is a different build script. Use the following procedure to publish the packages:
 
 1. `node build-all.js` can't use npm run or lerna run because rollup can't handle non-externalized dependencies when lerna is symlinking them.
 2. `lerna exec npm -- install` If you need to update dependencies

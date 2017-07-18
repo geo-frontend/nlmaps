@@ -1,2 +1,2 @@
-import { bgLayer } from './index.js';
-export default bgLayer;
+import { bgLayer, makeGoogleAttrControl } from './index.js';
+export {bgLayer, makeGoogleAttrControl};

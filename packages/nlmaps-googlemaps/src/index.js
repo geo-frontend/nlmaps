@@ -14,6 +14,7 @@ function bgLayer (name='standaard') {
       maxZoom: provider.maxZoom,
       minZoom: provider.minZoom
     });
+    let layer = new google.maps.ImageMapType(GoogleLayerOpts);
     return layer;
   } else {
     const error = 'google is not defined'; 
@@ -22,6 +23,13 @@ function bgLayer (name='standaard') {
 
 }
 
+//how to get the provider and the map into this scope?
+function makeGoogleAttrControl(attr=verbeterDeKaartStr, map){
+    let attrControlDiv = document.createElement('div');
+    let attrControlText =  attr;
+    let attrControl = new AttributionControl(attrControlDiv, attrControlText);
+    map.controls[google.maps.ControlPosition.BOTTOM_RIGHT].push(attrControl);
+    map.addListener('maptypeid_changed', () => toggleAttrControl(attrControl));
+}
 
-
-export { bgLayer };
+export { bgLayer, makeGoogleAttrControl };

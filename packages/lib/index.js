@@ -10,7 +10,7 @@ const brtstring = 'tiles/service';
 const baseurl = '';
 const servicecrs = '/EPSG:3857';
 const attr = 'Kaartgegevens &copy; <a href="kadaster.nl">Kadaster</a>';
-
+const verbeterDeKaartStr = '<a href="http://www.verbeterdekaart.nl">verbeter de kaart</a>';
 function baseUrl(name) {
   return `https://geodata.nationaalgeoregister.nl/${name === 'luchtfoto' ? lufostring : brtstring}/wmts/`
 
@@ -78,4 +78,4 @@ function getProvider(name) {
 
 //use named export instead of default because we might want
 //more exports from 'lib' in the future
-export { getProvider };
+export { getProvider, verbeterDeKaartStr };

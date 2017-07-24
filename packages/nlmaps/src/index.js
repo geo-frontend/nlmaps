@@ -1,6 +1,7 @@
 import { bgLayer as bgL } from 'nlmaps-leaflet';
 import { bgLayer as bgOL } from 'nlmaps-openlayers';
 import { bgLayer as bgGM } from 'nlmaps-googlemaps';
+import { getProvider} from '../../lib/index.js';
 
 let nlmaps = {
   leaflet: {
@@ -20,7 +21,8 @@ let mapdefaults = {
     latitude: 51.9984,
     longitude: 4.996
   },
-  zoom: 8
+  zoom: 8,
+  attribution: true
 };
 
 
@@ -73,7 +75,7 @@ function initMap(lib, opts){
 };
 
 
-function addGoogleLayer(layer, map) {
+function addGoogleLayer(layer, map, name) {
   let mapTypeIds = [layer.name, 'roadmap']
   map.setOptions({
     mapTypeControl: true,
@@ -85,13 +87,13 @@ function addGoogleLayer(layer, map) {
   map.setMapTypeId(layer.name);
 }
 
-function addLayerToMap(lib, layer, map) {
+function addLayerToMap(lib, layer, map, name) {
   switch (lib) {
     case 'leaflet':
       map.addLayer(layer);
       break;
     case 'googlemaps':
-      addGoogleLayer(layer, map);
+      addGoogleLayer(layer, map, name);
       break;
     case 'openlayers':
       map.addLayer(layer);
@@ -101,6 +103,16 @@ function addLayerToMap(lib, layer, map) {
   
 
 }
+
+//partial application with map added to this
+const partialApply = (fn, mapProxy, name) => {
+  let foo = {
+    map: mapProxy
+  }
+  return function () {
+      return fn.call(foo, name);
+    };
+};
 
 nlmaps.createMap = function(useropts = {}) {
   const opts = Object.assign({}, mapdefaults, useropts);
@@ -115,8 +127,9 @@ nlmaps.createMap = function(useropts = {}) {
   
   }
   let map = initMap(lib, opts);
-  let layer = nlmaps[lib].bgLayer(opts.style);
-  addLayerToMap(lib, layer, map);
+  let addLayer = partialApply(nlmaps[lib].bgLayer, map, opts.style);
+  let layer = addLayer();
+  addLayerToMap(lib, layer, map, opts.style);
   return map;
 };
 

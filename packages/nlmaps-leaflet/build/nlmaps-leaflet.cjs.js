@@ -13,7 +13,6 @@ const lufostring = 'luchtfoto/rgb';
 const brtstring = 'tiles/service';
 const servicecrs = '/EPSG:3857';
 const attr = 'Kaartgegevens &copy; <a href="kadaster.nl">Kadaster</a>';
-
 function baseUrl(name) {
   return `https://geodata.nationaalgeoregister.nl/${name === 'luchtfoto' ? lufostring : brtstring}/wmts/`;
 }

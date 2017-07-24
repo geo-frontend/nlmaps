@@ -4,6 +4,63 @@ var nlmapsLeaflet = require('nlmaps-leaflet');
 var nlmapsOpenlayers = require('nlmaps-openlayers');
 var nlmapsGooglemaps = require('nlmaps-googlemaps');
 
+/*parts copied from maps.stamen.com: https://github.com/stamen/maps.stamen.com/blob/master/js/tile.stamen.js
+ * copyright (c) 2012, Stamen Design
+ * under BSD 3-Clause license: https://github.com/stamen/maps.stamen.com/blob/master/LICENSE
+ */
+//https://geodata.nationaalgeoregister.nl/tiles/service/wmts/
+//https://geodata.nationaalgeoregister.nl/luchtfoto/rgb/wmts/
+
+const lufostring = 'luchtfoto/rgb';
+const brtstring = 'tiles/service';
+const servicecrs = '/EPSG:3857';
+const attr = 'Kaartgegevens &copy; <a href="kadaster.nl">Kadaster</a> | <a href="http://www.verbeterdekaart.nl">verbeter de kaart</a>';
+function baseUrl(name) {
+  return `https://geodata.nationaalgeoregister.nl/${name === 'luchtfoto' ? lufostring : brtstring}/wmts/`;
+}
+
+function mapLayerName(layername) {
+  let name;
+  switch (layername) {
+    case 'standaard':
+      name = 'brtachtergrondkaart';
+      break;
+    case 'grijs':
+      name = 'brtachtergrondkaartgrijs';
+      break;
+    case 'pastel':
+      name = 'brtachtergrondkaartpastel';
+      break;
+    case 'luchtfoto':
+      name = '2016_ortho25';
+      break;
+    default:
+      name = 'brtachtergrondkaart';
+  }
+  return name;
+}
+
+function makeProvider(name, format, minZoom, maxZoom) {
+  const baseurl = baseUrl(name);
+  const urlname = mapLayerName(name);
+  return {
+    "bare_url": [baseurl, urlname, servicecrs].join(""),
+    "url": [baseurl, urlname, servicecrs, "/{z}/{x}/{y}.", format].join(""),
+    "format": format,
+    "minZoom": minZoom,
+    "maxZoom": maxZoom,
+    "attribution": attr,
+    "name": `${name === 'luchtfoto' ? '' : 'NLMaps '} ${name}`
+  };
+}
+
+const PROVIDERS = {
+  "standaard": makeProvider("standaard", "png", 6, 19),
+  "pastel": makeProvider("pastel", "png", 6, 19),
+  "grijs": makeProvider("grijs", "png", 6, 19),
+  "luchtfoto": makeProvider("luchtfoto", "jpeg", 6, 19)
+};
+
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) {
   return typeof obj;
 } : function (obj) {
@@ -222,7 +279,8 @@ var mapdefaults = {
     latitude: 51.9984,
     longitude: 4.996
   },
-  zoom: 8
+  zoom: 8,
+  attribution: true
 };
 
 function testWhichLib() {
@@ -271,7 +329,7 @@ function initMap(lib, opts) {
   return map;
 }
 
-function addGoogleLayer(layer, map) {
+function addGoogleLayer(layer, map, name) {
   var mapTypeIds = [layer.name, 'roadmap'];
   map.setOptions({
     mapTypeControl: true,
@@ -283,13 +341,13 @@ function addGoogleLayer(layer, map) {
   map.setMapTypeId(layer.name);
 }
 
-function addLayerToMap(lib, layer, map) {
+function addLayerToMap(lib, layer, map, name) {
   switch (lib) {
     case 'leaflet':
       map.addLayer(layer);
       break;
     case 'googlemaps':
-      addGoogleLayer(layer, map);
+      addGoogleLayer(layer, map, name);
       break;
     case 'openlayers':
       map.addLayer(layer);
@@ -297,6 +355,16 @@ function addLayerToMap(lib, layer, map) {
 
   }
 }
+
+//partial application with map added to this
+var partialApply = function partialApply(fn, mapProxy, name) {
+  var foo = {
+    map: mapProxy
+  };
+  return function () {
+    return fn.call(foo, name);
+  };
+};
 
 nlmaps.createMap = function () {
   var useropts = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
@@ -312,8 +380,9 @@ nlmaps.createMap = function () {
     console.error(e.message);
   }
   var map = initMap(lib, opts);
-  var layer = nlmaps[lib].bgLayer(opts.style);
-  addLayerToMap(lib, layer, map);
+  var addLayer = partialApply(nlmaps[lib].bgLayer, map, opts.style);
+  var layer = addLayer();
+  addLayerToMap(lib, layer, map, opts.style);
   return map;
 };
 

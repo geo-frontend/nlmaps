@@ -12,8 +12,7 @@ Object.defineProperty(exports, '__esModule', { value: true });
 const lufostring = 'luchtfoto/rgb';
 const brtstring = 'tiles/service';
 const servicecrs = '/EPSG:3857';
-const attr = 'Kaartgegevens &copy; <a href="kadaster.nl">Kadaster</a>';
-
+const attr = 'Kaartgegevens &copy; <a href="kadaster.nl">Kadaster</a> | <a href="http://www.verbeterdekaart.nl">verbeter de kaart</a>';
 function baseUrl(name) {
   return `https://geodata.nationaalgeoregister.nl/${name === 'luchtfoto' ? lufostring : brtstring}/wmts/`;
 }
@@ -277,22 +276,90 @@ var set = function set(object, property, value, receiver) {
   return value;
 };
 
+function AttributionControl(controlDiv, attrControlText) {
+  console.log('this is obviously not side-effect free');
+  if ((typeof google === 'undefined' ? 'undefined' : _typeof(google)) === 'object' && _typeof(google.maps) === 'object') {
+    var controlUI = document.createElement('div');
+    controlUI.style.backgroundColor = '#fff';
+    controlUI.style.opacity = '0.7';
+    controlUI.style.border = '2px solid #fff';
+    controlUI.style.cursor = 'pointer';
+    controlDiv.appendChild(controlUI);
+
+    // Set CSS for the control interior.
+    var controlText = document.createElement('div');
+    controlText.style.color = 'rgb(25,25,25)';
+    controlText.style.fontFamily = 'Roboto,Arial,sans-serif';
+    controlText.style.fontSize = '10px';
+    controlText.innerHTML = attrControlText;
+    controlUI.appendChild(controlText);
+
+    controlDiv.index = 1;
+    return controlDiv;
+  } else {
+    var error = 'google is not defined';
+    throw error;
+  }
+}
+
+function indexOfMapControl(controlArray, control) {
+  return controlArray.getArray().indexOf(control);
+}
+
+function toggleAttrControl(attrControl, map) {
+  var currentMapId = map.getMapTypeId();
+  var controlArray = map.controls[google.maps.ControlPosition.BOTTOM_RIGHT];
+  var indexToRemove = indexOfMapControl(controlArray, attrControl);
+  if (currentMapId === 'roadmap' || currentMapId === 'hybrid' || currentMapId === 'sattelite') {
+    if (indexToRemove > -1) {
+      controlArray.removeAt(indexToRemove);
+    }
+  } else {
+    if (indexToRemove === -1) {
+      controlArray.push(attrControl);
+    }
+  }
+}
+
+function makeGoogleAttrControl() {
+  var map = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : map;
+  var attr = arguments[1];
+
+  var attrControlDiv = document.createElement('div');
+  var attrControlText = attr;
+  var attrControl = new AttributionControl(attrControlDiv, attrControlText);
+  map.controls[google.maps.ControlPosition.BOTTOM_RIGHT].push(attrControl);
+  map.addListener('maptypeid_changed', function () {
+    return toggleAttrControl(attrControl, map);
+  });
+}
+
+function makeGoogleLayerOpts(provider) {
+  return {
+    getTileUrl: function getTileUrl(coord, zoom) {
+      var url = provider.bare_url + '/' + zoom + '/' + coord.x + '/' + coord.y + '.png';
+      return url;
+    },
+    tileSize: new google.maps.Size(256, 256),
+    isPng: true,
+    name: provider.name,
+    maxZoom: provider.maxZoom,
+    minZoom: provider.minZoom
+  };
+}
+
 function bgLayer() {
   var name = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 'standaard';
 
   if ((typeof google === 'undefined' ? 'undefined' : _typeof(google)) === 'object' && _typeof(google.maps) === 'object') {
     var provider = getProvider(name);
-    var layer = new google.maps.ImageMapType({
-      getTileUrl: function getTileUrl(coord, zoom) {
-        var url = provider.bare_url + '/' + zoom + '/' + coord.x + '/' + coord.y + '.png';
-        return url;
-      },
-      tileSize: new google.maps.Size(256, 256),
-      isPng: true,
-      name: provider.name,
-      maxZoom: provider.maxZoom,
-      minZoom: provider.minZoom
-    });
+    var GoogleLayerOpts = makeGoogleLayerOpts(provider);
+    var layer = new google.maps.ImageMapType(GoogleLayerOpts);
+    //warning: tight coupling with nlmaps.createMap
+    var ourmap = this.map || map;
+    if (typeof ourmap !== 'undefined') {
+      makeGoogleAttrControl(ourmap, provider.attribution);
+    }
     return layer;
   } else {
     var error = 'google is not defined';

@@ -39,11 +39,12 @@ test('nlmaps.createMap configures googlemaps if its the only one defined',functi
   t.end();
 });
 
-test('nlmaps informs if wrong layer style requested', function(t) {
-//this test has no assertions.
- ol = 'foo'; google = 'foo';
- let opts2 = {style: 'groen', target: 'mapdiv2'};
- let map = nlmaps.createMap(opts2);
- t.end();
 
-});
+//test('nlmaps informs if wrong layer style requested', function(t) {
+////this test has no assertions.
+ //ol = 'foo'; google = 'foo';
+ //let opts2 = {style: 'groen', target: 'mapdiv2'};
+ //let map = nlmaps.createMap(opts2);
+ //t.end();
+
+//});

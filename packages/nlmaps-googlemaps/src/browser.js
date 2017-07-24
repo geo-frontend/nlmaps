@@ -1,2 +1,1 @@
-import { bgLayer } from './index.js';
-export default bgLayer;
+export { bgLayer } from './index.js';

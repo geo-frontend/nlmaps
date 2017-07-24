@@ -1,4 +1,4 @@
-import { getProvider, verbeterDeKaartStr } from '../../lib/index.js';
+import { getProvider} from '../../lib/index.js';
 
 function AttributionControl(controlDiv, attrControlText) {
   console.log('this is obviously not side-effect free')
@@ -30,7 +30,7 @@ function indexOfMapControl(controlArray, control){
   return controlArray.getArray().indexOf(control);
 }
 
-function toggleAttrControl(attrControl) {
+function toggleAttrControl(attrControl, map) {
   let currentMapId = map.getMapTypeId();
     let controlArray = map.controls[google.maps.ControlPosition.BOTTOM_RIGHT];
     let indexToRemove = indexOfMapControl(controlArray, attrControl);
@@ -45,27 +45,39 @@ function toggleAttrControl(attrControl) {
     }
 }
 
+function makeGoogleAttrControl(map=map, attr){
+    let attrControlDiv = document.createElement('div');
+    let attrControlText =  attr ;
+    let attrControl = new AttributionControl(attrControlDiv, attrControlText);
+    map.controls[google.maps.ControlPosition.BOTTOM_RIGHT].push(attrControl);
+    map.addListener('maptypeid_changed', () => toggleAttrControl(attrControl, map));
+}
+
+function makeGoogleLayerOpts(provider){
+  return {
+    getTileUrl: function (coord, zoom) {
+      let url = `${provider.bare_url}/${zoom}/${coord.x}/${coord.y}.png`;
+      return url;
+    },
+    tileSize: new google.maps.Size(256, 256),
+    isPng: true,
+    name: provider.name,
+    maxZoom: provider.maxZoom,
+    minZoom: provider.minZoom
+  }
+}
+
 
 function bgLayer (name='standaard') {
   if (typeof google === 'object' && typeof google.maps === 'object') {
     const provider = getProvider(name);
-    const GoogleLayerOpts = {
-      getTileUrl: function (coord, zoom) {
-        let url = `${provider.bare_url}/${zoom}/${coord.x}/${coord.y}.png`;
-        return url;
-      },
-      tileSize: new google.maps.Size(256, 256),
-      isPng: true,
-      name: provider.name,
-      maxZoom: provider.maxZoom,
-      minZoom: provider.minZoom
-    };
+    const GoogleLayerOpts = makeGoogleLayerOpts(provider);
     let layer = new google.maps.ImageMapType(GoogleLayerOpts);
-    let attrControlDiv = document.createElement('div');
-    let attrControlText = provider.attribution + ' | ' + verbeterDeKaartStr;
-    let attrControl = new AttributionControl(attrControlDiv, attrControlText);
-    map.controls[google.maps.ControlPosition.BOTTOM_RIGHT].push(attrControl);
-    map.addListener('maptypeid_changed', () => toggleAttrControl(attrControl));
+    //warning: tight coupling with nlmaps.createMap
+    let ourmap = this.map || map;
+    if (typeof ourmap !== 'undefined') {
+      makeGoogleAttrControl(ourmap, provider.attribution)
+    }
     return layer;
   } else {
     const error = 'google is not defined'; 

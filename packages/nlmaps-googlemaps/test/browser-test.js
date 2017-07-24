@@ -12,27 +12,9 @@ module.exports = function  browserTest(){
     });
     let ElaMap = bgLayer();
 
-    function AttributionControl(controlDiv) {
-      // Set CSS for the control border.
-      let controlUI = document.createElement('div');
-      controlUI.style.backgroundColor = '#fff';
-      controlUI.style.opacity = '0.7';
-      controlUI.style.border = '2px solid #fff';
-      controlUI.style.cursor = 'pointer';
-      controlDiv.appendChild(controlUI);
 
-      // Set CSS for the control interior.
-      let controlText = document.createElement('div');
-      controlText.style.color = 'rgb(25,25,25)';
-      controlText.style.fontFamily = 'Roboto,Arial,sans-serif';
-      controlText.style.fontSize = '10px';
-      controlText.innerHTML = ATTR;
-      controlUI.appendChild(controlText);
-      return controlDiv;
-    }
-
-    let mapTypeIds = ['Energielabelatlas', 'roadmap']
-    map.mapTypes.set('Energielabelatlas', ElaMap);
+    let mapTypeIds = ['Brt Achtergrondkaart', 'roadmap']
+    map.mapTypes.set('Brt Achtergrondkaart', ElaMap);
     map.setOptions({
       mapTypeControl: true,
       mapTypeControlOptions: {
@@ -40,14 +22,8 @@ module.exports = function  browserTest(){
       }
 
     });
-    map.setMapTypeId('Energielabelatlas');
-    // Create the DIV to hold the control and call the CenterControl()
-    // constructor passing in this DIV.
-    let centerControlDiv = document.createElement('div');
-    let centerControl = new AttributionControl(centerControlDiv, map);
-
-    centerControlDiv.index = 1;
-    map.controls[google.maps.ControlPosition.BOTTOM_RIGHT].push(centerControl);
+    map.setMapTypeId('Brt Achtergrondkaart');
+    bgLayer.makeGoogleAttrControl('Kaart van Nederland', map)
 
     t.end();
   });

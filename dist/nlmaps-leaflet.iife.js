@@ -1,4 +1,4 @@
-var bgLayer = (function () {
+(function (exports) {
 'use strict';
 
 /*parts copied from maps.stamen.com: https://github.com/stamen/maps.stamen.com/blob/master/js/tile.stamen.js
@@ -11,7 +11,7 @@ var bgLayer = (function () {
 const lufostring = 'luchtfoto/rgb';
 const brtstring = 'tiles/service';
 const servicecrs = '/EPSG:3857';
-const attr = 'Kaartgegevens &copy; <a href="kadaster.nl">Kadaster</a>';
+const attr = 'Kaartgegevens &copy; <a href="kadaster.nl">Kadaster</a> | <a href="http://www.verbeterdekaart.nl">verbeter de kaart</a>';
 function baseUrl(name) {
   return `https://geodata.nationaalgeoregister.nl/${name === 'luchtfoto' ? lufostring : brtstring}/wmts/`;
 }
@@ -298,14 +298,49 @@ if (typeof L !== 'undefined' && (typeof L === 'undefined' ? 'undefined' : _typeo
   L.nlmapsBgLayer = function (options, source) {
     return new L.NlmapsBgLayer(options, source);
   };
+
+  L.Control.GeoLocatorControl = L.Control.extend({
+    options: {
+      position: 'topleft'
+    },
+    initialize: function initialize(options) {
+      // set default options if nothing is set (merge one step deep)
+      for (var i in options) {
+        if (_typeof(this.options[i]) === 'object') {
+          L.extend(this.options[i], options[i]);
+        } else {
+          this.options[i] = options[i];
+        }
+      }
+    },
+
+    onAdd: function onAdd(map) {
+      var div = L.DomUtil.create('div');
+      div.innerHTML = 'hi there world';
+      L.DomEvent.on(div, 'click', this.options.geolocator);
+      return div;
+    },
+    onRemove: function onRemove(map) {}
+  });
+
+  L.geoLocatorControl = function (geolocator) {
+    return new L.Control.GeoLocatorControl({ geolocator: geolocator });
+  };
 }
 
-function bgLayer$1(name) {
+function bgLayer(name) {
   if (typeof L !== 'undefined' && (typeof L === 'undefined' ? 'undefined' : _typeof(L)) === 'object') {
     return L.nlmapsBgLayer(name);
   }
 }
 
-return bgLayer$1;
+function geoLocatorControl(geolocator) {
+  if (typeof L !== 'undefined' && (typeof L === 'undefined' ? 'undefined' : _typeof(L)) === 'object') {
+    return L.geoLocatorControl(geolocator);
+  }
+}
 
-}());
+exports.bgLayer = bgLayer;
+exports.geoLocatorControl = geoLocatorControl;
+
+}((this.bgLayer = this.bgLayer || {})));

@@ -61,6 +61,11 @@ const PROVIDERS = {
   "luchtfoto": makeProvider("luchtfoto", "jpeg", 6, 19)
 };
 
+function geoLocator() {
+  console.log('this is: ');
+  console.log(this);
+}
+
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) {
   return typeof obj;
 } : function (obj) {
@@ -270,7 +275,8 @@ var nlmaps = {
   },
   googlemaps: {
     bgLayer: nlmapsGooglemaps.bgLayer
-  }
+  },
+  geolocator: geoLocator
 };
 
 var mapdefaults = {
@@ -329,6 +335,31 @@ function initMap(lib, opts) {
   return map;
 }
 
+//can set center, with optional zoom.
+function setMapLoc(lib, opts, map) {
+  switch (lib) {
+    case 'leaflet':
+      map.panTo([opts.lat, opts.lon]);
+      if (opts.zoom) {
+        map.setZoom(opts.zoom);
+      }
+      break;
+    case 'googlemaps':
+      map.setCenter({ lat: opts.lat, lng: opts.lon });
+      if (opts.zoom) {
+        map.setZoom(opts.zoom);
+      }
+      break;
+    case 'openlayers':
+      var oldZoom = map.getView().getZoom();
+      var view = new ol.View({
+        center: ol.proj.fromLonLat([opts.lon, opts.lat]),
+        zoom: opts.zoom ? opts.zoom : oldZoom
+      });
+      map.setView(view);
+  }
+}
+
 function addGoogleLayer(layer, map, name) {
   var mapTypeIds = [layer.name, 'roadmap'];
   map.setOptions({
@@ -366,24 +397,58 @@ var partialApply = function partialApply(fn, mapProxy, name) {
   };
 };
 
+function mergeOpts(defaultopts, useropts) {
+  return Object.assign({}, defaultopts, useropts);
+}
+
+nlmaps.lib = testWhichLib();
+
 nlmaps.createMap = function () {
   var useropts = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
 
-  var opts = Object.assign({}, mapdefaults, useropts);
-  var lib = testWhichLib();
+  var opts = mergeOpts(mapdefaults, useropts);
   try {
-    if (lib === 'too many libs' || lib === 'too few libs') {
+    if (nlmaps.lib === 'too many libs' || nlmaps.lib === 'too few libs') {
       throw { message: 'one and only one map library can be defined. Please Refer to the documentation to see which map libraries are supported.' };
       return;
     }
   } catch (e) {
     console.error(e.message);
   }
-  var map = initMap(lib, opts);
-  var addLayer = partialApply(nlmaps[lib].bgLayer, map, opts.style);
+  var map = initMap(nlmaps.lib, opts);
+  var addLayer = partialApply(nlmaps[nlmaps.lib].bgLayer, map, opts.style);
   var layer = addLayer();
-  addLayerToMap(lib, layer, map, opts.style);
+  addLayerToMap(nlmaps.lib, layer, map, opts.style);
   return map;
+};
+
+var geoLocateDefaultOpts = {
+  follow: false
+};
+
+nlmaps.stopGeoLocate = function (id) {
+  navigator.geolocation.clearWatch(watchID);
+};
+
+nlmaps.geoLocate = function (map) {
+  var useropts = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
+
+  var opts = mergeOpts(geoLocateDefaultOpts, useropts);
+  if ('geolocation' in navigator) {
+    if (opts.follow === true) {
+      var _watchID = navigator.geolocation.watchPosition(function (position) {
+        setMapLoc(nlmaps.lib, { lat: position.coords.latitude, lon: position.coords.longitude }, map);
+      });
+      return _watchID;
+    } else {
+      navigator.geolocation.getCurrentPosition(function (position) {
+        setMapLoc(nlmaps.lib, { lat: position.coords.latitude, lon: position.coords.longitude }, map);
+      });
+    }
+  } else {
+    var error = 'geolocation is not available in your browser.';
+    throw error;
+  }
 };
 
 module.exports = nlmaps;

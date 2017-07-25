@@ -1,4 +1,4 @@
-import { getProvider} from '../../lib/index.js';
+import { getProvider } from '../../lib/index.js';
 
 function AttributionControl(controlDiv, attrControlText) {
   console.log('this is obviously not side-effect free')

@@ -31,5 +31,8 @@
     "rollup-plugin-node-globals": "^1.1.0",
     "rollup-plugin-uglify": "^2.0.1",
     "tape": "^4.6.3"
+  },
+  "dependencies": {
+    "emitonoff": "^0.1.1"
   }
 }

@@ -2,6 +2,7 @@ import { bgLayer as bgL } from 'nlmaps-leaflet';
 import { bgLayer as bgOL } from 'nlmaps-openlayers';
 import { bgLayer as bgGM } from 'nlmaps-googlemaps';
 import { getProvider} from '../../lib/index.js';
+import geoLocator from '../../nlmaps-geolocator/src/index.js';
 
 let nlmaps = {
   leaflet: {
@@ -74,6 +75,27 @@ function initMap(lib, opts){
 
 };
 
+//can set center, with optional zoom.
+function setMapLoc(lib, opts, map) {
+  switch (lib) {
+    case 'leaflet':
+      map.panTo([opts.lat,opts.lon]);
+      if (opts.zoom){map.setZoom(opts.zoom)}
+      break;
+    case 'googlemaps':
+      map.setCenter({lat: opts.lat,lng:opts.lon});
+      if (opts.zoom) {map.setZoom(opts.zoom)}
+      break;
+    case 'openlayers':
+      let oldZoom = map.getView().getZoom();
+      let view = new ol.View({
+          center: ol.proj.fromLonLat([opts.lon,opts.lat]),
+          zoom: opts.zoom? opts.zoom: oldZoom
+        });
+      map.setView(view);
+    }
+}
+
 
 function addGoogleLayer(layer, map, name) {
   let mapTypeIds = [layer.name, 'roadmap']
@@ -114,11 +136,17 @@ const partialApply = (fn, mapProxy, name) => {
     };
 };
 
+function mergeOpts(defaultopts, useropts){
+   return Object.assign({}, defaultopts, useropts);
+
+}
+
+nlmaps.lib = testWhichLib();
+
 nlmaps.createMap = function(useropts = {}) {
-  const opts = Object.assign({}, mapdefaults, useropts);
-  let lib = testWhichLib();
+  const opts = mergeOpts(mapdefaults, useropts);
   try {
-  if (lib === 'too many libs' || lib === 'too few libs') {
+  if (nlmaps.lib === 'too many libs' || nlmaps.lib === 'too few libs') {
     throw({message:'one and only one map library can be defined. Please Refer to the documentation to see which map libraries are supported.'});
     return;
   }
@@ -126,11 +154,50 @@ nlmaps.createMap = function(useropts = {}) {
     console.error(e.message)
   
   }
-  let map = initMap(lib, opts);
-  let addLayer = partialApply(nlmaps[lib].bgLayer, map, opts.style);
+  let map = initMap(nlmaps.lib, opts);
+  let addLayer = partialApply(nlmaps[nlmaps.lib].bgLayer, map, opts.style);
   let layer = addLayer();
-  addLayerToMap(lib, layer, map, opts.style);
+  addLayerToMap(nlmaps.lib, layer, map, opts.style);
   return map;
 };
+
+const geoLocateDefaultOpts = {
+  follow: false
+}
+
+nlmaps.stopGeoLocate = function(id){
+  navigator.geolocation.clearWatch(watchID);
+}
+
+//geoLocator will know nothing about map or lib. It simply provides wrapper for navigator.geolocation.
+//nlmaps.geoLocate will be able to connect up a control.
+//the only challenge is whether geoLocator can be used standalone with a bgLayer and locationControl from a sub-library.
+
+let geoLocator = GeoLocator(nlmaps.lib);
+nlmaps.geoLocate = function(useropts ={}){
+  const opts = mergeOpts(geoLocateDefaultOpts, useropts);
+
+
+}
+
+nlmaps.geoLocate = function(map, useropts = {}){
+  const opts = mergeOpts(geoLocateDefaultOpts, useropts);
+  if ('geolocation' in navigator) {
+    if (opts.follow === true) {
+      let watchID = navigator.geolocation.watchPosition(function(position){
+        setMapLoc(nlmaps.lib, {lat:position.coords.latitude,lon:position.coords.longitude},map)
+      });
+      return watchID
+    } else {
+      navigator.geolocation.getCurrentPosition(function(position) {
+        setMapLoc(nlmaps.lib, {lat:position.coords.latitude,lon:position.coords.longitude},map)
+      });
+    }
+  } else {
+    let error = 'geolocation is not available in your browser.'
+    throw error;
+  }
+
+}
 
 export default nlmaps;

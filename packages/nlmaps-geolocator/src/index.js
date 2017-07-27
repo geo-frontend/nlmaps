@@ -4,35 +4,45 @@ const geoLocateDefaultOpts = {
 
 import emitonoff from 'emitonoff';
 
+function positionHandler(position) {
+  this.emit('position', position);
+
+}
+function positionErrorHandler(error) {
+  this.emit('error', error);
+
+}
+
 const GeoLocator = function (opts) {
   const state = Object.assign({}, geoLocateDefaultOpts, opts);
-  let positionWatch = positionCallback.bind(this)
 
   return {
     start () {
-      if (state.follow === true) {
-        state.watchID = navigator.geolocation.watchPosition(position => this.emit('position', position))
-      } else {
-        navigator.geolocation.getCurrentPosition(position => this.emit('position', position))
-      }
+      state.started = true;
+      navigator.geolocation.getCurrentPosition(positionHandler.bind(this), positionErrorHandler.bind(this), {maximumAge: 60000})
+      return this;
     },
-
     stop () {
-      state.follow = false;
-      if (state.watchID && state.watchID !== null) {
-        navigator.geolocation.clearWatch(state.watchID);
-        state.watchID = null;
-      }
+      state.started = false;
+      return this;
+    },
+    isStarted() {
+      return state.started;
     },
     log (){
-        console.log(state)
+        console.log(state);
+        return this;
     }
   };
 };
 
 function geoLocator(opts){
   if ('geolocation' in navigator) {
-    return emitonoff(GeoLocator(opts))
+    let geolocator = emitonoff(GeoLocator(opts));
+    geolocator.on('position', function(position) {
+      this.stop();
+    });
+    return geolocator;
   } else {
     let error = 'geolocation is not available in your browser.'
     throw error;

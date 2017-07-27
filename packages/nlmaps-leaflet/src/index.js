@@ -1,4 +1,4 @@
-import { getProvider } from '../../lib/index.js';
+import { getProvider, geolocator_icon } from '../../lib/index.js';
 
 
 if (typeof L !== 'undefined' && typeof L === 'object'){
@@ -38,11 +38,30 @@ L.Control.GeoLocatorControl = L.Control.extend({
   },
 
   onAdd: function(map){
-    let div = L.DomUtil.create('div');
-    div.innerHTML = 'hi there world';
-    L.DomEvent.on(div, 'click', this.options.geolocator)
+    let div = L.DomUtil.create('div', 'mycontrol');
+    div.style.backgroundColor = '#fff';
+    div.style.cursor = 'pointer';
+    div.style.boxShadow = '0 1px 5px rgba(0, 0, 0, 0.65)';
+    div.style.height = '26px';
+    div.style.width = '26px';
+    div.style.borderRadius = '26px 26px';
+    div.innerHTML = geolocator_icon;
+    if (this.options.geolocator.isStarted()){
+      L.DomUtil.addClass(div, 'started')
+    }
+    function moveMap(position){
+      map.panTo([position.coords.latitude,position.coords.longitude])
+    }
+    L.DomEvent.on(div, 'click', function(e){
+      this.options.geolocator.start();
+      L.DomUtil.addClass(div, 'started');
+    }, this);
+    this.options.geolocator.on('position', function(d) {
+      L.DomUtil.removeClass(div, 'started');
+      L.DomUtil.addClass(div, 'has-position');
+      moveMap(d);
+    })
     return div;
-  
   },
   onRemove: function(map){}
 })

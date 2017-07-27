@@ -1,6 +1,6 @@
 import { bgLayer as bgL, geoLocatorControl as glL } from 'nlmaps-leaflet';
 import { bgLayer as bgOL } from 'nlmaps-openlayers';
-import { bgLayer as bgGM } from 'nlmaps-googlemaps';
+import { bgLayer as bgGM, geoLocatorControl as glG } from 'nlmaps-googlemaps';
 import { getProvider} from '../../lib/index.js';
 import geoLocator from '../../nlmaps-geolocator/src/index.js';
 
@@ -13,7 +13,8 @@ let nlmaps = {
     bgLayer: bgOL
   },
   googlemaps: {
-    bgLayer: bgGM
+    bgLayer: bgGM,
+    geoLocatorControl: glG
   }
 };
 
@@ -166,11 +167,29 @@ const geoLocateDefaultOpts = {
   follow: false
 }
 
+function addGeoLocControlToMap(lib, geolocator, map){
+  switch (lib) {
+    case 'leaflet':
+      nlmaps[lib].geoLocatorControl(geolocator).addTo(map);  
+      break;
+    case 'googlemaps':
+      let control = nlmaps[lib].geoLocatorControl(geolocator, map)
+      map.controls[google.maps.ControlPosition.TOP_LEFT].push(control);
+      break;
+    case 'openlayers':
+      break;
+
+  }
+
+}
+
 
 nlmaps.geoLocate = function(map, useropts = {}){
   const opts = mergeOpts(geoLocateDefaultOpts, useropts);
-  const geolocator = geoLocator(opts).start();
-  nlmaps[nlmaps.lib].geoLocatorControl(geolocator).addTo(map);
+  const geolocator = geoLocator(opts);
+  console.log('oh hai')
+  addGeoLocControlToMap(nlmaps.lib, geolocator, map);
+  //
 }
 
 export default nlmaps;

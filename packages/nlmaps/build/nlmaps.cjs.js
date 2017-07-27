@@ -393,7 +393,8 @@ var nlmaps = {
     bgLayer: nlmapsOpenlayers.bgLayer
   },
   googlemaps: {
-    bgLayer: nlmapsGooglemaps.bgLayer
+    bgLayer: nlmapsGooglemaps.bgLayer,
+    geoLocatorControl: nlmapsGooglemaps.geoLocatorControl
   }
 };
 
@@ -519,12 +520,29 @@ var geoLocateDefaultOpts = {
   follow: false
 };
 
+function addGeoLocControlToMap(lib, geolocator, map) {
+  switch (lib) {
+    case 'leaflet':
+      nlmaps[lib].geoLocatorControl(geolocator).addTo(map);
+      break;
+    case 'googlemaps':
+      var control = nlmaps[lib].geoLocatorControl(geolocator, map);
+      map.controls[google.maps.ControlPosition.TOP_LEFT].push(control);
+      break;
+    case 'openlayers':
+      break;
+
+  }
+}
+
 nlmaps.geoLocate = function (map) {
   var useropts = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
 
   var opts = mergeOpts(geoLocateDefaultOpts, useropts);
-  var geolocator = geoLocator(opts).start();
-  nlmaps[nlmaps.lib].geoLocatorControl(geolocator).addTo(map);
+  var geolocator = geoLocator(opts);
+  console.log('oh hai');
+  addGeoLocControlToMap(nlmaps.lib, geolocator, map);
+  //
 };
 
 module.exports = nlmaps;

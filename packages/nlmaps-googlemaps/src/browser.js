@@ -1,1 +1,1 @@
-export { bgLayer } from './index.js';
+export { bgLayer, geoLocatorControl } from './index.js';

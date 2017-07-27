@@ -1,4 +1,4 @@
-import { getProvider } from '../../lib/index.js';
+import { getProvider, geolocator_icon } from '../../lib/index.js';
 
 function AttributionControl(controlDiv, attrControlText) {
   console.log('this is obviously not side-effect free')
@@ -24,6 +24,27 @@ function AttributionControl(controlDiv, attrControlText) {
     const error = 'google is not defined'; 
     throw error;
   }
+}
+
+function geoLocatorControl (geolocator, map){
+    let controlUI = document.createElement('div');
+    controlUI.innerHTML = geolocator_icon;
+    controlUI.style.backgroundColor = '#fff';
+    controlUI.style.cursor = 'pointer';
+    controlUI.style.boxShadow = '0 1px 5px rgba(0, 0, 0, 0.65)';
+    controlUI.style.height = '26px';
+    controlUI.style.width = '26px';
+    controlUI.style.borderRadius = '26px 26px';
+    function moveMap(position, map=map){
+      map.setCenter({lat:position.coords.latitude,lng:position.coords.longitude});
+    }
+    controlUI.addEventListener( 'click', function(e){
+      geolocator.start();
+    }, this);
+    geolocator.on('position', function(d) {
+      moveMap(d, map);
+    })
+    return controlUI;
 }
 
 function indexOfMapControl(controlArray, control){
@@ -86,4 +107,4 @@ function bgLayer (name='standaard') {
 
 }
 
-export { bgLayer };
+export { bgLayer, geoLocatorControl };

@@ -390,7 +390,8 @@ var nlmaps = {
     geoLocatorControl: nlmapsLeaflet.geoLocatorControl
   },
   openlayers: {
-    bgLayer: nlmapsOpenlayers.bgLayer
+    bgLayer: nlmapsOpenlayers.bgLayer,
+    geoLocatorControl: nlmapsOpenlayers.geoLocatorControl
   },
   googlemaps: {
     bgLayer: nlmapsGooglemaps.bgLayer,
@@ -521,15 +522,19 @@ var geoLocateDefaultOpts = {
 };
 
 function addGeoLocControlToMap(lib, geolocator, map) {
+  var control = void 0;
   switch (lib) {
     case 'leaflet':
       nlmaps[lib].geoLocatorControl(geolocator).addTo(map);
       break;
     case 'googlemaps':
-      var control = nlmaps[lib].geoLocatorControl(geolocator, map);
+      control = nlmaps[lib].geoLocatorControl(geolocator, map);
       map.controls[google.maps.ControlPosition.TOP_LEFT].push(control);
       break;
     case 'openlayers':
+      control = nlmaps[lib].geoLocatorControl(geolocator, map);
+      map.addControl(control);
+
       break;
 
   }

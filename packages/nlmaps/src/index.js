@@ -1,5 +1,5 @@
 import { bgLayer as bgL, geoLocatorControl as glL } from 'nlmaps-leaflet';
-import { bgLayer as bgOL } from 'nlmaps-openlayers';
+import { bgLayer as bgOL, geoLocatorControl as glO } from 'nlmaps-openlayers';
 import { bgLayer as bgGM, geoLocatorControl as glG } from 'nlmaps-googlemaps';
 import { getProvider} from '../../lib/index.js';
 import geoLocator from '../../nlmaps-geolocator/src/index.js';
@@ -10,7 +10,8 @@ let nlmaps = {
     geoLocatorControl: glL
   },
   openlayers: {
-    bgLayer: bgOL
+    bgLayer: bgOL,
+    geoLocatorControl: glO
   },
   googlemaps: {
     bgLayer: bgGM,
@@ -168,15 +169,19 @@ const geoLocateDefaultOpts = {
 }
 
 function addGeoLocControlToMap(lib, geolocator, map){
+  let control;
   switch (lib) {
     case 'leaflet':
       nlmaps[lib].geoLocatorControl(geolocator).addTo(map);  
       break;
     case 'googlemaps':
-      let control = nlmaps[lib].geoLocatorControl(geolocator, map)
+      control = nlmaps[lib].geoLocatorControl(geolocator, map)
       map.controls[google.maps.ControlPosition.TOP_LEFT].push(control);
       break;
     case 'openlayers':
+      control = nlmaps[lib].geoLocatorControl(geolocator,map);
+      map.addControl(control)
+
       break;
 
   }

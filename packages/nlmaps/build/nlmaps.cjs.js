@@ -61,9 +61,127 @@ const PROVIDERS = {
   "luchtfoto": makeProvider("luchtfoto", "jpeg", 6, 19)
 };
 
-function geoLocator() {
-  console.log('this is: ');
-  console.log(this);
+function createCommonjsModule(fn, module) {
+	return module = { exports: {} }, fn(module, module.exports), module.exports;
+}
+
+var index = createCommonjsModule(function (module) {
+  var EmitOnOff = module.exports = function (thing) {
+    if (!thing) thing = {};
+
+    thing._subs = [];
+    thing._paused = false;
+    thing._pending = [];
+
+    /**
+     * Sub of pubsub
+     * @param  {String}   name name of event
+     * @param  {Function} cb   your callback
+     */
+    thing.on = function (name, cb) {
+      thing._subs[name] = thing._subs[name] || [];
+      thing._subs[name].push(cb);
+    };
+
+    /**
+     * remove sub of pubsub
+     * @param  {String}   name name of event
+     * @param  {Function} cb   your callback
+     */
+    thing.off = function (name, cb) {
+      if (!thing._subs[name]) return;
+      for (var i in thing._subs[name]) {
+        if (thing._subs[name][i] === cb) {
+          thing._subs[name].splice(i);
+          break;
+        }
+      }
+    };
+
+    /**
+     * Pub of pubsub
+     * @param  {String}   name name of event
+     * @param  {Mixed}    data the data to publish
+     */
+    thing.emit = function (name) {
+      if (!thing._subs[name]) return;
+
+      var args = Array.prototype.slice.call(arguments, 1);
+
+      if (thing._paused) {
+        thing._pending[name] = thing._pending[name] || [];
+        thing._pending[name].push(args);
+        return;
+      }
+
+      for (var i in thing._subs[name]) {
+        thing._subs[name][i].apply(thing, args);
+      }
+    };
+
+    thing.pause = function () {
+      thing._paused = true;
+    };
+
+    thing.resume = function () {
+      thing._paused = false;
+
+      for (var name in thing._pending) {
+        for (var i = 0; i < thing._pending[name].length; i++) {
+          thing.emit(name, thing._pending[name][i]);
+        }
+      }
+    };
+
+    return thing;
+  };
+});
+
+const geoLocateDefaultOpts$1 = {
+  follow: false
+};
+
+function positionHandler(position) {
+  this.emit('position', position);
+}
+function positionErrorHandler(error) {
+  this.emit('error', error);
+}
+
+const GeoLocator = function (opts) {
+  const state = Object.assign({}, geoLocateDefaultOpts$1, opts);
+
+  return {
+    start() {
+      state.started = true;
+      navigator.geolocation.getCurrentPosition(positionHandler.bind(this), positionErrorHandler.bind(this), { maximumAge: 60000 });
+      return this;
+    },
+    stop() {
+      state.started = false;
+      return this;
+    },
+    isStarted() {
+      return state.started;
+    },
+    log() {
+      console.log(state);
+      return this;
+    }
+  };
+};
+
+function geoLocator(opts) {
+  if ('geolocation' in navigator) {
+    let geolocator = index(GeoLocator(opts));
+    geolocator.on('position', function (position) {
+      this.stop();
+    });
+    return geolocator;
+  } else {
+    let error = 'geolocation is not available in your browser.';
+    throw error;
+  }
 }
 
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) {
@@ -268,15 +386,15 @@ var set = function set(object, property, value, receiver) {
 
 var nlmaps = {
   leaflet: {
-    bgLayer: nlmapsLeaflet.bgLayer
+    bgLayer: nlmapsLeaflet.bgLayer,
+    geoLocatorControl: nlmapsLeaflet.geoLocatorControl
   },
   openlayers: {
     bgLayer: nlmapsOpenlayers.bgLayer
   },
   googlemaps: {
     bgLayer: nlmapsGooglemaps.bgLayer
-  },
-  geolocator: geoLocator
+  }
 };
 
 var mapdefaults = {
@@ -333,31 +451,6 @@ function initMap(lib, opts) {
 
   }
   return map;
-}
-
-//can set center, with optional zoom.
-function setMapLoc(lib, opts, map) {
-  switch (lib) {
-    case 'leaflet':
-      map.panTo([opts.lat, opts.lon]);
-      if (opts.zoom) {
-        map.setZoom(opts.zoom);
-      }
-      break;
-    case 'googlemaps':
-      map.setCenter({ lat: opts.lat, lng: opts.lon });
-      if (opts.zoom) {
-        map.setZoom(opts.zoom);
-      }
-      break;
-    case 'openlayers':
-      var oldZoom = map.getView().getZoom();
-      var view = new ol.View({
-        center: ol.proj.fromLonLat([opts.lon, opts.lat]),
-        zoom: opts.zoom ? opts.zoom : oldZoom
-      });
-      map.setView(view);
-  }
 }
 
 function addGoogleLayer(layer, map, name) {
@@ -426,29 +519,12 @@ var geoLocateDefaultOpts = {
   follow: false
 };
 
-nlmaps.stopGeoLocate = function (id) {
-  navigator.geolocation.clearWatch(watchID);
-};
-
 nlmaps.geoLocate = function (map) {
   var useropts = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
 
   var opts = mergeOpts(geoLocateDefaultOpts, useropts);
-  if ('geolocation' in navigator) {
-    if (opts.follow === true) {
-      var _watchID = navigator.geolocation.watchPosition(function (position) {
-        setMapLoc(nlmaps.lib, { lat: position.coords.latitude, lon: position.coords.longitude }, map);
-      });
-      return _watchID;
-    } else {
-      navigator.geolocation.getCurrentPosition(function (position) {
-        setMapLoc(nlmaps.lib, { lat: position.coords.latitude, lon: position.coords.longitude }, map);
-      });
-    }
-  } else {
-    var error = 'geolocation is not available in your browser.';
-    throw error;
-  }
+  var geolocator = geoLocator(opts).start();
+  nlmaps[nlmaps.lib].geoLocatorControl(geolocator).addTo(map);
 };
 
 module.exports = nlmaps;

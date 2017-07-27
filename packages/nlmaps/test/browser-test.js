@@ -36,7 +36,7 @@ test('make a map and geolocate it',function(t){
   let map = nlmaps.createMap(opts);
   t.assert(typeof map === 'object', 'returns an object');
  // L = Lbk; ol = olbk;
-  let watchID = nlmaps.geoLocate(map, {follow: true})
+  let watchID = nlmaps.geoLocate(map, {follow: false})
 
   
   t.end();

@@ -1,4 +1,4 @@
-import { bgLayer as bgL } from 'nlmaps-leaflet';
+import { bgLayer as bgL, geoLocatorControl as glL } from 'nlmaps-leaflet';
 import { bgLayer as bgOL } from 'nlmaps-openlayers';
 import { bgLayer as bgGM } from 'nlmaps-googlemaps';
 import { getProvider} from '../../lib/index.js';
@@ -6,7 +6,8 @@ import geoLocator from '../../nlmaps-geolocator/src/index.js';
 
 let nlmaps = {
   leaflet: {
-    bgLayer: bgL
+    bgLayer: bgL,
+    geoLocatorControl: glL
   },
   openlayers: {
     bgLayer: bgOL
@@ -165,39 +166,11 @@ const geoLocateDefaultOpts = {
   follow: false
 }
 
-nlmaps.stopGeoLocate = function(id){
-  navigator.geolocation.clearWatch(watchID);
-}
-
-//geoLocator will know nothing about map or lib. It simply provides wrapper for navigator.geolocation.
-//nlmaps.geoLocate will be able to connect up a control.
-//the only challenge is whether geoLocator can be used standalone with a bgLayer and locationControl from a sub-library.
-
-let geoLocator = GeoLocator(nlmaps.lib);
-nlmaps.geoLocate = function(useropts ={}){
-  const opts = mergeOpts(geoLocateDefaultOpts, useropts);
-
-
-}
 
 nlmaps.geoLocate = function(map, useropts = {}){
   const opts = mergeOpts(geoLocateDefaultOpts, useropts);
-  if ('geolocation' in navigator) {
-    if (opts.follow === true) {
-      let watchID = navigator.geolocation.watchPosition(function(position){
-        setMapLoc(nlmaps.lib, {lat:position.coords.latitude,lon:position.coords.longitude},map)
-      });
-      return watchID
-    } else {
-      navigator.geolocation.getCurrentPosition(function(position) {
-        setMapLoc(nlmaps.lib, {lat:position.coords.latitude,lon:position.coords.longitude},map)
-      });
-    }
-  } else {
-    let error = 'geolocation is not available in your browser.'
-    throw error;
-  }
-
+  const geolocator = geoLocator(opts).start();
+  nlmaps[nlmaps.lib].geoLocatorControl(geolocator).addTo(map);
 }
 
 export default nlmaps;

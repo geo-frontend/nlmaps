@@ -129,15 +129,20 @@ function addLayerToMap(lib, layer, map, name) {
 
 }
 
-//partial application with map added to this
-const partialApply = (fn, mapProxy, name) => {
-  let foo = {
-    map: mapProxy
+function createLayer(lib,  map, name) {
+  switch (lib) {
+    case 'leaflet':
+      return nlmaps.leaflet.bgLayer(name);
+      break;
+    case 'googlemaps':
+      return nlmaps.googlemaps.bgLayer(map, name)
+      break;
+    case 'openlayers':
+      return nlmaps.openlayers.bgLayer(name);
+      break;
   }
-  return function () {
-      return fn.call(foo, name);
-    };
-};
+}
+
 
 function mergeOpts(defaultopts, useropts){
    return Object.assign({}, defaultopts, useropts);
@@ -158,8 +163,7 @@ nlmaps.createMap = function(useropts = {}) {
   
   }
   let map = initMap(nlmaps.lib, opts);
-  let addLayer = partialApply(nlmaps[nlmaps.lib].bgLayer, map, opts.style);
-  let layer = addLayer();
+  let layer = createLayer(nlmaps.lib, map, opts.style);
   addLayerToMap(nlmaps.lib, layer, map, opts.style);
   return map;
 };

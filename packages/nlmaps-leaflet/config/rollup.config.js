@@ -10,7 +10,7 @@ export default config => {
   return {
     entry: config.format === 'iife' ? 'src/browser.js' : 'src/index.js',
     format: config.format,
-    moduleName: 'bgLayer',
+    moduleName: config.format === 'iife' ? 'window' : 'nlmapsL',
     dest: config.dest,
     plugins: [
       commonjs(),

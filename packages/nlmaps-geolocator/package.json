@@ -1,12 +1,12 @@
 {
-  "name": "nlmaps-openlayers",
+  "name": "nlmaps-geolocator",
   "version": "1.0.0",
   "description": "",
-  "main": "build/nlmaps-openlayers.cjs.js",
-  "module": "build/nlmaps-openlayers.es.js",
+  "main": "build/nlmaps-geolocator.cjs.js",
+  "module": "build/nlmaps-geolocator.es.js",
   "scripts": {
     "test": "node test/test.js",
-    "build": "rollup -c config/rollup.cjs.js && rollup -c config/rollup.es.js && BROWSER=true rollup -c config/rollup.iife.js && cp build/nlmaps-openlayers.iife.js ../../dist/",
+    "build": "rollup -c config/rollup.cjs.js && rollup -c config/rollup.es.js && BROWSER=true rollup -c config/rollup.iife.js && cp build/nlmaps-geolocator.iife.js ../../dist/",
     "watch-test": "nodemon --watch test --watch build --exec 'npm run test'",
     "watch-code": "nodemon --watch src --exec npm run build",
     "watch-all": "npm-run-all --parallel watch-code watch-test",
@@ -26,11 +26,13 @@
   },
   "homepage": "https://github.com:kadaster/nlmaps#README",
   "devDependencies": {
-    "openlayers": "^4.1.1",
     "rollup-plugin-eslint": "^4.0.0",
     "rollup-plugin-node-builtins": "^2.1.2",
     "rollup-plugin-node-globals": "^1.1.0",
     "rollup-plugin-uglify": "^2.0.1",
     "tape": "^4.6.3"
+  },
+  "dependencies": {
+    "emitonoff": "^0.1.1"
   }
 }

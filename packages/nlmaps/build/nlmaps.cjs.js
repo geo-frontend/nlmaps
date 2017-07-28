@@ -61,6 +61,129 @@ const PROVIDERS = {
   "luchtfoto": makeProvider("luchtfoto", "jpeg", 6, 19)
 };
 
+function createCommonjsModule(fn, module) {
+	return module = { exports: {} }, fn(module, module.exports), module.exports;
+}
+
+var index = createCommonjsModule(function (module) {
+  var EmitOnOff = module.exports = function (thing) {
+    if (!thing) thing = {};
+
+    thing._subs = [];
+    thing._paused = false;
+    thing._pending = [];
+
+    /**
+     * Sub of pubsub
+     * @param  {String}   name name of event
+     * @param  {Function} cb   your callback
+     */
+    thing.on = function (name, cb) {
+      thing._subs[name] = thing._subs[name] || [];
+      thing._subs[name].push(cb);
+    };
+
+    /**
+     * remove sub of pubsub
+     * @param  {String}   name name of event
+     * @param  {Function} cb   your callback
+     */
+    thing.off = function (name, cb) {
+      if (!thing._subs[name]) return;
+      for (var i in thing._subs[name]) {
+        if (thing._subs[name][i] === cb) {
+          thing._subs[name].splice(i);
+          break;
+        }
+      }
+    };
+
+    /**
+     * Pub of pubsub
+     * @param  {String}   name name of event
+     * @param  {Mixed}    data the data to publish
+     */
+    thing.emit = function (name) {
+      if (!thing._subs[name]) return;
+
+      var args = Array.prototype.slice.call(arguments, 1);
+
+      if (thing._paused) {
+        thing._pending[name] = thing._pending[name] || [];
+        thing._pending[name].push(args);
+        return;
+      }
+
+      for (var i in thing._subs[name]) {
+        thing._subs[name][i].apply(thing, args);
+      }
+    };
+
+    thing.pause = function () {
+      thing._paused = true;
+    };
+
+    thing.resume = function () {
+      thing._paused = false;
+
+      for (var name in thing._pending) {
+        for (var i = 0; i < thing._pending[name].length; i++) {
+          thing.emit(name, thing._pending[name][i]);
+        }
+      }
+    };
+
+    return thing;
+  };
+});
+
+const geoLocateDefaultOpts$1 = {
+  follow: false
+};
+
+function positionHandler(position) {
+  this.emit('position', position);
+}
+function positionErrorHandler(error) {
+  this.emit('error', error);
+}
+
+const GeoLocator = function (opts) {
+  const state = Object.assign({}, geoLocateDefaultOpts$1, opts);
+
+  return {
+    start() {
+      state.started = true;
+      navigator.geolocation.getCurrentPosition(positionHandler.bind(this), positionErrorHandler.bind(this), { maximumAge: 60000 });
+      return this;
+    },
+    stop() {
+      state.started = false;
+      return this;
+    },
+    isStarted() {
+      return state.started;
+    },
+    log() {
+      console.log(state);
+      return this;
+    }
+  };
+};
+
+function geoLocator(opts) {
+  if ('geolocation' in navigator) {
+    let geolocator = index(GeoLocator(opts));
+    geolocator.on('position', function (position) {
+      this.stop();
+    });
+    return geolocator;
+  } else {
+    let error = 'geolocation is not available in your browser.';
+    throw error;
+  }
+}
+
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) {
   return typeof obj;
 } : function (obj) {
@@ -263,13 +386,16 @@ var set = function set(object, property, value, receiver) {
 
 var nlmaps = {
   leaflet: {
-    bgLayer: nlmapsLeaflet.bgLayer
+    bgLayer: nlmapsLeaflet.bgLayer,
+    geoLocatorControl: nlmapsLeaflet.geoLocatorControl
   },
   openlayers: {
-    bgLayer: nlmapsOpenlayers.bgLayer
+    bgLayer: nlmapsOpenlayers.bgLayer,
+    geoLocatorControl: nlmapsOpenlayers.geoLocatorControl
   },
   googlemaps: {
-    bgLayer: nlmapsGooglemaps.bgLayer
+    bgLayer: nlmapsGooglemaps.bgLayer,
+    geoLocatorControl: nlmapsGooglemaps.geoLocatorControl
   }
 };
 
@@ -283,6 +409,9 @@ var mapdefaults = {
   attribution: true
 };
 
+//for future use
+var geoLocateDefaultOpts = {};
+
 function testWhichLib() {
   var defined = [];
   if ((typeof L === 'undefined' ? 'undefined' : _typeof(L)) === 'object') {
@@ -294,7 +423,6 @@ function testWhichLib() {
   if ((typeof ol === 'undefined' ? 'undefined' : _typeof(ol)) === 'object') {
     defined.push('openlayers');
   }
-
   if (defined.length > 1) {
     return 'too many libs';
   } else if (defined.length === 0) {
@@ -324,7 +452,6 @@ function initMap(lib, opts) {
         }),
         target: opts.target
       });
-
   }
   return map;
 }
@@ -352,38 +479,68 @@ function addLayerToMap(lib, layer, map, name) {
     case 'openlayers':
       map.addLayer(layer);
       break;
-
+  }
+}
+function createLayer(lib, map, name) {
+  switch (lib) {
+    case 'leaflet':
+      return nlmaps.leaflet.bgLayer(name);
+      break;
+    case 'googlemaps':
+      return nlmaps.googlemaps.bgLayer(map, name);
+      break;
+    case 'openlayers':
+      return nlmaps.openlayers.bgLayer(name);
+      break;
   }
 }
 
-//partial application with map added to this
-var partialApply = function partialApply(fn, mapProxy, name) {
-  var foo = {
-    map: mapProxy
-  };
-  return function () {
-    return fn.call(foo, name);
-  };
-};
+function mergeOpts(defaultopts, useropts) {
+  return Object.assign({}, defaultopts, useropts);
+}
+
+nlmaps.lib = testWhichLib();
 
 nlmaps.createMap = function () {
   var useropts = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
 
-  var opts = Object.assign({}, mapdefaults, useropts);
-  var lib = testWhichLib();
+  var opts = mergeOpts(mapdefaults, useropts);
   try {
-    if (lib === 'too many libs' || lib === 'too few libs') {
+    if (nlmaps.lib === 'too many libs' || nlmaps.lib === 'too few libs') {
       throw { message: 'one and only one map library can be defined. Please Refer to the documentation to see which map libraries are supported.' };
-      return;
     }
   } catch (e) {
     console.error(e.message);
   }
-  var map = initMap(lib, opts);
-  var addLayer = partialApply(nlmaps[lib].bgLayer, map, opts.style);
-  var layer = addLayer();
-  addLayerToMap(lib, layer, map, opts.style);
+  var map = initMap(nlmaps.lib, opts);
+  var layer = createLayer(nlmaps.lib, map, opts.style);
+  addLayerToMap(nlmaps.lib, layer, map, opts.style);
   return map;
+};
+
+function addGeoLocControlToMap(lib, geolocator, map) {
+  var control = void 0;
+  switch (lib) {
+    case 'leaflet':
+      nlmaps[lib].geoLocatorControl(geolocator).addTo(map);
+      break;
+    case 'googlemaps':
+      control = nlmaps[lib].geoLocatorControl(geolocator, map);
+      map.controls[google.maps.ControlPosition.TOP_RIGHT].push(control);
+      break;
+    case 'openlayers':
+      control = nlmaps[lib].geoLocatorControl(geolocator, map);
+      map.addControl(control);
+      break;
+  }
+}
+
+nlmaps.geoLocate = function (map) {
+  var useropts = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
+
+  var opts = mergeOpts(geoLocateDefaultOpts, useropts);
+  var geolocator = geoLocator(opts);
+  addGeoLocControlToMap(nlmaps.lib, geolocator, map);
 };
 
 module.exports = nlmaps;

@@ -1,17 +1,21 @@
-import { bgLayer as bgL } from 'nlmaps-leaflet';
-import { bgLayer as bgOL } from 'nlmaps-openlayers';
-import { bgLayer as bgGM } from 'nlmaps-googlemaps';
+import { bgLayer as bgL, geoLocatorControl as glL } from 'nlmaps-leaflet';
+import { bgLayer as bgOL, geoLocatorControl as glO } from 'nlmaps-openlayers';
+import { bgLayer as bgGM, geoLocatorControl as glG } from 'nlmaps-googlemaps';
 import { getProvider} from '../../lib/index.js';
+import geoLocator from '../../nlmaps-geolocator/src/index.js';
 
 let nlmaps = {
   leaflet: {
-    bgLayer: bgL
+    bgLayer: bgL,
+    geoLocatorControl: glL
   },
   openlayers: {
-    bgLayer: bgOL
+    bgLayer: bgOL,
+    geoLocatorControl: glO
   },
   googlemaps: {
-    bgLayer: bgGM
+    bgLayer: bgGM,
+    geoLocatorControl: glG
   }
 };
 
@@ -25,12 +29,14 @@ let mapdefaults = {
   attribution: true
 };
 
+//for future use
+const geoLocateDefaultOpts = {
+}
 
 function testWhichLib() {
   let defined = [];
   if (typeof L === 'object') {
     defined.push('leaflet');
-  
   }
   if (typeof google === 'object' && typeof google.maps === 'object'){
     defined.push('googlemaps');
@@ -38,7 +44,6 @@ function testWhichLib() {
   if (typeof ol === 'object') {
     defined.push('openlayers');
   }
-
   if( defined.length > 1 ) {
     return 'too many libs';
   } else if ( defined.length === 0 ) {
@@ -68,11 +73,30 @@ function initMap(lib, opts){
         }),
         target: opts.target
       });
-
   }
   return map;
-
 };
+
+//can set center, with optional zoom.
+function setMapLoc(lib, opts, map) {
+  switch (lib) {
+    case 'leaflet':
+      map.panTo([opts.lat,opts.lon]);
+      if (opts.zoom){map.setZoom(opts.zoom)}
+      break;
+    case 'googlemaps':
+      map.setCenter({lat: opts.lat,lng:opts.lon});
+      if (opts.zoom) {map.setZoom(opts.zoom)}
+      break;
+    case 'openlayers':
+      let oldZoom = map.getView().getZoom();
+      let view = new ol.View({
+          center: ol.proj.fromLonLat([opts.lon,opts.lat]),
+          zoom: opts.zoom? opts.zoom: oldZoom
+        });
+      map.setView(view);
+    }
+}
 
 
 function addGoogleLayer(layer, map, name) {
@@ -98,39 +122,65 @@ function addLayerToMap(lib, layer, map, name) {
     case 'openlayers':
       map.addLayer(layer);
       break;
-
   }
-  
-
+}
+function createLayer(lib,  map, name) {
+  switch (lib) {
+    case 'leaflet':
+      return nlmaps.leaflet.bgLayer(name);
+      break;
+    case 'googlemaps':
+      return nlmaps.googlemaps.bgLayer(map, name)
+      break;
+    case 'openlayers':
+      return nlmaps.openlayers.bgLayer(name);
+      break;
+  }
 }
 
-//partial application with map added to this
-const partialApply = (fn, mapProxy, name) => {
-  let foo = {
-    map: mapProxy
-  }
-  return function () {
-      return fn.call(foo, name);
-    };
-};
+
+function mergeOpts(defaultopts, useropts){
+   return Object.assign({}, defaultopts, useropts);
+}
+
+nlmaps.lib = testWhichLib();
 
 nlmaps.createMap = function(useropts = {}) {
-  const opts = Object.assign({}, mapdefaults, useropts);
-  let lib = testWhichLib();
+  const opts = mergeOpts(mapdefaults, useropts);
   try {
-  if (lib === 'too many libs' || lib === 'too few libs') {
+  if (nlmaps.lib === 'too many libs' || nlmaps.lib === 'too few libs') {
     throw({message:'one and only one map library can be defined. Please Refer to the documentation to see which map libraries are supported.'});
-    return;
   }
   } catch (e) {
     console.error(e.message)
-  
   }
-  let map = initMap(lib, opts);
-  let addLayer = partialApply(nlmaps[lib].bgLayer, map, opts.style);
-  let layer = addLayer();
-  addLayerToMap(lib, layer, map, opts.style);
+  let map = initMap(nlmaps.lib, opts);
+  let layer = createLayer(nlmaps.lib, map, opts.style);
+  addLayerToMap(nlmaps.lib, layer, map, opts.style);
   return map;
 };
+
+function addGeoLocControlToMap(lib, geolocator, map){
+  let control;
+  switch (lib) {
+    case 'leaflet':
+      nlmaps[lib].geoLocatorControl(geolocator).addTo(map);  
+      break;
+    case 'googlemaps':
+      control = nlmaps[lib].geoLocatorControl(geolocator, map)
+      map.controls[google.maps.ControlPosition.TOP_RIGHT].push(control);
+      break;
+    case 'openlayers':
+      control = nlmaps[lib].geoLocatorControl(geolocator,map);
+      map.addControl(control)
+      break;
+  }
+}
+
+nlmaps.geoLocate = function(map, useropts = {}){
+  const opts = mergeOpts(geoLocateDefaultOpts, useropts);
+  const geolocator = geoLocator(opts);
+  addGeoLocControlToMap(nlmaps.lib, geolocator, map);
+}
 
 export default nlmaps;

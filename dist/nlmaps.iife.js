@@ -211,7 +211,7 @@ var set$1 = function set$1(object, property, value, receiver) {
 var lufostring = 'luchtfoto/rgb';
 var brtstring = 'tiles/service';
 var servicecrs = '/EPSG:3857';
-var attr = 'Kaartgegevens &copy; <a href="kadaster.nl">Kadaster</a>';
+var attr = 'Kaartgegevens &copy; <a href="kadaster.nl">Kadaster</a> | <a href="http://www.verbeterdekaart.nl">verbeter de kaart</a>';
 function baseUrl(name) {
   return 'https://geodata.nationaalgeoregister.nl/' + (name === 'luchtfoto' ? lufostring : brtstring) + '/wmts/';
 }
@@ -274,6 +274,8 @@ function getProvider(name) {
     console.error('NL Maps error: You asked for a style which does not exist! Available styles: ' + Object.keys(PROVIDERS).join(', '));
   }
 }
+
+var geolocator_icon = '<?xml version="1.0" encoding="UTF-8" standalone="no"?><svg xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns="http://www.w3.org/2000/svg" height="7.0556mm" width="7.0556mm" version="1.1" xmlns:cc="http://creativecommons.org/ns#" xmlns:dc="http://purl.org/dc/elements/1.1/" viewBox="0 0 24.999999 24.999999"> <metadata>  <rdf:RDF>   <cc:Work rdf:about="">    <dc:format>image/svg+xml</dc:format>    <dc:type rdf:resource="http://purl.org/dc/dcmitype/StillImage"/>    <dc:title/>   </cc:Work>  </rdf:RDF> </metadata> <g transform="translate(-151.39 -117.97)">  <g transform="translate(.39250 .85750)">   <path style="color-rendering:auto;text-decoration-color:#000000;color:#000000;shape-rendering:auto;solid-color:#000000;text-decoration-line:none;fill:#191919;mix-blend-mode:normal;block-progression:tb;text-indent:0;image-rendering:auto;white-space:normal;text-decoration-style:solid;isolation:auto;text-transform:none" d="m163.5 123.27c-3.4931 0-6.3379 2.8448-6.3379 6.3379s2.8448 6.3398 6.3379 6.3398 6.3379-2.8467 6.3379-6.3398-2.8448-6.3379-6.3379-6.3379zm0 1.3008c2.7905 0 5.0391 2.2466 5.0391 5.0371s-2.2485 5.0391-5.0391 5.0391c-2.7905 0-5.0391-2.2485-5.0391-5.0391 0-2.7905 2.2485-5.0371 5.0391-5.0371z"/>   <circle cx="163.5" cy="129.61" r="1.9312" style="fill:#191919"/>   <path style="color-rendering:auto;text-decoration-color:#000000;color:#000000;shape-rendering:auto;solid-color:#000000;text-decoration-line:none;fill:#191919;fill-rule:evenodd;mix-blend-mode:normal;block-progression:tb;text-indent:0;image-rendering:auto;white-space:normal;text-decoration-style:solid;isolation:auto;text-transform:none" d="m162.85 120.57v3.3555h1.3008v-3.3555h-1.3008z"/>   <path style="color-rendering:auto;text-decoration-color:#000000;color:#000000;shape-rendering:auto;solid-color:#000000;text-decoration-line:none;fill:#191919;fill-rule:evenodd;mix-blend-mode:normal;block-progression:tb;text-indent:0;image-rendering:auto;white-space:normal;text-decoration-style:solid;isolation:auto;text-transform:none" d="m162.85 135.3v3.3555h1.3008v-3.3555h-1.3008z"/>   <path style="color-rendering:auto;text-decoration-color:#000000;color:#000000;shape-rendering:auto;solid-color:#000000;text-decoration-line:none;fill:#191919;fill-rule:evenodd;mix-blend-mode:normal;block-progression:tb;text-indent:0;image-rendering:auto;white-space:normal;text-decoration-style:solid;isolation:auto;text-transform:none" d="m154.46 128.96v1.2988h3.3535v-1.2988h-3.3535z"/>   <path style="color-rendering:auto;text-decoration-color:#000000;color:#000000;shape-rendering:auto;solid-color:#000000;text-decoration-line:none;fill:#191919;fill-rule:evenodd;mix-blend-mode:normal;block-progression:tb;text-indent:0;image-rendering:auto;white-space:normal;text-decoration-style:solid;isolation:auto;text-transform:none" d="m169.19 128.96v1.2988h3.3535v-1.2988h-3.3535z"/>  </g> </g></svg>';
 
 var _typeof = typeof Symbol === "function" && _typeof$1(Symbol.iterator) === "symbol" ? function (obj) {
   return typeof obj === 'undefined' ? 'undefined' : _typeof$1(obj);
@@ -464,11 +466,66 @@ if (typeof L !== 'undefined' && (typeof L === 'undefined' ? 'undefined' : _typeo
   L.nlmapsBgLayer = function (options, source) {
     return new L.NlmapsBgLayer(options, source);
   };
+
+  L.Control.GeoLocatorControl = L.Control.extend({
+    options: {
+      position: 'topright'
+    },
+    initialize: function initialize(options) {
+      // set default options if nothing is set (merge one step deep)
+      for (var i in options) {
+        if (_typeof(this.options[i]) === 'object') {
+          L.extend(this.options[i], options[i]);
+        } else {
+          this.options[i] = options[i];
+        }
+      }
+    },
+
+    onAdd: function onAdd(map) {
+      var div = L.DomUtil.create('div');
+      div.id = 'nlmaps-geolocator-control';
+      div.style.backgroundColor = '#fff';
+      div.style.cursor = 'pointer';
+      div.style.boxShadow = '0 1px 5px rgba(0, 0, 0, 0.65)';
+      div.style.height = '26px';
+      div.style.width = '26px';
+      div.style.borderRadius = '26px 26px';
+      div.innerHTML = geolocator_icon;
+      if (this.options.geolocator.isStarted()) {
+        L.DomUtil.addClass(div, 'started');
+      }
+      function moveMap(position) {
+        map.panTo([position.coords.latitude, position.coords.longitude]);
+      }
+      L.DomEvent.on(div, 'click', function (e) {
+        this.options.geolocator.start();
+        L.DomUtil.addClass(div, 'started');
+      }, this);
+      this.options.geolocator.on('position', function (d) {
+        L.DomUtil.removeClass(div, 'started');
+        L.DomUtil.addClass(div, 'has-position');
+        moveMap(d);
+      });
+      return div;
+    },
+    onRemove: function onRemove(map) {}
+  });
+
+  L.geoLocatorControl = function (geolocator) {
+    return new L.Control.GeoLocatorControl({ geolocator: geolocator });
+  };
 }
 
 function bgLayer(name) {
   if (typeof L !== 'undefined' && (typeof L === 'undefined' ? 'undefined' : _typeof(L)) === 'object') {
     return L.nlmapsBgLayer(name);
+  }
+}
+
+function geoLocatorControl(geolocator) {
+  if (typeof L !== 'undefined' && (typeof L === 'undefined' ? 'undefined' : _typeof(L)) === 'object') {
+    return L.geoLocatorControl(geolocator);
   }
 }
 
@@ -482,8 +539,7 @@ function bgLayer(name) {
 var lufostring$1 = 'luchtfoto/rgb';
 var brtstring$1 = 'tiles/service';
 var servicecrs$1 = '/EPSG:3857';
-var attr$1 = 'Kaartgegevens &copy; <a href="kadaster.nl">Kadaster</a>';
-
+var attr$1 = 'Kaartgegevens &copy; <a href="kadaster.nl">Kadaster</a> | <a href="http://www.verbeterdekaart.nl">verbeter de kaart</a>';
 function baseUrl$1(name) {
   return 'https://geodata.nationaalgeoregister.nl/' + (name === 'luchtfoto' ? lufostring$1 : brtstring$1) + '/wmts/';
 }
@@ -546,6 +602,8 @@ function getProvider$1(name) {
     console.error('NL Maps error: You asked for a style which does not exist! Available styles: ' + Object.keys(PROVIDERS$1).join(', '));
   }
 }
+
+var geolocator_icon$1 = '<?xml version="1.0" encoding="UTF-8" standalone="no"?><svg xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns="http://www.w3.org/2000/svg" height="7.0556mm" width="7.0556mm" version="1.1" xmlns:cc="http://creativecommons.org/ns#" xmlns:dc="http://purl.org/dc/elements/1.1/" viewBox="0 0 24.999999 24.999999"> <metadata>  <rdf:RDF>   <cc:Work rdf:about="">    <dc:format>image/svg+xml</dc:format>    <dc:type rdf:resource="http://purl.org/dc/dcmitype/StillImage"/>    <dc:title/>   </cc:Work>  </rdf:RDF> </metadata> <g transform="translate(-151.39 -117.97)">  <g transform="translate(.39250 .85750)">   <path style="color-rendering:auto;text-decoration-color:#000000;color:#000000;shape-rendering:auto;solid-color:#000000;text-decoration-line:none;fill:#191919;mix-blend-mode:normal;block-progression:tb;text-indent:0;image-rendering:auto;white-space:normal;text-decoration-style:solid;isolation:auto;text-transform:none" d="m163.5 123.27c-3.4931 0-6.3379 2.8448-6.3379 6.3379s2.8448 6.3398 6.3379 6.3398 6.3379-2.8467 6.3379-6.3398-2.8448-6.3379-6.3379-6.3379zm0 1.3008c2.7905 0 5.0391 2.2466 5.0391 5.0371s-2.2485 5.0391-5.0391 5.0391c-2.7905 0-5.0391-2.2485-5.0391-5.0391 0-2.7905 2.2485-5.0371 5.0391-5.0371z"/>   <circle cx="163.5" cy="129.61" r="1.9312" style="fill:#191919"/>   <path style="color-rendering:auto;text-decoration-color:#000000;color:#000000;shape-rendering:auto;solid-color:#000000;text-decoration-line:none;fill:#191919;fill-rule:evenodd;mix-blend-mode:normal;block-progression:tb;text-indent:0;image-rendering:auto;white-space:normal;text-decoration-style:solid;isolation:auto;text-transform:none" d="m162.85 120.57v3.3555h1.3008v-3.3555h-1.3008z"/>   <path style="color-rendering:auto;text-decoration-color:#000000;color:#000000;shape-rendering:auto;solid-color:#000000;text-decoration-line:none;fill:#191919;fill-rule:evenodd;mix-blend-mode:normal;block-progression:tb;text-indent:0;image-rendering:auto;white-space:normal;text-decoration-style:solid;isolation:auto;text-transform:none" d="m162.85 135.3v3.3555h1.3008v-3.3555h-1.3008z"/>   <path style="color-rendering:auto;text-decoration-color:#000000;color:#000000;shape-rendering:auto;solid-color:#000000;text-decoration-line:none;fill:#191919;fill-rule:evenodd;mix-blend-mode:normal;block-progression:tb;text-indent:0;image-rendering:auto;white-space:normal;text-decoration-style:solid;isolation:auto;text-transform:none" d="m154.46 128.96v1.2988h3.3535v-1.2988h-3.3535z"/>   <path style="color-rendering:auto;text-decoration-color:#000000;color:#000000;shape-rendering:auto;solid-color:#000000;text-decoration-line:none;fill:#191919;fill-rule:evenodd;mix-blend-mode:normal;block-progression:tb;text-indent:0;image-rendering:auto;white-space:normal;text-decoration-style:solid;isolation:auto;text-transform:none" d="m169.19 128.96v1.2988h3.3535v-1.2988h-3.3535z"/>  </g> </g></svg>';
 
 var _typeof$2 = typeof Symbol === "function" && _typeof$1(Symbol.iterator) === "symbol" ? function (obj) {
   return typeof obj === 'undefined' ? 'undefined' : _typeof$1(obj);
@@ -731,6 +789,40 @@ function bgLayer$1() {
   }
 }
 
+function geoLocatorControl$1(geolocator, map) {
+  var myControlEl = document.createElement('div');
+  myControlEl.id = 'nlmaps-geolocator-control';
+  myControlEl.style.backgroundColor = '#fff';
+  myControlEl.style.cursor = 'pointer';
+  myControlEl.style.boxShadow = '0 1px 5px rgba(0, 0, 0, 0.65)';
+  myControlEl.style.height = '26px';
+  myControlEl.style.width = '26px';
+  myControlEl.style.borderRadius = '26px 26px';
+  myControlEl.innerHTML = geolocator_icon$1;
+  myControlEl.className = 'ol-control';
+  myControlEl.style.right = '.5em';
+  myControlEl.style.top = '.5em';
+
+  myControlEl.addEventListener('click', function (e) {
+    geolocator.start();
+  });
+  function moveMap(d) {
+    var map = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : map;
+
+    var oldZoom = map.getView().getZoom();
+    var view = new ol.View({
+      center: ol.proj.fromLonLat([d.coords.longitude, d.coords.latitude]),
+      zoom: oldZoom
+    });
+    map.setView(view);
+  }
+  geolocator.on('position', function (d) {
+    moveMap(d, map);
+  });
+  var control = new ol.control.Control({ element: myControlEl });
+  return control;
+}
+
 /*parts copied from maps.stamen.com: https://github.com/stamen/maps.stamen.com/blob/master/js/tile.stamen.js
  * copyright (c) 2012, Stamen Design
  * under BSD 3-Clause license: https://github.com/stamen/maps.stamen.com/blob/master/LICENSE
@@ -804,6 +896,8 @@ function getProvider$2(name) {
     console.error('NL Maps error: You asked for a style which does not exist! Available styles: ' + Object.keys(PROVIDERS$2).join(', '));
   }
 }
+
+var geolocator_icon$2 = '<?xml version="1.0" encoding="UTF-8" standalone="no"?><svg xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns="http://www.w3.org/2000/svg" height="7.0556mm" width="7.0556mm" version="1.1" xmlns:cc="http://creativecommons.org/ns#" xmlns:dc="http://purl.org/dc/elements/1.1/" viewBox="0 0 24.999999 24.999999"> <metadata>  <rdf:RDF>   <cc:Work rdf:about="">    <dc:format>image/svg+xml</dc:format>    <dc:type rdf:resource="http://purl.org/dc/dcmitype/StillImage"/>    <dc:title/>   </cc:Work>  </rdf:RDF> </metadata> <g transform="translate(-151.39 -117.97)">  <g transform="translate(.39250 .85750)">   <path style="color-rendering:auto;text-decoration-color:#000000;color:#000000;shape-rendering:auto;solid-color:#000000;text-decoration-line:none;fill:#191919;mix-blend-mode:normal;block-progression:tb;text-indent:0;image-rendering:auto;white-space:normal;text-decoration-style:solid;isolation:auto;text-transform:none" d="m163.5 123.27c-3.4931 0-6.3379 2.8448-6.3379 6.3379s2.8448 6.3398 6.3379 6.3398 6.3379-2.8467 6.3379-6.3398-2.8448-6.3379-6.3379-6.3379zm0 1.3008c2.7905 0 5.0391 2.2466 5.0391 5.0371s-2.2485 5.0391-5.0391 5.0391c-2.7905 0-5.0391-2.2485-5.0391-5.0391 0-2.7905 2.2485-5.0371 5.0391-5.0371z"/>   <circle cx="163.5" cy="129.61" r="1.9312" style="fill:#191919"/>   <path style="color-rendering:auto;text-decoration-color:#000000;color:#000000;shape-rendering:auto;solid-color:#000000;text-decoration-line:none;fill:#191919;fill-rule:evenodd;mix-blend-mode:normal;block-progression:tb;text-indent:0;image-rendering:auto;white-space:normal;text-decoration-style:solid;isolation:auto;text-transform:none" d="m162.85 120.57v3.3555h1.3008v-3.3555h-1.3008z"/>   <path style="color-rendering:auto;text-decoration-color:#000000;color:#000000;shape-rendering:auto;solid-color:#000000;text-decoration-line:none;fill:#191919;fill-rule:evenodd;mix-blend-mode:normal;block-progression:tb;text-indent:0;image-rendering:auto;white-space:normal;text-decoration-style:solid;isolation:auto;text-transform:none" d="m162.85 135.3v3.3555h1.3008v-3.3555h-1.3008z"/>   <path style="color-rendering:auto;text-decoration-color:#000000;color:#000000;shape-rendering:auto;solid-color:#000000;text-decoration-line:none;fill:#191919;fill-rule:evenodd;mix-blend-mode:normal;block-progression:tb;text-indent:0;image-rendering:auto;white-space:normal;text-decoration-style:solid;isolation:auto;text-transform:none" d="m154.46 128.96v1.2988h3.3535v-1.2988h-3.3535z"/>   <path style="color-rendering:auto;text-decoration-color:#000000;color:#000000;shape-rendering:auto;solid-color:#000000;text-decoration-line:none;fill:#191919;fill-rule:evenodd;mix-blend-mode:normal;block-progression:tb;text-indent:0;image-rendering:auto;white-space:normal;text-decoration-style:solid;isolation:auto;text-transform:none" d="m169.19 128.96v1.2988h3.3535v-1.2988h-3.3535z"/>  </g> </g></svg>';
 
 var _typeof$3 = typeof Symbol === "function" && _typeof$1(Symbol.iterator) === "symbol" ? function (obj) {
   return typeof obj === 'undefined' ? 'undefined' : _typeof$1(obj);
@@ -972,7 +1066,6 @@ var set$3 = function set$3(object, property, value, receiver) {
 };
 
 function AttributionControl(controlDiv, attrControlText) {
-  console.log('this is obviously not side-effect free');
   if ((typeof google === 'undefined' ? 'undefined' : _typeof$3(google)) === 'object' && _typeof$3(google.maps) === 'object') {
     var controlUI = document.createElement('div');
     controlUI.style.backgroundColor = '#fff';
@@ -995,6 +1088,26 @@ function AttributionControl(controlDiv, attrControlText) {
     var error = 'google is not defined';
     throw error;
   }
+}
+
+function geoLocatorControl$2(geolocator, map) {
+  var controlUI = document.createElement('div');
+  controlUI.id = 'nlmaps-geolocator-control';
+  controlUI.innerHTML = geolocator_icon$2;
+  controlUI.style.backgroundColor = '#fff';
+  controlUI.style.cursor = 'pointer';
+  controlUI.style.boxShadow = '0 1px 5px rgba(0, 0, 0, 0.65)';
+  controlUI.style.height = '26px';
+  controlUI.style.width = '26px';
+  controlUI.style.borderRadius = '26px 26px';
+  controlUI.style.margin = '.5em';
+  controlUI.addEventListener('click', function (e) {
+    geolocator.start();
+  }, this);
+  geolocator.on('position', function (position) {
+    map.setCenter({ lat: position.coords.latitude, lng: position.coords.longitude });
+  });
+  return controlUI;
 }
 
 function indexOfMapControl(controlArray, control) {
@@ -1044,14 +1157,15 @@ function makeGoogleLayerOpts(provider) {
 }
 
 function bgLayer$2() {
-  var name = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 'standaard';
+  var map = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : map;
+  var name = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 'standaard';
 
   if ((typeof google === 'undefined' ? 'undefined' : _typeof$3(google)) === 'object' && _typeof$3(google.maps) === 'object') {
     var provider = getProvider$2(name);
     var GoogleLayerOpts = makeGoogleLayerOpts(provider);
     var layer = new google.maps.ImageMapType(GoogleLayerOpts);
     //warning: tight coupling with nlmaps.createMap
-    var ourmap = this.map || map;
+    var ourmap = map || this.map || undefined;
     if (typeof ourmap !== 'undefined') {
       makeGoogleAttrControl(ourmap, provider.attribution);
     }
@@ -1119,15 +1233,141 @@ const PROVIDERS$3 = {
   "luchtfoto": makeProvider$3("luchtfoto", "jpeg", 6, 19)
 };
 
+function createCommonjsModule(fn, module) {
+	return module = { exports: {} }, fn(module, module.exports), module.exports;
+}
+
+var index = createCommonjsModule(function (module) {
+  var EmitOnOff = module.exports = function (thing) {
+    if (!thing) thing = {};
+
+    thing._subs = [];
+    thing._paused = false;
+    thing._pending = [];
+
+    /**
+     * Sub of pubsub
+     * @param  {String}   name name of event
+     * @param  {Function} cb   your callback
+     */
+    thing.on = function (name, cb) {
+      thing._subs[name] = thing._subs[name] || [];
+      thing._subs[name].push(cb);
+    };
+
+    /**
+     * remove sub of pubsub
+     * @param  {String}   name name of event
+     * @param  {Function} cb   your callback
+     */
+    thing.off = function (name, cb) {
+      if (!thing._subs[name]) return;
+      for (var i in thing._subs[name]) {
+        if (thing._subs[name][i] === cb) {
+          thing._subs[name].splice(i);
+          break;
+        }
+      }
+    };
+
+    /**
+     * Pub of pubsub
+     * @param  {String}   name name of event
+     * @param  {Mixed}    data the data to publish
+     */
+    thing.emit = function (name) {
+      if (!thing._subs[name]) return;
+
+      var args = Array.prototype.slice.call(arguments, 1);
+
+      if (thing._paused) {
+        thing._pending[name] = thing._pending[name] || [];
+        thing._pending[name].push(args);
+        return;
+      }
+
+      for (var i in thing._subs[name]) {
+        thing._subs[name][i].apply(thing, args);
+      }
+    };
+
+    thing.pause = function () {
+      thing._paused = true;
+    };
+
+    thing.resume = function () {
+      thing._paused = false;
+
+      for (var name in thing._pending) {
+        for (var i = 0; i < thing._pending[name].length; i++) {
+          thing.emit(name, thing._pending[name][i]);
+        }
+      }
+    };
+
+    return thing;
+  };
+});
+
+const geoLocateDefaultOpts$1 = {
+  follow: false
+};
+
+function positionHandler(position) {
+  this.emit('position', position);
+}
+function positionErrorHandler(error) {
+  this.emit('error', error);
+}
+
+const GeoLocator = function (opts) {
+  const state = Object.assign({}, geoLocateDefaultOpts$1, opts);
+
+  return {
+    start() {
+      state.started = true;
+      navigator.geolocation.getCurrentPosition(positionHandler.bind(this), positionErrorHandler.bind(this), { maximumAge: 60000 });
+      return this;
+    },
+    stop() {
+      state.started = false;
+      return this;
+    },
+    isStarted() {
+      return state.started;
+    },
+    log() {
+      console.log(state);
+      return this;
+    }
+  };
+};
+
+function geoLocator(opts) {
+  if ('geolocation' in navigator) {
+    let geolocator = index(GeoLocator(opts));
+    geolocator.on('position', function (position) {
+      this.stop();
+    });
+    return geolocator;
+  } else {
+    let error = 'geolocation is not available in your browser.';
+    throw error;
+  }
+}
+
 var nlmaps = {
   leaflet: {
-    bgLayer: bgLayer
+    bgLayer: bgLayer,
+    geoLocatorControl: geoLocatorControl
   },
   openlayers: {
-    bgLayer: bgLayer$1
+    bgLayer: bgLayer$1,
+    geoLocatorControl: geoLocatorControl$1
   },
   googlemaps: {
-    bgLayer: bgLayer$2
+    bgLayer: bgLayer$2,
+    geoLocatorControl: geoLocatorControl$2
   }
 };
 
@@ -1141,6 +1381,9 @@ var mapdefaults = {
   attribution: true
 };
 
+//for future use
+var geoLocateDefaultOpts = {};
+
 function testWhichLib() {
   var defined = [];
   if ((typeof L === 'undefined' ? 'undefined' : _typeof$1(L)) === 'object') {
@@ -1152,7 +1395,6 @@ function testWhichLib() {
   if ((typeof ol === 'undefined' ? 'undefined' : _typeof$1(ol)) === 'object') {
     defined.push('openlayers');
   }
-
   if (defined.length > 1) {
     return 'too many libs';
   } else if (defined.length === 0) {
@@ -1182,7 +1424,6 @@ function initMap(lib, opts) {
         }),
         target: opts.target
       });
-
   }
   return map;
 }
@@ -1210,38 +1451,68 @@ function addLayerToMap(lib, layer, map, name) {
     case 'openlayers':
       map.addLayer(layer);
       break;
-
+  }
+}
+function createLayer(lib, map, name) {
+  switch (lib) {
+    case 'leaflet':
+      return nlmaps.leaflet.bgLayer(name);
+      break;
+    case 'googlemaps':
+      return nlmaps.googlemaps.bgLayer(map, name);
+      break;
+    case 'openlayers':
+      return nlmaps.openlayers.bgLayer(name);
+      break;
   }
 }
 
-//partial application with map added to this
-var partialApply = function partialApply(fn, mapProxy, name) {
-  var foo = {
-    map: mapProxy
-  };
-  return function () {
-    return fn.call(foo, name);
-  };
-};
+function mergeOpts(defaultopts, useropts) {
+  return Object.assign({}, defaultopts, useropts);
+}
+
+nlmaps.lib = testWhichLib();
 
 nlmaps.createMap = function () {
   var useropts = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
 
-  var opts = Object.assign({}, mapdefaults, useropts);
-  var lib = testWhichLib();
+  var opts = mergeOpts(mapdefaults, useropts);
   try {
-    if (lib === 'too many libs' || lib === 'too few libs') {
+    if (nlmaps.lib === 'too many libs' || nlmaps.lib === 'too few libs') {
       throw { message: 'one and only one map library can be defined. Please Refer to the documentation to see which map libraries are supported.' };
-      return;
     }
   } catch (e) {
     console.error(e.message);
   }
-  var map = initMap(lib, opts);
-  var addLayer = partialApply(nlmaps[lib].bgLayer, map, opts.style);
-  var layer = addLayer();
-  addLayerToMap(lib, layer, map, opts.style);
+  var map = initMap(nlmaps.lib, opts);
+  var layer = createLayer(nlmaps.lib, map, opts.style);
+  addLayerToMap(nlmaps.lib, layer, map, opts.style);
   return map;
+};
+
+function addGeoLocControlToMap(lib, geolocator, map) {
+  var control = void 0;
+  switch (lib) {
+    case 'leaflet':
+      nlmaps[lib].geoLocatorControl(geolocator).addTo(map);
+      break;
+    case 'googlemaps':
+      control = nlmaps[lib].geoLocatorControl(geolocator, map);
+      map.controls[google.maps.ControlPosition.TOP_RIGHT].push(control);
+      break;
+    case 'openlayers':
+      control = nlmaps[lib].geoLocatorControl(geolocator, map);
+      map.addControl(control);
+      break;
+  }
+}
+
+nlmaps.geoLocate = function (map) {
+  var useropts = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
+
+  var opts = mergeOpts(geoLocateDefaultOpts, useropts);
+  var geolocator = geoLocator(opts);
+  addGeoLocControlToMap(nlmaps.lib, geolocator, map);
 };
 
 return nlmaps;

@@ -1,7 +1,6 @@
-import { getProvider} from '../../lib/index.js';
+import { getProvider, geolocator_icon } from '../../lib/index.js';
 
 function AttributionControl(controlDiv, attrControlText) {
-  console.log('this is obviously not side-effect free')
   if (typeof google === 'object' && typeof google.maps === 'object') {
     let controlUI = document.createElement('div');
     controlUI.style.backgroundColor = '#fff';
@@ -24,6 +23,26 @@ function AttributionControl(controlDiv, attrControlText) {
     const error = 'google is not defined'; 
     throw error;
   }
+}
+
+function geoLocatorControl (geolocator, map){
+    let controlUI = document.createElement('div');
+    controlUI.id = 'nlmaps-geolocator-control';
+    controlUI.innerHTML = geolocator_icon;
+    controlUI.style.backgroundColor = '#fff';
+    controlUI.style.cursor = 'pointer';
+    controlUI.style.boxShadow = '0 1px 5px rgba(0, 0, 0, 0.65)';
+    controlUI.style.height = '26px';
+    controlUI.style.width = '26px';
+    controlUI.style.borderRadius = '26px 26px';
+    controlUI.style.margin = '.5em';
+    controlUI.addEventListener( 'click', function(e){
+      geolocator.start();
+    }, this);
+    geolocator.on('position', function(position) {
+      map.setCenter({lat:position.coords.latitude,lng:position.coords.longitude});
+    })
+    return controlUI;
 }
 
 function indexOfMapControl(controlArray, control){
@@ -68,13 +87,13 @@ function makeGoogleLayerOpts(provider){
 }
 
 
-function bgLayer (name='standaard') {
+function bgLayer (map=map, name='standaard') {
   if (typeof google === 'object' && typeof google.maps === 'object') {
     const provider = getProvider(name);
     const GoogleLayerOpts = makeGoogleLayerOpts(provider);
     let layer = new google.maps.ImageMapType(GoogleLayerOpts);
     //warning: tight coupling with nlmaps.createMap
-    let ourmap = this.map || map;
+    let ourmap =  map || this.map || undefined;
     if (typeof ourmap !== 'undefined') {
       makeGoogleAttrControl(ourmap, provider.attribution)
     }
@@ -86,4 +105,4 @@ function bgLayer (name='standaard') {
 
 }
 
-export { bgLayer };
+export { bgLayer, geoLocatorControl };

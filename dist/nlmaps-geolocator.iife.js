@@ -1,4 +1,4 @@
-var geolocator = (function () {
+(function (exports) {
 'use strict';
 
 function createCommonjsModule(fn, module) {
@@ -124,6 +124,6 @@ function geoLocator(opts) {
   }
 }
 
-return geoLocator;
+exports.geoLocator = geoLocator;
 
-}());
+}((this.window = this.window || {})));

@@ -409,6 +409,9 @@ var mapdefaults = {
   attribution: true
 };
 
+//for future use
+var geoLocateDefaultOpts = {};
+
 function testWhichLib() {
   var defined = [];
   if ((typeof L === 'undefined' ? 'undefined' : _typeof(L)) === 'object') {
@@ -420,7 +423,6 @@ function testWhichLib() {
   if ((typeof ol === 'undefined' ? 'undefined' : _typeof(ol)) === 'object') {
     defined.push('openlayers');
   }
-
   if (defined.length > 1) {
     return 'too many libs';
   } else if (defined.length === 0) {
@@ -450,7 +452,6 @@ function initMap(lib, opts) {
         }),
         target: opts.target
       });
-
   }
   return map;
 }
@@ -478,19 +479,21 @@ function addLayerToMap(lib, layer, map, name) {
     case 'openlayers':
       map.addLayer(layer);
       break;
-
   }
 }
-
-//partial application with map added to this
-var partialApply = function partialApply(fn, mapProxy, name) {
-  var foo = {
-    map: mapProxy
-  };
-  return function () {
-    return fn.call(foo, name);
-  };
-};
+function createLayer(lib, map, name) {
+  switch (lib) {
+    case 'leaflet':
+      return nlmaps.leaflet.bgLayer(name);
+      break;
+    case 'googlemaps':
+      return nlmaps.googlemaps.bgLayer(map, name);
+      break;
+    case 'openlayers':
+      return nlmaps.openlayers.bgLayer(name);
+      break;
+  }
+}
 
 function mergeOpts(defaultopts, useropts) {
   return Object.assign({}, defaultopts, useropts);
@@ -505,20 +508,14 @@ nlmaps.createMap = function () {
   try {
     if (nlmaps.lib === 'too many libs' || nlmaps.lib === 'too few libs') {
       throw { message: 'one and only one map library can be defined. Please Refer to the documentation to see which map libraries are supported.' };
-      return;
     }
   } catch (e) {
     console.error(e.message);
   }
   var map = initMap(nlmaps.lib, opts);
-  var addLayer = partialApply(nlmaps[nlmaps.lib].bgLayer, map, opts.style);
-  var layer = addLayer();
+  var layer = createLayer(nlmaps.lib, map, opts.style);
   addLayerToMap(nlmaps.lib, layer, map, opts.style);
   return map;
-};
-
-var geoLocateDefaultOpts = {
-  follow: false
 };
 
 function addGeoLocControlToMap(lib, geolocator, map) {
@@ -529,14 +526,12 @@ function addGeoLocControlToMap(lib, geolocator, map) {
       break;
     case 'googlemaps':
       control = nlmaps[lib].geoLocatorControl(geolocator, map);
-      map.controls[google.maps.ControlPosition.TOP_LEFT].push(control);
+      map.controls[google.maps.ControlPosition.TOP_RIGHT].push(control);
       break;
     case 'openlayers':
       control = nlmaps[lib].geoLocatorControl(geolocator, map);
       map.addControl(control);
-
       break;
-
   }
 }
 
@@ -545,9 +540,7 @@ nlmaps.geoLocate = function (map) {
 
   var opts = mergeOpts(geoLocateDefaultOpts, useropts);
   var geolocator = geoLocator(opts);
-  console.log('oh hai');
   addGeoLocControlToMap(nlmaps.lib, geolocator, map);
-  //
 };
 
 module.exports = nlmaps;

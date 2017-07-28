@@ -279,7 +279,6 @@ var set = function set(object, property, value, receiver) {
 };
 
 function AttributionControl(controlDiv, attrControlText) {
-  console.log('this is obviously not side-effect free');
   if ((typeof google === 'undefined' ? 'undefined' : _typeof(google)) === 'object' && _typeof(google.maps) === 'object') {
     var controlUI = document.createElement('div');
     controlUI.style.backgroundColor = '#fff';
@@ -306,6 +305,7 @@ function AttributionControl(controlDiv, attrControlText) {
 
 function geoLocatorControl(geolocator, map) {
   var controlUI = document.createElement('div');
+  controlUI.id = 'nlmaps-geolocator-control';
   controlUI.innerHTML = geolocator_icon;
   controlUI.style.backgroundColor = '#fff';
   controlUI.style.cursor = 'pointer';
@@ -313,16 +313,12 @@ function geoLocatorControl(geolocator, map) {
   controlUI.style.height = '26px';
   controlUI.style.width = '26px';
   controlUI.style.borderRadius = '26px 26px';
-  function moveMap(position) {
-    var map = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : map;
-
-    map.setCenter({ lat: position.coords.latitude, lng: position.coords.longitude });
-  }
+  controlUI.style.margin = '.5em';
   controlUI.addEventListener('click', function (e) {
     geolocator.start();
   }, this);
-  geolocator.on('position', function (d) {
-    moveMap(d, map);
+  geolocator.on('position', function (position) {
+    map.setCenter({ lat: position.coords.latitude, lng: position.coords.longitude });
   });
   return controlUI;
 }
@@ -374,14 +370,15 @@ function makeGoogleLayerOpts(provider) {
 }
 
 function bgLayer() {
-  var name = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 'standaard';
+  var map = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : map;
+  var name = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 'standaard';
 
   if ((typeof google === 'undefined' ? 'undefined' : _typeof(google)) === 'object' && _typeof(google.maps) === 'object') {
     var provider = getProvider(name);
     var GoogleLayerOpts = makeGoogleLayerOpts(provider);
     var layer = new google.maps.ImageMapType(GoogleLayerOpts);
     //warning: tight coupling with nlmaps.createMap
-    var ourmap = this.map || map;
+    var ourmap = map || this.map || undefined;
     if (typeof ourmap !== 'undefined') {
       makeGoogleAttrControl(ourmap, provider.attribution);
     }

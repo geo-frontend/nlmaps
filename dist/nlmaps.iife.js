@@ -469,7 +469,7 @@ if (typeof L !== 'undefined' && (typeof L === 'undefined' ? 'undefined' : _typeo
 
   L.Control.GeoLocatorControl = L.Control.extend({
     options: {
-      position: 'topleft'
+      position: 'topright'
     },
     initialize: function initialize(options) {
       // set default options if nothing is set (merge one step deep)
@@ -483,7 +483,8 @@ if (typeof L !== 'undefined' && (typeof L === 'undefined' ? 'undefined' : _typeo
     },
 
     onAdd: function onAdd(map) {
-      var div = L.DomUtil.create('div', 'mycontrol');
+      var div = L.DomUtil.create('div');
+      div.id = 'nlmaps-geolocator-control';
       div.style.backgroundColor = '#fff';
       div.style.cursor = 'pointer';
       div.style.boxShadow = '0 1px 5px rgba(0, 0, 0, 0.65)';
@@ -630,6 +631,7 @@ function bgLayer$1() {
 
 function geoLocatorControl$1(geolocator, map) {
   var myControlEl = document.createElement('div');
+  myControlEl.id = 'nlmaps-geolocator-control';
   myControlEl.style.backgroundColor = '#fff';
   myControlEl.style.cursor = 'pointer';
   myControlEl.style.boxShadow = '0 1px 5px rgba(0, 0, 0, 0.65)';
@@ -638,7 +640,8 @@ function geoLocatorControl$1(geolocator, map) {
   myControlEl.style.borderRadius = '26px 26px';
   myControlEl.innerHTML = geolocator_icon$1;
   myControlEl.className = 'ol-control';
-  myControlEl.style.bottom = '.5em';
+  myControlEl.style.right = '.5em';
+  myControlEl.style.top = '.5em';
 
   myControlEl.addEventListener('click', function (e) {
     geolocator.start();
@@ -903,7 +906,6 @@ var set$2 = function set$2(object, property, value, receiver) {
 };
 
 function AttributionControl(controlDiv, attrControlText) {
-  console.log('this is obviously not side-effect free');
   if ((typeof google === 'undefined' ? 'undefined' : _typeof$3(google)) === 'object' && _typeof$3(google.maps) === 'object') {
     var controlUI = document.createElement('div');
     controlUI.style.backgroundColor = '#fff';
@@ -930,6 +932,7 @@ function AttributionControl(controlDiv, attrControlText) {
 
 function geoLocatorControl$2(geolocator, map) {
   var controlUI = document.createElement('div');
+  controlUI.id = 'nlmaps-geolocator-control';
   controlUI.innerHTML = geolocator_icon$2;
   controlUI.style.backgroundColor = '#fff';
   controlUI.style.cursor = 'pointer';
@@ -937,16 +940,12 @@ function geoLocatorControl$2(geolocator, map) {
   controlUI.style.height = '26px';
   controlUI.style.width = '26px';
   controlUI.style.borderRadius = '26px 26px';
-  function moveMap(position) {
-    var map = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : map;
-
-    map.setCenter({ lat: position.coords.latitude, lng: position.coords.longitude });
-  }
+  controlUI.style.margin = '.5em';
   controlUI.addEventListener('click', function (e) {
     geolocator.start();
   }, this);
-  geolocator.on('position', function (d) {
-    moveMap(d, map);
+  geolocator.on('position', function (position) {
+    map.setCenter({ lat: position.coords.latitude, lng: position.coords.longitude });
   });
   return controlUI;
 }
@@ -998,14 +997,15 @@ function makeGoogleLayerOpts(provider) {
 }
 
 function bgLayer$2() {
-  var name = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 'standaard';
+  var map = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : map;
+  var name = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 'standaard';
 
   if ((typeof google === 'undefined' ? 'undefined' : _typeof$3(google)) === 'object' && _typeof$3(google.maps) === 'object') {
     var provider = getProvider$2(name);
     var GoogleLayerOpts = makeGoogleLayerOpts(provider);
     var layer = new google.maps.ImageMapType(GoogleLayerOpts);
     //warning: tight coupling with nlmaps.createMap
-    var ourmap = this.map || map;
+    var ourmap = map || this.map || undefined;
     if (typeof ourmap !== 'undefined') {
       makeGoogleAttrControl(ourmap, provider.attribution);
     }
@@ -1221,6 +1221,9 @@ var mapdefaults = {
   attribution: true
 };
 
+//for future use
+var geoLocateDefaultOpts = {};
+
 function testWhichLib() {
   var defined = [];
   if ((typeof L === 'undefined' ? 'undefined' : _typeof$1(L)) === 'object') {
@@ -1232,7 +1235,6 @@ function testWhichLib() {
   if ((typeof ol === 'undefined' ? 'undefined' : _typeof$1(ol)) === 'object') {
     defined.push('openlayers');
   }
-
   if (defined.length > 1) {
     return 'too many libs';
   } else if (defined.length === 0) {
@@ -1262,7 +1264,6 @@ function initMap(lib, opts) {
         }),
         target: opts.target
       });
-
   }
   return map;
 }
@@ -1290,19 +1291,21 @@ function addLayerToMap(lib, layer, map, name) {
     case 'openlayers':
       map.addLayer(layer);
       break;
-
   }
 }
-
-//partial application with map added to this
-var partialApply = function partialApply(fn, mapProxy, name) {
-  var foo = {
-    map: mapProxy
-  };
-  return function () {
-    return fn.call(foo, name);
-  };
-};
+function createLayer(lib, map, name) {
+  switch (lib) {
+    case 'leaflet':
+      return nlmaps.leaflet.bgLayer(name);
+      break;
+    case 'googlemaps':
+      return nlmaps.googlemaps.bgLayer(map, name);
+      break;
+    case 'openlayers':
+      return nlmaps.openlayers.bgLayer(name);
+      break;
+  }
+}
 
 function mergeOpts(defaultopts, useropts) {
   return Object.assign({}, defaultopts, useropts);
@@ -1317,20 +1320,14 @@ nlmaps.createMap = function () {
   try {
     if (nlmaps.lib === 'too many libs' || nlmaps.lib === 'too few libs') {
       throw { message: 'one and only one map library can be defined. Please Refer to the documentation to see which map libraries are supported.' };
-      return;
     }
   } catch (e) {
     console.error(e.message);
   }
   var map = initMap(nlmaps.lib, opts);
-  var addLayer = partialApply(nlmaps[nlmaps.lib].bgLayer, map, opts.style);
-  var layer = addLayer();
+  var layer = createLayer(nlmaps.lib, map, opts.style);
   addLayerToMap(nlmaps.lib, layer, map, opts.style);
   return map;
-};
-
-var geoLocateDefaultOpts = {
-  follow: false
 };
 
 function addGeoLocControlToMap(lib, geolocator, map) {
@@ -1341,14 +1338,12 @@ function addGeoLocControlToMap(lib, geolocator, map) {
       break;
     case 'googlemaps':
       control = nlmaps[lib].geoLocatorControl(geolocator, map);
-      map.controls[google.maps.ControlPosition.TOP_LEFT].push(control);
+      map.controls[google.maps.ControlPosition.TOP_RIGHT].push(control);
       break;
     case 'openlayers':
       control = nlmaps[lib].geoLocatorControl(geolocator, map);
       map.addControl(control);
-
       break;
-
   }
 }
 
@@ -1357,9 +1352,7 @@ nlmaps.geoLocate = function (map) {
 
   var opts = mergeOpts(geoLocateDefaultOpts, useropts);
   var geolocator = geoLocator(opts);
-  console.log('oh hai');
   addGeoLocControlToMap(nlmaps.lib, geolocator, map);
-  //
 };
 
 return nlmaps;

@@ -304,7 +304,7 @@ if (typeof L !== 'undefined' && (typeof L === 'undefined' ? 'undefined' : _typeo
 
   L.Control.GeoLocatorControl = L.Control.extend({
     options: {
-      position: 'topleft'
+      position: 'topright'
     },
     initialize: function initialize(options) {
       // set default options if nothing is set (merge one step deep)
@@ -318,7 +318,8 @@ if (typeof L !== 'undefined' && (typeof L === 'undefined' ? 'undefined' : _typeo
     },
 
     onAdd: function onAdd(map) {
-      var div = L.DomUtil.create('div', 'mycontrol');
+      var div = L.DomUtil.create('div');
+      div.id = 'nlmaps-geolocator-control';
       div.style.backgroundColor = '#fff';
       div.style.cursor = 'pointer';
       div.style.boxShadow = '0 1px 5px rgba(0, 0, 0, 0.65)';

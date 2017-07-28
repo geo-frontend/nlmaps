@@ -103,6 +103,7 @@ function bgLayer() {
 
 function geoLocatorControl(geolocator, map) {
   var myControlEl = document.createElement('div');
+  myControlEl.id = 'nlmaps-geolocator-control';
   myControlEl.style.backgroundColor = '#fff';
   myControlEl.style.cursor = 'pointer';
   myControlEl.style.boxShadow = '0 1px 5px rgba(0, 0, 0, 0.65)';
@@ -111,7 +112,8 @@ function geoLocatorControl(geolocator, map) {
   myControlEl.style.borderRadius = '26px 26px';
   myControlEl.innerHTML = geolocator_icon;
   myControlEl.className = 'ol-control';
-  myControlEl.style.bottom = '.5em';
+  myControlEl.style.right = '.5em';
+  myControlEl.style.top = '.5em';
 
   myControlEl.addEventListener('click', function (e) {
     geolocator.start();
@@ -136,4 +138,4 @@ function geoLocatorControl(geolocator, map) {
 exports.bgLayer = bgLayer;
 exports.geoLocatorControl = geoLocatorControl;
 
-}((this.bgLayer = this.bgLayer || {})));
+}((this.window = this.window || {})));

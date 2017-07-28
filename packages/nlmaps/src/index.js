@@ -29,12 +29,14 @@ let mapdefaults = {
   attribution: true
 };
 
+//for future use
+const geoLocateDefaultOpts = {
+}
 
 function testWhichLib() {
   let defined = [];
   if (typeof L === 'object') {
     defined.push('leaflet');
-  
   }
   if (typeof google === 'object' && typeof google.maps === 'object'){
     defined.push('googlemaps');
@@ -42,7 +44,6 @@ function testWhichLib() {
   if (typeof ol === 'object') {
     defined.push('openlayers');
   }
-
   if( defined.length > 1 ) {
     return 'too many libs';
   } else if ( defined.length === 0 ) {
@@ -72,10 +73,8 @@ function initMap(lib, opts){
         }),
         target: opts.target
       });
-
   }
   return map;
-
 };
 
 //can set center, with optional zoom.
@@ -123,12 +122,8 @@ function addLayerToMap(lib, layer, map, name) {
     case 'openlayers':
       map.addLayer(layer);
       break;
-
   }
-  
-
 }
-
 function createLayer(lib,  map, name) {
   switch (lib) {
     case 'leaflet':
@@ -146,7 +141,6 @@ function createLayer(lib,  map, name) {
 
 function mergeOpts(defaultopts, useropts){
    return Object.assign({}, defaultopts, useropts);
-
 }
 
 nlmaps.lib = testWhichLib();
@@ -156,21 +150,15 @@ nlmaps.createMap = function(useropts = {}) {
   try {
   if (nlmaps.lib === 'too many libs' || nlmaps.lib === 'too few libs') {
     throw({message:'one and only one map library can be defined. Please Refer to the documentation to see which map libraries are supported.'});
-    return;
   }
   } catch (e) {
     console.error(e.message)
-  
   }
   let map = initMap(nlmaps.lib, opts);
   let layer = createLayer(nlmaps.lib, map, opts.style);
   addLayerToMap(nlmaps.lib, layer, map, opts.style);
   return map;
 };
-
-const geoLocateDefaultOpts = {
-  follow: false
-}
 
 function addGeoLocControlToMap(lib, geolocator, map){
   let control;
@@ -185,20 +173,14 @@ function addGeoLocControlToMap(lib, geolocator, map){
     case 'openlayers':
       control = nlmaps[lib].geoLocatorControl(geolocator,map);
       map.addControl(control)
-
       break;
-
   }
-
 }
-
 
 nlmaps.geoLocate = function(map, useropts = {}){
   const opts = mergeOpts(geoLocateDefaultOpts, useropts);
   const geolocator = geoLocator(opts);
-  console.log('oh hai')
   addGeoLocControlToMap(nlmaps.lib, geolocator, map);
-  //
 }
 
 export default nlmaps;

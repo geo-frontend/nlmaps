@@ -8,10 +8,9 @@ import uglify from 'rollup-plugin-uglify';
 
 export default config => {
   return {
-    //entry: config.format === 'iife' ? 'src/browser.js' : 'src/index.js',
-    entry: 'src/index.js',
+    entry: config.format === 'iife' ? 'src/browser.js' : 'src/index.js',
     format: config.format,
-    moduleName: 'geolocator',
+    moduleName: config.format === 'iife' ? 'window' : 'nlmapsOL',
     dest: config.dest,
     plugins: [
       commonjs(),

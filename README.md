@@ -87,12 +87,15 @@ returns a `map` object.
     };
     let map = nlmaps.createMap(opts);
 
-### `nlmaps.<maplib>.bgLayer([style<string>])`
+### `nlmaps.<leaflet|openlayers>.bgLayer([style<string>]) | nlmaps.googlemaps.bgLayer(map, [style])`
 
-Where `<maplib>` is one of `leaflet`, `openlayers` or `googlemaps`, create a layer for the given library configured to fetch tiles for `style` tile source, or if `style` is omitted, for the 'standaard' tilesource. In order to use the `nlmaps` library in conjunction with Mapbox, select `leaflet`.
+Ccreate a layer for the given library configured to fetch tiles for `style` tile source, or if `style` is omitted, for the 'standaard' tilesource. In order to use the `nlmaps` library in conjunction with Mapbox, select `leaflet`.
+
+**NOTE:** for Google Maps, you also need to pass the `map` object as the first argument (so if you pass a style, also pass `map` first.) This is needed for the creation of the Attribution control since Google Maps doesn't configure this automatically.
 
 Arguments:
 
+* map: _map.object_ (only for Google Maps). The `map` to which the layer will be added.
 * style: _string_ (optional). Name of tilesource to load. One of `'standaard'`, `'pastel'`,`'grijs'` or '`luchtfoto`'; default `'standaard'`.
 
 Returns a `layer` object.
@@ -133,7 +136,7 @@ Google Maps requires a bit more code, since we have to add our layer to the `map
       zoom: 8
     });
     
-    let mylayer = nlmaps.openlayers.bgLayer('pastel');
+    let mylayer = nlmaps.openlayers.bgLayer(map, 'pastel'); //don't forget to pass map as first argument
     
     //add your map to the available layers
     map.mapTypes.set(mylayer.name, mylayer);
@@ -150,8 +153,6 @@ To comply with Google Maps JavaScript API [Terms of Service](https://developers.
         mapTypeIds: mapTypeIds
       }
     });
-
-**Attribution:** Leaflet, Mapbox, and OpenLayers automatically create an attribution control if you supply an `attribution` option to the layer (which `nlmaps` does). With Google Maps we have to create it ourselves; see the [examples](examples/googlemaps-attribution.js) folder for some inspiration.
 
 ### Include only your library-specific `bgLayer` function
 

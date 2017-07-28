@@ -24,7 +24,7 @@ L.nlmapsBgLayer = function (options, source) {
 
 L.Control.GeoLocatorControl = L.Control.extend({
   options: {
-    position: 'topleft'
+    position: 'topright'
   },
   initialize: function (options) {
             // set default options if nothing is set (merge one step deep)
@@ -38,7 +38,8 @@ L.Control.GeoLocatorControl = L.Control.extend({
   },
 
   onAdd: function(map){
-    let div = L.DomUtil.create('div', 'mycontrol');
+    let div = L.DomUtil.create('div');
+    div.id = 'nlmaps-geolocator-control';
     div.style.backgroundColor = '#fff';
     div.style.cursor = 'pointer';
     div.style.boxShadow = '0 1px 5px rgba(0, 0, 0, 0.65)';

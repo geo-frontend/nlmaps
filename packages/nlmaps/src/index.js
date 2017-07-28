@@ -168,7 +168,7 @@ function addGeoLocControlToMap(lib, geolocator, map){
       break;
     case 'googlemaps':
       control = nlmaps[lib].geoLocatorControl(geolocator, map)
-      map.controls[google.maps.ControlPosition.TOP_LEFT].push(control);
+      map.controls[google.maps.ControlPosition.TOP_RIGHT].push(control);
       break;
     case 'openlayers':
       control = nlmaps[lib].geoLocatorControl(geolocator,map);

@@ -86,6 +86,20 @@ returns a `map` object.
       zoom: 15
     };
     let map = nlmaps.createMap(opts);
+   
+### nlmaps.geolocate(map<map object>, options<object>)
+
+Creates a geolocator control and adds it to the map. Clicking on the control will initiate a browser geolocation API request and center the map on the result. The geolocator can also be initialized to perform a geolocation request immediately, without waiting for the user to click on the control.
+
+* map: _object map_ (required). the `map` that the geolocator control should be added to.
+* options _object_ (optional). An object with one allowed property, `start: true|false`. If set to true, the geolocator is initialized on page load.
+
+Returns `geolocator` object. See the [nlmaps-geolocator]() package for more information.o
+
+**Example**
+
+    const map = nlmaps.createMap();
+    const geolocator = nlmaps.geoLocate(map, {start: true})
 
 ### `nlmaps.<leaflet|openlayers>.bgLayer([style<string>]) | nlmaps.googlemaps.bgLayer(map, [style])`
 
@@ -105,6 +119,23 @@ Returns a `layer` object.
     const layer = nlmaps.openlayers.bgLayer();
     layer.addTo(map);
 
+
+### nlmaps.<leaflet|openlayers>.geoLocatorControl(geolocator) | nlmaps.googlemaps.geoLocatorControl(geolocator, map)
+
+Creates a control for the given library which talks to the given `geolocator`. The control has a very simple interface: click to initiate a geolocation request and have the map be centered on the resulting location. You need to add the control to the map yourself. Arguments:
+
+* geolocator _object geolocator_ (required): the `geolocator` to which the control should be connected. If you are using this method, you will probably be creating the geolocator yourself with the [nlmaps-geolocator]() package.
+* map _object map_ (only for Google Maps): the map with which the control should be associated.
+
+Returns a geolocator control.
+
+**Example**
+
+    import geoLocator from 'nlmaps-geolocator';
+    import geoLocatorControl from 'nlmaps-leaflet';
+    const geolocator = geoLocator();
+    const control = geoLocatorControl(geolocator);
+    control.addTo(map);
 
 ## Advanced usage
 
@@ -156,7 +187,7 @@ To comply with Google Maps JavaScript API [Terms of Service](https://developers.
 
 ### Include only your library-specific `bgLayer` function
 
-If you want to save as many bytes as possible, simply include the sub-module for your map library instead of the whole `nlmaps` package. Each of these modules provides a `bgLayer()` function which will return a layer for the corresponding map library.
+If you want to save as many bytes as possible, simply include the sub-module for your map library instead of the whole `nlmaps` package. Each of these modules provides a `bgLayer()` function which will return a layer for the corresponding map library, and a `geoLocatorControl()` function which returns a control for the geolocator.
 
 **Web browser:**
 
@@ -177,6 +208,11 @@ this `bgLayer()` function can subsequently be used in the same way as `nlmaps.ma
 ### Removing or further manipulating the map or layer
 
 If you want to remove your map object or layer, you can just use the standard method provided by your library. The objects returned from `createMap()` and `bgLayer()` are just standard `map` and `layer` objects for the appropriate libraries. For example, Leaflet has a `map.remove()` function which destroys the map and clears all event listeners.
+
+### The geolocator and the geoLocatorControls
+
+You can also use the `nlmaps-geolocator` package directly instead of calling it with `nlmaps.geoLocate`. This gives you flexibility to implement your own control. Each of the library-specific sub-packages provides a control which interfaces with the `nlmaps-geolocator` API, but these are quite simple controls with, at the moment, hard-coded css styling. In the future `nlmaps` may provide a css file but for now, if you want to modify the placement, you should provide your own css and/or create your own control.
+
 
 ## Raw tile URLs
 

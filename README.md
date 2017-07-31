@@ -94,7 +94,7 @@ Creates a geolocator control and adds it to the map. Clicking on the control wil
 * map: _object map_ (required). the `map` that the geolocator control should be added to.
 * options _object_ (optional). An object with one allowed property, `start: true|false`. If set to true, the geolocator is initialized on page load.
 
-Returns `geolocator` object. See the [nlmaps-geolocator]() package for more information.o
+Returns `geolocator` object. See the [nlmaps-geolocator](https://www.npmjs.com/package/nlmaps-geolocator) package for more information.
 
 **Example**
 
@@ -124,7 +124,7 @@ Returns a `layer` object.
 
 Creates a control for the given library which talks to the given `geolocator`. The control has a very simple interface: click to initiate a geolocation request and have the map be centered on the resulting location. You need to add the control to the map yourself. Arguments:
 
-* geolocator _object geolocator_ (required): the `geolocator` to which the control should be connected. If you are using this method, you will probably be creating the geolocator yourself with the [nlmaps-geolocator]() package.
+* geolocator _object geolocator_ (required): the `geolocator` to which the control should be connected. If you are using this method, you will probably be creating the geolocator yourself with the [nlmaps-geolocator](https://www.npmjs.com/package/nlmaps-geolocator) package.
 * map _object map_ (only for Google Maps): the map with which the control should be associated.
 
 Returns a geolocator control.

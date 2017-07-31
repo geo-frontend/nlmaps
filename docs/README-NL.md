@@ -95,7 +95,7 @@ Maakt een geolocator control en voegt deze toe aan de kaart. Een klik op de cont
 * map: _object map_ (verplicht). De `map` waar de geolocator aan moet worden toegevoegd.
 * options _object_ (optioneel). Een object met een toegestane eigenschap: `start: true|false`. Wanneer `true`, voert de geocoder meteen een geolocation verzoek uit.
 
-Geeft een `geolocator` object terug. Zie de [nlmaps-geolocator]() package voor meer informatie.
+Geeft een `geolocator` object terug. Zie de [nlmaps-geolocator](https://www.npmjs.com/package/nlmaps-geolocator) package voor meer informatie.
 
 **Voorbeeld**
 
@@ -127,7 +127,7 @@ Maakt een control voor de betreffende bibliotheek die communiceert met de opgege
 
 Argumenten:
 
-* geolocator _object geolocator_ (verplicht): De `geolocator` waar de control mee verbonden moet worden. Als je deze methode gebuikt, zul je waarschijnlijk de geolocator ook zelf aanmaken met de [nlmaps-geolocator]() package.
+* geolocator _object geolocator_ (verplicht): De `geolocator` waar de control mee verbonden moet worden. Als je deze methode gebuikt, zul je waarschijnlijk de geolocator ook zelf aanmaken met de [nlmaps-geolocator](https://www.npmjs.com/package/nlmaps-geolocator) package.
 * map _object map_ (alleen voor Google Maps): de `map` waarmee de control geassocieerd moet worden.
 
 Geeft een geolocator control terug.

@@ -14,7 +14,7 @@ Automatically configure BRT-Achtergrond map layers in [Leaflet](http://leafletjs
 
 ## What it's for
 
-The `nlmaps` JavaScript libary allows you to create layers for Leaflet, Google Maps, Mapbox, or OpenLayers pre-configured to use the BRT Achtergrondkaart layers. You don't need to figure out the tile URLs yourself. To make it even easier, it automatically detect which map library you're using and creates a map pre-loaded with one of the BRT Achtergrondkaart layers.
+The `nlmaps` JavaScript library allows you to create layers for Leaflet, Google Maps, Mapbox, or OpenLayers pre-configured to use the BRT Achtergrondkaart layers. You don't need to figure out the tile URLs yourself. To make it even easier, it automatically detect which map library you're using and creates a map pre-loaded with one of the BRT Achtergrondkaart layers.
 
 ## Usage example
 
@@ -59,7 +59,7 @@ Finally, you will need the `nlmaps` library itself, which you can download from 
 
 Leaflet, Google Maps, Mapbox, or OpenLayers will also need to be available in your final web browser scope. One way you can do this is to install a package that wraps your map library for Node; in that case `npm install -S` it (for example, [leaflet-headless](https://www.npmjs.com/package/leaflet-headless), [google-maps](https://www.npmjs.com/package/google-maps) or [openlayers](https://www.npmjs.com/package/openlayers)). You can also include it as a script in the html file that loads your final app output.
 
-**Note on using Mapbox:** if you are using the Mapbox library, follow the instructions here for Leaflet. Since Mapbox includes the Leaflet library it will work the same.
+**Note on using Mapbox:** if you are using the Mapbox library, follow the instructions for Leaflet. Since Mapbox includes the Leaflet library it will work the same.
 
 ## API documentation
 

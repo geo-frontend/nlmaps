@@ -36,7 +36,7 @@ De [NL Maps wizard](https://nlmaps.nl/#wizard) maakt het heel eenvoudig om the b
 
 ### Handmatige browser-configuratie
 
-Je hebt een van de volgende nodig: Leaflet, Google Maps of OpenLayers. `nlmaps` detecteert automatisch welke aanwezig is (en beschouwt het momenteel als een fout als meer dan een aanwezig is). Voor meer informatie over het gebruik van de betreffende bibliotheken kun je bij hun documentatie terecht:
+Je hebt één van de volgende bibliotheken nodig: Leaflet, Google Maps of OpenLayers. `nlmaps` detecteert automatisch welke aanwezig is (en beschouwt het momenteel als een fout als meer dan één aanwezig is). Voor meer informatie over het gebruik van de betreffende bibliotheken raadpleeg de eigen documentatie:
 
 * [Leaflet](http://leafletjs.com/examples.html)
 * [Google Maps](https://developers.google.com/maps/documentation/javascript/)
@@ -58,20 +58,20 @@ Tenslotte heb je nog de `nlmaps` bibliotheek zelf nodig. Deze kun je downloaden 
     //ES2015 Modules
     import nlmaps from 'nlmaps';
 
-Leaflet, Google Maps, Mapbox of OpenLayers zal ook beschikbaar moet en zijn in je webpagina. Een manier om dit voor elkaar te krijgen is om een package te installeren die je kaartbibliotheek wrapt voor Node: dat doe je met `npm install -S <package-naam>` (bijvoorbeeld, [leaflet-headless](https://www.npmjs.com/package/leaflet-headless), [google-maps](https://www.npmjs.com/package/google-maps) or [openlayers](https://www.npmjs.com/package/openlayers)). Je kan je kaartbibliotheek ook natuurlijk als script zetten in het html-bestand waar je app output in terecht komt.
+Leaflet, Google Maps, Mapbox of OpenLayers zullen ook beschikbaar moeten zijn in je webpagina. Een manier om dit voor elkaar te krijgen is om een package te installeren die je kaartbibliotheek wrapt voor Node: dat doe je met `npm install -S <package-naam>` (bijvoorbeeld, [leaflet-headless](https://www.npmjs.com/package/leaflet-headless), [google-maps](https://www.npmjs.com/package/google-maps) or [openlayers](https://www.npmjs.com/package/openlayers)). Je kan je kaartbibliotheek ook natuurlijk als script zetten in het html-bestand waar je app output in terecht komt.
 
-**Over het gebruik van Mapbox:** Als je de Mapbox bibliotheek gebruikt, volg dan hier de instructies voor Leaflet. Mapbox bevat de Leaflet bibliotheek en zal dus op dezelfde manier werken.
+**Over het gebruik van Mapbox:** Als je de Mapbox bibliotheek gebruikt, volg dan de instructies voor Leaflet. Mapbox bevat de Leaflet bibliotheek en zal dus op dezelfde manier werken.
 
 ## API documentation
 
 ### `nlmaps.createMap(options<object>)`
 
-Maakt met gebruik van Leaflet, Google Maps, Mapbox of OpenLayers een kaart, waar een BRT-Achtergrondkaartlaag al aan is toegevoegd als achtergrondlaag. Wordt geconfigureerd met een options object met de volgende eigenschappen:
+Maakt een kaart, met gebruik van Leaflet, Google Maps, Mapbox of OpenLayers, waar een BRT-Achtergrondkaartlaag al aan is toegevoegd als achtergrondlaag. De kaart wordt geconfigureerd met een options object met de volgende eigenschappen:
 
 * style: _string_ (optioneel). een van `'standaard'`, `'pastel'`, '`grijs'` of `'luchtfoto'`, default `'standaard'`.
 * target: _string_ (verplicht). id van `div` waar de kaart in moet worden gemaakt.
-* center: _object_ (optioneel). object met latitude en longitude eigenschappen voor het instellen van het initiele kaartbeeld. Standaard is een punt dichtbij het centrum van Nederland.
-* zoom: _number_ (optioneel). Zoomniveau voor het initiele kaartbeeld. Standaard `8`.
+* center: _object_ (optioneel). object met latitude en longitude eigenschappen voor het instellen van het initiële kaartbeeld. Standaard rond het centrum van Nederland.
+* zoom: _number_ (optioneel). Zoomniveau voor het initiële kaartbeeld. Standaard `8`.
 
 Geeft een `map` object terug.
 
@@ -90,7 +90,7 @@ Geeft een `map` object terug.
    
 ### nlmaps.geolocate(map<map object>, options<object>)
 
-Maakt een geolocator control en voegt deze toe aan de kaart. Een klik op de control initializeert een verzoek aan de browser geolocation API en centreert de kaart op de resulterende locatie. De geolocator kan ook worden ingesteld om meteen een geolocation verzoek uit te voeren, zonder te wachten tot de gebruiker op de control klikt.
+Maakt een geolocator control en voegt deze toe aan de kaart. Een klik op de control initialiseert een verzoek aan de browser geolocation API en centreert de kaart op de resulterende locatie. De geolocator kan ook worden ingesteld om meteen een geolocation verzoek uit te voeren, zonder te wachten tot de gebruiker op de control klikt.
 
 * map: _object map_ (verplicht). De `map` waar de geolocator aan moet worden toegevoegd.
 * options _object_ (optioneel). Een object met een toegestane eigenschap: `start: true|false`. Wanneer `true`, voert de geocoder meteen een geolocation verzoek uit.
@@ -104,8 +104,7 @@ Geeft een `geolocator` object terug. Zie de [nlmaps-geolocator]() package voor m
 
 ### `nlmaps.<leaflet|openlayers>.bgLayer([style<string>]) | nlmaps.googlemaps.bgLayer(map, [style])`
 
-Maakt een laag voor de betreffende bibliotheek die tegels opvraagd voor de tegelset `style`. Als `style` wordt weggelaten, vraagt het de 'standaard' tegelset op. Om `nlmaps` te gebruiken met Mapbox, selecteer `leaflet`.
-Ccreate a layer for the given library configured to fetch tiles for `style` tile source, or if `style` is omitted, for the 'standaard' tilesource. In order to use the `nlmaps` library in conjunction with Mapbox, select `leaflet`.
+Maakt een laag voor de betreffende bibliotheek die tegels opvraagt voor de tegelset `style`. Als `style` wordt weggelaten, vraagt het de 'standaard' tegelset op. Om `nlmaps` te gebruiken met Mapbox, selecteer `leaflet`.
 
 **NOOT:** voor Googe Maps moet je ook een `map` object meegeven als eerste argument. Dus als je ook een style meegeeft, geef dan als eerste argument `map`. Dit is nodig voor het maken van de Attributie control, omdat Google Maps dit niet automatisch configureert.
 
@@ -124,7 +123,7 @@ Geeft een `layer` object terug.
 
 ### nlmaps.<leaflet|openlayers>.geoLocatorControl(geolocator) | nlmaps.googlemaps.geoLocatorControl(geolocator, map)
 
-Maakt een control voor de  betreffende bibliotheek die communiceert met de opgegeven `geolocator`. De control heeft een hele simpele interface: klik om een geolocation verzoek te initializeren en de kaart op het resultaat te laten centreren. De aangemaakte control moet je zelf toevoegen aan de kaart.
+Maakt een control voor de betreffende bibliotheek die communiceert met de opgegeven `geolocator`. De control heeft een hele simpele interface: klik om een geolocation verzoek te initialiseren en de kaart op het resultaat te laten centreren. De aangemaakte control moet je zelf toevoegen aan de kaart.
 
 Argumenten:
 
@@ -194,10 +193,9 @@ Om te voldoen aan de[gebruiksvoorwaarden](https://developers.google.com/maps/ter
 
 Als je zoveel mogelijk bytes wil besparen, kun je in plaats van de hele `nlmaps` package de sub-module voor jouw kaartbibliotheek direct toevoegen. Elk van deze modules heeft een `bgLayer()` functie die een laag voor de betreffende bibliotheek teruggeeft, en een `geoLocatorControl()` functie die een control voor de geolocator maakt.
 
-
 **Web browser:**
 
-Download de betreffende `nlmaps-<maplib>.min.js` [release](https://github.com/kadaster/nlmaps/releases/latest) Download de broncode en pak het uit, en selecteer het betreffende bstand uit de `dist` map. Als je deze nu als script laadt in je webpagina, zul je een `bgLayer()` en `geoLocatorControl()` functie hebben die werkt met de betreffende kaartbibiotheek. Om Mapbox te gebruiken, selecteer `leaflet`.
+Download de betreffende `nlmaps-<maplib>.min.js` [release](https://github.com/kadaster/nlmaps/releases/latest) Download de broncode en pak het uit, en selecteer het betreffende bestand uit de `dist` map. Als je deze nu als script laadt in je webpagina, zul je een `bgLayer()` en `geoLocatorControl()` functie hebben die werkt met de betreffende kaartbibliotheek. Om Mapbox te gebruiken, selecteer `leaflet`.
 
 **NodeJS:**
 
@@ -219,9 +217,9 @@ Als je de kaart of kaartlaag wilt verwijderen of verder bewerken kun je de metho
 
 Je kunt ook de `nlmaps-geolocator` package zelf gebruiken, in plaats van deze aan te roepen met `nlmaps.geoLocate`. Hiermee heb je de mogelijkheid om je eigen control te maken. De sub-packages voor elke kaartbibliotheek bieden elk een control aan die praat met de `nlmaps-geolocator` API, maar het zijn vrij simpele controls die momenteel met hard-coded css worden gestyled. In de toekomst zal `nlmaps` misschien ook een los css bestand leveren, maar voor nu kun je, indien je de plaatsing van de control wilt veranderen, beter je eigen css leveren en/of een eigen control maken.
 
-Ruwe tegel URL's
+## Ruwe tegel URL's
 
-De tegel URL's die `nlmaps` configureert volgen de templates:
+De tegel URL's die `nlmaps` configureert volgen deze templates:
 
 Voor de BRT-Achtergrondkaart serie:
 
@@ -234,11 +232,11 @@ Voor de luchtfoto's:
 
 ## Ontwikkelen
 
-we gebruiken [Lerna](https://lernajs.io/) voor het beheren van deze multi-package JavaScript project. Omdat er kennelijk iets niet helemaal goed gaat tussen Rollup en Lerna of NPM is er een aparte build script. Gebruik de volgende procedure om de packages te publiceren:
+[Lerna](https://lernajs.io/) wordt gebruikt voor het beheren van dit multi-package JavaScript project. Omdat Rollup en Lerna of NPM niet helemaal samengaan is er een aparte build script. Gebruik de volgende procedure om de packages te publiceren:
 
 1. `node build-all.js` Kan niet met npm run of lerna run omdat rollup niet met de gesymlinkte dependencies van lerna om kan gaan
 2. `lerna exec npm -- install` indien dependencies geupdated moeten worden
 3. git `add` en `commit`
-4. `lerna publish` kies nieuwe versienummers voor elke package die is veranderd
+4. `lerna publish` kiest nieuwe versienummers voor elke package die is veranderd
 
 Ga daarna naar de release pagina en annoteer de laatste release voor de 'nlmaps' package.

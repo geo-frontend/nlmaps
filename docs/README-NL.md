@@ -32,7 +32,7 @@ Beschikbare kaartstijlen:
 
 ### Wizard
 
-De [NL Maps wizard](https://nlmaps.nl/#wizard) maakt het heel eenvoudig om the beginnen met jouw keuze van kaartbibliotheek en kaartstijl. Het genereert code-voorbeelden die je laten zien hoe je een werkende kaart kunt krijgen. Het is aanbevolen om de output van de wizard te raadplegen, ook al ga je `nlmaps` handmatig gebruiken.
+De [NL Maps wizard](https://nlmaps.nl/#wizard) maakt het heel eenvoudig om te beginnen met jouw keuze van kaartbibliotheek en kaartstijl. Het genereert code-voorbeelden die je laten zien hoe je een werkende kaart kunt krijgen. Het is aanbevolen om de output van de wizard te raadplegen, ook al ga je `nlmaps` handmatig gebruiken.
 
 ### Handmatige browser-configuratie
 

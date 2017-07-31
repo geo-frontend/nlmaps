@@ -1,6 +1,6 @@
 {
   "name": "nlmaps",
-  "version": "1.0.1",
+  "version": "2.0.0",
   "engines": {
     "node": ">=6.0.0 <=6.11"
   },
@@ -32,9 +32,9 @@
   "author": "Hans Fast <hans@webmapper.net>",
   "license": "MIT",
   "dependencies": {
-    "nlmaps-googlemaps": "^1.0.0",
-    "nlmaps-leaflet": "^1.0.0",
-    "nlmaps-openlayers": "^1.0.0"
+    "nlmaps-googlemaps": "^2.0.0",
+    "nlmaps-leaflet": "^2.0.0",
+    "nlmaps-openlayers": "^2.0.0"
   },
   "devDependencies": {
     "live-server-https": "0.0.2",

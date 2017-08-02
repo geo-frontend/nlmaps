@@ -1,6 +1,6 @@
 {
   "name": "nlmaps-openlayers",
-  "version": "1.0.0",
+  "version": "2.0.0",
   "description": "",
   "main": "build/nlmaps-openlayers.cjs.js",
   "module": "build/nlmaps-openlayers.es.js",
@@ -27,8 +27,10 @@
   "homepage": "https://github.com:kadaster/nlmaps#README",
   "devDependencies": {
     "openlayers": "^4.1.1",
+    "rollup-plugin-eslint": "^4.0.0",
     "rollup-plugin-node-builtins": "^2.1.2",
     "rollup-plugin-node-globals": "^1.1.0",
+    "rollup-plugin-uglify": "^2.0.1",
     "tape": "^4.6.3"
   }
 }

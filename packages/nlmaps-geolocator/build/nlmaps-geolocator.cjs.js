@@ -76,7 +76,7 @@ var EmitOnOff = module.exports = function(thing){
 };
 });
 
-const geoLocateDefaultOpts = {
+var geoLocateDefaultOpts = {
   follow: false
 };
 
@@ -87,23 +87,23 @@ function positionErrorHandler(error) {
   this.emit('error', error);
 }
 
-const GeoLocator = function (opts) {
-  const state = Object.assign({}, geoLocateDefaultOpts, opts);
+var GeoLocator = function GeoLocator(opts) {
+  var state = Object.assign({}, geoLocateDefaultOpts, opts);
 
   return {
-    start() {
+    start: function start() {
       state.started = true;
       navigator.geolocation.getCurrentPosition(positionHandler.bind(this), positionErrorHandler.bind(this), { maximumAge: 60000 });
       return this;
     },
-    stop() {
+    stop: function stop() {
       state.started = false;
       return this;
     },
-    isStarted() {
+    isStarted: function isStarted() {
       return state.started;
     },
-    log() {
+    log: function log() {
       console.log(state);
       return this;
     }
@@ -112,13 +112,13 @@ const GeoLocator = function (opts) {
 
 function geoLocator(opts) {
   if ('geolocation' in navigator) {
-    let geolocator = index(GeoLocator(opts));
+    var geolocator = index(GeoLocator(opts));
     geolocator.on('position', function (position) {
       this.stop();
     });
     return geolocator;
   } else {
-    let error = 'geolocation is not available in your browser.';
+    var error = 'geolocation is not available in your browser.';
     throw error;
   }
 }

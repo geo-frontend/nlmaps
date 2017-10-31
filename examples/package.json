@@ -1,15 +1,20 @@
 {
-  "name": "examples",
+  "name": "nlmaps-examples",
   "version": "1.0.0",
   "description": "",
-  "main": "googlemaps-attribution.js",
+  "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "browserify npm/index-nlmaps.js -o npm/main-nlmaps.js",
+    "serve": "live-server"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "devDependencies": {
+    "live-server": "^1.2.0"
+  },
+  "dependencies": {
     "nlmaps": "^2.0.0"
   }
 }

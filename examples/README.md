@@ -138,22 +138,113 @@ Running `npm init` creates a `package.json` file for us, so we can install some 
 4. Now, we need to compile this script into something the browser will understand. For this we use `browserify`:
     
     
-    browserify index.js -o main.js
+    browserify index.js -o main-nlmaps.js
  
-This compiles the `index.js` file into the output file `main.js`.
+This compiles the `index.js` file into the output file `main-nlmaps.js`.
 
-5. To view your example in the browser, create a file `index.html` which loads `main.js`:
+5. To view your example in the browser, create a file `index.html` which loads `main-nlmaps.js`:
     
     
-    [code]
+    <!DOCTYPE html>
+    <html lang="en">
+      <head>
+        <meta charset="utf8"/>
+        <title>NL Maps with Google Maps</title>
+        <style>
+          body {
+            font-family: Helvetica, sans-serif;
+          }
+          #map-div{height:300px}
+        </style>
+      </head>
+      <body>
+        <a href="../index.html">Back</a>
+        <div id="map-div"></div>
+        <script src="main-nlmaps.js"></script>
+      </body>
+    </html>
 
 6. For the next example, we need the `nlmaps-leaflet` package. And we also need the actual Leaflet library, so we'll install that as well:
 
     npm install --save nlmaps-leaflet leaflet
 
-The procedure is the same as for the previous example. Create a
+The procedure is the same as for the previous example. Create a file called `index-leaflet.js` with the following code:
+
+    var leaflet = require('leaflet');
+    var bgLayer = require('nlmaps-leaflet').bgLayer;
+
+    var map = L.map('map-div').setView([52, 5], 10);
+    var layer = bgLayer().addTo(map); 
+
+And create an html file `leaflet.html` which loads your script:
+
+    <!DOCTYPE html>
+    <html lang="en">
+      <head>
+        <meta charset="utf8"/>
+        <title>NL Maps with Leaflet</title>
+        <style>
+          body {
+            font-family: Helvetica, sans-serif;
+          }
+          #map-div{height:300px}
+        </style>
+        <link rel="stylesheet" href="https://unpkg.com/leaflet@1.2.0/dist/leaflet.css" />
+      </head>
+      <body>
+        <a href="../index.html">Back</a>
+        <div id="map-div"></div>
+        <script src="main-leaflet.js"></script>
+      </body>
+    </html>
+
+Now, compile the Javascript with browserify:
+
+    browserify index-leaflet.js -o main-leaflet.js
+
+And you can view your Leaflet-based map by opening `leaflet.html` in the browser.
+    
+
+1. To add a geolocator to our examples, we need to install the package:
+
+    
+    npm install --save nlmaps-geolocator
+
+To use it in the `nlmaps.html` example, edit `index-nlmaps.js` to look like this:
+
+    var googleMapsLoader = require('google-maps');
+
+    googleMapsLoader.KEY='AIzaSyAYCu4ZY9tssUK4luavRsNyTirXdEnC3qw' //substitute with your Google Maps key, see https://developers.google.com/maps/documentation/javascript/get-api-key
+
+    googleMapsLoader.load(function(google) {
+        var nlmaps = require('nlmaps');
+        var map = nlmaps.createMap({target: 'map-div'})
+        nlmaps.geoLocate(map);
+    })
+
+Recompile the script with `browserify index-nlmaps.js -o main-nlmaps.js` And see the result by opening/refreshing `nlmaps.html`.
+
+To use it in the `nlmaps-leaflet` example, edit `index-leaflet.js` to look like this:
+
+    var leaflet = require('leaflet');
+    var bgLayer = require('nlmaps-leaflet').bgLayer;
+    var geoLocatorControl = require('nlmaps-leaflet').geoLocatorControl;
+    var geoLocator = require('nlmaps-geolocator');
+
+    var map = L.map('map-div').setView([52, 5], 10);
+    var layer = bgLayer().addTo(map); 
+
+    var geo = geoLocator();
+    geoLocatorControl(geo).addTo(map);
+
+Recompile the script with `browserify index-leaflet.js -o main-leaflet.js` and use the geocoder in `leaflet.html`.
 
 
-In this example, we're also going to add a geolocator control, so install the `nlmaps-geolocator` package too. 
+## Further exercises
+So far we have only used the default settings for new maps/layers created with the `nlmaps` library. But you can also customize the map by changing the style and the position and zoom. For example:
 
+    nlmaps.createMap({target: 'map-div', style: 'pastel'})
 
+Read the [documentation] to see what other options you can change and play around with some different settings, or try to use NL Maps with the OpenLayers library.
+
+Happy mapping!

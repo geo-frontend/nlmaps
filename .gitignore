@@ -5,3 +5,6 @@ npm-debug.log
 lerna-debug.log
 
 packages/nlmaps-geolocator/npm-debug.log.1773222065
+examples/npm/main-geolocator.js
+examples/npm/main-leaflet.js
+examples/npm/main-nlmaps.js

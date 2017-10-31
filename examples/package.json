@@ -1,0 +1,24 @@
+{
+  "name": "nlmaps-examples",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "browserify npm/index-nlmaps.js -o npm/main-nlmaps.js && browserify npm/index-leaflet.js -o npm/main-leaflet.js && browserify npm/index-geolocator.js -o npm/main-geolocator.js",
+    "serve": "live-server"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "live-server": "^1.2.0"
+  },
+  "dependencies": {
+    "google-maps": "^3.2.1",
+    "leaflet": "^1.2.0",
+    "nlmaps": "^2.0.0",
+    "nlmaps-geolocator": "^1.0.1",
+    "nlmaps-leaflet": "^2.0.0"
+  }
+}

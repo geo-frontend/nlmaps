@@ -245,6 +245,6 @@ So far we have only used the default settings for new maps/layers created with t
 
     nlmaps.createMap({target: 'map-div', style: 'pastel'})
 
-Read the [documentation] to see what other options you can change and play around with some different settings, or try to use NL Maps with the OpenLayers library.
+Read the [documentation](https://github.com/kadaster/nlmaps#api-documentation) to see what other options you can change and play around with some different settings, or try to use NL Maps with the OpenLayers library.
 
 Happy mapping!

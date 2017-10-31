@@ -4,6 +4,7 @@ Using the `nlmaps` library
 These examples demonstrate some uses of the `nlmaps` library. The examples are presented in the form of a mini-tutorial with instructions and code blocks that you can run and copy/paste yourself. In addition, the working examples can be run by cloning this repository, moving to the `examples` directory, and running the following commands:
 
     npm install
+    npm run build
     npm run serve
 
 and opening localhost:8080 in your browser.

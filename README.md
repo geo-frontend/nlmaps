@@ -87,7 +87,7 @@ returns a `map` object.
     };
     let map = nlmaps.createMap(opts);
    
-### nlmaps.geolocate(map<map object>, options<object>)
+### `nlmaps.geolocate(map<map object>, options<object>)`
 
 Creates a geolocator control and adds it to the map. Clicking on the control will initiate a browser geolocation API request and center the map on the result. The geolocator can also be initialized to perform a geolocation request immediately, without waiting for the user to click on the control.
 
@@ -120,7 +120,7 @@ Returns a `layer` object.
     layer.addTo(map);
 
 
-### nlmaps.<leaflet|openlayers>.geoLocatorControl(geolocator) | nlmaps.googlemaps.geoLocatorControl(geolocator, map)
+### `nlmaps.<leaflet|openlayers>.geoLocatorControl(geolocator) | nlmaps.googlemaps.geoLocatorControl(geolocator, map)`
 
 Creates a control for the given library which talks to the given `geolocator`. The control has a very simple interface: click to initiate a geolocation request and have the map be centered on the resulting location. You need to add the control to the map yourself. Arguments:
 

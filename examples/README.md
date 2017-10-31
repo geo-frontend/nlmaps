@@ -21,8 +21,12 @@ There are two variants:
 This describes how to set up these examples in a clean new directory/npm project.
 
 ### including the scripts directly in the browser
-1. Make a directory for your new project, like `mymap`. Move into your new directory.
-2. Create a file called `index.html` and paste in the following code:
+
+#### Set up
+Make a directory for your new project, like `mymap`. Move into your new directory.
+
+#### An example with the full `nlmaps` package
+Create a file called `index.html` and paste in the following code:
     
     
     <!DOCTYPE html>
@@ -53,8 +57,8 @@ This demonstrates the use of the main `nlmaps` package, using Google Maps, to cr
 
 Notice the nlmaps script we include is `nlmaps.iife.js`, the whole nlmaps package. We can also include only the code needed for a single map library, if we want to save as many bytes as possible. Let's try it out, using the Leaflet mapping library this time.
 
-3. Create a file called `leaflet.html` and paste in the following code:
-    
+#### An example with just `nlmaps-leaflet`
+Create a file called `leaflet.html` and paste in the following code:
     
     <!DOCTYPE html>
     <html lang="en">
@@ -84,7 +88,8 @@ Then open this file in your browser.
 
 Notice how now we have included `nlmaps-leaflet.iife.js` instead of `nlmaps.iife.js`. Also, the code to create a layer is slightly different since we are not using the `nlmaps` wrapper package which automatically creates a map for us.
 
-4. The `nlmaps` library also has a geolocator feature which centers the map on the user's location. Let's add it to our two files. In `index.html`, edit the file as follows. Add the following line after the second `<script>` line, the one which loads `nlmaps.iife.js`:
+#### Add a geolocator control
+The `nlmaps` library also has a geolocator feature which centers the map on the user's location. Let's add it to our two files. In `index.html`, edit the file as follows. Add the following line after the second `<script>` line, the one which loads `nlmaps.iife.js`:
     
     
     <script src="https://rawgit.com/kadaster/nlmaps/master/dist/nlmaps-geolocator.iife.js"></script>
@@ -101,7 +106,8 @@ To add the geolocator to the second example with the `nlmaps-leaflet` package, t
 
 ### using NodeJS and compiling with `browserify`
 
-1. To run these examples, you will need NodeJS, npm, and browserify.
+#### Getting set up
+To run these examples, you will need NodeJS, npm, and browserify.
 
 To install Nodejs and npm, follow the instructions for your platform [here](https://nodejs.org/en/download/https://nodejs.org/en/download/).
 
@@ -111,7 +117,7 @@ Once NodeJS is installed, you can install browserify like this:
 
 You may need to add `sudo ` in front of this command, if you receive a 'permission denied' error. The `-g` flag installs this package as a globally available command on your machine.
 
-2. Then you can move into a new directory and initialize it as an npm project with the following command:
+Then you can move into a new directory and initialize it as an npm project with the following command:
     
     
     npm init -y
@@ -123,7 +129,9 @@ Running `npm init` creates a `package.json` file for us, so we can install some 
     
     npm install --save nlmaps google-maps
     
-3. Now create a file `index.js` with the following code:
+#### An example with the full `nlmaps` package
+
+Now create a file `index.js` with the following code:
    
    
     var googleMapsLoader = require('google-maps');
@@ -135,14 +143,14 @@ Running `npm init` creates a `package.json` file for us, so we can install some 
         nlmaps.createMap()
     })
 
-4. Now, we need to compile this script into something the browser will understand. For this we use `browserify`:
+Now, we need to compile this script into something the browser will understand. For this we use `browserify`:
     
     
     browserify index.js -o main-nlmaps.js
  
 This compiles the `index.js` file into the output file `main-nlmaps.js`.
 
-5. To view your example in the browser, create a file `index.html` which loads `main-nlmaps.js`:
+To view your example in the browser, create a file `index.html` which loads `main-nlmaps.js`:
     
     
     <!DOCTYPE html>
@@ -164,7 +172,8 @@ This compiles the `index.js` file into the output file `main-nlmaps.js`.
       </body>
     </html>
 
-6. For the next example, we need the `nlmaps-leaflet` package. And we also need the actual Leaflet library, so we'll install that as well:
+#### An example with just `nlmaps-leaflet`
+For the next example, we need the `nlmaps-leaflet` package. And we also need the actual Leaflet library, so we'll install that as well:
 
     npm install --save nlmaps-leaflet leaflet
 
@@ -205,7 +214,8 @@ Now, compile the Javascript with browserify:
 And you can view your Leaflet-based map by opening `leaflet.html` in the browser.
     
 
-1. To add a geolocator to our examples, we need to install the package:
+#### Add a geolocator
+To add a geolocator to our examples, we need to install the package:
 
     
     npm install --save nlmaps-geolocator
@@ -240,7 +250,7 @@ To use it in the `nlmaps-leaflet` example, edit `index-leaflet.js` to look like 
 Recompile the script with `browserify index-leaflet.js -o main-leaflet.js` and use the geocoder in `leaflet.html`.
 
 
-## Further exercises
+### Further exercises
 So far we have only used the default settings for new maps/layers created with the `nlmaps` library. But you can also customize the map by changing the style and the position and zoom. For example:
 
     nlmaps.createMap({target: 'map-div', style: 'pastel'})

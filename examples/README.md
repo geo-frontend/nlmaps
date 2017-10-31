@@ -1,5 +1,5 @@
-Using the whole `nlmaps` library
-==============================
+Using the `nlmaps` library
+==========================
 
 These examples demonstrate some uses of the `nlmaps` library. The examples are presented in the form of a mini-tutorial with instructions and code blocks that you can run and copy/paste yourself. In addition, the working examples can be run by cloning this repository, moving to the `examples` directory, and running the following commands:
 
@@ -14,7 +14,7 @@ Tutorial
 
 There are two variants:
 
-*  Show the usage when `nlmaps` and Google Maps are loaded as script tags in the browser
+*  Show the usage when `nlmaps` and a map library (Google Maps, Leaflet, OpenLayers) are loaded as script tags in the browser
 *  Show the usage with an `npm` workflow, where `nlmaps` is required in a NodeJS script and the result is compiled for the browser. In this case we use `browserify`; other build tools would work similarly but are out of scope of these examples.
 
 This describes how to set up these examples in a clean new directory/npm project.

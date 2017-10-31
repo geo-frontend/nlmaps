@@ -26,7 +26,7 @@ This describes how to set up these examples in a clean new directory/npm project
 Make a directory for your new project, like `mymap`. Move into your new directory.
 
 #### An example with the full `nlmaps` package
-Create a file called `index.html` and paste in the following code:
+Create a file called `nlmaps.html` and paste in the following code:
     
     
     <!DOCTYPE html>
@@ -89,7 +89,7 @@ Then open this file in your browser.
 Notice how now we have included `nlmaps-leaflet.iife.js` instead of `nlmaps.iife.js`. Also, the code to create a layer is slightly different since we are not using the `nlmaps` wrapper package which automatically creates a map for us.
 
 #### Add a geolocator control
-The `nlmaps` library also has a geolocator feature which centers the map on the user's location. Let's add it to our two files. In `index.html`, edit the file as follows. Add the following line after the second `<script>` line, the one which loads `nlmaps.iife.js`:
+The `nlmaps` library also has a geolocator feature which centers the map on the user's location. Let's add it to our two files. In `nlmaps.html`, edit the file as follows. Add the following line after the second `<script>` line, the one which loads `nlmaps.iife.js`:
     
     
     <script src="https://rawgit.com/kadaster/nlmaps/master/dist/nlmaps-geolocator.iife.js"></script>
@@ -99,7 +99,7 @@ And in the last `<script>` block, append the following line:
     nlmaps.geoLocate(map);
     
 
-To add the geolocator to the second example with the `nlmaps-leaflet` package, the only difference is the code we need to add to our script. Add the following two lines to the `<script>` block in `leaflet.js`:
+To add the geolocator to the second example with the `nlmaps-leaflet` package, the only difference is the code we need to add to our script. In addition to adding the `nlmaps-geolocator.iife.js` script tag as for the `nlmaps` variant, add the following two lines to the `<script>` block in `leaflet.js`:
 
     var geo = geoLocator();
     geoLocatorControl(geo).addTo(map);
@@ -131,7 +131,7 @@ Running `npm init` creates a `package.json` file for us, so we can install some 
     
 #### An example with the full `nlmaps` package
 
-Now create a file `index.js` with the following code:
+Now create a file `index-nlmaps.js` with the following code:
    
    
     var googleMapsLoader = require('google-maps');
@@ -140,17 +140,17 @@ Now create a file `index.js` with the following code:
     
     googleMapsLoader.load(function(google) {
         var nlmaps = require('nlmaps');
-        nlmaps.createMap()
+        nlmaps.createMap({target: 'map-div'})
     })
 
 Now, we need to compile this script into something the browser will understand. For this we use `browserify`:
     
     
-    browserify index.js -o main-nlmaps.js
+    browserify index-nlmaps.js -o main-nlmaps.js
  
-This compiles the `index.js` file into the output file `main-nlmaps.js`.
+This compiles the `index-nlmaps.js` file into the output file `main-nlmaps.js`.
 
-To view your example in the browser, create a file `index.html` which loads `main-nlmaps.js`:
+To view your example in the browser, create a file `nlmaps.html` which loads `main-nlmaps.js`:
     
     
     <!DOCTYPE html>
@@ -166,7 +166,6 @@ To view your example in the browser, create a file `index.html` which loads `mai
         </style>
       </head>
       <body>
-        <a href="../index.html">Back</a>
         <div id="map-div"></div>
         <script src="main-nlmaps.js"></script>
       </body>
@@ -201,7 +200,6 @@ And create an html file `leaflet.html` which loads your script:
         <link rel="stylesheet" href="https://unpkg.com/leaflet@1.2.0/dist/leaflet.css" />
       </head>
       <body>
-        <a href="../index.html">Back</a>
         <div id="map-div"></div>
         <script src="main-leaflet.js"></script>
       </body>

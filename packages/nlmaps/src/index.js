@@ -137,7 +137,7 @@ function addLayerToMap(lib, layer, map, name) {
       break;
   }
 }
-function createLayer(lib,  map, name) {
+function createBackgroundLayer(lib,  map, name) {
   switch (lib) {
     case 'leaflet':
       return nlmaps.leaflet.bgLayer(name);
@@ -167,9 +167,11 @@ nlmaps.createMap = function(useropts = {}) {
   } catch (e) {
     console.error(e.message)
   }
-  let map = initMap(nlmaps.lib, opts);
-  let layer = createLayer(nlmaps.lib, map, opts.style);
-  addLayerToMap(nlmaps.lib, layer, map, opts.style);
+  const map = initMap(nlmaps.lib, opts);
+  const backgroundLayer = createBackgroundLayer(nlmaps.lib, map, opts.style);
+  addLayerToMap(nlmaps.lib, backgroundLayer, map, opts.style);
+
+
   return map;
 };
 

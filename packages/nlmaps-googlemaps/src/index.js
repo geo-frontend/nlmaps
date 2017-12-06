@@ -20,7 +20,7 @@ function AttributionControl(controlDiv, attrControlText) {
     controlDiv.index = 1;
     return controlDiv;
   } else {
-    const error = 'google is not defined'; 
+    const error = 'google is not defined';
     throw error;
   }
 }
@@ -93,13 +93,13 @@ function bgLayer (map=map, name='standaard') {
     const GoogleLayerOpts = makeGoogleLayerOpts(provider);
     let layer = new google.maps.ImageMapType(GoogleLayerOpts);
     //warning: tight coupling with nlmaps.createMap
-    let ourmap =  map || this.map || undefined;
+    let ourmap =  map || this.map || 'undefined';
     if (typeof ourmap !== 'undefined') {
       makeGoogleAttrControl(ourmap, provider.attribution)
     }
     return layer;
   } else {
-    const error = 'google is not defined'; 
+    const error = 'google is not defined';
     throw error;
   }
 

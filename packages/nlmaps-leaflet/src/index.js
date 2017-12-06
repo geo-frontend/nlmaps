@@ -1,6 +1,6 @@
 import { getProvider, getWmsProvider, geolocator_icon } from '../../lib/index.js';
 
-if (typeof L !== 'undefined' && typeof L === 'object'){
+if (typeof L !== 'undefined' && typeof L === 'object') {
 L.NlmapsBgLayer = L.TileLayer.extend({
   initialize: function(name='standaard', options) {
     const provider = getProvider(name);

@@ -151,6 +151,22 @@ function createBackgroundLayer(lib,  map, name) {
   }
 }
 
+function createOverlayLayer(lib, map, name) {
+  switch (lib) {
+    case 'leaflet':
+      return nlmaps.leaflet.overlayLayer(name);
+      break;
+    case 'googlemaps':
+      throw Error('Not yet implemented createOverlayLayer googlemaps');
+      // return nlmaps.googlemaps.bgLayer(map, name)
+      break;
+    case 'openlayers':
+      throw Error('Not yet implemented createOverlayLayer googlemaps');
+      // return nlmaps.openlayers.bgLayer(name);
+      break;
+  }
+}
+
 
 function mergeOpts(defaultopts, useropts){
    return Object.assign({}, defaultopts, useropts);
@@ -170,7 +186,10 @@ nlmaps.createMap = function(useropts = {}) {
   const map = initMap(nlmaps.lib, opts);
   const backgroundLayer = createBackgroundLayer(nlmaps.lib, map, opts.style);
   addLayerToMap(nlmaps.lib, backgroundLayer, map, opts.style);
-
+  console.log(opts);
+  const overlayLayer = createOverlayLayer(nlmaps.lib, map, opts.overlay);
+  addLayerToMap(nlmaps.lib, overlayLayer, map);
+  console.log('overlay', overlayLayer);
 
   return map;
 };

@@ -1,4 +1,4 @@
-import { getProvider, geolocator_icon } from '../../lib/index.js';
+import { getProvider, getWmsProvider, geolocator_icon } from '../../lib/index.js';
 
 function AttributionControl(controlDiv, attrControlText) {
   if (typeof google === 'object' && typeof google.maps === 'object') {
@@ -86,8 +86,19 @@ function makeGoogleLayerOpts(provider){
   }
 }
 
+function getWmsTiledOptions(wmsProvider) {
+  return {
+      baseUrl: wmsProvider.url,
+      layers: wmsProvider.layers,
+      styles: wmsProvider.styles,
+      format: wmsProvider.format,
+      transparent: wmsProvider.transparent,
+      // todo maybe: add opacity to wmsProvider params
+      opacity: 0.7
+  };
+}
 
-function bgLayer (map=map, name='standaard') {
+function bgLayer (map, name='standaard') {
   if (typeof google === 'object' && typeof google.maps === 'object') {
     const provider = getProvider(name);
     const GoogleLayerOpts = makeGoogleLayerOpts(provider);
@@ -102,7 +113,82 @@ function bgLayer (map=map, name='standaard') {
     const error = 'google is not defined';
     throw error;
   }
-
 }
 
-export { bgLayer, geoLocatorControl };
+function toMercator(coord) {
+    var lat = coord.lat();
+    var lng = coord.lng();
+    if ((Math.abs(lng) > 180 || Math.abs(lat) > 90))
+    return;
+
+    var num = lng * 0.017453292519943295;
+    var x = 6378137.0 * num;
+    var a = lat * 0.017453292519943295;
+
+    var merc_lon = x;
+    var merc_lat = 3189068.5 * Math.log((1.0 + Math.sin(a)) / (1.0 - Math.sin(a)));
+
+    return { x: merc_lon, y: merc_lat };
+}
+
+function WMSTiled(mapObject, wmsTiledOptions) {
+    var options = {
+        getTileUrl: function(coord, zoom) {
+            var proj = map.getProjection();
+            var zfactor = Math.pow(2, zoom);
+
+            var top = proj.fromPointToLatLng(new google.maps.Point(coord.x * 256 / zfactor, coord.y * 256 / zfactor) );
+            var bot = proj.fromPointToLatLng(new google.maps.Point((coord.x + 1) * 256 / zfactor, (coord.y + 1) * 256 / zfactor));
+
+            var ne = toMercator(top);
+            var sw = toMercator(bot);
+            var bbox = ne.x + ',' + sw.y + ',' + sw.x + ',' + ne.y;
+
+            var url = wmsTiledOptions.baseUrl;
+            url += 'SERVICE=WMS&VERSION=1.1.1&REQUEST=GetMap&SRS=EPSG:3857';
+            url += '&WIDTH=256';
+            url += '&HEIGHT=256';
+            url += '&LAYERS=' + wmsTiledOptions.layers;
+            url += '&STYLES=' + wmsTiledOptions.styles;
+            url += '&BBOX=' + bbox;
+            url += '&FORMAT=' + wmsTiledOptions.format;
+            url += '&TRANSPARENT=' + wmsTiledOptions.transparent;
+            return url;
+        },
+        tileSize: new google.maps.Size(256, 256),
+        isPng: true
+    };
+    var layer = new google.maps.ImageMapType(options)
+    layer.setOpacity(wmsTiledOptions.opacity)
+    return mapObject.overlayMapTypes.push(layer);
+}
+
+function overlayLayer(map=map, name) {
+  const wmsProvider = getWmsProvider(name);
+  const wmsTiledOptions = getWmsTiledOptions(wmsProvider);
+  var wmsLayer = new WMSTiled(map, wmsTiledOptions)
+  return wmsLayer;
+}
+
+/// Until the building works properly, this is here. Should be in browser-test.js ///
+// var map = new google.maps.Map(document.getElementById('map'), {
+//   center: { lat: 52, lng: 5 },
+//   zoom: 8
+// });
+
+// var ElaMap = bgLayer(map);
+
+// var mapTypeIds = ['Brt Achtergrondkaart', 'roadmap'];
+// map.mapTypes.set('Brt Achtergrondkaart', ElaMap);
+// map.setOptions({
+//   mapTypeControl: true,
+//   mapTypeControlOptions: {
+//     mapTypeIds: mapTypeIds
+//   }
+
+// });
+// map.setMapTypeId('Brt Achtergrondkaart');
+
+// var wmsLayer = overlayLayer(map, 'gebouwen');
+
+export { bgLayer, overlayLayer, geoLocatorControl };

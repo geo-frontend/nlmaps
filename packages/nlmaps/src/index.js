@@ -1,12 +1,25 @@
-import { bgLayer as bgL, geoLocatorControl as glL } from 'nlmaps-leaflet';
-import { bgLayer as bgOL, geoLocatorControl as glO } from 'nlmaps-openlayers';
-import { bgLayer as bgGM, geoLocatorControl as glG } from 'nlmaps-googlemaps';
-import { getProvider} from '../../lib/index.js';
+
+import { bgLayer as bgL, 
+         overlayLayer as overlayL, 
+         markerLayer as markerL, 
+         geoLocatorControl as glL } from '../../nlmaps-leaflet/build/nlmaps-leaflet.cjs.js';
+// import { bgLayer as bgL, geoLocatorControl as glL } from 'nlmaps-leaflet';
+
+import { bgLayer as bgOL, 
+         geoLocatorControl as glO } from 'nlmaps-openlayers';
+import { bgLayer as bgGM, 
+         geoLocatorControl as glG } from 'nlmaps-googlemaps';
+
+
+
+import { getProvider } from '../../lib/index.js';
 import geoLocator from '../../nlmaps-geolocator/src/index.js';
 
 let nlmaps = {
   leaflet: {
     bgLayer: bgL,
+    overlayLayer: overlayL,
+    markerLayer: markerL,
     geoLocatorControl: glL
   },
   openlayers: {

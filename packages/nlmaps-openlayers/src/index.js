@@ -21,6 +21,31 @@ function bgLayer(name='standaard') {
   }
 }
 
+function markerLayer(){
+  var markerFeature = new ol.Feature({
+    geometry: new ol.geom.Point(map.getView().getCenter()),
+    name: 'marker'
+  });
+  var markerStyle = new ol.style.Style({
+    image: new ol.style.Icon(
+      ({
+        anchor: [0.5, 0.5],
+        anchorXUnits: 'fraction',
+        anchorYUnits: 'fraction',
+        src: 'icon.png'
+      })
+    )
+  });
+  markerFeature.setStyle(markerStyle);
+
+  var markerSource = new ol.source.Vector({
+    features: [markerFeature]
+  });
+  return new ol.layer.Vector({
+    source: markerSource
+  });
+}
+
 function overlayLayer(name) {
   const wmsProvider = getWmsProvider(name);
   if (typeof ol === "object") {
@@ -86,6 +111,7 @@ function geoLocatorControl(geolocator, map){
 // map.addLayer(layer);
 // let overlay = overlayLayer('gebouwen')
 // map.addLayer(overlay);
-
+// let marker = markerLayer();
+// map.addLayer(marker);
 
 export { bgLayer, overlayLayer, geoLocatorControl };

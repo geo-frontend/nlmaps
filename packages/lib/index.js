@@ -67,31 +67,39 @@ function mapWmsProvider(name){
     styleName: '',
     url: '',
     minZoom: 0,
-    maxZoom: 24, 
+    maxZoom: 24,
   };
-  
+
   switch (name) {
-    case 'gebouwen': 
+    case 'gebouwen':
       wmsParameters.workSpaceName = 'bag';
       wmsParameters.layerName = 'bag';
       wmsParameters.styleName = '';
       break;
-    case 'kadastrale-kaart': 
+    case 'kadastrale-kaart':
       wmsParameters.workSpaceName = 'kadastralekaartv3';
       wmsParameters.layerName = 'kadastralekaart';
       wmsParameters.styleName = '';
       break;
-    case 'drone-no-fly-zone': 
+    case 'drone-no-fly-zone':
       wmsParameters.workSpaceName = 'dronenoflyzones';
-      wmsParameters.layerName = 'Drone no-fly zones';
+      wmsParameters.layerName = 'luchtvaartgebieden';
       wmsParameters.styleName = '';
       break;
     case 'hoogtebestand-nederland':
       wmsParameters.workSpaceName = 'ahn2';
-      wmsParameters.layerName = 'Actueel Hoogtebestand Nederland 2';
-      wmsParameters.styleName = 'ahn2:ahn2_05m_detail';  
+      wmsParameters.layerName = 'ahn2_05m_int';
+      wmsParameters.styleName = 'ahn2:ahn2_05m_detail';
       break;
-    case 'bestuurlijke-grenzen': 
+    case 'gemeente-grenzen':
+      wmsParameters.workSpaceName = 'bestuurlijkegrenzen';
+      wmsParameters.layerName = 'gemeenten';
+      wmsParameters.styleName = 'bestuurlijkegrenzen:bestuurlijkegrenzen_gemeentegrenzen';
+      break;
+    case 'provincie-grenzen':
+      wmsParameters.workSpaceName = 'bestuurlijkegrenzen';
+      wmsParameters.layerName = 'provincies';
+      wmsParameters.styleName = 'bestuurlijkegrenzen:bestuurlijkegrenzen_provinciegrenzen';
       break;
   }
 
@@ -111,16 +119,17 @@ function makeWmsProvider(name) {
     layers: wmsParameters.layerName,
     styles: wmsParameters.styleName,
     transparent: true,
-    format: 'image/png', 
+    format: 'image/png',
   }
 }
 
 const WMS_PROVIDERS = {
   "gebouwen": makeWmsProvider('gebouwen'),
   "kadastrale-kaart": makeWmsProvider('kadastrale-kaart'),
-  "drone-no-fly-zone": makeWmsProvider('drone-no-fly-zone'), 
+  "drone-no-fly-zone": makeWmsProvider('drone-no-fly-zone'),
   "hoogtebestand-nederland": makeWmsProvider('hoogtebestand-nederland'),
-  "bestuurlijke-grenzen": makeWmsProvider('bestuurlijke-grenzen') 
+  "gemeente-grenzen": makeWmsProvider('gemeente-grenzen'),
+  "provincie-grenzen": makeWmsProvider('provincie-grenzen')
 };
 
 /*

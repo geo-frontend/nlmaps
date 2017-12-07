@@ -8,3 +8,11 @@ packages/nlmaps-geolocator/npm-debug.log.1773222065
 examples/npm/main-geolocator.js
 examples/npm/main-leaflet.js
 examples/npm/main-nlmaps.js
+packages/nlmaps/package-lock.json
+packages/nlmaps-geolocator/package-lock.json
+packages/nlmaps-geolocator/build/nlmaps-geolocator.cjs.js
+packages/nlmaps-googlemaps/build/nlmaps-googlemaps.cjs.js
+packages/nlmaps-leaflet/build/nlmaps-leaflet.cjs.js
+packages/nlmaps-openlayers/package-lock.json
+packages/nlmaps-openlayers/build/nlmaps-openlayers.cjs.js
+packages/nlmaps/build/nlmaps.cjs.js

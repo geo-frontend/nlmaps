@@ -20,7 +20,7 @@ function bgLayer(name='standaard') {
     throw 'openlayers is not defined';
   }
 }
-
+import markerIcon from '../../assets/img/marker_icon.png';
 function markerLayer(){
   var markerFeature = new ol.Feature({
     geometry: new ol.geom.Point(map.getView().getCenter()),
@@ -32,7 +32,7 @@ function markerLayer(){
         anchor: [0.5, 0.5],
         anchorXUnits: 'fraction',
         anchorYUnits: 'fraction',
-        src: 'icon.png'
+        src: markerIcon
       })
     )
   });
@@ -99,19 +99,19 @@ function geoLocatorControl(geolocator, map){
 }
 
 /// Until the building works properly, this is here. Should be in browser-test.js ///
-// let map = new ol.Map({
-//   view: new ol.View({
-//     center: [664197,6838137],
-//     zoom: 10
-//   }),
-//   target: 'map'
-// });
+let map = new ol.Map({
+  view: new ol.View({
+    center: [664197,6838137],
+    zoom: 10
+  }),
+  target: 'map'
+});
 
-// let layer = bgLayer();
-// map.addLayer(layer);
-// let overlay = overlayLayer('gebouwen')
-// map.addLayer(overlay);
-// let marker = markerLayer();
-// map.addLayer(marker);
+let layer = bgLayer();
+map.addLayer(layer);
+let overlay = overlayLayer('gebouwen')
+map.addLayer(overlay);
+let marker = markerLayer();
+map.addLayer(marker);
 
 export { bgLayer, overlayLayer, geoLocatorControl };

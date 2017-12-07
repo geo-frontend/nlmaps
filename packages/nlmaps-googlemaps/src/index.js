@@ -170,25 +170,41 @@ function overlayLayer(map=map, name) {
   return wmsLayer;
 }
 
-/// Until the building works properly, this is here. Should be in browser-test.js ///
-// var map = new google.maps.Map(document.getElementById('map'), {
-//   center: { lat: 52, lng: 5 },
-//   zoom: 8
-// });
+function markerLayer(lat, lng) {  
+  let markerLocationLatLng; 
+  if (lat != undefined && lng != undefined) {
+    markerLocationLatLng = new google.maps.LatLng(lat, lng);
+  } else {
+    markerLocationLatLng = new google.maps.LatLng(map.getCenter().lat(), map.getCenter().lng())
+  }
 
-// var ElaMap = bgLayer(map);
+  const marker = new google.maps.Marker({
+    title: 'Dit is een marker',
+    position: markerLocationLatLng
+  })
+  marker.setMap(map);
 
-// var mapTypeIds = ['Brt Achtergrondkaart', 'roadmap'];
-// map.mapTypes.set('Brt Achtergrondkaart', ElaMap);
-// map.setOptions({
-//   mapTypeControl: true,
-//   mapTypeControlOptions: {
-//     mapTypeIds: mapTypeIds
-//   }
+}
 
-// });
-// map.setMapTypeId('Brt Achtergrondkaart');
+// / Until the building works properly, this is here. Should be in browser-test.js ///
+var map = new google.maps.Map(document.getElementById('map'), {
+  center: { lat: 52, lng: 5 },
+  zoom: 8
+});
 
-// var wmsLayer = overlayLayer(map, 'gebouwen');
+var ElaMap = bgLayer(map);
 
+var mapTypeIds = ['Brt Achtergrondkaart', 'roadmap'];
+map.mapTypes.set('Brt Achtergrondkaart', ElaMap);
+map.setOptions({
+  mapTypeControl: true,
+  mapTypeControlOptions: {
+    mapTypeIds: mapTypeIds
+  }
+
+});
+map.setMapTypeId('Brt Achtergrondkaart');
+
+var wmsLayer = overlayLayer(map, 'gebouwen');
+markerLayer();
 export { bgLayer, overlayLayer, geoLocatorControl };

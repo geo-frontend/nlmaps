@@ -3,14 +3,21 @@ import { bgLayer as bgL,
          overlayLayer as overlayL, 
          markerLayer as markerL, 
          geoLocatorControl as glL } from '../../nlmaps-leaflet/build/nlmaps-leaflet.cjs.js';
-// import { bgLayer as bgL, geoLocatorControl as glL } from 'nlmaps-leaflet';
 
 import { bgLayer as bgOL, 
-         geoLocatorControl as glO } from 'nlmaps-openlayers';
+         overlayLayer as overlayOL, 
+         geoLocatorControl as glO } from '../../nlmaps-openlayers/build/nlmaps-openlayers.cjs.js';
+
 import { bgLayer as bgGM, 
-         geoLocatorControl as glG } from 'nlmaps-googlemaps';
+         overlayLayer as overlayGM, 
+         geoLocatorControl as glG } from '../../nlmaps-googlemaps/build/nlmaps-googlemaps.cjs.js';
+// import { bgLayer as bgL, geoLocatorControl as glL } from 'nlmaps-leaflet';
 
+// import { bgLayer as bgOL, 
+//          geoLocatorControl as glO } from 'nlmaps-openlayers';
 
+// import { bgLayer as bgGM, 
+//          geoLocatorControl as glG } from 'nlmaps-googlemaps';
 
 import { getProvider } from '../../lib/index.js';
 import geoLocator from '../../nlmaps-geolocator/src/index.js';
@@ -24,10 +31,12 @@ let nlmaps = {
   },
   openlayers: {
     bgLayer: bgOL,
+    overlayLayer: overlayOL,
     geoLocatorControl: glO
   },
   googlemaps: {
     bgLayer: bgGM,
+    overlayLayer: overlayGM,
     geoLocatorControl: glG
   }
 };
@@ -157,12 +166,10 @@ function createOverlayLayer(lib, map, name) {
       return nlmaps.leaflet.overlayLayer(name);
       break;
     case 'googlemaps':
-      throw Error('Not yet implemented createOverlayLayer googlemaps');
-      // return nlmaps.googlemaps.bgLayer(map, name)
+      return nlmaps.googlemaps.overlayLayer(map, name);
       break;
     case 'openlayers':
-      throw Error('Not yet implemented createOverlayLayer googlemaps');
-      // return nlmaps.openlayers.bgLayer(name);
+      return nlmaps.openlayers.overlayLayer(name);
       break;
   }
 }

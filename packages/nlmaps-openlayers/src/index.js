@@ -1,4 +1,5 @@
 import { getProvider, getWmsProvider, geolocator_icon } from '../../lib';
+
 let baseTileUrl = 'http://tiles.energielabelatlas.nl/v2/osm';
 const BRTAkAttr = 'Kaartgegevens &copy; <a href="cbs.nl">CBS</a>, <a href="kadaster.nl">Kadaster</a>, <a href="openstreetmap.org">OpenStreetMap contributors</a>';
 
@@ -20,22 +21,29 @@ function bgLayer(name='standaard') {
     throw 'openlayers is not defined';
   }
 }
-import markerIcon from '../../assets/img/marker_icon.png';
-function markerLayer(){
-  var markerFeature = new ol.Feature({
-    geometry: new ol.geom.Point(map.getView().getCenter()),
-    name: 'marker'
-  });
+function markerLayer(lat, lng) {
   var markerStyle = new ol.style.Style({
     image: new ol.style.Icon(
       ({
         anchor: [0.5, 0.5],
-        anchorXUnits: 'fraction',
-        anchorYUnits: 'fraction',
-        src: markerIcon
+        src: 'marker_icon.png',
+        scale: 0.3
       })
     )
   });
+  
+  let center; 
+  if (lat != undefined && lng != undefined) {
+    center = ol.proj.fromLonLat([lng, lat]);
+  } else {
+    center = map.getView().getCenter()
+  }
+
+  var markerFeature = new ol.Feature({
+    geometry: new ol.geom.Point(center),
+    name: 'marker'
+  });
+
   markerFeature.setStyle(markerStyle);
 
   var markerSource = new ol.source.Vector({
@@ -111,7 +119,7 @@ let layer = bgLayer();
 map.addLayer(layer);
 let overlay = overlayLayer('gebouwen')
 map.addLayer(overlay);
-let marker = markerLayer();
+let marker = markerLayer(52,5);
 map.addLayer(marker);
 
-export { bgLayer, overlayLayer, geoLocatorControl };
+export { bgLayer, overlayLayer, markerLayer, geoLocatorControl };

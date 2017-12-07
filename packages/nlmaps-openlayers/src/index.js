@@ -31,7 +31,7 @@ function markerLayer(lat, lng) {
       })
     )
   });
-  
+
   let center; 
   if (lat != undefined && lng != undefined) {
     center = ol.proj.fromLonLat([lng, lat]);
@@ -107,19 +107,19 @@ function geoLocatorControl(geolocator, map){
 }
 
 /// Until the building works properly, this is here. Should be in browser-test.js ///
-let map = new ol.Map({
-  view: new ol.View({
-    center: [664197,6838137],
-    zoom: 10
-  }),
-  target: 'map'
-});
+// let map = new ol.Map({
+//   view: new ol.View({
+//     center: [664197,6838137],
+//     zoom: 10
+//   }),
+//   target: 'map'
+// });
 
-let layer = bgLayer();
-map.addLayer(layer);
-let overlay = overlayLayer('gebouwen')
-map.addLayer(overlay);
-let marker = markerLayer(52,5);
-map.addLayer(marker);
+// let layer = bgLayer();
+// map.addLayer(layer);
+// let overlay = overlayLayer('gebouwen')
+// map.addLayer(overlay);
+// let marker = markerLayer(52,5);
+// map.addLayer(marker);
 
 export { bgLayer, overlayLayer, markerLayer, geoLocatorControl };

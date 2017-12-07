@@ -187,24 +187,24 @@ function markerLayer(lat, lng) {
 }
 
 // / Until the building works properly, this is here. Should be in browser-test.js ///
-var map = new google.maps.Map(document.getElementById('map'), {
-  center: { lat: 52, lng: 5 },
-  zoom: 8
-});
+// var map = new google.maps.Map(document.getElementById('map'), {
+//   center: { lat: 52, lng: 5 },
+//   zoom: 8
+// });
 
-var ElaMap = bgLayer(map);
+// var ElaMap = bgLayer(map);
 
-var mapTypeIds = ['Brt Achtergrondkaart', 'roadmap'];
-map.mapTypes.set('Brt Achtergrondkaart', ElaMap);
-map.setOptions({
-  mapTypeControl: true,
-  mapTypeControlOptions: {
-    mapTypeIds: mapTypeIds
-  }
+// var mapTypeIds = ['Brt Achtergrondkaart', 'roadmap'];
+// map.mapTypes.set('Brt Achtergrondkaart', ElaMap);
+// map.setOptions({
+//   mapTypeControl: true,
+//   mapTypeControlOptions: {
+//     mapTypeIds: mapTypeIds
+//   }
 
-});
-map.setMapTypeId('Brt Achtergrondkaart');
+// });
+// map.setMapTypeId('Brt Achtergrondkaart');
 
-var wmsLayer = overlayLayer(map, 'gebouwen');
-markerLayer();
+// var wmsLayer = overlayLayer(map, 'gebouwen');
+// markerLayer();
 export { bgLayer, overlayLayer, geoLocatorControl };

@@ -125,12 +125,12 @@ function geoLocatorControl(geolocator) {
 }
 
 /// Until the building works properly, this is here. Should be in browser-test.js /// 
-var map = L.map('map').setView([52, 5], 10);
-var standaard = bgLayer();
-const overlay = overlayLayer('gebouwen');
-const marker = markerLayer();
+// var map = L.map('map').setView([52, 5], 10);
+// var standaard = bgLayer();
+// const overlay = overlayLayer('gebouwen');
+// const marker = markerLayer();
 
-standaard.addTo(map);
-overlay.addTo(map);
-marker.addTo(map);
+// standaard.addTo(map);
+// overlay.addTo(map);
+// marker.addTo(map);
 export { bgLayer, overlayLayer, markerLayer, geoLocatorControl };

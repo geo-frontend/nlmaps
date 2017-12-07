@@ -1,20 +1,42 @@
-import { bgLayer as bgL, geoLocatorControl as glL } from 'nlmaps-leaflet';
-import { bgLayer as bgOL, geoLocatorControl as glO } from 'nlmaps-openlayers';
-import { bgLayer as bgGM, geoLocatorControl as glG } from 'nlmaps-googlemaps';
-import { getProvider} from '../../lib/index.js';
+
+import { bgLayer as bgL, 
+         overlayLayer as overlayL, 
+         markerLayer as markerL, 
+         geoLocatorControl as glL } from '../../nlmaps-leaflet/build/nlmaps-leaflet.cjs.js';
+
+import { bgLayer as bgOL, 
+         overlayLayer as overlayOL, 
+         geoLocatorControl as glO } from '../../nlmaps-openlayers/build/nlmaps-openlayers.cjs.js';
+
+import { bgLayer as bgGM, 
+         overlayLayer as overlayGM, 
+         geoLocatorControl as glG } from '../../nlmaps-googlemaps/build/nlmaps-googlemaps.cjs.js';
+// import { bgLayer as bgL, geoLocatorControl as glL } from 'nlmaps-leaflet';
+
+// import { bgLayer as bgOL, 
+//          geoLocatorControl as glO } from 'nlmaps-openlayers';
+
+// import { bgLayer as bgGM, 
+//          geoLocatorControl as glG } from 'nlmaps-googlemaps';
+
+import { getProvider } from '../../lib/index.js';
 import geoLocator from '../../nlmaps-geolocator/src/index.js';
 
 let nlmaps = {
   leaflet: {
     bgLayer: bgL,
+    overlayLayer: overlayL,
+    markerLayer: markerL,
     geoLocatorControl: glL
   },
   openlayers: {
     bgLayer: bgOL,
+    overlayLayer: overlayOL,
     geoLocatorControl: glO
   },
   googlemaps: {
     bgLayer: bgGM,
+    overlayLayer: overlayGM,
     geoLocatorControl: glG
   }
 };
@@ -124,7 +146,7 @@ function addLayerToMap(lib, layer, map, name) {
       break;
   }
 }
-function createLayer(lib,  map, name) {
+function createBackgroundLayer(lib,  map, name) {
   switch (lib) {
     case 'leaflet':
       return nlmaps.leaflet.bgLayer(name);
@@ -134,6 +156,20 @@ function createLayer(lib,  map, name) {
       break;
     case 'openlayers':
       return nlmaps.openlayers.bgLayer(name);
+      break;
+  }
+}
+
+function createOverlayLayer(lib, map, name) {
+  switch (lib) {
+    case 'leaflet':
+      return nlmaps.leaflet.overlayLayer(name);
+      break;
+    case 'googlemaps':
+      return nlmaps.googlemaps.overlayLayer(map, name);
+      break;
+    case 'openlayers':
+      return nlmaps.openlayers.overlayLayer(name);
       break;
   }
 }
@@ -154,9 +190,14 @@ nlmaps.createMap = function(useropts = {}) {
   } catch (e) {
     console.error(e.message)
   }
-  let map = initMap(nlmaps.lib, opts);
-  let layer = createLayer(nlmaps.lib, map, opts.style);
-  addLayerToMap(nlmaps.lib, layer, map, opts.style);
+  const map = initMap(nlmaps.lib, opts);
+  const backgroundLayer = createBackgroundLayer(nlmaps.lib, map, opts.style);
+  addLayerToMap(nlmaps.lib, backgroundLayer, map, opts.style);
+  console.log(opts);
+  const overlayLayer = createOverlayLayer(nlmaps.lib, map, opts.overlay);
+  addLayerToMap(nlmaps.lib, overlayLayer, map);
+  console.log('overlay', overlayLayer);
+
   return map;
 };
 

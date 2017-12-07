@@ -9,10 +9,12 @@ import uglify from 'rollup-plugin-uglify';
 
 export default config => {
   return {
-    entry: 'src/index.js',
-    format: config.format,
-    moduleName: 'nlmaps',
-    dest: config.dest,
+    input: 'src/index.js',
+    name: 'nlmaps',
+    output: {
+      file: config.dest,
+      format: config.format,
+    },
     external: config.external,
     plugins: [
       commonjs(),

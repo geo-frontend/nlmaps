@@ -1,2 +1,2 @@
-import { bgLayer, geoLocatorControl } from './index.js';
+import {bgLayer, geoLocatorControl} from './index.js';
 export {bgLayer, geoLocatorControl};

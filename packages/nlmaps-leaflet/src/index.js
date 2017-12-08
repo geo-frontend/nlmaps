@@ -96,13 +96,7 @@ L.geoLocatorControl = function(geolocator){
 }
 function markerLayer(lat, lng) {
   if (typeof L !== 'undefined' && typeof L === 'object') {
-    if (lat != undefined && lng != undefined) {
-      return new L.marker([lat, lng]);
-    } else {
-      if (map != undefined) {
-        return new L.marker([map.getCenter().lat, map.getCenter().lng])
-      }
-    }
+    return new L.marker([lat, lng]);
   }
 }
 
@@ -124,6 +118,11 @@ function geoLocatorControl(geolocator) {
   }
 }
 
+function getMapCenter(map) {
+  const latLngObject = map.getCenter();
+  return [latLngObject.lat, latLngObject.lng];
+}
+
 /// Until the building works properly, this is here. Should be in browser-test.js /// 
 // var map = L.map('map').setView([52, 5], 10);
 // var standaard = bgLayer();
@@ -133,4 +132,4 @@ function geoLocatorControl(geolocator) {
 // standaard.addTo(map);
 // overlay.addTo(map);
 // marker.addTo(map);
-export { bgLayer, overlayLayer, markerLayer, geoLocatorControl };
+export { bgLayer, overlayLayer, markerLayer, getMapCenter, geoLocatorControl };

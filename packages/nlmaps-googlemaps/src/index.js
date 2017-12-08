@@ -134,7 +134,7 @@ function toMercator(coord) {
 function WMSTiled(mapObject, wmsTiledOptions) {
     var options = {
         getTileUrl: function(coord, zoom) {
-            var proj = map.getProjection();
+            var proj = mapObject.getProjection();
             var zfactor = Math.pow(2, zoom);
 
             var top = proj.fromPointToLatLng(new google.maps.Point(coord.x * 256 / zfactor, coord.y * 256 / zfactor) );
@@ -174,19 +174,20 @@ function markerLayer(lat, lng) {
   let markerLocationLatLng; 
   if (lat != undefined && lng != undefined) {
     markerLocationLatLng = new google.maps.LatLng(lat, lng);
-  } else {
-    markerLocationLatLng = new google.maps.LatLng(map.getCenter().lat(), map.getCenter().lng())
-  }
+  } 
 
   const marker = new google.maps.Marker({
-    title: 'Dit is een marker',
+    title: 'marker',
     position: markerLocationLatLng
-  })
-  marker.setMap(map);
-
+  });
+  return marker;
 }
 
-// / Until the building works properly, this is here. Should be in browser-test.js ///
+function getMapCenter(map) {
+  return [map.getCenter().lat(), map.getCenter().lng()];
+}
+
+// Until the building works properly, this is here. Should be in browser-test.js ///
 // var map = new google.maps.Map(document.getElementById('map'), {
 //   center: { lat: 52, lng: 5 },
 //   zoom: 8
@@ -206,5 +207,5 @@ function markerLayer(lat, lng) {
 // map.setMapTypeId('Brt Achtergrondkaart');
 
 // var wmsLayer = overlayLayer(map, 'gebouwen');
-// markerLayer();
-export { bgLayer, overlayLayer, geoLocatorControl };
+// markerLayer(52,5);
+export { bgLayer, overlayLayer, markerLayer, getMapCenter, geoLocatorControl };

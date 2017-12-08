@@ -2,15 +2,21 @@
 import { bgLayer as bgL, 
          overlayLayer as overlayL, 
          markerLayer as markerL, 
+         getMapCenter as centerL,
          geoLocatorControl as glL } from '../../nlmaps-leaflet/build/nlmaps-leaflet.cjs.js';
 
 import { bgLayer as bgOL, 
          overlayLayer as overlayOL, 
+         markerLayer as markerOL, 
+         getMapCenter as centerOL,
          geoLocatorControl as glO } from '../../nlmaps-openlayers/build/nlmaps-openlayers.cjs.js';
 
 import { bgLayer as bgGM, 
          overlayLayer as overlayGM, 
+         markerLayer as markerGM, 
+         getMapCenter as centerGM,
          geoLocatorControl as glG } from '../../nlmaps-googlemaps/build/nlmaps-googlemaps.cjs.js';
+
 // import { bgLayer as bgL, geoLocatorControl as glL } from 'nlmaps-leaflet';
 
 // import { bgLayer as bgOL, 
@@ -32,11 +38,13 @@ let nlmaps = {
   openlayers: {
     bgLayer: bgOL,
     overlayLayer: overlayOL,
+    markerLayer: markerOL,
     geoLocatorControl: glO
   },
   googlemaps: {
     bgLayer: bgGM,
     overlayLayer: overlayGM,
+    markerLayer: markerGM,
     geoLocatorControl: glG
   }
 };
@@ -122,6 +130,13 @@ function setMapLoc(lib, opts, map) {
 
 
 function addGoogleLayer(layer, map, name) {
+  // Markers are not considered to be a layer in google maps. Therefore, they must be added differently. 
+  // It is important that a layer has the title 'marker' in order to be recognized as a layer.
+  if (layer.title == 'marker') {
+    layer.setMap(map);
+    return;
+  }
+
   let mapTypeIds = [layer.name, 'roadmap']
   map.setOptions({
     mapTypeControl: true,
@@ -174,6 +189,37 @@ function createOverlayLayer(lib, map, name) {
   }
 }
 
+function createMarkerLayer(lib, map, latLngArray) {
+  const lat = latLngArray[0];
+  const lng = latLngArray[1];
+  
+  switch (lib) {
+    case 'leaflet': 
+      return nlmaps.leaflet.markerLayer(lat, lng);
+      break;
+    case 'googlemaps': 
+      return nlmaps.googlemaps.markerLayer(lat, lng);
+      break;
+    case 'openlayers':
+      return nlmaps.openlayers.markerLayer(lat, lng);
+      break;
+  }
+}
+
+function getMapCenter(lib, map) {
+  switch (lib) {
+    case 'leaflet': 
+      return centerL(map);
+      break;
+    case 'googlemaps': 
+      return centerGM(map);
+      break;
+    case 'openlayers':
+      console.log('openlayers')
+      return centerOL(map);
+      break;
+  }
+}
 
 function mergeOpts(defaultopts, useropts){
    return Object.assign({}, defaultopts, useropts);
@@ -193,10 +239,22 @@ nlmaps.createMap = function(useropts = {}) {
   const map = initMap(nlmaps.lib, opts);
   const backgroundLayer = createBackgroundLayer(nlmaps.lib, map, opts.style);
   addLayerToMap(nlmaps.lib, backgroundLayer, map, opts.style);
-  console.log(opts);
-  const overlayLayer = createOverlayLayer(nlmaps.lib, map, opts.overlay);
-  addLayerToMap(nlmaps.lib, overlayLayer, map);
-  console.log('overlay', overlayLayer);
+  console.log(backgroundLayer);
+  if (opts.overlay) {
+    const overlayLayer = createOverlayLayer(nlmaps.lib, map, opts.overlay);
+    console.log(overlayLayer);
+    addLayerToMap(nlmaps.lib, overlayLayer, map);
+  }
+
+  if (opts.marker) {
+    let markerLocation = opts.marker;
+    if (typeof opts.marker === "boolean") {
+      markerLocation = getMapCenter(nlmaps.lib, map);
+    }
+    const markerLayer = createMarkerLayer(nlmaps.lib, map, markerLocation);
+
+    addLayerToMap(nlmaps.lib, markerLayer, map);
+  }
 
   return map;
 };

@@ -32,12 +32,7 @@ function markerLayer(lat, lng) {
     )
   });
 
-  let center; 
-  if (lat != undefined && lng != undefined) {
-    center = ol.proj.fromLonLat([lng, lat]);
-  } else {
-    center = map.getView().getCenter()
-  }
+  const center = ol.proj.fromLonLat([lng, lat]);
 
   var markerFeature = new ol.Feature({
     geometry: new ol.geom.Point(center),
@@ -106,6 +101,13 @@ function geoLocatorControl(geolocator, map){
   return control;
 }
 
+function getMapCenter(map) {
+  const EPSG3857Coords = map.getView().getCenter();
+  const lngLatCoords = ol.proj.toLonLat(EPSG3857Coords);
+  const latLngCoords = lngLatCoords.reverse();
+  return latLngCoords;
+   
+}
 /// Until the building works properly, this is here. Should be in browser-test.js ///
 // let map = new ol.Map({
 //   view: new ol.View({
@@ -122,4 +124,4 @@ function geoLocatorControl(geolocator, map){
 // let marker = markerLayer(52,5);
 // map.addLayer(marker);
 
-export { bgLayer, overlayLayer, markerLayer, geoLocatorControl };
+export { bgLayer, overlayLayer, markerLayer, getMapCenter, geoLocatorControl };

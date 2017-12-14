@@ -136,7 +136,6 @@ function addGoogleLayer(layer, map, name) {
     layer.setMap(map);
     return;
   }
-
   let mapTypeIds = [layer.name, 'roadmap']
   map.setOptions({
     mapTypeControl: true,
@@ -144,7 +143,9 @@ function addGoogleLayer(layer, map, name) {
       mapTypeIds: mapTypeIds
     }
   });
+
   map.mapTypes.set(layer.name, layer);
+  console.log('maptypes', map.mapTypes);
   map.setMapTypeId(layer.name);
 }
 
@@ -215,7 +216,6 @@ function getMapCenter(lib, map) {
       return centerGM(map);
       break;
     case 'openlayers':
-      console.log('openlayers')
       return centerOL(map);
       break;
   }
@@ -239,10 +239,8 @@ nlmaps.createMap = function(useropts = {}) {
   const map = initMap(nlmaps.lib, opts);
   const backgroundLayer = createBackgroundLayer(nlmaps.lib, map, opts.style);
   addLayerToMap(nlmaps.lib, backgroundLayer, map, opts.style);
-  console.log(backgroundLayer);
   if (opts.overlay) {
     const overlayLayer = createOverlayLayer(nlmaps.lib, map, opts.overlay);
-    console.log(overlayLayer);
     addLayerToMap(nlmaps.lib, overlayLayer, map);
   }
 
@@ -252,7 +250,6 @@ nlmaps.createMap = function(useropts = {}) {
       markerLocation = getMapCenter(nlmaps.lib, map);
     }
     const markerLayer = createMarkerLayer(nlmaps.lib, map, markerLocation);
-
     addLayerToMap(nlmaps.lib, markerLayer, map);
   }
 

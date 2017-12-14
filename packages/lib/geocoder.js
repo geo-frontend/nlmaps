@@ -1,4 +1,8 @@
 console.log('Geocoder activated');
+const geocoder = {
+    suggestUrl: 'https://geodata.nationaalgeoregister.nl/locatieserver/v3/suggest?',
+    lookupUrl: 'https://geodata.nationaalgeoregister.nl/locatieserver/v3/lookup?'
+};
 
 function httpGetAsync(url) {
     return new Promise((resolve, reject) => {
@@ -17,7 +21,6 @@ function wktPointToGeoJson(wktPoint) {
     if (!wktPoint.includes('POINT')) {
         throw TypeError('Provided WKT geometry is not a point.');
     }
-
     const coordinateTuple = wktPoint.split('(')[1].split(')')[0];
     const x = parseFloat(coordinateTuple.split(' ')[0]);
     const y = parseFloat(coordinateTuple.split(' ')[1]);
@@ -28,11 +31,6 @@ function wktPointToGeoJson(wktPoint) {
     }
 
 }
-const geocoder = {
-    suggestUrl: 'https://geodata.nationaalgeoregister.nl/locatieserver/v3/suggest?',
-    lookupUrl: 'https://geodata.nationaalgeoregister.nl/locatieserver/v3/lookup?'
-};
-
 
 /**
  * Make a call to PDOK locatieserver v3 suggest service. This service is meant for geocoder autocomplete functionality. For
@@ -54,9 +52,8 @@ geocoder.lookup = function(id) {
         const geocodeResult = lookupResult.response.docs[0];
         geocodeResult.centroide_ll = wktPointToGeoJson(geocodeResult.centroide_ll);
         geocodeResult.centroide_rd = wktPointToGeoJson(geocodeResult.centroide_rd);
-
         return geocodeResult;
-    })
+    });
 }
 
 

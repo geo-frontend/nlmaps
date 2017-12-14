@@ -1,4 +1,4 @@
-import { getProvider, getWmsProvider, geolocator_icon, geocoder } from '../../lib/index.js';
+import { getProvider, getWmsProvider, geolocator_icon, search_icon, cross_icon,  geocoder } from '../../lib/index.js';
 
 if (typeof L !== 'undefined' && typeof L === 'object') {
 L.NlmapsBgLayer = L.TileLayer.extend({
@@ -42,7 +42,6 @@ L.NlmapsOverlayLayer = L.TileLayer.WMS.extend({
 L.nlmapsOverlayLayer = function (options, source) {
   return new L.NlmapsOverlayLayer(options, source);
 };
-
 
 L.Control.GeoLocatorControl = L.Control.extend({
   options: {
@@ -109,6 +108,9 @@ L.Control.GeocoderControl = L.Control.extend({
     const searchDiv = L.DomUtil.create('div');
     const results = L.DomUtil.create('div');
     const input = L.DomUtil.create('input');
+
+    console.log(search_icon);
+
     searchDiv.appendChild(input);
     container.appendChild(searchDiv);
     container.appendChild(results);
@@ -117,9 +119,17 @@ L.Control.GeocoderControl = L.Control.extend({
       this.clearSuggestResults();
       this.suggest(e.target.value);
     }, this);
+
+    L.DomEvent.addListener(input, 'focus', function(e) {
+      console.log('onfocus');
+      this.suggest(e.target.value);
+    }, this);
     const controlWidth = '300px';
-    searchDiv.id = 'nlmaps-geocoder-control';
+    container.id = 'nlmaps-geocoder-control';
     searchDiv.style.width = controlWidth;
+
+    input.id = 'nlmaps-geocoder-control-input';
+    input.placeholder = 'Zoeken op adres...'
     input.style.padding = '4px 10px';
     input.style.width = '100%';
     input.style.border = 'none';
@@ -181,10 +191,15 @@ L.Control.GeocoderControl = L.Control.extend({
   lookup: function(id) {
     this.options.geocoder.lookup(id).then((result) => {
       this.zoomTo(result.centroide_ll);
+      this.showLookupResult(result.weergavenaam);
+      this.clearSuggestResults();
     });
   },
   zoomTo: function(point) {
     this._map.fitBounds(L.geoJSON(point).getBounds(), {maxZoom: 18});
+  },
+  showLookupResult: function (name) {
+    document.getElementById('nlmaps-geocoder-control-input').value = name;
   }
 });
 
@@ -221,20 +236,26 @@ function geoLocatorControl(geolocator) {
   }
 }
 
+function geocoderControl(geocoder) {
+  if (typeof L !== 'undefined' && typeof L === 'object') {
+    return L.geocoderControl(geocoder);
+  }
+}
+
 function getMapCenter(map) {
   const latLngObject = map.getCenter();
   return [latLngObject.lat, latLngObject.lng];
 }
 
 /// Until the building works properly, this is here. Should be in browser-test.js /// 
-var map = L.map('map').setView([52, 5], 10);
-var standaard = bgLayer();
-const overlay = overlayLayer('gebouwen');
-// const marker = markerLayer();
+// var map = L.map('map').setView([52, 5], 10);
+// var standaard = bgLayer();
+// const overlay = overlayLayer('gebouwen');
+// // const marker = markerLayer();
 
-standaard.addTo(map);
-overlay.addTo(map);
+// standaard.addTo(map);
+// overlay.addTo(map);
 
-L.geocoderControl(geocoder).addTo(map);
+// L.geocoderControl(geocoder).addTo(map);
 // marker.addTo(map);
-export { bgLayer, overlayLayer, markerLayer, getMapCenter, geoLocatorControl };
+export { bgLayer, overlayLayer, markerLayer, getMapCenter, geoLocatorControl, geocoderControl};

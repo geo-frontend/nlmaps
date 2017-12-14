@@ -3,6 +3,7 @@ import { bgLayer as bgL,
          overlayLayer as overlayL, 
          markerLayer as markerL, 
          getMapCenter as centerL,
+         geocoderControl as geocoderL,
          geoLocatorControl as glL } from '../../nlmaps-leaflet/build/nlmaps-leaflet.cjs.js';
 
 import { bgLayer as bgOL, 
@@ -25,7 +26,7 @@ import { bgLayer as bgGM,
 // import { bgLayer as bgGM, 
 //          geoLocatorControl as glG } from 'nlmaps-googlemaps';
 
-import { getProvider } from '../../lib/index.js';
+import { getProvider, geocoder } from '../../lib/index.js';
 import geoLocator from '../../nlmaps-geolocator/src/index.js';
 
 let nlmaps = {
@@ -33,6 +34,7 @@ let nlmaps = {
     bgLayer: bgL,
     overlayLayer: overlayL,
     markerLayer: markerL,
+    geocoderControl: geocoderL,
     geoLocatorControl: glL
   },
   openlayers: {
@@ -237,13 +239,17 @@ nlmaps.createMap = function(useropts = {}) {
     console.error(e.message)
   }
   const map = initMap(nlmaps.lib, opts);
+  // Background layer
   const backgroundLayer = createBackgroundLayer(nlmaps.lib, map, opts.style);
   addLayerToMap(nlmaps.lib, backgroundLayer, map, opts.style);
+
+  // Overlay layer
   if (opts.overlay) {
     const overlayLayer = createOverlayLayer(nlmaps.lib, map, opts.overlay);
     addLayerToMap(nlmaps.lib, overlayLayer, map);
   }
 
+  // Marker layer
   if (opts.marker) {
     let markerLocation = opts.marker;
     if (typeof opts.marker === "boolean") {
@@ -253,6 +259,8 @@ nlmaps.createMap = function(useropts = {}) {
     addLayerToMap(nlmaps.lib, markerLayer, map);
   }
 
+  // Geocoder
+  addGeocoderControlToMap(nlmaps.lib, geocoder, map);
   return map;
 };
 
@@ -269,6 +277,20 @@ function addGeoLocControlToMap(lib, geolocator, map){
     case 'openlayers':
       control = nlmaps[lib].geoLocatorControl(geolocator,map);
       map.addControl(control)
+      break;
+  }
+}
+
+function addGeocoderControlToMap(lib, geocoder, map){
+  switch (lib) {
+    case 'leaflet':
+      nlmaps[lib].geocoderControl(geocoder).addTo(map);  
+      break;
+    case 'googlemaps':
+      throw Error('not yet implemented googlemaps');
+      break;
+    case 'openlayers':
+      throw Error('not yet implemented openlayers');
       break;
   }
 }

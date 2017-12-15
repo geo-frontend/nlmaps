@@ -23,6 +23,16 @@
     line-height: 24px;
 }
 
+.btn-mobile {
+    margin-top: 10px;
+}
+
+@include mq($from: 441px) {
+    .btn-mobile {
+        margin-top: 0;
+    }
+}
+
 .btn-icon { // Modifier
     padding-left: 8px;
 }
@@ -30,11 +40,16 @@
 .btn-github { // Modifier
     &:before {
         @include fontello('\f09b');
+        position: absolute;
         vertical-align: sub;
         margin: 0 10px 0 0;
         font-size: 2em;
         line-height: 1;
     }
+}
+
+.btn-github span {
+    padding-left: 45px;
 }
 
 .btn-inverted {

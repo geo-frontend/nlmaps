@@ -7,7 +7,7 @@
             <p class="spotlight-description">De meest actuele kaart nu beschikbaar</p>
             <div class="section-actions">
                 <a href="#wizard" class="btn btn-primary">Gebruik NL Maps nu</a>
-                <a href="https://github.com/kadaster/nlmaps/" target="_blank" class="btn btn-primary btn-icon btn-github">Bekijk op GitHub</a>
+                <a href="https://github.com/kadaster/nlmaps/" target="_blank" class="btn btn-primary btn-icon btn-github"><span>Bekijk op GitHub</span></a>
             </div>
         </div>
         <img src="assets/images/map.png" alt="" class="spotlight-map" />
@@ -93,6 +93,44 @@
                                 </div>
                             </li>
                             <li class="wizard-step">
+                                <span class="wizard-step-heading">Kies een marker</span>
+                                <div class="wizard-step-content">
+                                    <span class="wizard-option">
+                                        <input type="radio" value="marker-yes" name="marker" id="marker-yes" checked="checked" />
+                                        <label for="theme-default">marker</label>
+                                    </span>
+                                    <span class="wizard-option">
+                                        <input type="radio" value="marker-no" name="marker" id="marker-no" />
+                                        <label for="theme-pastel">geen marker</label>
+                                    </span>
+                                </div>
+                            </li>
+                            <li class="wizard-step">
+                                <span class="wizard-step-heading">Kies kaartgegevens </span>
+                                <div class="wizard-step-content">
+                                    <span class="wizard-option">
+                                        <input type="radio" value="wms-1" name="wms" id="wms-1" checked="checked" />
+                                        <label for="theme-default">geen</label>
+                                    </span>
+                                    <span class="wizard-option">
+                                        <input type="radio" value="wms-2" name="wms" id="wms-2" />
+                                        <label for="theme-default">percelen</label>
+                                    </span>
+                                    <span class="wizard-option">
+                                        <input type="radio" value="wms-3" name="wms" id="wms-3" />
+                                        <label for="theme-default">gebouwen</label>
+                                    </span>
+                                    <span class="wizard-option">
+                                        <input type="radio" value="wms-4" name="wms" id="wms-4" />
+                                        <label for="theme-default">hoogtebestand</label>
+                                    </span>
+                                    <span class="wizard-option">
+                                            <input type="radio" value="wms-5" name="wms" id="wms-5" />
+                                            <label for="theme-default">ganzenfourage</label>
+                                    </span>
+                                </div>
+                            </li>
+                            <li class="wizard-step">
                                 <span class="wizard-step-heading">Kopieer de code</span>
                                 <div class="wizard-step-content">
                                     <div class="wizard-map js-wizard-map">
@@ -109,7 +147,7 @@
                     <div class="section-actions">
                         <h2 class="heading section-heading">Uitgebreide documentatie?</h2>
                         <p>Bekijk alle mogelijkheden op de NL Maps Github pagina.</p>
-                        <a href="https://github.com/kadaster/nlmaps/" target="_blank" class="btn btn-primary btn-icon btn-github btn-inverted">Bekijk op Github</a>
+                        <a href="https://github.com/kadaster/nlmaps/" target="_blank" class="btn btn-primary btn-icon btn-github btn-inverted btn-mobile"><span>Bekijk op Github</span></a>
                     </div>
                 </div>
                 <div class="docs tab">

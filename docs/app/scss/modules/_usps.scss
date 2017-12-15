@@ -17,16 +17,18 @@
     position: relative;
     max-width: 400px;
     margin: 0 auto;
-    padding: 50px 0 0;
+    padding: 90px 0 0;
+    text-align: center;
 
     &:before {
         content: '';
         position: absolute;
         top: 0;
-        left: 0;
-        width: 32px;
-        height: 32px;
+        left: 50%;
+        width: 64px;
+        height: 64px;
         border-radius: 100%;
+        transform: translate(-50%, 0%);
         background: $brand-primary;
     }
 
@@ -34,12 +36,13 @@
         @include fontello('\e837');
         position: absolute;
         top: 0;
-        left: 0;
-        width: 32px;
-        height: 32px;
+        left: 50%;
+        width: 64px;
+        height: 64px;
         margin: 0;
-        font-size: 16px;
-        line-height: 32px;
+        transform: translate(-50%, 0%);
+        font-size: 32px;
+        line-height: 64px;
         text-align: center;
         color: #fff;
     }
@@ -66,6 +69,7 @@
 @include mq($from: mobile) {
     .usp {
         padding: 0 0 0 100px;
+        text-align: left;
 
         &:before {
             left: 0;
@@ -100,16 +104,20 @@
     }
 
     .usp {
-        padding: 80px 0 0;
+        padding: 95px 0 0;
 
         &:before {
+            left: 50%;
             width: 64px;
             height: 64px;
+            transform: translate(-50%, 0%);
         }
 
         &:after {
+            left: 50%;
             width: 64px;
             height: 64px;
+            transform: translate(-50%, 0%);
             font-size: 32px;
             line-height: 64px;
         }
@@ -134,12 +142,14 @@
             left: 0;
             width: 64px;
             height: 64px;
+            transform: inherit;
         }
 
         &:after {
             left: 0;
             width: 64px;
             height: 64px;
+            transform: inherit;
             font-size: 32px;
             line-height: 64px;
         }

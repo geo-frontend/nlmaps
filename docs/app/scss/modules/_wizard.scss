@@ -1,6 +1,6 @@
 .wizard {
     position: relative;
-    padding: 0 0 60px;
+    padding: 0 0 15px;
 
     &:before {
         content: '';
@@ -20,7 +20,7 @@
     padding: 0;
     list-style: none;
     background: #fff;
-    box-shadow: 0 10px 40px 10px rgba(#000, 0.04);
+    box-shadow: 0 10px 40px 10px rgba(#000, 0.08);
     counter-reset: step;
 }
 
@@ -182,7 +182,7 @@
         &:before {
             width: 32px;
             height: 32px;
-            margin: 0 10px 0 0;
+            margin: 0 15px 0 0;
             font-size: $font-size-medium;
             line-height: 32px;
         }
@@ -202,7 +202,7 @@
 
     .wizard-option {
         & + & {
-            margin: 0 0 0 20px;
+            margin: 0 0 0 15px;
         }
 
         label {

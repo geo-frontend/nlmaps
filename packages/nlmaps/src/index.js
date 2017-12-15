@@ -17,6 +17,7 @@ import { bgLayer as bgGM,
          overlayLayer as overlayGM, 
          markerLayer as markerGM, 
          getMapCenter as centerGM,
+         geocoderControl as geocoderGM, 
          geoLocatorControl as glG } from '../../nlmaps-googlemaps/build/nlmaps-googlemaps.cjs.js';
 
 // import { bgLayer as bgL, geoLocatorControl as glL } from 'nlmaps-leaflet';
@@ -49,7 +50,8 @@ let nlmaps = {
     bgLayer: bgGM,
     overlayLayer: overlayGM,
     markerLayer: markerGM,
-    geoLocatorControl: glG
+    geoLocatorControl: glG,
+    geocoderControl: geocoderGM,
   }
 };
 
@@ -272,7 +274,8 @@ function addGeoLocControlToMap(lib, geolocator, map){
       nlmaps[lib].geoLocatorControl(geolocator).addTo(map);  
       break;
     case 'googlemaps':
-      control = nlmaps[lib].geoLocatorControl(geolocator, map)
+      control = nlmaps[lib].geoLocatorControl(geolocator, map);
+      console.log(control);
       map.controls[google.maps.ControlPosition.TOP_RIGHT].push(control);
       break;
     case 'openlayers':
@@ -283,15 +286,17 @@ function addGeoLocControlToMap(lib, geolocator, map){
 }
 
 function addGeocoderControlToMap(lib, geocoder, map){
+  let control;
   switch (lib) {
     case 'leaflet':
       nlmaps[lib].geocoderControl(geocoder).addTo(map);  
       break;
     case 'googlemaps':
-      throw Error('not yet implemented googlemaps');
+      control = nlmaps[lib].geocoderControl(geocoder, map);
+      map.controls[google.maps.ControlPosition.TOP_LEFT].push(control);
       break;
     case 'openlayers':
-      const control = nlmaps[lib].geocoderControl(geocoder, map);
+      control = nlmaps[lib].geocoderControl(geocoder, map);
       map.addControl(control);
       break;
   }

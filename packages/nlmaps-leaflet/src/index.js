@@ -109,21 +109,18 @@ L.Control.GeocoderControl = L.Control.extend({
     const results = L.DomUtil.create('div');
     const input = L.DomUtil.create('input');
 
-    console.log(search_icon);
-
     searchDiv.appendChild(input);
     container.appendChild(searchDiv);
     container.appendChild(results);
 
     L.DomEvent.addListener(input, 'input', function(e) {
-      this.clearSuggestResults();
       this.suggest(e.target.value);
     }, this);
 
     L.DomEvent.addListener(input, 'focus', function(e) {
-      console.log('onfocus');
       this.suggest(e.target.value);
     }, this);
+
     const controlWidth = '300px';
     container.id = 'nlmaps-geocoder-control';
     searchDiv.style.width = controlWidth;
@@ -144,6 +141,7 @@ L.Control.GeocoderControl = L.Control.extend({
   onRemove: function(map){},
   suggest: function(query) {
     if (query.length < 4) {
+      this.clearSuggestResults();
       return;
     }
     this.options.geocoder.suggest(query).then((results) => {

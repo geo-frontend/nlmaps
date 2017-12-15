@@ -1,4 +1,3 @@
-console.log('Geocoder activated');
 const geocoder = {
     suggestUrl: 'https://geodata.nationaalgeoregister.nl/locatieserver/v3/suggest?',
     lookupUrl: 'https://geodata.nationaalgeoregister.nl/locatieserver/v3/lookup?'

@@ -158,15 +158,19 @@ function WMSTiled(mapObject, wmsTiledOptions) {
         tileSize: new google.maps.Size(256, 256),
         isPng: true
     };
-    var layer = new google.maps.ImageMapType(options)
-    layer.setOpacity(wmsTiledOptions.opacity)
+    let layer = new google.maps.ImageMapType(options);
+    layer.name = 'wms';
+    layer.setOpacity(wmsTiledOptions.opacity);
+    console.log('layer', layer);
     return mapObject.overlayMapTypes.push(layer);
 }
 
 function overlayLayer(map=map, name) {
   const wmsProvider = getWmsProvider(name);
   const wmsTiledOptions = getWmsTiledOptions(wmsProvider);
-  var wmsLayer = new WMSTiled(map, wmsTiledOptions)
+  const wmsLayer = new WMSTiled(map, wmsTiledOptions);
+  wmsLayer.name = 'name';
+
   return wmsLayer;
 }
 

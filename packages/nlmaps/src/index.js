@@ -10,6 +10,7 @@ import { bgLayer as bgOL,
          overlayLayer as overlayOL, 
          markerLayer as markerOL, 
          getMapCenter as centerOL,
+         geocoderControl as geocoderOL,
          geoLocatorControl as glO } from '../../nlmaps-openlayers/build/nlmaps-openlayers.cjs.js';
 
 import { bgLayer as bgGM, 
@@ -41,6 +42,7 @@ let nlmaps = {
     bgLayer: bgOL,
     overlayLayer: overlayOL,
     markerLayer: markerOL,
+    geocoderControl: geocoderOL,
     geoLocatorControl: glO
   },
   googlemaps: {
@@ -147,7 +149,6 @@ function addGoogleLayer(layer, map, name) {
   });
 
   map.mapTypes.set(layer.name, layer);
-  console.log('maptypes', map.mapTypes);
   map.setMapTypeId(layer.name);
 }
 
@@ -276,7 +277,7 @@ function addGeoLocControlToMap(lib, geolocator, map){
       break;
     case 'openlayers':
       control = nlmaps[lib].geoLocatorControl(geolocator,map);
-      map.addControl(control)
+      map.addControl(control);
       break;
   }
 }
@@ -290,7 +291,8 @@ function addGeocoderControlToMap(lib, geocoder, map){
       throw Error('not yet implemented googlemaps');
       break;
     case 'openlayers':
-      throw Error('not yet implemented openlayers');
+      const control = nlmaps[lib].geocoderControl(geocoder, map);
+      map.addControl(control);
       break;
   }
 }

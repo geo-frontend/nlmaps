@@ -1,0 +1,60 @@
+.spotlight {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    height: 80vh;
+    min-height: 430px;
+    padding: 150px 0 60px;
+    background: url('#{$image-path}map-background.png') no-repeat center center $brand-secondary;
+    background-size: cover;
+    font-size: $font-size-medium;
+    text-align: center;
+}
+
+.spotlight-heading {
+    font-size: 28px;
+}
+
+.spotlight-description {
+    margin: 0 0 1em;
+}
+
+.spotlight-map {
+    display: none;
+}
+
+@include mq($from: tablet) {
+    .spotlight {
+        height: calc(60vh);
+        min-height: 370px;
+        margin-bottom: 60px;
+        padding: 120px 0;
+    }
+
+    .spotlight-heading {
+        font-size: 36px;
+    }
+
+    .spotlight-map {
+        position: absolute;
+        left: 50%;
+        bottom: 0;
+        display: inline-block;
+        transform: translate(-50%, 50%) perspective(1000px) rotateX(70deg);
+        box-shadow: 0 10px 40px 10px rgba(#000, 0.05);
+    }
+}
+
+@include mq($from: wide) {
+    .spotlight {
+        height: calc(70vh);
+        min-height: 370px;
+        margin-bottom: 60px;
+        padding: 120px 0;
+    }
+
+    .spotlight-heading {
+        font-size: 42px;
+    }
+}

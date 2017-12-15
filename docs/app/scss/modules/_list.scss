@@ -1,0 +1,38 @@
+.list {
+    flex-wrap: wrap;
+    margin: 0 -20px;
+    padding: 0;
+    list-style: none;
+}
+
+.list-item {
+    padding: 0 20px;
+}
+
+.list-link {
+    display: block;
+    margin-top: -1px;
+    padding: 12px 0;
+    border-top: 1px solid #fff;
+    border-bottom: 1px solid #fff;
+    color: #fff;
+    transition: background 0.3s linear, padding 0.3s linear;
+
+    &:focus,
+    &:hover {
+        padding: 12px;
+        text-decoration: none;
+        background: #fff;
+        color: $brand-secondary;
+    }
+}
+
+@include mq($from: tablet) {
+    .list {
+        display: flex;
+    }
+
+    .list-item {
+        width: percentage(1/3);
+    }
+}

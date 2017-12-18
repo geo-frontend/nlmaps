@@ -263,9 +263,7 @@ function WMSTiled(mapObject, wmsTiledOptions) {
         isPng: true
     };
     let layer = new google.maps.ImageMapType(options);
-    layer.name = 'wms';
     layer.setOpacity(wmsTiledOptions.opacity);
-    console.log('layer', layer);
     return mapObject.overlayMapTypes.push(layer);
 }
 
@@ -273,7 +271,7 @@ function overlayLayer(map=map, name) {
   const wmsProvider = getWmsProvider(name);
   const wmsTiledOptions = getWmsTiledOptions(wmsProvider);
   const wmsLayer = new WMSTiled(map, wmsTiledOptions);
-  wmsLayer.name = 'name';
+  wmsLayer.name = 'wms';
 
   return wmsLayer;
 }

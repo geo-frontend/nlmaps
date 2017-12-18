@@ -138,11 +138,22 @@ function setMapLoc(lib, opts, map) {
 function addGoogleLayer(layer, map, name) {
   // Markers are not considered to be a layer in google maps. Therefore, they must be added differently. 
   // It is important that a layer has the title 'marker' in order to be recognized as a layer.
-  if (layer.title == 'marker') {
+  if (layer.title === 'marker') {
     layer.setMap(map);
     return;
   }
-  let mapTypeIds = [layer.name, 'roadmap']
+
+  if (layer.name === 'wms') {
+    map.setOptions({
+      mapTypeControl: true,
+      mapTypeControlOptions: {
+        mapTypeIds: mapTypeIds
+      }
+    });
+    return;
+  }
+  let mapTypeIds = [layer.name, 'roadmap'];
+
   map.setOptions({
     mapTypeControl: true,
     mapTypeControlOptions: {

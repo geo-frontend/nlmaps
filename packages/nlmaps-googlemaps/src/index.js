@@ -292,7 +292,8 @@ function markerLayer(latLngObject) {
   const markerLocationLatLng = new google.maps.LatLng(lat, lng);
   const marker = new google.maps.Marker({
     title: 'marker',
-    position: markerLocationLatLng
+    position: markerLocationLatLng,
+    icon: 'https://rawgit.com/webmapper/nlmaps/master/dist/assets/rijksoverheid-marker.png'
   });
   return marker;
 }

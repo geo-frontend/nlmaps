@@ -255,7 +255,7 @@ nlmaps.createMap = function(useropts = {}) {
   addLayerToMap(nlmaps.lib, backgroundLayer, map, opts.style);
 
   // Overlay layer
-  if (opts.overlay) {
+  if (opts.overlay && opts.overlay != 'false') {
     const overlayLayer = createOverlayLayer(nlmaps.lib, map, opts.overlay);
     addLayerToMap(nlmaps.lib, overlayLayer, map);
   }

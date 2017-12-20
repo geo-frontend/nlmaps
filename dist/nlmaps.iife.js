@@ -35,7 +35,7 @@ var nlmapsLeaflet_cjs = createCommonjsModule(function (module, exports) {
     switch (name) {
       case 'gebouwen':
         wmsParameters.workSpaceName = 'bag';
-        wmsParameters.layerName = 'bag';
+        wmsParameters.layerName = 'pand';
         wmsParameters.styleName = '';
         break;
       case 'percelen':
@@ -562,7 +562,7 @@ var nlmapsOpenlayers_cjs = createCommonjsModule(function (module, exports) {
     switch (name) {
       case 'gebouwen':
         wmsParameters.workSpaceName = 'bag';
-        wmsParameters.layerName = 'bag';
+        wmsParameters.layerName = 'pand';
         wmsParameters.styleName = '';
         break;
       case 'percelen':
@@ -1039,7 +1039,7 @@ var nlmapsGooglemaps_cjs = createCommonjsModule(function (module, exports) {
     switch (name) {
       case 'gebouwen':
         wmsParameters.workSpaceName = 'bag';
-        wmsParameters.layerName = 'bag';
+        wmsParameters.layerName = 'pand';
         wmsParameters.styleName = '';
         break;
       case 'percelen':
@@ -1969,7 +1969,7 @@ nlmaps.createMap = function () {
   addLayerToMap(nlmaps.lib, backgroundLayer, map, opts.style);
 
   // Overlay layer
-  if (opts.overlay) {
+  if (opts.overlay && opts.overlay != 'false') {
     var overlayLayer$$1 = createOverlayLayer(nlmaps.lib, map, opts.overlay);
     addLayerToMap(nlmaps.lib, overlayLayer$$1, map);
   }

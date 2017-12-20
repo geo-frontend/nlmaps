@@ -8,7 +8,7 @@ import uglify from 'rollup-plugin-uglify';
 
 export default config => {
   return {
-    entry: config.format === 'iife' ? 'src/browser.js' : 'src/index.js',
+    input: config.format === 'iife' ? 'src/browser.js' : 'src/index.js',
     format: config.format,
     moduleName: config.format === 'iife' ? 'window' : 'nlmapsOL',
     dest: config.dest,

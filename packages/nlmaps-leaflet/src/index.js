@@ -1,4 +1,4 @@
-import { getProvider, getWmsProvider, geolocator_icon, search_icon, cross_icon,  geocoder } from '../../lib/index.js';
+import { getProvider, getWmsProvider, geolocator_icon, geocoder } from '../../lib/index.js';
 
 if (typeof L !== 'undefined' && typeof L === 'object') {
 L.NlmapsBgLayer = L.TileLayer.extend({

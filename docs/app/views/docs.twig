@@ -1,0 +1,39 @@
+{% extends "partials/_layout.twig" %}
+
+{% block content %}
+    <section class="section section-brand">
+        <div class="container">
+            <div class="section-intro">
+                <h1 class="heading spotlight-heading">NL Maps Library</h1>
+                <p class="spotlight-description">De meest actuele kaart nu beschikbaar</p>
+                <div class="section-actions">
+                    <a href="{{ routes.home }}" class="btn btn-primary">Terug naar NL Maps</a>
+                    <a href="https://github.com/kadaster/nlmaps" target="_blank" class="btn btn-primary btn-icon btn-github">Bekijk op GitHub</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="section">
+        <div class="container container-narrow">
+            <div class="markdown js-docs"></div>
+        </div>
+    </section>
+
+    <section class="section section-brand">
+        <div class="container">
+            <div class="section-intro">
+                <h1 class="heading section-heading">Handige links</h1>
+            </div>
+            <ul class="list">
+                <li class="list-item"><a href="https://www.kadaster.nl" target="_blank" class="list-link">Kadaster</a></li>
+                <li class="list-item"><a href="https://www.kadaster.nl/nlmaps" target="_blank" class="list-link">Kadaster NL Maps</a></li>
+                <li class="list-item"><a href="https://pdok.nl" target="_blank" class="list-link">PDOK</a></li>
+                <li class="list-item"><a href="https://pdokforum.geonovum.nl/" target="_blank" class="list-link">PDOK Forum</a></li>
+                <li class="list-item"><a href="http://pdokviewer.pdok.nl/" target="_blank" class="list-link">PDOK Viewer</a></li>
+                <li class="list-item"><a href="https://github.com/kadaster/nlmaps/" target="_blank" class="list-link">Github</a></li>
+                <li class="list-item"><a href="https://www.pdok.nl/nl/voor-wie/vrij-gebruik-pdok-fair-use" target="_blank" class="list-link">PDOK fair-use</a></li>
+            </ul>
+        </div>
+    </section>
+{% endblock %}

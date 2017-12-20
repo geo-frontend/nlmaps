@@ -18,24 +18,88 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 var nlmapsLeaflet_cjs = createCommonjsModule(function (module, exports) {
   Object.defineProperty(exports, '__esModule', { value: true });
 
-  var geolocator_icon = '<?xml version="1.0" encoding="UTF-8" standalone="no"?><svg xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns="http://www.w3.org/2000/svg" height="7.0556mm" width="7.0556mm" version="1.1" xmlns:cc="http://creativecommons.org/ns#" xmlns:dc="http://purl.org/dc/elements/1.1/" viewBox="0 0 24.999999 24.999999"> <metadata>  <rdf:RDF>   <cc:Work rdf:about="">    <dc:format>image/svg+xml</dc:format>    <dc:type rdf:resource="http://purl.org/dc/dcmitype/StillImage"/>    <dc:title/>   </cc:Work>  </rdf:RDF> </metadata> <g transform="translate(-151.39 -117.97)">  <g transform="translate(.39250 .85750)">   <path style="color-rendering:auto;text-decoration-color:#000000;color:#000000;shape-rendering:auto;solid-color:#000000;text-decoration-line:none;fill:#191919;mix-blend-mode:normal;block-progression:tb;text-indent:0;image-rendering:auto;white-space:normal;text-decoration-style:solid;isolation:auto;text-transform:none" d="m163.5 123.27c-3.4931 0-6.3379 2.8448-6.3379 6.3379s2.8448 6.3398 6.3379 6.3398 6.3379-2.8467 6.3379-6.3398-2.8448-6.3379-6.3379-6.3379zm0 1.3008c2.7905 0 5.0391 2.2466 5.0391 5.0371s-2.2485 5.0391-5.0391 5.0391c-2.7905 0-5.0391-2.2485-5.0391-5.0391 0-2.7905 2.2485-5.0371 5.0391-5.0371z"/>   <circle cx="163.5" cy="129.61" r="1.9312" style="fill:#191919"/>   <path style="color-rendering:auto;text-decoration-color:#000000;color:#000000;shape-rendering:auto;solid-color:#000000;text-decoration-line:none;fill:#191919;fill-rule:evenodd;mix-blend-mode:normal;block-progression:tb;text-indent:0;image-rendering:auto;white-space:normal;text-decoration-style:solid;isolation:auto;text-transform:none" d="m162.85 120.57v3.3555h1.3008v-3.3555h-1.3008z"/>   <path style="color-rendering:auto;text-decoration-color:#000000;color:#000000;shape-rendering:auto;solid-color:#000000;text-decoration-line:none;fill:#191919;fill-rule:evenodd;mix-blend-mode:normal;block-progression:tb;text-indent:0;image-rendering:auto;white-space:normal;text-decoration-style:solid;isolation:auto;text-transform:none" d="m162.85 135.3v3.3555h1.3008v-3.3555h-1.3008z"/>   <path style="color-rendering:auto;text-decoration-color:#000000;color:#000000;shape-rendering:auto;solid-color:#000000;text-decoration-line:none;fill:#191919;fill-rule:evenodd;mix-blend-mode:normal;block-progression:tb;text-indent:0;image-rendering:auto;white-space:normal;text-decoration-style:solid;isolation:auto;text-transform:none" d="m154.46 128.96v1.2988h3.3535v-1.2988h-3.3535z"/>   <path style="color-rendering:auto;text-decoration-color:#000000;color:#000000;shape-rendering:auto;solid-color:#000000;text-decoration-line:none;fill:#191919;fill-rule:evenodd;mix-blend-mode:normal;block-progression:tb;text-indent:0;image-rendering:auto;white-space:normal;text-decoration-style:solid;isolation:auto;text-transform:none" d="m169.19 128.96v1.2988h3.3535v-1.2988h-3.3535z"/>  </g> </g></svg>';
+  function wmsBaseUrl(workSpaceName) {
+    return 'https://geodata.nationaalgeoregister.nl/' + workSpaceName + '/wms?';
+  }
 
-  /*parts copied from maps.stamen.com: https://github.com/stamen/maps.stamen.com/blob/master/js/tile.stamen.js
-   * copyright (c) 2012, Stamen Design
-   * under BSD 3-Clause license: https://github.com/stamen/maps.stamen.com/blob/master/LICENSE
-   */
-  //https://geodata.nationaalgeoregister.nl/tiles/service/wmts/
-  //https://geodata.nationaalgeoregister.nl/luchtfoto/rgb/wmts/
+  function mapWmsProvider(name) {
+    var wmsParameters = {
+      workSpaceName: '',
+      layerName: '',
+      styleName: '',
+      url: '',
+      minZoom: 0,
+      maxZoom: 24
+    };
+
+    switch (name) {
+      case 'gebouwen':
+        wmsParameters.workSpaceName = 'bag';
+        wmsParameters.layerName = 'bag';
+        wmsParameters.styleName = '';
+        break;
+      case 'percelen':
+        wmsParameters.workSpaceName = 'kadastralekaartv3';
+        wmsParameters.layerName = 'kadastralekaart';
+        wmsParameters.styleName = '';
+        break;
+      case 'drone-no-fly-zone':
+        wmsParameters.workSpaceName = 'dronenoflyzones';
+        wmsParameters.layerName = 'luchtvaartgebieden';
+        wmsParameters.styleName = '';
+        break;
+      case 'hoogtebestand':
+        wmsParameters.workSpaceName = 'ahn2';
+        wmsParameters.layerName = 'ahn2_05m_int';
+        wmsParameters.styleName = 'ahn2:ahn2_05m_detail';
+        break;
+      case 'gemeentegrenzen':
+        wmsParameters.workSpaceName = 'bestuurlijkegrenzen';
+        wmsParameters.layerName = 'gemeenten';
+        wmsParameters.styleName = 'bestuurlijkegrenzen:bestuurlijkegrenzen_gemeentegrenzen';
+        break;
+      case 'provinciegrenzen':
+        wmsParameters.workSpaceName = 'bestuurlijkegrenzen';
+        wmsParameters.layerName = 'provincies';
+        wmsParameters.styleName = 'bestuurlijkegrenzen:bestuurlijkegrenzen_provinciegrenzen';
+        break;
+    }
+
+    wmsParameters.url = wmsBaseUrl(wmsParameters.workSpaceName);
+
+    return wmsParameters;
+  }
+
+  function makeWmsProvider(name) {
+    var wmsParameters = mapWmsProvider(name);
+
+    return {
+      url: wmsParameters.url,
+      service: 'WMS',
+      version: '1.1.1',
+      request: 'GetMap',
+      layers: wmsParameters.layerName,
+      styles: wmsParameters.styleName,
+      transparent: true,
+      format: 'image/png'
+    };
+  }
+
+  var WMS_PROVIDERS = {
+    "gebouwen": makeWmsProvider('gebouwen'),
+    "percelen": makeWmsProvider('percelen'),
+    "drone-no-fly-zone": makeWmsProvider('drone-no-fly-zone'),
+    "hoogtebestand": makeWmsProvider('hoogtebestand'),
+    "gemeentegrenzen": makeWmsProvider('gemeentegrenzen'),
+    "provinciegrenzen": makeWmsProvider('provinciegrenzen')
+  };
+
   var lufostring = 'luchtfoto/rgb';
   var brtstring = 'tiles/service';
   var servicecrs = '/EPSG:3857';
   var attr = 'Kaartgegevens &copy; <a href="kadaster.nl">Kadaster</a> | <a href="http://www.verbeterdekaart.nl">verbeter de kaart</a>';
   function baseUrl(name) {
     return 'https://geodata.nationaalgeoregister.nl/' + (name === 'luchtfoto' ? lufostring : brtstring) + '/wmts/';
-  }
-
-  function wmsBaseUrl(workSpaceName) {
-    return 'https://geodata.nationaalgeoregister.nl/' + workSpaceName + '/wms?';
   }
 
   function mapLayerName(layername) {
@@ -73,91 +137,27 @@ var nlmapsLeaflet_cjs = createCommonjsModule(function (module, exports) {
     };
   }
 
-  var PROVIDERS = {
+  var BASEMAP_PROVIDERS = {
     "standaard": makeProvider("standaard", "png", 6, 19),
     "pastel": makeProvider("pastel", "png", 6, 19),
     "grijs": makeProvider("grijs", "png", 6, 19),
     "luchtfoto": makeProvider("luchtfoto", "jpeg", 6, 19)
   };
 
-  function mapWmsProvider(name) {
-    var wmsParameters = {
-      workSpaceName: '',
-      layerName: '',
-      styleName: '',
-      url: '',
-      minZoom: 0,
-      maxZoom: 24
-    };
+  var geolocator_icon = '<?xml version="1.0" encoding="UTF-8" standalone="no"?><svg xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns="http://www.w3.org/2000/svg" height="7.0556mm" width="7.0556mm" version="1.1" xmlns:cc="http://creativecommons.org/ns#" xmlns:dc="http://purl.org/dc/elements/1.1/" viewBox="0 0 24.999999 24.999999"> <metadata>  <rdf:RDF>   <cc:Work rdf:about="">    <dc:format>image/svg+xml</dc:format>    <dc:type rdf:resource="http://purl.org/dc/dcmitype/StillImage"/>    <dc:title/>   </cc:Work>  </rdf:RDF> </metadata> <g transform="translate(-151.39 -117.97)">  <g transform="translate(.39250 .85750)">   <path style="color-rendering:auto;text-decoration-color:#000000;color:#000000;shape-rendering:auto;solid-color:#000000;text-decoration-line:none;fill:#191919;mix-blend-mode:normal;block-progression:tb;text-indent:0;image-rendering:auto;white-space:normal;text-decoration-style:solid;isolation:auto;text-transform:none" d="m163.5 123.27c-3.4931 0-6.3379 2.8448-6.3379 6.3379s2.8448 6.3398 6.3379 6.3398 6.3379-2.8467 6.3379-6.3398-2.8448-6.3379-6.3379-6.3379zm0 1.3008c2.7905 0 5.0391 2.2466 5.0391 5.0371s-2.2485 5.0391-5.0391 5.0391c-2.7905 0-5.0391-2.2485-5.0391-5.0391 0-2.7905 2.2485-5.0371 5.0391-5.0371z"/>   <circle cx="163.5" cy="129.61" r="1.9312" style="fill:#191919"/>   <path style="color-rendering:auto;text-decoration-color:#000000;color:#000000;shape-rendering:auto;solid-color:#000000;text-decoration-line:none;fill:#191919;fill-rule:evenodd;mix-blend-mode:normal;block-progression:tb;text-indent:0;image-rendering:auto;white-space:normal;text-decoration-style:solid;isolation:auto;text-transform:none" d="m162.85 120.57v3.3555h1.3008v-3.3555h-1.3008z"/>   <path style="color-rendering:auto;text-decoration-color:#000000;color:#000000;shape-rendering:auto;solid-color:#000000;text-decoration-line:none;fill:#191919;fill-rule:evenodd;mix-blend-mode:normal;block-progression:tb;text-indent:0;image-rendering:auto;white-space:normal;text-decoration-style:solid;isolation:auto;text-transform:none" d="m162.85 135.3v3.3555h1.3008v-3.3555h-1.3008z"/>   <path style="color-rendering:auto;text-decoration-color:#000000;color:#000000;shape-rendering:auto;solid-color:#000000;text-decoration-line:none;fill:#191919;fill-rule:evenodd;mix-blend-mode:normal;block-progression:tb;text-indent:0;image-rendering:auto;white-space:normal;text-decoration-style:solid;isolation:auto;text-transform:none" d="m154.46 128.96v1.2988h3.3535v-1.2988h-3.3535z"/>   <path style="color-rendering:auto;text-decoration-color:#000000;color:#000000;shape-rendering:auto;solid-color:#000000;text-decoration-line:none;fill:#191919;fill-rule:evenodd;mix-blend-mode:normal;block-progression:tb;text-indent:0;image-rendering:auto;white-space:normal;text-decoration-style:solid;isolation:auto;text-transform:none" d="m169.19 128.96v1.2988h3.3535v-1.2988h-3.3535z"/>  </g> </g></svg>';
 
-    switch (name) {
-      case 'gebouwen':
-        wmsParameters.workSpaceName = 'bag';
-        wmsParameters.layerName = 'bag';
-        wmsParameters.styleName = '';
-        break;
-      case 'kadastrale-kaart':
-        wmsParameters.workSpaceName = 'kadastralekaartv3';
-        wmsParameters.layerName = 'kadastralekaart';
-        wmsParameters.styleName = '';
-        break;
-      case 'drone-no-fly-zone':
-        wmsParameters.workSpaceName = 'dronenoflyzones';
-        wmsParameters.layerName = 'luchtvaartgebieden';
-        wmsParameters.styleName = '';
-        break;
-      case 'hoogtebestand-nederland':
-        wmsParameters.workSpaceName = 'ahn2';
-        wmsParameters.layerName = 'ahn2_05m_int';
-        wmsParameters.styleName = 'ahn2:ahn2_05m_detail';
-        break;
-      case 'gemeente-grenzen':
-        wmsParameters.workSpaceName = 'bestuurlijkegrenzen';
-        wmsParameters.layerName = 'gemeenten';
-        wmsParameters.styleName = 'bestuurlijkegrenzen:bestuurlijkegrenzen_gemeentegrenzen';
-        break;
-      case 'provincie-grenzen':
-        wmsParameters.workSpaceName = 'bestuurlijkegrenzen';
-        wmsParameters.layerName = 'provincies';
-        wmsParameters.styleName = 'bestuurlijkegrenzen:bestuurlijkegrenzen_provinciegrenzen';
-        break;
-    }
-
-    wmsParameters.url = wmsBaseUrl(wmsParameters.workSpaceName);
-
-    return wmsParameters;
-  }
-
-  function makeWmsProvider(name) {
-    var wmsParameters = mapWmsProvider(name);
-
-    return {
-      url: wmsParameters.url,
-      service: 'WMS',
-      version: '1.1.1',
-      request: 'GetMap',
-      layers: wmsParameters.layerName,
-      styles: wmsParameters.styleName,
-      transparent: true,
-      format: 'image/png'
-    };
-  }
-
-  var WMS_PROVIDERS = {
-    "gebouwen": makeWmsProvider('gebouwen'),
-    "kadastrale-kaart": makeWmsProvider('kadastrale-kaart'),
-    "drone-no-fly-zone": makeWmsProvider('drone-no-fly-zone'),
-    "hoogtebestand-nederland": makeWmsProvider('hoogtebestand-nederland'),
-    "gemeente-grenzen": makeWmsProvider('gemeente-grenzen'),
-    "provincie-grenzen": makeWmsProvider('provincie-grenzen')
-  };
-
+  /*parts copied from maps.stamen.com: https://github.com/stamen/maps.stamen.com/blob/master/js/tile.stamen.js
+   * copyright (c) 2012, Stamen Design
+   * under BSD 3-Clause license: https://github.com/stamen/maps.stamen.com/blob/master/LICENSE
+   */
+  //https://geodata.nationaalgeoregister.nl/tiles/service/wmts/
+  //https://geodata.nationaalgeoregister.nl/luchtfoto/rgb/wmts/
   /*
    * Get the named provider, or throw an exception if it doesn't exist.
    **/
   function getProvider(name) {
-    if (name in PROVIDERS) {
-      var provider = PROVIDERS[name];
+    if (name in BASEMAP_PROVIDERS) {
+      var provider = BASEMAP_PROVIDERS[name];
 
       if (provider.deprecated && console && console.warn) {
         console.warn(name + " is a deprecated style; it will be redirected to its replacement. For performance improvements, please change your reference.");
@@ -413,8 +413,19 @@ var nlmapsLeaflet_cjs = createCommonjsModule(function (module, exports) {
       return new L.Control.GeocoderControl({ geocoder: geocoder$$1 });
     };
   }
-  function markerLayer(lat, lng) {
+  function markerLayer(latLngObject) {
     if (typeof L !== 'undefined' && (typeof L === 'undefined' ? 'undefined' : _typeof$$1(L)) === 'object') {
+      var lat = void 0;
+      var lng = void 0;
+      // LatLngObject should always be defined when it is called from the main package.
+      if (typeof latLngObject == 'undefined') {
+        var center = getMapCenter(map);
+        lat = center.latitude;
+        lng = center.longitude;
+      } else {
+        lat = latLngObject.latitude;
+        lng = latLngObject.longitude;
+      }
       return new L.marker([lat, lng]);
     }
   }
@@ -445,7 +456,10 @@ var nlmapsLeaflet_cjs = createCommonjsModule(function (module, exports) {
 
   function getMapCenter(map) {
     var latLngObject = map.getCenter();
-    return [latLngObject.lat, latLngObject.lng];
+    return {
+      latitude: latLngObject.lat,
+      longitude: latLngObject.lng
+    };
   }
 
   exports.bgLayer = bgLayer;
@@ -523,24 +537,88 @@ var nlmapsOpenlayers_cjs = createCommonjsModule(function (module, exports) {
     });
   };
 
-  var geolocator_icon = '<?xml version="1.0" encoding="UTF-8" standalone="no"?><svg xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns="http://www.w3.org/2000/svg" height="7.0556mm" width="7.0556mm" version="1.1" xmlns:cc="http://creativecommons.org/ns#" xmlns:dc="http://purl.org/dc/elements/1.1/" viewBox="0 0 24.999999 24.999999"> <metadata>  <rdf:RDF>   <cc:Work rdf:about="">    <dc:format>image/svg+xml</dc:format>    <dc:type rdf:resource="http://purl.org/dc/dcmitype/StillImage"/>    <dc:title/>   </cc:Work>  </rdf:RDF> </metadata> <g transform="translate(-151.39 -117.97)">  <g transform="translate(.39250 .85750)">   <path style="color-rendering:auto;text-decoration-color:#000000;color:#000000;shape-rendering:auto;solid-color:#000000;text-decoration-line:none;fill:#191919;mix-blend-mode:normal;block-progression:tb;text-indent:0;image-rendering:auto;white-space:normal;text-decoration-style:solid;isolation:auto;text-transform:none" d="m163.5 123.27c-3.4931 0-6.3379 2.8448-6.3379 6.3379s2.8448 6.3398 6.3379 6.3398 6.3379-2.8467 6.3379-6.3398-2.8448-6.3379-6.3379-6.3379zm0 1.3008c2.7905 0 5.0391 2.2466 5.0391 5.0371s-2.2485 5.0391-5.0391 5.0391c-2.7905 0-5.0391-2.2485-5.0391-5.0391 0-2.7905 2.2485-5.0371 5.0391-5.0371z"/>   <circle cx="163.5" cy="129.61" r="1.9312" style="fill:#191919"/>   <path style="color-rendering:auto;text-decoration-color:#000000;color:#000000;shape-rendering:auto;solid-color:#000000;text-decoration-line:none;fill:#191919;fill-rule:evenodd;mix-blend-mode:normal;block-progression:tb;text-indent:0;image-rendering:auto;white-space:normal;text-decoration-style:solid;isolation:auto;text-transform:none" d="m162.85 120.57v3.3555h1.3008v-3.3555h-1.3008z"/>   <path style="color-rendering:auto;text-decoration-color:#000000;color:#000000;shape-rendering:auto;solid-color:#000000;text-decoration-line:none;fill:#191919;fill-rule:evenodd;mix-blend-mode:normal;block-progression:tb;text-indent:0;image-rendering:auto;white-space:normal;text-decoration-style:solid;isolation:auto;text-transform:none" d="m162.85 135.3v3.3555h1.3008v-3.3555h-1.3008z"/>   <path style="color-rendering:auto;text-decoration-color:#000000;color:#000000;shape-rendering:auto;solid-color:#000000;text-decoration-line:none;fill:#191919;fill-rule:evenodd;mix-blend-mode:normal;block-progression:tb;text-indent:0;image-rendering:auto;white-space:normal;text-decoration-style:solid;isolation:auto;text-transform:none" d="m154.46 128.96v1.2988h3.3535v-1.2988h-3.3535z"/>   <path style="color-rendering:auto;text-decoration-color:#000000;color:#000000;shape-rendering:auto;solid-color:#000000;text-decoration-line:none;fill:#191919;fill-rule:evenodd;mix-blend-mode:normal;block-progression:tb;text-indent:0;image-rendering:auto;white-space:normal;text-decoration-style:solid;isolation:auto;text-transform:none" d="m169.19 128.96v1.2988h3.3535v-1.2988h-3.3535z"/>  </g> </g></svg>';
+  function wmsBaseUrl(workSpaceName) {
+    return 'https://geodata.nationaalgeoregister.nl/' + workSpaceName + '/wms?';
+  }
 
-  /*parts copied from maps.stamen.com: https://github.com/stamen/maps.stamen.com/blob/master/js/tile.stamen.js
-   * copyright (c) 2012, Stamen Design
-   * under BSD 3-Clause license: https://github.com/stamen/maps.stamen.com/blob/master/LICENSE
-   */
-  //https://geodata.nationaalgeoregister.nl/tiles/service/wmts/
-  //https://geodata.nationaalgeoregister.nl/luchtfoto/rgb/wmts/
+  function mapWmsProvider(name) {
+    var wmsParameters = {
+      workSpaceName: '',
+      layerName: '',
+      styleName: '',
+      url: '',
+      minZoom: 0,
+      maxZoom: 24
+    };
+
+    switch (name) {
+      case 'gebouwen':
+        wmsParameters.workSpaceName = 'bag';
+        wmsParameters.layerName = 'bag';
+        wmsParameters.styleName = '';
+        break;
+      case 'percelen':
+        wmsParameters.workSpaceName = 'kadastralekaartv3';
+        wmsParameters.layerName = 'kadastralekaart';
+        wmsParameters.styleName = '';
+        break;
+      case 'drone-no-fly-zone':
+        wmsParameters.workSpaceName = 'dronenoflyzones';
+        wmsParameters.layerName = 'luchtvaartgebieden';
+        wmsParameters.styleName = '';
+        break;
+      case 'hoogtebestand':
+        wmsParameters.workSpaceName = 'ahn2';
+        wmsParameters.layerName = 'ahn2_05m_int';
+        wmsParameters.styleName = 'ahn2:ahn2_05m_detail';
+        break;
+      case 'gemeentegrenzen':
+        wmsParameters.workSpaceName = 'bestuurlijkegrenzen';
+        wmsParameters.layerName = 'gemeenten';
+        wmsParameters.styleName = 'bestuurlijkegrenzen:bestuurlijkegrenzen_gemeentegrenzen';
+        break;
+      case 'provinciegrenzen':
+        wmsParameters.workSpaceName = 'bestuurlijkegrenzen';
+        wmsParameters.layerName = 'provincies';
+        wmsParameters.styleName = 'bestuurlijkegrenzen:bestuurlijkegrenzen_provinciegrenzen';
+        break;
+    }
+
+    wmsParameters.url = wmsBaseUrl(wmsParameters.workSpaceName);
+
+    return wmsParameters;
+  }
+
+  function makeWmsProvider(name) {
+    var wmsParameters = mapWmsProvider(name);
+
+    return {
+      url: wmsParameters.url,
+      service: 'WMS',
+      version: '1.1.1',
+      request: 'GetMap',
+      layers: wmsParameters.layerName,
+      styles: wmsParameters.styleName,
+      transparent: true,
+      format: 'image/png'
+    };
+  }
+
+  var WMS_PROVIDERS = {
+    "gebouwen": makeWmsProvider('gebouwen'),
+    "percelen": makeWmsProvider('percelen'),
+    "drone-no-fly-zone": makeWmsProvider('drone-no-fly-zone'),
+    "hoogtebestand": makeWmsProvider('hoogtebestand'),
+    "gemeentegrenzen": makeWmsProvider('gemeentegrenzen'),
+    "provinciegrenzen": makeWmsProvider('provinciegrenzen')
+  };
+
   var lufostring = 'luchtfoto/rgb';
   var brtstring = 'tiles/service';
   var servicecrs = '/EPSG:3857';
   var attr = 'Kaartgegevens &copy; <a href="kadaster.nl">Kadaster</a> | <a href="http://www.verbeterdekaart.nl">verbeter de kaart</a>';
   function baseUrl(name) {
     return 'https://geodata.nationaalgeoregister.nl/' + (name === 'luchtfoto' ? lufostring : brtstring) + '/wmts/';
-  }
-
-  function wmsBaseUrl(workSpaceName) {
-    return 'https://geodata.nationaalgeoregister.nl/' + workSpaceName + '/wms?';
   }
 
   function mapLayerName(layername) {
@@ -578,91 +656,27 @@ var nlmapsOpenlayers_cjs = createCommonjsModule(function (module, exports) {
     };
   }
 
-  var PROVIDERS = {
+  var BASEMAP_PROVIDERS = {
     "standaard": makeProvider("standaard", "png", 6, 19),
     "pastel": makeProvider("pastel", "png", 6, 19),
     "grijs": makeProvider("grijs", "png", 6, 19),
     "luchtfoto": makeProvider("luchtfoto", "jpeg", 6, 19)
   };
 
-  function mapWmsProvider(name) {
-    var wmsParameters = {
-      workSpaceName: '',
-      layerName: '',
-      styleName: '',
-      url: '',
-      minZoom: 0,
-      maxZoom: 24
-    };
+  var geolocator_icon = '<?xml version="1.0" encoding="UTF-8" standalone="no"?><svg xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns="http://www.w3.org/2000/svg" height="7.0556mm" width="7.0556mm" version="1.1" xmlns:cc="http://creativecommons.org/ns#" xmlns:dc="http://purl.org/dc/elements/1.1/" viewBox="0 0 24.999999 24.999999"> <metadata>  <rdf:RDF>   <cc:Work rdf:about="">    <dc:format>image/svg+xml</dc:format>    <dc:type rdf:resource="http://purl.org/dc/dcmitype/StillImage"/>    <dc:title/>   </cc:Work>  </rdf:RDF> </metadata> <g transform="translate(-151.39 -117.97)">  <g transform="translate(.39250 .85750)">   <path style="color-rendering:auto;text-decoration-color:#000000;color:#000000;shape-rendering:auto;solid-color:#000000;text-decoration-line:none;fill:#191919;mix-blend-mode:normal;block-progression:tb;text-indent:0;image-rendering:auto;white-space:normal;text-decoration-style:solid;isolation:auto;text-transform:none" d="m163.5 123.27c-3.4931 0-6.3379 2.8448-6.3379 6.3379s2.8448 6.3398 6.3379 6.3398 6.3379-2.8467 6.3379-6.3398-2.8448-6.3379-6.3379-6.3379zm0 1.3008c2.7905 0 5.0391 2.2466 5.0391 5.0371s-2.2485 5.0391-5.0391 5.0391c-2.7905 0-5.0391-2.2485-5.0391-5.0391 0-2.7905 2.2485-5.0371 5.0391-5.0371z"/>   <circle cx="163.5" cy="129.61" r="1.9312" style="fill:#191919"/>   <path style="color-rendering:auto;text-decoration-color:#000000;color:#000000;shape-rendering:auto;solid-color:#000000;text-decoration-line:none;fill:#191919;fill-rule:evenodd;mix-blend-mode:normal;block-progression:tb;text-indent:0;image-rendering:auto;white-space:normal;text-decoration-style:solid;isolation:auto;text-transform:none" d="m162.85 120.57v3.3555h1.3008v-3.3555h-1.3008z"/>   <path style="color-rendering:auto;text-decoration-color:#000000;color:#000000;shape-rendering:auto;solid-color:#000000;text-decoration-line:none;fill:#191919;fill-rule:evenodd;mix-blend-mode:normal;block-progression:tb;text-indent:0;image-rendering:auto;white-space:normal;text-decoration-style:solid;isolation:auto;text-transform:none" d="m162.85 135.3v3.3555h1.3008v-3.3555h-1.3008z"/>   <path style="color-rendering:auto;text-decoration-color:#000000;color:#000000;shape-rendering:auto;solid-color:#000000;text-decoration-line:none;fill:#191919;fill-rule:evenodd;mix-blend-mode:normal;block-progression:tb;text-indent:0;image-rendering:auto;white-space:normal;text-decoration-style:solid;isolation:auto;text-transform:none" d="m154.46 128.96v1.2988h3.3535v-1.2988h-3.3535z"/>   <path style="color-rendering:auto;text-decoration-color:#000000;color:#000000;shape-rendering:auto;solid-color:#000000;text-decoration-line:none;fill:#191919;fill-rule:evenodd;mix-blend-mode:normal;block-progression:tb;text-indent:0;image-rendering:auto;white-space:normal;text-decoration-style:solid;isolation:auto;text-transform:none" d="m169.19 128.96v1.2988h3.3535v-1.2988h-3.3535z"/>  </g> </g></svg>';
 
-    switch (name) {
-      case 'gebouwen':
-        wmsParameters.workSpaceName = 'bag';
-        wmsParameters.layerName = 'bag';
-        wmsParameters.styleName = '';
-        break;
-      case 'kadastrale-kaart':
-        wmsParameters.workSpaceName = 'kadastralekaartv3';
-        wmsParameters.layerName = 'kadastralekaart';
-        wmsParameters.styleName = '';
-        break;
-      case 'drone-no-fly-zone':
-        wmsParameters.workSpaceName = 'dronenoflyzones';
-        wmsParameters.layerName = 'luchtvaartgebieden';
-        wmsParameters.styleName = '';
-        break;
-      case 'hoogtebestand-nederland':
-        wmsParameters.workSpaceName = 'ahn2';
-        wmsParameters.layerName = 'ahn2_05m_int';
-        wmsParameters.styleName = 'ahn2:ahn2_05m_detail';
-        break;
-      case 'gemeente-grenzen':
-        wmsParameters.workSpaceName = 'bestuurlijkegrenzen';
-        wmsParameters.layerName = 'gemeenten';
-        wmsParameters.styleName = 'bestuurlijkegrenzen:bestuurlijkegrenzen_gemeentegrenzen';
-        break;
-      case 'provincie-grenzen':
-        wmsParameters.workSpaceName = 'bestuurlijkegrenzen';
-        wmsParameters.layerName = 'provincies';
-        wmsParameters.styleName = 'bestuurlijkegrenzen:bestuurlijkegrenzen_provinciegrenzen';
-        break;
-    }
-
-    wmsParameters.url = wmsBaseUrl(wmsParameters.workSpaceName);
-
-    return wmsParameters;
-  }
-
-  function makeWmsProvider(name) {
-    var wmsParameters = mapWmsProvider(name);
-
-    return {
-      url: wmsParameters.url,
-      service: 'WMS',
-      version: '1.1.1',
-      request: 'GetMap',
-      layers: wmsParameters.layerName,
-      styles: wmsParameters.styleName,
-      transparent: true,
-      format: 'image/png'
-    };
-  }
-
-  var WMS_PROVIDERS = {
-    "gebouwen": makeWmsProvider('gebouwen'),
-    "kadastrale-kaart": makeWmsProvider('kadastrale-kaart'),
-    "drone-no-fly-zone": makeWmsProvider('drone-no-fly-zone'),
-    "hoogtebestand-nederland": makeWmsProvider('hoogtebestand-nederland'),
-    "gemeente-grenzen": makeWmsProvider('gemeente-grenzen'),
-    "provincie-grenzen": makeWmsProvider('provincie-grenzen')
-  };
-
+  /*parts copied from maps.stamen.com: https://github.com/stamen/maps.stamen.com/blob/master/js/tile.stamen.js
+   * copyright (c) 2012, Stamen Design
+   * under BSD 3-Clause license: https://github.com/stamen/maps.stamen.com/blob/master/LICENSE
+   */
+  //https://geodata.nationaalgeoregister.nl/tiles/service/wmts/
+  //https://geodata.nationaalgeoregister.nl/luchtfoto/rgb/wmts/
   /*
    * Get the named provider, or throw an exception if it doesn't exist.
    **/
   function getProvider(name) {
-    if (name in PROVIDERS) {
-      var provider = PROVIDERS[name];
+    if (name in BASEMAP_PROVIDERS) {
+      var provider = BASEMAP_PROVIDERS[name];
 
       if (provider.deprecated && console && console.warn) {
         console.warn(name + " is a deprecated style; it will be redirected to its replacement. For performance improvements, please change your reference.");
@@ -714,7 +728,7 @@ var nlmapsOpenlayers_cjs = createCommonjsModule(function (module, exports) {
       throw 'openlayers is not defined';
     }
   }
-  function markerLayer(lat, lng) {
+  function markerLayer(latLngObject) {
     var markerStyle = new ol.style.Style({
       image: new ol.style.Icon({
         anchor: [0.5, 0.5],
@@ -722,6 +736,17 @@ var nlmapsOpenlayers_cjs = createCommonjsModule(function (module, exports) {
         scale: 0.3
       })
     });
+    var lat = void 0;
+    var lng = void 0;
+
+    if (typeof latLngObject == 'undefined') {
+      var mapCenter = getMapCenter(map);
+      lat = mapCenter.latitude;
+      lng = mapCenter.longitude;
+    } else {
+      lat = latLngObject.latitude;
+      lng = latLngObject.longitude;
+    }
 
     var center = ol.proj.fromLonLat([lng, lat]);
 
@@ -904,8 +929,10 @@ var nlmapsOpenlayers_cjs = createCommonjsModule(function (module, exports) {
   function getMapCenter(map) {
     var EPSG3857Coords = map.getView().getCenter();
     var lngLatCoords = ol.proj.toLonLat(EPSG3857Coords);
-    var latLngCoords = lngLatCoords.reverse();
-    return latLngCoords;
+    return {
+      longitude: lngLatCoords[0],
+      latitude: lngLatCoords[1]
+    };
   }
 
   exports.bgLayer = bgLayer;
@@ -983,24 +1010,88 @@ var nlmapsGooglemaps_cjs = createCommonjsModule(function (module, exports) {
     });
   };
 
-  var geolocator_icon = '<?xml version="1.0" encoding="UTF-8" standalone="no"?><svg xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns="http://www.w3.org/2000/svg" height="7.0556mm" width="7.0556mm" version="1.1" xmlns:cc="http://creativecommons.org/ns#" xmlns:dc="http://purl.org/dc/elements/1.1/" viewBox="0 0 24.999999 24.999999"> <metadata>  <rdf:RDF>   <cc:Work rdf:about="">    <dc:format>image/svg+xml</dc:format>    <dc:type rdf:resource="http://purl.org/dc/dcmitype/StillImage"/>    <dc:title/>   </cc:Work>  </rdf:RDF> </metadata> <g transform="translate(-151.39 -117.97)">  <g transform="translate(.39250 .85750)">   <path style="color-rendering:auto;text-decoration-color:#000000;color:#000000;shape-rendering:auto;solid-color:#000000;text-decoration-line:none;fill:#191919;mix-blend-mode:normal;block-progression:tb;text-indent:0;image-rendering:auto;white-space:normal;text-decoration-style:solid;isolation:auto;text-transform:none" d="m163.5 123.27c-3.4931 0-6.3379 2.8448-6.3379 6.3379s2.8448 6.3398 6.3379 6.3398 6.3379-2.8467 6.3379-6.3398-2.8448-6.3379-6.3379-6.3379zm0 1.3008c2.7905 0 5.0391 2.2466 5.0391 5.0371s-2.2485 5.0391-5.0391 5.0391c-2.7905 0-5.0391-2.2485-5.0391-5.0391 0-2.7905 2.2485-5.0371 5.0391-5.0371z"/>   <circle cx="163.5" cy="129.61" r="1.9312" style="fill:#191919"/>   <path style="color-rendering:auto;text-decoration-color:#000000;color:#000000;shape-rendering:auto;solid-color:#000000;text-decoration-line:none;fill:#191919;fill-rule:evenodd;mix-blend-mode:normal;block-progression:tb;text-indent:0;image-rendering:auto;white-space:normal;text-decoration-style:solid;isolation:auto;text-transform:none" d="m162.85 120.57v3.3555h1.3008v-3.3555h-1.3008z"/>   <path style="color-rendering:auto;text-decoration-color:#000000;color:#000000;shape-rendering:auto;solid-color:#000000;text-decoration-line:none;fill:#191919;fill-rule:evenodd;mix-blend-mode:normal;block-progression:tb;text-indent:0;image-rendering:auto;white-space:normal;text-decoration-style:solid;isolation:auto;text-transform:none" d="m162.85 135.3v3.3555h1.3008v-3.3555h-1.3008z"/>   <path style="color-rendering:auto;text-decoration-color:#000000;color:#000000;shape-rendering:auto;solid-color:#000000;text-decoration-line:none;fill:#191919;fill-rule:evenodd;mix-blend-mode:normal;block-progression:tb;text-indent:0;image-rendering:auto;white-space:normal;text-decoration-style:solid;isolation:auto;text-transform:none" d="m154.46 128.96v1.2988h3.3535v-1.2988h-3.3535z"/>   <path style="color-rendering:auto;text-decoration-color:#000000;color:#000000;shape-rendering:auto;solid-color:#000000;text-decoration-line:none;fill:#191919;fill-rule:evenodd;mix-blend-mode:normal;block-progression:tb;text-indent:0;image-rendering:auto;white-space:normal;text-decoration-style:solid;isolation:auto;text-transform:none" d="m169.19 128.96v1.2988h3.3535v-1.2988h-3.3535z"/>  </g> </g></svg>';
+  function wmsBaseUrl(workSpaceName) {
+    return 'https://geodata.nationaalgeoregister.nl/' + workSpaceName + '/wms?';
+  }
 
-  /*parts copied from maps.stamen.com: https://github.com/stamen/maps.stamen.com/blob/master/js/tile.stamen.js
-   * copyright (c) 2012, Stamen Design
-   * under BSD 3-Clause license: https://github.com/stamen/maps.stamen.com/blob/master/LICENSE
-   */
-  //https://geodata.nationaalgeoregister.nl/tiles/service/wmts/
-  //https://geodata.nationaalgeoregister.nl/luchtfoto/rgb/wmts/
+  function mapWmsProvider(name) {
+    var wmsParameters = {
+      workSpaceName: '',
+      layerName: '',
+      styleName: '',
+      url: '',
+      minZoom: 0,
+      maxZoom: 24
+    };
+
+    switch (name) {
+      case 'gebouwen':
+        wmsParameters.workSpaceName = 'bag';
+        wmsParameters.layerName = 'bag';
+        wmsParameters.styleName = '';
+        break;
+      case 'percelen':
+        wmsParameters.workSpaceName = 'kadastralekaartv3';
+        wmsParameters.layerName = 'kadastralekaart';
+        wmsParameters.styleName = '';
+        break;
+      case 'drone-no-fly-zone':
+        wmsParameters.workSpaceName = 'dronenoflyzones';
+        wmsParameters.layerName = 'luchtvaartgebieden';
+        wmsParameters.styleName = '';
+        break;
+      case 'hoogtebestand':
+        wmsParameters.workSpaceName = 'ahn2';
+        wmsParameters.layerName = 'ahn2_05m_int';
+        wmsParameters.styleName = 'ahn2:ahn2_05m_detail';
+        break;
+      case 'gemeentegrenzen':
+        wmsParameters.workSpaceName = 'bestuurlijkegrenzen';
+        wmsParameters.layerName = 'gemeenten';
+        wmsParameters.styleName = 'bestuurlijkegrenzen:bestuurlijkegrenzen_gemeentegrenzen';
+        break;
+      case 'provinciegrenzen':
+        wmsParameters.workSpaceName = 'bestuurlijkegrenzen';
+        wmsParameters.layerName = 'provincies';
+        wmsParameters.styleName = 'bestuurlijkegrenzen:bestuurlijkegrenzen_provinciegrenzen';
+        break;
+    }
+
+    wmsParameters.url = wmsBaseUrl(wmsParameters.workSpaceName);
+
+    return wmsParameters;
+  }
+
+  function makeWmsProvider(name) {
+    var wmsParameters = mapWmsProvider(name);
+
+    return {
+      url: wmsParameters.url,
+      service: 'WMS',
+      version: '1.1.1',
+      request: 'GetMap',
+      layers: wmsParameters.layerName,
+      styles: wmsParameters.styleName,
+      transparent: true,
+      format: 'image/png'
+    };
+  }
+
+  var WMS_PROVIDERS = {
+    "gebouwen": makeWmsProvider('gebouwen'),
+    "percelen": makeWmsProvider('percelen'),
+    "drone-no-fly-zone": makeWmsProvider('drone-no-fly-zone'),
+    "hoogtebestand": makeWmsProvider('hoogtebestand'),
+    "gemeentegrenzen": makeWmsProvider('gemeentegrenzen'),
+    "provinciegrenzen": makeWmsProvider('provinciegrenzen')
+  };
+
   var lufostring = 'luchtfoto/rgb';
   var brtstring = 'tiles/service';
   var servicecrs = '/EPSG:3857';
   var attr = 'Kaartgegevens &copy; <a href="kadaster.nl">Kadaster</a> | <a href="http://www.verbeterdekaart.nl">verbeter de kaart</a>';
   function baseUrl(name) {
     return 'https://geodata.nationaalgeoregister.nl/' + (name === 'luchtfoto' ? lufostring : brtstring) + '/wmts/';
-  }
-
-  function wmsBaseUrl(workSpaceName) {
-    return 'https://geodata.nationaalgeoregister.nl/' + workSpaceName + '/wms?';
   }
 
   function mapLayerName(layername) {
@@ -1038,91 +1129,27 @@ var nlmapsGooglemaps_cjs = createCommonjsModule(function (module, exports) {
     };
   }
 
-  var PROVIDERS = {
+  var BASEMAP_PROVIDERS = {
     "standaard": makeProvider("standaard", "png", 6, 19),
     "pastel": makeProvider("pastel", "png", 6, 19),
     "grijs": makeProvider("grijs", "png", 6, 19),
     "luchtfoto": makeProvider("luchtfoto", "jpeg", 6, 19)
   };
 
-  function mapWmsProvider(name) {
-    var wmsParameters = {
-      workSpaceName: '',
-      layerName: '',
-      styleName: '',
-      url: '',
-      minZoom: 0,
-      maxZoom: 24
-    };
+  var geolocator_icon = '<?xml version="1.0" encoding="UTF-8" standalone="no"?><svg xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns="http://www.w3.org/2000/svg" height="7.0556mm" width="7.0556mm" version="1.1" xmlns:cc="http://creativecommons.org/ns#" xmlns:dc="http://purl.org/dc/elements/1.1/" viewBox="0 0 24.999999 24.999999"> <metadata>  <rdf:RDF>   <cc:Work rdf:about="">    <dc:format>image/svg+xml</dc:format>    <dc:type rdf:resource="http://purl.org/dc/dcmitype/StillImage"/>    <dc:title/>   </cc:Work>  </rdf:RDF> </metadata> <g transform="translate(-151.39 -117.97)">  <g transform="translate(.39250 .85750)">   <path style="color-rendering:auto;text-decoration-color:#000000;color:#000000;shape-rendering:auto;solid-color:#000000;text-decoration-line:none;fill:#191919;mix-blend-mode:normal;block-progression:tb;text-indent:0;image-rendering:auto;white-space:normal;text-decoration-style:solid;isolation:auto;text-transform:none" d="m163.5 123.27c-3.4931 0-6.3379 2.8448-6.3379 6.3379s2.8448 6.3398 6.3379 6.3398 6.3379-2.8467 6.3379-6.3398-2.8448-6.3379-6.3379-6.3379zm0 1.3008c2.7905 0 5.0391 2.2466 5.0391 5.0371s-2.2485 5.0391-5.0391 5.0391c-2.7905 0-5.0391-2.2485-5.0391-5.0391 0-2.7905 2.2485-5.0371 5.0391-5.0371z"/>   <circle cx="163.5" cy="129.61" r="1.9312" style="fill:#191919"/>   <path style="color-rendering:auto;text-decoration-color:#000000;color:#000000;shape-rendering:auto;solid-color:#000000;text-decoration-line:none;fill:#191919;fill-rule:evenodd;mix-blend-mode:normal;block-progression:tb;text-indent:0;image-rendering:auto;white-space:normal;text-decoration-style:solid;isolation:auto;text-transform:none" d="m162.85 120.57v3.3555h1.3008v-3.3555h-1.3008z"/>   <path style="color-rendering:auto;text-decoration-color:#000000;color:#000000;shape-rendering:auto;solid-color:#000000;text-decoration-line:none;fill:#191919;fill-rule:evenodd;mix-blend-mode:normal;block-progression:tb;text-indent:0;image-rendering:auto;white-space:normal;text-decoration-style:solid;isolation:auto;text-transform:none" d="m162.85 135.3v3.3555h1.3008v-3.3555h-1.3008z"/>   <path style="color-rendering:auto;text-decoration-color:#000000;color:#000000;shape-rendering:auto;solid-color:#000000;text-decoration-line:none;fill:#191919;fill-rule:evenodd;mix-blend-mode:normal;block-progression:tb;text-indent:0;image-rendering:auto;white-space:normal;text-decoration-style:solid;isolation:auto;text-transform:none" d="m154.46 128.96v1.2988h3.3535v-1.2988h-3.3535z"/>   <path style="color-rendering:auto;text-decoration-color:#000000;color:#000000;shape-rendering:auto;solid-color:#000000;text-decoration-line:none;fill:#191919;fill-rule:evenodd;mix-blend-mode:normal;block-progression:tb;text-indent:0;image-rendering:auto;white-space:normal;text-decoration-style:solid;isolation:auto;text-transform:none" d="m169.19 128.96v1.2988h3.3535v-1.2988h-3.3535z"/>  </g> </g></svg>';
 
-    switch (name) {
-      case 'gebouwen':
-        wmsParameters.workSpaceName = 'bag';
-        wmsParameters.layerName = 'bag';
-        wmsParameters.styleName = '';
-        break;
-      case 'kadastrale-kaart':
-        wmsParameters.workSpaceName = 'kadastralekaartv3';
-        wmsParameters.layerName = 'kadastralekaart';
-        wmsParameters.styleName = '';
-        break;
-      case 'drone-no-fly-zone':
-        wmsParameters.workSpaceName = 'dronenoflyzones';
-        wmsParameters.layerName = 'luchtvaartgebieden';
-        wmsParameters.styleName = '';
-        break;
-      case 'hoogtebestand-nederland':
-        wmsParameters.workSpaceName = 'ahn2';
-        wmsParameters.layerName = 'ahn2_05m_int';
-        wmsParameters.styleName = 'ahn2:ahn2_05m_detail';
-        break;
-      case 'gemeente-grenzen':
-        wmsParameters.workSpaceName = 'bestuurlijkegrenzen';
-        wmsParameters.layerName = 'gemeenten';
-        wmsParameters.styleName = 'bestuurlijkegrenzen:bestuurlijkegrenzen_gemeentegrenzen';
-        break;
-      case 'provincie-grenzen':
-        wmsParameters.workSpaceName = 'bestuurlijkegrenzen';
-        wmsParameters.layerName = 'provincies';
-        wmsParameters.styleName = 'bestuurlijkegrenzen:bestuurlijkegrenzen_provinciegrenzen';
-        break;
-    }
-
-    wmsParameters.url = wmsBaseUrl(wmsParameters.workSpaceName);
-
-    return wmsParameters;
-  }
-
-  function makeWmsProvider(name) {
-    var wmsParameters = mapWmsProvider(name);
-
-    return {
-      url: wmsParameters.url,
-      service: 'WMS',
-      version: '1.1.1',
-      request: 'GetMap',
-      layers: wmsParameters.layerName,
-      styles: wmsParameters.styleName,
-      transparent: true,
-      format: 'image/png'
-    };
-  }
-
-  var WMS_PROVIDERS = {
-    "gebouwen": makeWmsProvider('gebouwen'),
-    "kadastrale-kaart": makeWmsProvider('kadastrale-kaart'),
-    "drone-no-fly-zone": makeWmsProvider('drone-no-fly-zone'),
-    "hoogtebestand-nederland": makeWmsProvider('hoogtebestand-nederland'),
-    "gemeente-grenzen": makeWmsProvider('gemeente-grenzen'),
-    "provincie-grenzen": makeWmsProvider('provincie-grenzen')
-  };
-
+  /*parts copied from maps.stamen.com: https://github.com/stamen/maps.stamen.com/blob/master/js/tile.stamen.js
+   * copyright (c) 2012, Stamen Design
+   * under BSD 3-Clause license: https://github.com/stamen/maps.stamen.com/blob/master/LICENSE
+   */
+  //https://geodata.nationaalgeoregister.nl/tiles/service/wmts/
+  //https://geodata.nationaalgeoregister.nl/luchtfoto/rgb/wmts/
   /*
    * Get the named provider, or throw an exception if it doesn't exist.
    **/
   function getProvider(name) {
-    if (name in PROVIDERS) {
-      var provider = PROVIDERS[name];
+    if (name in BASEMAP_PROVIDERS) {
+      var provider = BASEMAP_PROVIDERS[name];
 
       if (provider.deprecated && console && console.warn) {
         console.warn(name + " is a deprecated style; it will be redirected to its replacement. For performance improvements, please change your reference.");
@@ -1440,12 +1467,20 @@ var nlmapsGooglemaps_cjs = createCommonjsModule(function (module, exports) {
     return wmsLayer;
   }
 
-  function markerLayer(lat, lng) {
-    var markerLocationLatLng = void 0;
-    if (lat != undefined && lng != undefined) {
-      markerLocationLatLng = new google.maps.LatLng(lat, lng);
+  function markerLayer(latLngObject) {
+    var lat = void 0;
+    var lng = void 0;
+
+    if (typeof latLngObject == 'undefined') {
+      var mapCenter = getMapCenter(map);
+      lat = mapCenter.latitude;
+      lng = mapCenter.longitude;
+    } else {
+      lat = latLngObject.latitude;
+      lng = latLngObject.longitude;
     }
 
+    var markerLocationLatLng = new google.maps.LatLng(lat, lng);
     var marker = new google.maps.Marker({
       title: 'marker',
       position: markerLocationLatLng
@@ -1454,7 +1489,10 @@ var nlmapsGooglemaps_cjs = createCommonjsModule(function (module, exports) {
   }
 
   function getMapCenter(map) {
-    return [map.getCenter().lat(), map.getCenter().lng()];
+    return {
+      latitude: map.getCenter().lat(),
+      longitude: map.getCenter().lng()
+    };
   }
 
   exports.bgLayer = bgLayer;
@@ -1529,12 +1567,6 @@ geocoder.lookup = function (id) {
     });
 };
 
-/*parts copied from maps.stamen.com: https://github.com/stamen/maps.stamen.com/blob/master/js/tile.stamen.js
- * copyright (c) 2012, Stamen Design
- * under BSD 3-Clause license: https://github.com/stamen/maps.stamen.com/blob/master/LICENSE
- */
-//https://geodata.nationaalgeoregister.nl/tiles/service/wmts/
-//https://geodata.nationaalgeoregister.nl/luchtfoto/rgb/wmts/
 const lufostring = 'luchtfoto/rgb';
 const brtstring = 'tiles/service';
 const servicecrs = '/EPSG:3857';
@@ -1578,12 +1610,19 @@ function makeProvider(name, format, minZoom, maxZoom) {
   };
 }
 
-const PROVIDERS = {
+const BASEMAP_PROVIDERS = {
   "standaard": makeProvider("standaard", "png", 6, 19),
   "pastel": makeProvider("pastel", "png", 6, 19),
   "grijs": makeProvider("grijs", "png", 6, 19),
   "luchtfoto": makeProvider("luchtfoto", "jpeg", 6, 19)
 };
+
+/*parts copied from maps.stamen.com: https://github.com/stamen/maps.stamen.com/blob/master/js/tile.stamen.js
+ * copyright (c) 2012, Stamen Design
+ * under BSD 3-Clause license: https://github.com/stamen/maps.stamen.com/blob/master/LICENSE
+ */
+//https://geodata.nationaalgeoregister.nl/tiles/service/wmts/
+//https://geodata.nationaalgeoregister.nl/luchtfoto/rgb/wmts/
 
 var emitonoff = createCommonjsModule(function (module) {
   var EmitOnOff = module.exports = function (thing) {
@@ -1864,19 +1903,16 @@ function createOverlayLayer(lib, map, name) {
   }
 }
 
-function createMarkerLayer(lib, map, latLngArray) {
-  var lat = latLngArray[0];
-  var lng = latLngArray[1];
-
+function createMarkerLayer(lib, map, latLngObject) {
   switch (lib) {
     case 'leaflet':
-      return nlmaps.leaflet.markerLayer(lat, lng);
+      return nlmaps.leaflet.markerLayer(latLngObject);
       break;
     case 'googlemaps':
-      return nlmaps.googlemaps.markerLayer(lat, lng);
+      return nlmaps.googlemaps.markerLayer(latLngObject);
       break;
     case 'openlayers':
-      return nlmaps.openlayers.markerLayer(lat, lng);
+      return nlmaps.openlayers.markerLayer(latLngObject);
       break;
   }
 }
@@ -1946,7 +1982,6 @@ function addGeoLocControlToMap(lib, geolocator, map) {
       break;
     case 'googlemaps':
       control = nlmaps[lib].geoLocatorControl(geolocator, map);
-      console.log(control);
       map.controls[google.maps.ControlPosition.TOP_RIGHT].push(control);
       break;
     case 'openlayers':

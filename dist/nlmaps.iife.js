@@ -1968,12 +1968,6 @@ nlmaps.createMap = function () {
   var backgroundLayer = createBackgroundLayer(nlmaps.lib, map, opts.style);
   addLayerToMap(nlmaps.lib, backgroundLayer, map, opts.style);
 
-  // Overlay layer
-  if (opts.overlay && opts.overlay != 'false') {
-    var overlayLayer$$1 = createOverlayLayer(nlmaps.lib, map, opts.overlay);
-    addLayerToMap(nlmaps.lib, overlayLayer$$1, map);
-  }
-
   // Marker layer
   if (opts.marker) {
     var markerLocation = opts.marker;
@@ -1986,6 +1980,12 @@ nlmaps.createMap = function () {
 
   // Geocoder
   addGeocoderControlToMap(nlmaps.lib, geocoder, map);
+
+  // Overlay layer
+  if (opts.overlay && opts.overlay != 'false') {
+    var overlayLayer$$1 = createOverlayLayer(nlmaps.lib, map, opts.overlay);
+    addLayerToMap(nlmaps.lib, overlayLayer$$1, map);
+  }
   return map;
 };
 

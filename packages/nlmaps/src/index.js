@@ -254,12 +254,6 @@ nlmaps.createMap = function(useropts = {}) {
   const backgroundLayer = createBackgroundLayer(nlmaps.lib, map, opts.style);
   addLayerToMap(nlmaps.lib, backgroundLayer, map, opts.style);
 
-  // Overlay layer
-  if (opts.overlay && opts.overlay != 'false') {
-    const overlayLayer = createOverlayLayer(nlmaps.lib, map, opts.overlay);
-    addLayerToMap(nlmaps.lib, overlayLayer, map);
-  }
-
   // Marker layer
   if (opts.marker) {
     let markerLocation = opts.marker;
@@ -272,6 +266,12 @@ nlmaps.createMap = function(useropts = {}) {
 
   // Geocoder
   addGeocoderControlToMap(nlmaps.lib, geocoder, map);
+
+  // Overlay layer
+  if (opts.overlay && opts.overlay != 'false') {
+    const overlayLayer = createOverlayLayer(nlmaps.lib, map, opts.overlay);
+    addLayerToMap(nlmaps.lib, overlayLayer, map);
+  }
   return map;
 };
 

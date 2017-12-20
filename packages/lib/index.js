@@ -9,7 +9,6 @@ import { WMS_PROVIDERS } from './wms.js';
 import { BASEMAP_PROVIDERS } from './basemap.js';
 import { geolocator_icon, marker_icon, search_icon } from './icons.js';
 
-
 /*
  * Get the named provider, or throw an exception if it doesn't exist.
  **/

@@ -20,7 +20,6 @@
     "eol-last": "error",
     "eqeqeq": "error",
     "keyword-spacing": "error",
-    "linebreak-style": ["error", "unix"],
     "no-console": ["warn", {
       "allow": ["warn", "error"]
     }],

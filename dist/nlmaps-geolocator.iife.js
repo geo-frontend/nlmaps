@@ -1,11 +1,11 @@
-(function (exports) {
+var window = (function (exports) {
 'use strict';
 
 function createCommonjsModule(fn, module) {
 	return module = { exports: {} }, fn(module, module.exports), module.exports;
 }
 
-var index = createCommonjsModule(function (module) {
+var emitonoff = createCommonjsModule(function (module) {
 var EmitOnOff = module.exports = function(thing){
   if (!thing) thing = {};
 
@@ -50,7 +50,7 @@ var EmitOnOff = module.exports = function(thing){
 
     if (thing._paused) {
       thing._pending[name] = thing._pending[name] || [];
-      thing._pending[name].push(args)
+      thing._pending[name].push(args);
       return
     }
 
@@ -68,7 +68,7 @@ var EmitOnOff = module.exports = function(thing){
 
     for (var name in thing._pending) {
       for (var i = 0; i < thing._pending[name].length; i++) {
-        thing.emit(name, thing._pending[name][i])
+        thing.emit(name, thing._pending[name][i]);
       }
     }
   };
@@ -113,7 +113,7 @@ var GeoLocator = function GeoLocator(opts) {
 
 function geoLocator(opts) {
   if ('geolocation' in navigator) {
-    var geolocator = index(GeoLocator(opts));
+    var geolocator = emitonoff(GeoLocator(opts));
     geolocator.on('position', function (position) {
       this.stop();
     });
@@ -126,4 +126,6 @@ function geoLocator(opts) {
 
 exports.geoLocator = geoLocator;
 
-}((this.window = this.window || {})));
+return exports;
+
+}({}));

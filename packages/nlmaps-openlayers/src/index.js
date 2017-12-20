@@ -25,9 +25,11 @@ function markerLayer(latLngObject) {
   let markerStyle = new ol.style.Style({
     image: new ol.style.Icon(
       ({
-        anchor: [0.5, 0.5],
-        src: 'marker_icon.png',
-        scale: 0.3
+        anchor: [32, 63],
+        anchorXUnits: 'pixels',
+        anchorYUnits: 'pixels',
+        src: 'https://rawgit.com/webmapper/nlmaps/master/dist/assets/rijksoverheid-marker.png',
+        scale: 1
       })
     )
   });

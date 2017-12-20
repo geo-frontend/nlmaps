@@ -266,13 +266,13 @@ function getMapCenter(map) {
 }
 
 // Until the building works properly, this is here. Should be in browser-test.js /// 
-var map = L.map('map').setView([52, 5], 10);
-var standaard = bgLayer('pastel');
-const overlay = overlayLayer('gebouwen');
-const marker = markerLayer();
+// var map = L.map('map').setView([52, 5], 10);
+// var standaard = bgLayer('pastel');
+// const overlay = overlayLayer('gebouwen');
+// const marker = markerLayer();
 
-standaard.addTo(map);
-overlay.addTo(map);
-marker.addTo(map);
-L.geocoderControl(geocoder).addTo(map);
+// standaard.addTo(map);
+// overlay.addTo(map);
+// marker.addTo(map);
+// L.geocoderControl(geocoder).addTo(map);
 export { bgLayer, overlayLayer, markerLayer, getMapCenter, geoLocatorControl, geocoderControl};

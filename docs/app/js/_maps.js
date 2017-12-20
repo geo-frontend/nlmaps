@@ -82,7 +82,7 @@ export default class Maps {
                     this.overlay = false;
                     break;
                 case 'wms-percelen':
-                    this.overlay = 'kadastrale-kaart';
+                    this.overlay = 'percelen';
                     break;
                 case 'wms-gebouwen':
                     this.overlay = 'gebouwen';
@@ -141,9 +141,10 @@ export default class Maps {
                 latitude: this.latitude
             },
             overlay: this.overlay,
-            marker: this.marker,
+            marker: this.showMarker,
             zoom: this.zoom
         };
+        console.log(opts);
         var map = nlmaps.createMap(opts);
 
 
@@ -177,7 +178,7 @@ export default class Maps {
                 latitude: this.latitude
             },
             overlay: this.overlay,
-            marker: this.marker,
+            marker: this.showMarker,
             zoom: this.zoom
         };
         var map = nlmaps.createMap(opts);
@@ -216,9 +217,11 @@ export default class Maps {
                 latitude: this.latitude
             },
             overlay: this.overlay,
-            marker: this.marker,
+            marker: this.showMarker,
             zoom: this.zoom
         };
+        console.log(opts);
+
         var map = nlmaps.createMap(opts);
         map.on('moveend', () => {
             let center = ol.proj.toLonLat(map.getView().getCenter());
@@ -245,7 +248,7 @@ export default class Maps {
                 latitude: this.latitude
             },
             overlay: this.overlay,
-            marker: this.marker,
+            marker: this.showMarker,
             zoom: this.zoom
         };
         var map = nlmaps.createMap(opts);

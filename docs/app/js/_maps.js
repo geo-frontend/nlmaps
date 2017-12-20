@@ -144,9 +144,7 @@ export default class Maps {
             marker: this.showMarker,
             zoom: this.zoom
         };
-        console.log(opts);
         var map = nlmaps.createMap(opts);
-
 
         google.maps.event.addListener(map, 'center_changed', () => {
             let center = map.getCenter();
@@ -220,7 +218,6 @@ export default class Maps {
             marker: this.showMarker,
             zoom: this.zoom
         };
-        console.log(opts);
 
         var map = nlmaps.createMap(opts);
         map.on('moveend', () => {

@@ -15,7 +15,7 @@ function mapWmsProvider(name){
     switch (name) {
       case 'gebouwen':
         wmsParameters.workSpaceName = 'bag';
-        wmsParameters.layerName = 'bag';
+        wmsParameters.layerName = 'pand';
         wmsParameters.styleName = '';
         break;
       case 'percelen':

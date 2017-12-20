@@ -216,9 +216,9 @@ function markerLayer(latLngObject) {
     let lng;
     // LatLngObject should always be defined when it is called from the main package.
     if (typeof latLngObject == 'undefined') {
-      const center = map.getCenter();
-      lat = center.lat;
-      lng = center.lng;
+      const center = getMapCenter(map);
+      lat = center.latitude;
+      lng = center.longitude;
     } else {
       lat = latLngObject.latitude;
       lng = latLngObject.longitude;
@@ -253,20 +253,20 @@ function geocoderControl(geocoder) {
 
 function getMapCenter(map) {
   const latLngObject = map.getCenter();
-  return [latLngObject.lat, latLngObject.lng];
+  return {
+    latitude: latLngObject.lat, 
+    longitude: latLngObject.lng
+  };
 }
 
 // Until the building works properly, this is here. Should be in browser-test.js /// 
-var map = L.map('map').setView([52, 5], 10);
-var standaard = bgLayer('pastel');
-const overlay = overlayLayer('gebouwen');
-const marker = markerLayer({
-  latitude: 52,
-  longitude: 5
-});
+// var map = L.map('map').setView([52, 5], 10);
+// var standaard = bgLayer('pastel');
+// const overlay = overlayLayer('gebouwen');
+// const marker = markerLayer();
 
-standaard.addTo(map);
-overlay.addTo(map);
-marker.addTo(map);
-L.geocoderControl(geocoder).addTo(map);
+// standaard.addTo(map);
+// overlay.addTo(map);
+// marker.addTo(map);
+// L.geocoderControl(geocoder).addTo(map);
 export { bgLayer, overlayLayer, markerLayer, getMapCenter, geoLocatorControl, geocoderControl};

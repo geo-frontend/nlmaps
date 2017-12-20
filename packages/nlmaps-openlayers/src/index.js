@@ -21,8 +21,8 @@ function bgLayer(name='standaard') {
     throw 'openlayers is not defined';
   }
 }
-function markerLayer(lat, lng) {
-  var markerStyle = new ol.style.Style({
+function markerLayer(latLngObject) {
+  let markerStyle = new ol.style.Style({
     image: new ol.style.Icon(
       ({
         anchor: [0.5, 0.5],
@@ -31,6 +31,17 @@ function markerLayer(lat, lng) {
       })
     )
   });
+  let lat;
+  let lng;
+
+  if (typeof latLngObject == 'undefined') {
+    const mapCenter = getMapCenter(map);
+    lat = mapCenter.latitude;
+    lng = mapCenter.longitude
+  } else {
+    lat = latLngObject.latitude;
+    lng = latLngObject.longitude;
+  }
 
   const center = ol.proj.fromLonLat([lng, lat]);
 
@@ -211,8 +222,10 @@ function zoomTo(point, map) {
 function getMapCenter(map) {
   const EPSG3857Coords = map.getView().getCenter();
   const lngLatCoords = ol.proj.toLonLat(EPSG3857Coords);
-  const latLngCoords = lngLatCoords.reverse();
-  return latLngCoords;
+  return {
+    longitude: lngLatCoords[0],
+    latitude: lngLatCoords[1]
+  };
 }
 /// Until the building works properly, this is here. Should be in browser-test.js ///
 // let map = new ol.Map({
@@ -225,9 +238,9 @@ function getMapCenter(map) {
 
 // let layer = bgLayer();
 // map.addLayer(layer);
-// let overlay = overlayLayer('kadastrale-kaart')
+// let overlay = overlayLayer('gebouwen')
 // map.addLayer(overlay);
-// let marker = markerLayer(52,5);
+// let marker = markerLayer();
 // map.addLayer(marker);
 
 // const geocoderC = geocoderControl(geocoder);

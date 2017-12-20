@@ -206,19 +206,16 @@ function createOverlayLayer(lib, map, name) {
   }
 }
 
-function createMarkerLayer(lib, map, latLngArray) {
-  const lat = latLngArray[0];
-  const lng = latLngArray[1];
-  
+function createMarkerLayer(lib, map, latLngObject) {
   switch (lib) {
     case 'leaflet': 
-      return nlmaps.leaflet.markerLayer(lat, lng);
+      return nlmaps.leaflet.markerLayer(latLngObject);
       break;
     case 'googlemaps': 
-      return nlmaps.googlemaps.markerLayer(lat, lng);
+      return nlmaps.googlemaps.markerLayer(latLngObject);
       break;
     case 'openlayers':
-      return nlmaps.openlayers.markerLayer(lat, lng);
+      return nlmaps.openlayers.markerLayer(latLngObject);
       break;
   }
 }
@@ -286,7 +283,6 @@ function addGeoLocControlToMap(lib, geolocator, map){
       break;
     case 'googlemaps':
       control = nlmaps[lib].geoLocatorControl(geolocator, map);
-      console.log(control);
       map.controls[google.maps.ControlPosition.TOP_RIGHT].push(control);
       break;
     case 'openlayers':

@@ -1,5 +1,5 @@
 {
-  "name": "nlmaps",
+  "name": "@nlmaps/nlmaps",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",

@@ -26,22 +26,22 @@ function mapWmsProvider(name) {
       wmsParameters.layerName = 'kadastralekaart';
       wmsParameters.styleName = '';
       break;
-    case 'drone-no-fly-zone':
+    case 'drone-no-fly-zones':
       wmsParameters.workSpaceName = 'dronenoflyzones';
       wmsParameters.layerName = 'luchtvaartgebieden';
       wmsParameters.styleName = '';
       break;
-    case 'hoogtebestand':
+    case 'hoogte':
       wmsParameters.workSpaceName = 'ahn2';
       wmsParameters.layerName = 'ahn2_05m_int';
       wmsParameters.styleName = 'ahn2:ahn2_05m_detail';
       break;
-    case 'gemeentegrenzen':
+    case 'gemeenten':
       wmsParameters.workSpaceName = 'bestuurlijkegrenzen';
       wmsParameters.layerName = 'gemeenten';
       wmsParameters.styleName = 'bestuurlijkegrenzen:bestuurlijkegrenzen_gemeentegrenzen';
       break;
-    case 'provinciegrenzen':
+    case 'provincies':
       wmsParameters.workSpaceName = 'bestuurlijkegrenzen';
       wmsParameters.layerName = 'provincies';
       wmsParameters.styleName = 'bestuurlijkegrenzen:bestuurlijkegrenzen_provinciegrenzen';
@@ -71,10 +71,10 @@ function makeWmsProvider(name) {
 const WMS_PROVIDERS = {
   "gebouwen": makeWmsProvider('gebouwen'),
   "percelen": makeWmsProvider('percelen'),
-  "drone-no-fly-zone": makeWmsProvider('drone-no-fly-zone'),
-  "hoogtebestand": makeWmsProvider('hoogtebestand'),
-  "gemeentegrenzen": makeWmsProvider('gemeentegrenzen'),
-  "provinciegrenzen": makeWmsProvider('provinciegrenzen')
+  "drone-no-fly-zones": makeWmsProvider('drone-no-fly-zones'),
+  "hoogte": makeWmsProvider('hoogte'),
+  "gemeenten": makeWmsProvider('gemeenten'),
+  "provincies": makeWmsProvider('provincies')
 };
 
 const lufostring = 'luchtfoto/rgb';

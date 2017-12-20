@@ -72,8 +72,7 @@ function overlayLayer(name) {
         params: {
           LAYERS: wmsProvider.layers,
           VERSION: wmsProvider.version,
-          STYLES: wmsProvider.styles,
-          TILED: true
+          STYLES: wmsProvider.styles
         }
       })
     })

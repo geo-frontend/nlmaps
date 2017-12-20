@@ -426,7 +426,13 @@ var nlmapsLeaflet_cjs = createCommonjsModule(function (module, exports) {
         lat = latLngObject.latitude;
         lng = latLngObject.longitude;
       }
-      return new L.marker([lat, lng]);
+      return new L.marker([lat, lng], {
+        icon: new L.icon({
+          iconUrl: 'https://rawgit.com/webmapper/nlmaps/master/dist/assets/rijksoverheid-marker.png',
+          iconSize: [64, 64],
+          iconAnchor: [32, 63]
+        })
+      });
     }
   }
 
@@ -731,9 +737,11 @@ var nlmapsOpenlayers_cjs = createCommonjsModule(function (module, exports) {
   function markerLayer(latLngObject) {
     var markerStyle = new ol.style.Style({
       image: new ol.style.Icon({
-        anchor: [0.5, 0.5],
-        src: 'marker_icon.png',
-        scale: 0.3
+        anchor: [32, 63],
+        anchorXUnits: 'pixels',
+        anchorYUnits: 'pixels',
+        src: 'https://rawgit.com/webmapper/nlmaps/master/dist/assets/rijksoverheid-marker.png',
+        scale: 1
       })
     });
     var lat = void 0;
@@ -1483,7 +1491,8 @@ var nlmapsGooglemaps_cjs = createCommonjsModule(function (module, exports) {
     var markerLocationLatLng = new google.maps.LatLng(lat, lng);
     var marker = new google.maps.Marker({
       title: 'marker',
-      position: markerLocationLatLng
+      position: markerLocationLatLng,
+      icon: 'https://rawgit.com/webmapper/nlmaps/master/dist/assets/rijksoverheid-marker.png'
     });
     return marker;
   }

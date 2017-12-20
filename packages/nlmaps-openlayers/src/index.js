@@ -1,4 +1,4 @@
-import { getProvider, getWmsProvider, geolocator_icon, geocoder } from '../../lib';
+import { getProvider, getWmsProvider, geolocator_icon, geocoder, markerUrl } from '../../lib';
 
 let baseTileUrl = 'http://tiles.energielabelatlas.nl/v2/osm';
 const BRTAkAttr = 'Kaartgegevens &copy; <a href="cbs.nl">CBS</a>, <a href="kadaster.nl">Kadaster</a>, <a href="openstreetmap.org">OpenStreetMap contributors</a>';
@@ -28,7 +28,7 @@ function markerLayer(latLngObject) {
         anchor: [32, 63],
         anchorXUnits: 'pixels',
         anchorYUnits: 'pixels',
-        src: 'https://rawgit.com/webmapper/nlmaps/master/dist/assets/rijksoverheid-marker.png',
+        src: markerUrl,
         scale: 1
       })
     )

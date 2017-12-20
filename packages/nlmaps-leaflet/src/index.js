@@ -1,4 +1,4 @@
-import { getProvider, getWmsProvider, geolocator_icon, geocoder } from '../../lib/index.js';
+import { getProvider, getWmsProvider, geolocator_icon, geocoder, markerUrl } from '../../lib/index.js';
 
 if (typeof L !== 'undefined' && typeof L === 'object') {
 L.NlmapsBgLayer = L.TileLayer.extend({
@@ -225,7 +225,7 @@ function markerLayer(latLngObject) {
     }
     return new L.marker([lat, lng], {
       icon: new L.icon({
-        iconUrl: 'https://rawgit.com/webmapper/nlmaps/master/dist/assets/rijksoverheid-marker.png',
+        iconUrl: markerUrl,
         iconSize: [64, 64],
         iconAnchor: [32, 63]
       })

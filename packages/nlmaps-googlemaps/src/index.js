@@ -1,4 +1,4 @@
-import { getProvider, getWmsProvider, geolocator_icon, geocoder } from '../../lib/index.js';
+import { getProvider, getWmsProvider, geolocator_icon, geocoder, markerUrl } from '../../lib/index.js';
 
 function AttributionControl(controlDiv, attrControlText) {
   if (typeof google === 'object' && typeof google.maps === 'object') {
@@ -293,7 +293,7 @@ function markerLayer(latLngObject) {
   const marker = new google.maps.Marker({
     title: 'marker',
     position: markerLocationLatLng,
-    icon: 'https://rawgit.com/webmapper/nlmaps/master/dist/assets/rijksoverheid-marker.png'
+    icon: markerUrl
   });
   return marker;
 }

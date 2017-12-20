@@ -7,7 +7,7 @@
 import { geocoder } from './geocoder.js';
 import { WMS_PROVIDERS } from './wms.js';
 import { BASEMAP_PROVIDERS } from './basemap.js';
-import { geolocator_icon, marker_icon, search_icon } from './icons.js';
+import { geolocator_icon, marker_icon, search_icon, markerUrl } from './icons.js';
 
 /*
  * Get the named provider, or throw an exception if it doesn't exist.
@@ -46,4 +46,4 @@ function getWmsProvider(name) {
 
 //use named export instead of default because we might want
 //more exports from 'lib' in the future
-export { getProvider, getWmsProvider, geolocator_icon, search_icon, marker_icon, geocoder};
+export { getProvider, getWmsProvider, geolocator_icon, search_icon, marker_icon, geocoder, markerUrl};

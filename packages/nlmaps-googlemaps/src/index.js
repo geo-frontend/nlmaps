@@ -1,4 +1,4 @@
-import { getProvider, getWmsProvider, geolocator_icon } from '../../lib/index.js';
+import { getProvider, getWmsProvider, geolocator_icon, geocoder } from '../../lib/index.js';
 
 function AttributionControl(controlDiv, attrControlText) {
   if (typeof google === 'object' && typeof google.maps === 'object') {
@@ -43,6 +43,110 @@ function geoLocatorControl (geolocator, map){
       map.setCenter({lat:position.coords.latitude,lng:position.coords.longitude});
     })
     return controlUI;
+}
+
+function geocoderControl(geocoder) {
+  const container = document.createElement('div');
+  const searchDiv = document.createElement('div');
+  const input = document.createElement('input');
+  const results = document.createElement('div');
+  const controlWidth = '300px'
+
+  container.style.width = controlWidth;
+  input.id = 'nlmaps-geocoder-control-input';
+  input.placeholder = 'Zoeken op adres...'
+  input.style.padding = '4px 10px';
+  input.style.width = '100%';
+  input.style.border = 'none';
+  input.style.backgroundColor = '#fff';
+  input.style.boxShadow = '0 1px 5px rgba(0, 0, 0, 0.65)';
+  input.style.height = '26px';
+  input.style.borderRadius = '5px 5px';
+
+  input.addEventListener('input', function(e){
+    suggest(e.target.value, map);
+  });
+
+  input.addEventListener('focus', function(e){
+    suggest(e.target.value, map);
+  });
+  results.id = 'nlmaps-geocoder-control-results';
+  results.style.width = controlWidth;
+
+  container.appendChild(searchDiv);
+  searchDiv.appendChild(input);
+  container.appendChild(results);
+
+  return container;
+}
+
+function suggest(query, map) {
+  if (query.length < 4) {
+    clearSuggestResults();
+    return;
+  }
+
+  geocoder.suggest(query).then((results) => {
+    showSuggestResults(results.response.docs, map);
+  });
+}
+
+function lookup(id, map) {
+  geocoder.lookup(id).then((result) => {
+    zoomTo(result.centroide_ll, map);
+    showLookupResult(result.weergavenaam);
+    clearSuggestResults();
+  });
+}
+
+
+
+function clearSuggestResults() {
+  document.getElementById('nlmaps-geocoder-control-results').innerHTML = '';
+}
+
+function showLookupResult(name) {
+  document.getElementById('nlmaps-geocoder-control-input').value = name;
+}
+
+function showSuggestResults(results, map) {
+  const resultList = document.createElement('ul');
+  resultList.style.padding = '10px 10px 2px 10px';
+  resultList.style.width = '100%';
+  resultList.style.background = '#FFFFFF';
+  resultList.style.borderRadius = '5px 5px';
+  resultList.style.boxShadow = '0 1px 5px rgba(0, 0, 0, 0.65)';
+  
+  results.forEach((result) => {
+    const li = document.createElement('li');
+    li.innerHTML = result.weergavenaam;
+    li.id = result.id;
+    li.style.cursor = 'pointer';
+    li.style.padding = '5px';
+    li.style.listStyleType = 'none';
+    li.style.marginBottom = '5px';
+    li.addEventListener('click', function(e) {
+      lookup(e.target.id, map);
+    });
+
+    li.addEventListener('mouseenter', function(e) {
+      li.style.background = '#6C62A6';
+      li.style.color = '#FFFFFF';
+    });
+
+    li.addEventListener('mouseleave', function(e) {
+      li.style.background = '#FFFFFF';
+      li.style.color = '#333';
+    });
+    resultList.appendChild(li);
+  });
+  clearSuggestResults();
+  document.getElementById('nlmaps-geocoder-control-results').appendChild(resultList);
+}
+
+function zoomTo(point, map) {
+  map.setCenter({lat: point.coordinates[1], lng: point.coordinates[0]});
+  map.setZoom(18);
 }
 
 function indexOfMapControl(controlArray, control){
@@ -134,7 +238,7 @@ function toMercator(coord) {
 function WMSTiled(mapObject, wmsTiledOptions) {
     var options = {
         getTileUrl: function(coord, zoom) {
-            var proj = map.getProjection();
+            var proj = mapObject.getProjection();
             var zfactor = Math.pow(2, zoom);
 
             var top = proj.fromPointToLatLng(new google.maps.Point(coord.x * 256 / zfactor, coord.y * 256 / zfactor) );
@@ -158,19 +262,38 @@ function WMSTiled(mapObject, wmsTiledOptions) {
         tileSize: new google.maps.Size(256, 256),
         isPng: true
     };
-    var layer = new google.maps.ImageMapType(options)
-    layer.setOpacity(wmsTiledOptions.opacity)
+    let layer = new google.maps.ImageMapType(options);
+    layer.setOpacity(wmsTiledOptions.opacity);
     return mapObject.overlayMapTypes.push(layer);
 }
 
 function overlayLayer(map=map, name) {
   const wmsProvider = getWmsProvider(name);
   const wmsTiledOptions = getWmsTiledOptions(wmsProvider);
-  var wmsLayer = new WMSTiled(map, wmsTiledOptions)
+  const wmsLayer = new WMSTiled(map, wmsTiledOptions);
+  wmsLayer.name = 'wms';
+
   return wmsLayer;
 }
 
-/// Until the building works properly, this is here. Should be in browser-test.js ///
+function markerLayer(lat, lng) {  
+  let markerLocationLatLng; 
+  if (lat != undefined && lng != undefined) {
+    markerLocationLatLng = new google.maps.LatLng(lat, lng);
+  } 
+
+  const marker = new google.maps.Marker({
+    title: 'marker',
+    position: markerLocationLatLng
+  });
+  return marker;
+}
+
+function getMapCenter(map) {
+  return [map.getCenter().lat(), map.getCenter().lng()];
+}
+
+// Until the building works properly, this is here. Should be in browser-test.js ///
 // var map = new google.maps.Map(document.getElementById('map'), {
 //   center: { lat: 52, lng: 5 },
 //   zoom: 8
@@ -185,10 +308,13 @@ function overlayLayer(map=map, name) {
 //   mapTypeControlOptions: {
 //     mapTypeIds: mapTypeIds
 //   }
-
 // });
 // map.setMapTypeId('Brt Achtergrondkaart');
+// const geocoderC = geocoderControl(geocoder, map);
+// console.log(geocoderC);
 
 // var wmsLayer = overlayLayer(map, 'gebouwen');
+// markerLayer(52,5);
 
-export { bgLayer, overlayLayer, geoLocatorControl };
+// map.controls[google.maps.ControlPosition.TOP_LEFT].push(geocoderC);
+export { bgLayer, overlayLayer, markerLayer, getMapCenter, geoLocatorControl, geocoderControl };

@@ -2,15 +2,24 @@
 import { bgLayer as bgL, 
          overlayLayer as overlayL, 
          markerLayer as markerL, 
+         getMapCenter as centerL,
+         geocoderControl as geocoderL,
          geoLocatorControl as glL } from '../../nlmaps-leaflet/build/nlmaps-leaflet.cjs.js';
 
 import { bgLayer as bgOL, 
          overlayLayer as overlayOL, 
+         markerLayer as markerOL, 
+         getMapCenter as centerOL,
+         geocoderControl as geocoderOL,
          geoLocatorControl as glO } from '../../nlmaps-openlayers/build/nlmaps-openlayers.cjs.js';
 
 import { bgLayer as bgGM, 
          overlayLayer as overlayGM, 
+         markerLayer as markerGM, 
+         getMapCenter as centerGM,
+         geocoderControl as geocoderGM, 
          geoLocatorControl as glG } from '../../nlmaps-googlemaps/build/nlmaps-googlemaps.cjs.js';
+
 // import { bgLayer as bgL, geoLocatorControl as glL } from 'nlmaps-leaflet';
 
 // import { bgLayer as bgOL, 
@@ -19,7 +28,7 @@ import { bgLayer as bgGM,
 // import { bgLayer as bgGM, 
 //          geoLocatorControl as glG } from 'nlmaps-googlemaps';
 
-import { getProvider } from '../../lib/index.js';
+import { getProvider, geocoder } from '../../lib/index.js';
 import geoLocator from '../../nlmaps-geolocator/src/index.js';
 
 let nlmaps = {
@@ -27,17 +36,22 @@ let nlmaps = {
     bgLayer: bgL,
     overlayLayer: overlayL,
     markerLayer: markerL,
+    geocoderControl: geocoderL,
     geoLocatorControl: glL
   },
   openlayers: {
     bgLayer: bgOL,
     overlayLayer: overlayOL,
+    markerLayer: markerOL,
+    geocoderControl: geocoderOL,
     geoLocatorControl: glO
   },
   googlemaps: {
     bgLayer: bgGM,
     overlayLayer: overlayGM,
-    geoLocatorControl: glG
+    markerLayer: markerGM,
+    geoLocatorControl: glG,
+    geocoderControl: geocoderGM,
   }
 };
 
@@ -122,13 +136,31 @@ function setMapLoc(lib, opts, map) {
 
 
 function addGoogleLayer(layer, map, name) {
-  let mapTypeIds = [layer.name, 'roadmap']
+  // Markers are not considered to be a layer in google maps. Therefore, they must be added differently. 
+  // It is important that a layer has the title 'marker' in order to be recognized as a layer.
+  if (layer.title === 'marker') {
+    layer.setMap(map);
+    return;
+  }
+
+  if (layer.name === 'wms') {
+    map.setOptions({
+      mapTypeControl: true,
+      mapTypeControlOptions: {
+        mapTypeIds: mapTypeIds
+      }
+    });
+    return;
+  }
+  let mapTypeIds = [layer.name, 'roadmap'];
+
   map.setOptions({
     mapTypeControl: true,
     mapTypeControlOptions: {
       mapTypeIds: mapTypeIds
     }
   });
+
   map.mapTypes.set(layer.name, layer);
   map.setMapTypeId(layer.name);
 }
@@ -174,6 +206,36 @@ function createOverlayLayer(lib, map, name) {
   }
 }
 
+function createMarkerLayer(lib, map, latLngArray) {
+  const lat = latLngArray[0];
+  const lng = latLngArray[1];
+  
+  switch (lib) {
+    case 'leaflet': 
+      return nlmaps.leaflet.markerLayer(lat, lng);
+      break;
+    case 'googlemaps': 
+      return nlmaps.googlemaps.markerLayer(lat, lng);
+      break;
+    case 'openlayers':
+      return nlmaps.openlayers.markerLayer(lat, lng);
+      break;
+  }
+}
+
+function getMapCenter(lib, map) {
+  switch (lib) {
+    case 'leaflet': 
+      return centerL(map);
+      break;
+    case 'googlemaps': 
+      return centerGM(map);
+      break;
+    case 'openlayers':
+      return centerOL(map);
+      break;
+  }
+}
 
 function mergeOpts(defaultopts, useropts){
    return Object.assign({}, defaultopts, useropts);
@@ -191,13 +253,28 @@ nlmaps.createMap = function(useropts = {}) {
     console.error(e.message)
   }
   const map = initMap(nlmaps.lib, opts);
+  // Background layer
   const backgroundLayer = createBackgroundLayer(nlmaps.lib, map, opts.style);
   addLayerToMap(nlmaps.lib, backgroundLayer, map, opts.style);
-  console.log(opts);
-  const overlayLayer = createOverlayLayer(nlmaps.lib, map, opts.overlay);
-  addLayerToMap(nlmaps.lib, overlayLayer, map);
-  console.log('overlay', overlayLayer);
 
+  // Overlay layer
+  if (opts.overlay) {
+    const overlayLayer = createOverlayLayer(nlmaps.lib, map, opts.overlay);
+    addLayerToMap(nlmaps.lib, overlayLayer, map);
+  }
+
+  // Marker layer
+  if (opts.marker) {
+    let markerLocation = opts.marker;
+    if (typeof opts.marker === "boolean") {
+      markerLocation = getMapCenter(nlmaps.lib, map);
+    }
+    const markerLayer = createMarkerLayer(nlmaps.lib, map, markerLocation);
+    addLayerToMap(nlmaps.lib, markerLayer, map);
+  }
+
+  // Geocoder
+  addGeocoderControlToMap(nlmaps.lib, geocoder, map);
   return map;
 };
 
@@ -208,12 +285,30 @@ function addGeoLocControlToMap(lib, geolocator, map){
       nlmaps[lib].geoLocatorControl(geolocator).addTo(map);  
       break;
     case 'googlemaps':
-      control = nlmaps[lib].geoLocatorControl(geolocator, map)
+      control = nlmaps[lib].geoLocatorControl(geolocator, map);
+      console.log(control);
       map.controls[google.maps.ControlPosition.TOP_RIGHT].push(control);
       break;
     case 'openlayers':
       control = nlmaps[lib].geoLocatorControl(geolocator,map);
-      map.addControl(control)
+      map.addControl(control);
+      break;
+  }
+}
+
+function addGeocoderControlToMap(lib, geocoder, map){
+  let control;
+  switch (lib) {
+    case 'leaflet':
+      nlmaps[lib].geocoderControl(geocoder).addTo(map);  
+      break;
+    case 'googlemaps':
+      control = nlmaps[lib].geocoderControl(geocoder, map);
+      map.controls[google.maps.ControlPosition.TOP_LEFT].push(control);
+      break;
+    case 'openlayers':
+      control = nlmaps[lib].geocoderControl(geocoder, map);
+      map.addControl(control);
       break;
   }
 }

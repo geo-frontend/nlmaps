@@ -5,6 +5,7 @@ import resolve from '../../../node_modules/rollup-plugin-node-resolve/dist/rollu
 import commonjs from '../../../node_modules/rollup-plugin-commonjs/dist/rollup-plugin-commonjs.es.js';
 import replace from '../../../node_modules/rollup-plugin-replace/dist/rollup-plugin-replace.es.js';
 import uglify from 'rollup-plugin-uglify';
+import image from 'rollup-plugin-image';
 
 export default config => {
   return {
@@ -15,6 +16,7 @@ export default config => {
       format: config.format
     },
     plugins: [
+      image(),
       commonjs(),
       resolve({
         jsnext: true,

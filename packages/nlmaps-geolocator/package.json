@@ -6,7 +6,7 @@
   "module": "build/nlmaps-geolocator.es.js",
   "scripts": {
     "test": "node test/test.js",
-    "build": "rollup -c config/rollup.cjs.js && rollup -c config/rollup.es.js && BROWSER=true rollup -c config/rollup.iife.js && cp build/nlmaps-geolocator.iife.js ../../dist/",
+    "build": "rollup -c config/rollup.cjs.js && rollup -c config/rollup.es.js && rollup -c config/rollup.iife.js && cp build/nlmaps-geolocator.iife.js ../../dist/",
     "watch-test": "nodemon --watch test --watch build --exec 'npm run test'",
     "watch-code": "nodemon --watch src --exec npm run build",
     "watch-all": "npm-run-all --parallel watch-code watch-test",

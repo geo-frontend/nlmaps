@@ -4,7 +4,7 @@ Automatically configure BRT-Achtergrond map layers in [Leaflet](http://leafletjs
 
 **Table of Contents**
 
-* [What it's for](#what-its-for)
+* [Purpose](#purpose)
 * [Usage example](#usage-example)
 * [Getting set up](#getting-set-up)
 * [API documentation](#api-documentation)
@@ -12,9 +12,9 @@ Automatically configure BRT-Achtergrond map layers in [Leaflet](http://leafletjs
 * [Raw tile URLs](#raw-tile-urls)
 * [Developing](#developing)
 
-## What it's for
+## Purpose
 
-The `nlmaps` JavaScript library allows you to create layers for Leaflet, Google Maps, Mapbox, or OpenLayers pre-configured to use the BRT Achtergrondkaart layers. You don't need to figure out the tile URLs yourself. To make it even easier, it automatically detect which map library you're using and creates a map pre-loaded with one of the BRT Achtergrondkaart layers.
+The `nlmaps` JavaScript library allows you to create layers for Leaflet, Google Maps, Mapbox, or OpenLayers pre-configured to use the BRT-Achtergrondkaart layers. You don't need to figure out the tile URLs yourself. To make it even easier, it automatically detects the map library you're using and creates a map pre-loaded with one of the BRT-Achtergrondkaart layers.
 
 ## Usage example
 
@@ -57,7 +57,7 @@ Finally, you will need the `nlmaps` library itself, which you can download from 
     //ES2015 Modules
     import nlmaps from 'nlmaps';
 
-Leaflet, Google Maps, Mapbox, or OpenLayers will also need to be available in your final web browser scope. One way you can do this is to install a package that wraps your map library for Node; in that case `npm install -S` it (for example, [leaflet-headless](https://www.npmjs.com/package/leaflet-headless), [google-maps](https://www.npmjs.com/package/google-maps) or [openlayers](https://www.npmjs.com/package/openlayers)). You can also include it as a script in the html file that loads your final app output.
+Leaflet, Google Maps, Mapbox, or OpenLayers will also need to be available in your final web browser scope. One way you can do this is to install a package that wraps your map library for Node; in that case `npm install -S` it (for example, [leaflet](https://www.npmjs.com/package/leaflet), [google-maps](https://www.npmjs.com/package/google-maps) or [openlayers](https://www.npmjs.com/package/openlayers)). You can also include it as a script in the HTML-file that loads your final app output.
 
 **Note on using Mapbox:** if you are using the Mapbox library, follow the instructions for Leaflet. Since Mapbox includes the Leaflet library it will work the same.
 
@@ -65,14 +65,16 @@ Leaflet, Google Maps, Mapbox, or OpenLayers will also need to be available in yo
 
 ### `nlmaps.createMap(options<object>)`
 
-Creates a map using Leaflet, Google Maps, Mapbox, or OpenLayers with a given BRT-Achtergrondkaart layer already added as a background layer. Configured with an options object with the following properties:
+Creates a map using Leaflet, Google Maps, Mapbox, or OpenLayers with a given BRT-Achtergrondkaart layer already added as a background layer. Configured with an `options` object with the following properties:
 
-* style: _string_ (optional). one of `'standaard'`, `'pastel'`, '`grijs'` or `'luchtfoto'`, default `'standaard'`.
-* target: _string_ (required). id of the `div` in which to create the map.
-* center: _object_ (optional). object with latitude and longitude properties for setting the initial viewpoint. Defaults to a position near the centre of the Netherlands.
-* zoom: _number_ (optional). Zoom level at which to initialize the viewpoint. Defaults to `8`.
+* style: _string_ (optional). One of `'standaard'`, `'pastel'`, '`grijs'` or `'luchtfoto'`, default `'standaard'`.
+* target: _string_ (required). This is the id of the `div` in which to create the map.
+* center: _object_ (optional). This object contains latitude and longitude properties for setting the initial viewpoint. Defaults to a position near the centre of the Netherlands.
+* zoom: _number_ (optional). This is the zoom level at which to initialize the viewpoint. Defaults to `8`.
+* marker: _boolean_ or _object_ (optional). Use one of `'true'` or `'false'` for setting whether or not to show a marker at the location specified by `center`. Defaults to `'false'`. To explicitly set the position of the marker, pass the marker an _object_ with latitude and longitude properties.
+* overlay: _string_ (optional). One of `'drone-no-fly-zones'`, `'gebouwen'`, `'gemeenten'`, `'hoogte'`, `'percelen'` or `'provincies'`. This specifies a map overlay on top of the BRT-Achtergrondkaart or aerial imagery.
 
-returns a `map` object.
+Returns a `map` object.
 
 **Example**
 
@@ -83,18 +85,20 @@ returns a `map` object.
         longitude: 5.4534,
         latitude: 52.3112
       },
-      zoom: 15
+      zoom: 15,
+      marker: true,
+      overlay: 'hoogte'
     };
     let map = nlmaps.createMap(opts);
    
-### `nlmaps.geolocate(map<map object>, options<object>)`
+### `nlmaps.geoLocate(map<map object>, options<object>)`
 
 Creates a geolocator control and adds it to the map. Clicking on the control will initiate a browser geolocation API request and center the map on the result. The geolocator can also be initialized to perform a geolocation request immediately, without waiting for the user to click on the control.
 
 * map: _object map_ (required). the `map` that the geolocator control should be added to.
-* options _object_ (optional). An object with one allowed property, `start: true|false`. If set to true, the geolocator is initialized on page load.
+* options _object_ (optional). An object with one allowed property, `start: true|false`. If set to `true`, the geolocator is initialized on page load.
 
-Returns `geolocator` object. See the [nlmaps-geolocator](https://www.npmjs.com/package/nlmaps-geolocator) package for more information.
+Returns a `geolocator` object. See the [nlmaps-geolocator](https://www.npmjs.com/package/nlmaps-geolocator) package for more information.
 
 **Example**
 
@@ -103,33 +107,69 @@ Returns `geolocator` object. See the [nlmaps-geolocator](https://www.npmjs.com/p
 
 ### `nlmaps.<leaflet|openlayers>.bgLayer([style<string>]) | nlmaps.googlemaps.bgLayer(map, [style])`
 
-Ccreate a layer for the given library configured to fetch tiles for `style` tile source, or if `style` is omitted, for the 'standaard' tilesource. In order to use the `nlmaps` library in conjunction with Mapbox, select `leaflet`.
+Creates a layer for the given library configured to fetch tiles for `style` tile source, or if `style` is omitted, for the 'standaard' tilesource. In order to use the `nlmaps` library in conjunction with Mapbox, select `nlmaps.leaflet`.
 
-**NOTE:** for Google Maps, you also need to pass the `map` object as the first argument (so if you pass a style, also pass `map` first.) This is needed for the creation of the Attribution control since Google Maps doesn't configure this automatically.
+**NOTE:** for Google Maps, you also need to pass the `map` object as the first argument (so if you pass a `style`, also pass `map` first).
 
 Arguments:
 
 * map: _map.object_ (only for Google Maps). The `map` to which the layer will be added.
-* style: _string_ (optional). Name of tilesource to load. One of `'standaard'`, `'pastel'`,`'grijs'` or '`luchtfoto`'; default `'standaard'`.
+* style: _string_ (optional). Name of tile source to load. One of `'standaard'`, `'pastel'`,`'grijs'` or '`luchtfoto`'; default `'standaard'`.
 
 Returns a `layer` object.
 
-**Example**
+**Example (OpenLayers)**
 
     const layer = nlmaps.openlayers.bgLayer();
-    layer.addTo(map);
+    layer.addLayer(map);
 
+### `nlmaps.<googlemaps|leaflet|openlayers>.markerLayer([coords<object>])`
+
+Creates a layer for the given library configured to position a marker at the location `coords`. In order to use the `nlmaps` library in conjunction with Mapbox, select `nlmaps.leaflet`.
+
+Arguments:
+
+* coords: _object_ . This object contains `latitude` and `longitude` properties for setting the location of the marker.
+
+Returns a `layer` object.
+
+**Example (Leaflet)**
+
+    const marker = nlmaps.leaflet.markerLayer({
+      longitude: 5.4534,
+      latitude: 52.3112
+    });
+    marker.addTo(map);
+
+### `nlmaps.<leaflet|openlayers>.overlayLayer([overlay<string>]) | nlmaps.googlemaps.overlayLayer(map, [overlay])`
+
+Creates an layer for the given library configured to fetch tiles for `overlay` map source. In order to use the `nlmaps` library in conjunction with Mapbox, select `nlmaps.leaflet`.
+
+**NOTE:** for Google Maps, you also need to pass the `map` object as the first argument (so if you pass an `overlay`, also pass `map` first).
+
+Arguments:
+
+* map: _map.object_ (only for Google Maps). The `map` to which the layer will be added.
+* overlay: _string_ . Name of map source to load. One of `'drone-no-fly-zones'`, `'gebouwen'`, `'gemeenten'`, `'hoogte'`, `'percelen'` or '`provincies`'.
+
+Returns a `layer` object.
+
+**Example (Google Maps)**
+
+    const overlay = nlmaps.googlemaps.overlayLayer('drone-no-fly-zones');
 
 ### `nlmaps.<leaflet|openlayers>.geoLocatorControl(geolocator) | nlmaps.googlemaps.geoLocatorControl(geolocator, map)`
 
 Creates a control for the given library which talks to the given `geolocator`. The control has a very simple interface: click to initiate a geolocation request and have the map be centered on the resulting location. You need to add the control to the map yourself. Arguments:
 
+Arguments:
+
 * geolocator _object geolocator_ (required): the `geolocator` to which the control should be connected. If you are using this method, you will probably be creating the geolocator yourself with the [nlmaps-geolocator](https://www.npmjs.com/package/nlmaps-geolocator) package.
 * map _object map_ (only for Google Maps): the map with which the control should be associated.
 
-Returns a geolocator control.
+Returns a `geolocator` control.
 
-**Example**
+**Example (Leaflet)**
 
     import geoLocator from 'nlmaps-geolocator';
     import geoLocatorControl from 'nlmaps-leaflet';
@@ -139,12 +179,13 @@ Returns a geolocator control.
 
 ## Advanced usage
 
-If you're already using a mapping library in your project, you can use the library-specific `bgLayer()` function to create a layer object which you can add to your existing map. All you'll need to do first is create a map and set the view. This is what the `createMap()` function does under the hood, with some default values.
+If you're already using a mapping library in your project, you can use the library-specific `bgLayer()`, `overlayLayer()`, and `markerLayer()` functions. All you'll need to do first is create a map and set the view. This is what the `createMap()` function does under the hood, with some default values.
 
 ### Leaflet
 
-    let map = L.map('map').setView([52.20936, 5.970745], 10);
+    let map = L.map('map').setView( new L.LatLng(52.20936, 5.970745), 10);
     let mylayer = nlmaps.leaflet.bgLayer('grijs').addTo(map);
+    let marker = nlmaps.leaflet.markerLayer({longitude: 5.5, latitude: 52.5}).addTo(map);
 
 ### OpenLayers
 
@@ -155,8 +196,10 @@ If you're already using a mapping library in your project, you can use the libra
       }),
       target: 'map'
     });
-    let layer = nlmaps.openlayers.bgLayer(); //calling bgLayer with no argument defaults to the 'standaard' style
+    let layer = nlmaps.openlayers.bgLayer();
     map.addLayer(layer);
+    let marker = nlmaps.openlayers.markerLayer(true)
+    map.addLayer(marker);
 
 ### Google Maps
 
@@ -167,7 +210,7 @@ Google Maps requires a bit more code, since we have to add our layer to the `map
       zoom: 8
     });
     
-    let mylayer = nlmaps.openlayers.bgLayer(map, 'pastel'); //don't forget to pass map as first argument
+    let mylayer = nlmaps.googlemaps.bgLayer(map, 'pastel');
     
     //add your map to the available layers
     map.mapTypes.set(mylayer.name, mylayer);
@@ -185,9 +228,14 @@ To comply with Google Maps JavaScript API [Terms of Service](https://developers.
       }
     });
 
-### Include only your library-specific `bgLayer` function
+    let overlay = nlmaps.googlemaps.overlayLayer(map, 'drone-no-fly-zones');
 
-If you want to save as many bytes as possible, simply include the sub-module for your map library instead of the whole `nlmaps` package. Each of these modules provides a `bgLayer()` function which will return a layer for the corresponding map library, and a `geoLocatorControl()` function which returns a control for the geolocator.
+    let marker = nlmaps.googlemaps.markerLayer({longitude: 5.0, latitude: 52.5});
+    marker.setMap(map);
+
+### Include only your library-specific functions
+
+If you want to save as many bytes as possible, simply include the sub-module for your map library instead of the whole `nlmaps` package. Each of these modules provides a `bgLayer()` function which will return a layer for the corresponding map library, a markerLayer() function which will return a marker on the map, and a `geoLocatorControl()` function which returns a control for the geolocator.
 
 **Web browser:**
 
@@ -199,20 +247,20 @@ Download the appropriate `nlmaps-<maplib>.min.js` [release](https://github.com/k
     
     //CommonJS
     let bgLayer = require('nlmaps-leaflet').bgLayer; //note the use of property off of require
+    let marker = require('nlmaps-leaflet').markerLayer;
     
     //ES2015
-    import { bgLayer } from 'nlmaps-leaflet';
+    import { bgLayer, markerLayer } from 'nlmaps-leaflet';
 
-this `bgLayer()` function can subsequently be used in the same way as `nlmaps.maplib.bgLayer()` from the parent package.
+These functions can subsequently be used in the same way as the functions from the parent package.
 
 ### Removing or further manipulating the map or layer
 
-If you want to remove your map object or layer, you can just use the standard method provided by your library. The objects returned from `createMap()` and `bgLayer()` are just standard `map` and `layer` objects for the appropriate libraries. For example, Leaflet has a `map.remove()` function which destroys the map and clears all event listeners.
+If you want to remove your map object or layer, you can just use the standard method provided by your library. The objects returned from `createMap()`, `bgLayer()`, `markerLayer()`, and `overlayLayer()` are just standard `map` and `layer` objects for the appropriate libraries. For example, Leaflet has a `map.remove()` function which destroys the map and clears all event listeners.
 
 ### The geolocator and the geoLocatorControls
 
-You can also use the `nlmaps-geolocator` package directly instead of calling it with `nlmaps.geoLocate`. This gives you flexibility to implement your own control. Each of the library-specific sub-packages provides a control which interfaces with the `nlmaps-geolocator` API, but these are quite simple controls with, at the moment, hard-coded css styling. In the future `nlmaps` may provide a css file but for now, if you want to modify the placement, you should provide your own css and/or create your own control.
-
+You can also use the `nlmaps-geolocator` package directly instead of calling it with `nlmaps.geoLocate`. This gives you flexibility to implement your own control. Each of the library-specific sub-packages provides a control which interfaces with the `nlmaps-geolocator` API, but these are quite simple controls with, at the moment, hard-coded CSS styling. In the future `nlmaps` may provide a CSS file but for now, if you want to modify the placement, you should provide your own CSS and/or create your own control.
 
 ## Raw tile URLs
 
@@ -233,6 +281,6 @@ For aerial imagery:
 1. `node build-all.js` can't use npm run or lerna run because rollup can't handle non-externalized dependencies when lerna is symlinking them.
 2. `lerna exec npm -- install` If you need to update dependencies
 3. git `add` and `commit`
-4. `lerna publish`   choose version numbers for each changed package
+4. `lerna publish` choose version numbers for each changed package
 
 Then go to the release page and annotate the latest release for the 'nlmaps' package.

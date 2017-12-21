@@ -3,7 +3,7 @@ import Clipboard from 'clipboard';
 import geoLocator from 'nlmaps-geolocator';
 const browser = require('browser-detect')();
 
-const BRTAkAttr = 'NLMaps | Kaartgegevens &copy; <a href="kadaster.nl">Kadaster</a> | <a href="http://www.verbeterdekaart.nl">verbeter de kaart</a>';
+const BRTAkAttr = 'NLMaps | Kaartgegevens &copy; <a href="https://www.kadaster.nl">Kadaster</a> | <a href="http://www.verbeterdekaart.nl">Verbeter de kaart</a>';
 const baseTileUrl = 'https://geodata.nationaalgeoregister.nl/tiles/service/wmts/brtachtergrondkaart/EPSG:3857';
 
 export default class Maps {
@@ -123,8 +123,8 @@ export default class Maps {
 
         google.maps.event.addListener(map, 'center_changed', () => {
             let center = map.getCenter();
-            this.latitude = center.lat();
-            this.longitude = center.lng();
+            this.latitude = center.lat().toFixed(6);
+            this.longitude = center.lng().toFixed(6);
 
             this.updateCode();
         });
@@ -158,8 +158,8 @@ export default class Maps {
 
         map.on('move', () => {
             let center = map.getCenter();
-            this.latitude = center.lat;
-            this.longitude = center.lng;
+            this.latitude = center.lat.toFixed(6);
+            this.longitude = center.lng.toFixed(6);
             this.zoom = map.getZoom();
 
             this.updateCode();
@@ -208,8 +208,8 @@ export default class Maps {
 
         map.on('moveend', () => {
             let center = ol.proj.toLonLat(map.getView().getCenter());
-            this.latitude = center[1];
-            this.longitude = center[0];
+            this.latitude = center[1].toFixed(6);
+            this.longitude = center[0].toFixed(6);
             this.zoom = map.getView().getZoom();
 
             this.updateCode();
@@ -236,8 +236,8 @@ export default class Maps {
 
         map.on('move', () => {
             let center = map.getCenter();
-            this.latitude = center.lat;
-            this.longitude = center.lng;
+            this.latitude = center.lat.toFixed(6);
+            this.longitude = center.lng.toFixed(6);
             this.zoom = map.getZoom();
 
             this.updateCode();

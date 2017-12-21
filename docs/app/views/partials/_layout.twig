@@ -68,7 +68,7 @@
 &lt;script src="https://maps.googleapis.com/maps/api/js?v=3&key=YOUR-API-KEY">&lt;/script>
 &lt;script type="text/javascript">
     var nlMapsHolder = document.getElementById('nlmaps-holder');
-    nlMapsHolder.style.height = '300px'; // Change to wanted height
+    nlMapsHolder.style.height = '300px'; // Change to required height
 
     var map = new google.maps.Map(nlMapsHolder, {
         center: {
@@ -105,12 +105,12 @@
 &lt;link href="https://unpkg.com/leaflet@1.0.3/dist/leaflet.css" rel="stylesheet" type="text/css" />
 &lt;script type="text/javascript">
     var nlMapsHolder = document.getElementById('nlmaps-holder');
-    nlMapsHolder.style.height = '300px'; // Change to wanted height
+    nlMapsHolder.style.height = '300px'; // Change to required height
 
     var map = L.map('nlmaps-holder', { // ID of map div
         center: [{latitude}, {longitude}],
         layers: [
-            new L.tileLayer(
+            L.tileLayer(
                 '{url}/{z}/{x}/{y}.{extension}', {
                     attribution: '{attribution}'
                 }
@@ -127,7 +127,7 @@
 &lt;link href="https://openlayers.org/en/v4.1.0/css/ol.css" rel="stylesheet" type="text/css" />
 &lt;script type="text/javascript">
     var nlMapsHolder = document.getElementById('nlmaps-holder');
-    nlMapsHolder.style.height = '300px'; // Change to wanted height
+    nlMapsHolder.style.height = '300px'; // Change to required height
 
     var map = new ol.Map({
         layers: [
@@ -157,7 +157,7 @@
 &lt;link href="https://api.mapbox.com/mapbox.js/v3.1.1/mapbox.css" rel="stylesheet" type="text/css" />
 &lt;script type="text/javascript">
     var nlMapsHolder = document.getElementById('nlmaps-holder');
-    nlMapsHolder.style.height = '300px'; // Change to wanted height
+    nlMapsHolder.style.height = '300px'; // Change to required height
 
     var map = L.mapbox
         .map('nlmaps-holder') // ID of map div

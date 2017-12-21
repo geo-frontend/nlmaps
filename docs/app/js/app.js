@@ -5,6 +5,6 @@ import Docs from './_docs';
 
 $(() => {
     new Maps();
-    new Forum('https://pdokforum.geonovum.nl', 'nl-maps');
+    new Forum('https://forum.pdok.nl', 'applicaties-en-diensten/nl-maps');
     new Docs('kadaster/nlmaps/', 'docs/README-NL.md');
 });

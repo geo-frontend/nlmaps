@@ -51,10 +51,10 @@
                     <form class="js-wizard-form">
                         <ol class="wizard-steps">
                             <li class="wizard-step">
-                                <span class="wizard-step-heading">Kies je service</span>
+                                <span class="wizard-step-heading">Kies een service</span>
                                 <div class="wizard-step-content">
                                     <span class="wizard-option">
-                                        <input type="radio" value="leaflet" name="service" id="service-leaflet" />
+                                        <input type="radio" value="leaflet" name="service" id="service-leaflet"  />
                                         <label for="service-leaflet">Leaflet</label>
                                     </span>
                                     <span class="wizard-option">
@@ -66,13 +66,13 @@
                                         <label for="service-mapbox">Mapbox</label>
                                     </span>
                                     <span class="wizard-option">
-                                        <input type="radio" value="open-layers" name="service" id="service-open-layers" checked="checked" />
+                                        <input type="radio" value="open-layers" name="service" id="service-open-layers" checked="checked"/>
                                         <label for="service-open-layers">OpenLayers</label>
                                     </span>
                                 </div>
                             </li>
                             <li class="wizard-step">
-                                <span class="wizard-step-heading">Kies je kleurschema</span>
+                                <span class="wizard-step-heading">Kies een kleurschema</span>
                                 <div class="wizard-step-content">
                                     <span class="wizard-option">
                                         <input type="radio" value="default" name="color" id="theme-default" checked="checked" />
@@ -93,40 +93,40 @@
                                 </div>
                             </li>
                             <li class="wizard-step">
-                                <span class="wizard-step-heading">Kies een marker</span>
+                                <span class="wizard-step-heading">Kies een marker <span class="wizard-step-explanation"> De marker wordt automatisch op het midden van de kaart geplaatst. </span> </span>
                                 <div class="wizard-step-content">
                                     <span class="wizard-option">
                                         <input type="radio" value="marker-yes" name="marker" id="marker-yes" checked="checked" />
-                                        <label for="theme-default">marker</label>
+                                        <label for="marker-yes">marker</label>
                                     </span>
                                     <span class="wizard-option">
                                         <input type="radio" value="marker-no" name="marker" id="marker-no" />
-                                        <label for="theme-pastel">geen marker</label>
+                                        <label for="marker-no">geen marker</label>
                                     </span>
                                 </div>
                             </li>
                             <li class="wizard-step">
-                                <span class="wizard-step-heading">Kies kaartgegevens </span>
+                                <span class="wizard-step-heading"> Kies kaartgegevens <span class="wizard-step-explanation"> Sommige lagen zijn alleen beschikbaar als de kaart verder is ingezoomd. </span> </span>                       
                                 <div class="wizard-step-content">
                                     <span class="wizard-option">
-                                        <input type="radio" value="wms-1" name="wms" id="wms-1" checked="checked" />
-                                        <label for="theme-default">geen</label>
+                                        <input type="radio" value="wms-none" name="wms" id="wms-none" checked="checked" />
+                                        <label for="wms-none">geen</label>
                                     </span>
                                     <span class="wizard-option">
-                                        <input type="radio" value="wms-2" name="wms" id="wms-2" />
-                                        <label for="theme-default">percelen</label>
+                                        <input type="radio" value="wms-percelen" name="wms" id="wms-percelen" />
+                                        <label for="wms-percelen">percelen</label>
                                     </span>
                                     <span class="wizard-option">
-                                        <input type="radio" value="wms-3" name="wms" id="wms-3" />
-                                        <label for="theme-default">gebouwen</label>
+                                        <input type="radio" value="wms-gebouwen" name="wms" id="wms-gebouwen" />
+                                        <label for="wms-gebouwen">gebouwen</label>
                                     </span>
                                     <span class="wizard-option">
-                                        <input type="radio" value="wms-4" name="wms" id="wms-4" />
-                                        <label for="theme-default">hoogtebestand</label>
+                                        <input type="radio" value="wms-hoogtebestand" name="wms" id="wms-hoogtebestand" />
+                                        <label for="wms-hoogtebestand">hoogtebestand</label>
                                     </span>
                                     <span class="wizard-option">
-                                            <input type="radio" value="wms-5" name="wms" id="wms-5" />
-                                            <label for="theme-default">ganzenfourage</label>
+                                        <input type="radio" value="wms-drone-no-fly-zone" name="wms" id="wms-drone-no-fly-zone" />
+                                        <label for="wms-drone-no-fly-zone">drone-no-fly-zone</label>
                                     </span>
                                 </div>
                             </li>

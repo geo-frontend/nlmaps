@@ -28,6 +28,8 @@
     <link rel="stylesheet" type="text/css" href="https://api.mapbox.com/mapbox.js/v3.1.0/mapbox.css" />
     <link rel="stylesheet" type="text/css" href="https://openlayers.org/en/v4.1.0/css/ol.css" />
     <script src="https://ajax.googleapis.com/ajax/libs/webfont/1.5.18/webfont.js"></script>
+
+
     <script>
         WebFont.load({
             google: {
@@ -66,36 +68,25 @@
 &lt;div id="nlmaps-holder">&lt;/div>
 
 &lt;script src="https://maps.googleapis.com/maps/api/js?v=3&key=YOUR-API-KEY">&lt;/script>
+&lt;script src="https://rawgit.com/webmapper/nlmaps/master/dist/nlmaps.iife.js">&lt;/script>
 &lt;script type="text/javascript">
+
     var nlMapsHolder = document.getElementById('nlmaps-holder');
     nlMapsHolder.style.height = '300px'; // Change to wanted height
 
-    var map = new google.maps.Map(nlMapsHolder, {
+    
+    var opts = {
+        style: '{backgroundLayerName}',
+        target: 'nlmaps-holder',
         center: {
-            lat: {latitude},
-            lng: {longitude}
+            longitude: {longitude},
+            latitude: {latitude}
         },
+        overlay: '{overlay}',
+        marker: {marker},
         zoom: {zoomlevel}
-    });
-
-    var nlMap = new google.maps.ImageMapType({
-        getTileUrl: (coord, zoom) => {
-            let url = '{url}/' + zoom + '/' + coord.x + '/' + coord.y + '.{extension}';
-            return url;
-        },
-        tileSize: new google.maps.Size(256, 256),
-        isPng: true,
-        name: 'NLMaps',
-        maxZoom: 18,
-        minZoom: 8
-    });
-
-    map.mapTypes.set('NLmaps', nlMap);
-    map.setOptions({
-        mapTypeControl: false,
-    });
-
-    map.setMapTypeId('NLmaps');
+    };
+    var map = nlmaps.createMap(opts);
 &lt;/script>
     </script>
     <script type="text/template" id="leaflet-template">
@@ -103,21 +94,25 @@
 
 &lt;script src="https://unpkg.com/leaflet@1.0.3/dist/leaflet.js">&lt;/script>
 &lt;link href="https://unpkg.com/leaflet@1.0.3/dist/leaflet.css" rel="stylesheet" type="text/css" />
+&lt;script src="https://rawgit.com/webmapper/nlmaps/master/dist/nlmaps.iife.js">&lt;/script>
 &lt;script type="text/javascript">
     var nlMapsHolder = document.getElementById('nlmaps-holder');
     nlMapsHolder.style.height = '300px'; // Change to wanted height
-
-    var map = L.map('nlmaps-holder', { // ID of map div
-        center: [{latitude}, {longitude}],
-        layers: [
-            new L.tileLayer(
-                '{url}/{z}/{x}/{y}.{extension}', {
-                    attribution: '{attribution}'
-                }
-            )
-        ],
+    
+    
+    var opts = {
+        style: '{backgroundLayerName}',
+        target: 'nlmaps-holder',
+        center: {
+            longitude: {longitude},
+            latitude: {latitude}
+        },
+        overlay: '{overlay}',
+        marker: {marker},
         zoom: {zoomlevel}
-    });
+    };
+    var map = nlmaps.createMap(opts);
+
 &lt;/script>
     </script>
     <script type="text/template" id="open-layers-template">
@@ -125,29 +120,22 @@
 
 &lt;script src="https://openlayers.org/en/v4.1.0/build/ol.js">&lt;/script>
 &lt;link href="https://openlayers.org/en/v4.1.0/css/ol.css" rel="stylesheet" type="text/css" />
+&lt;script src="https://rawgit.com/webmapper/nlmaps/master/dist/nlmaps.iife.js">&lt;/script>
 &lt;script type="text/javascript">
     var nlMapsHolder = document.getElementById('nlmaps-holder');
     nlMapsHolder.style.height = '300px'; // Change to wanted height
-
-    var map = new ol.Map({
-        layers: [
-            new ol.layer.Tile({
-                source: new ol.source.XYZ({
-                    url: '{url}/{z}/{x}/{y}.{extension}',
-                    attributions: [
-                        new ol.Attribution({
-                            html: '{attribution}'
-                        })
-                    ]
-                })
-            })
-        ],
-        view: new ol.View({
-            center: ol.proj.fromLonLat([{longitude}, {latitude}]),
-            zoom: {zoomlevel}
-        }),
-        target: 'nlmaps-holder' // ID of map div
-    });
+    var opts = {
+        style: '{backgroundLayerName}',
+        target: 'nlmaps-holder',
+        center: {
+            longitude: {longitude},
+            latitude: {latitude}
+        },
+        overlay: '{overlay}',
+        marker: {marker},
+        zoom: {zoomlevel}
+    };
+    var map = nlmaps.createMap(opts);
 &lt;/script>
     </script>
     <script type="text/template" id="mapbox-template">
@@ -155,26 +143,30 @@
 
 &lt;script src="https://api.mapbox.com/mapbox.js/v3.1.0/mapbox.js">&lt;/script>
 &lt;link href="https://api.mapbox.com/mapbox.js/v3.1.1/mapbox.css" rel="stylesheet" type="text/css" />
+&lt;script src="https://rawgit.com/webmapper/nlmaps/master/dist/nlmaps.iife.js">&lt;/script>
+
 &lt;script type="text/javascript">
     var nlMapsHolder = document.getElementById('nlmaps-holder');
     nlMapsHolder.style.height = '300px'; // Change to wanted height
-
-    var map = L.mapbox
-        .map('nlmaps-holder') // ID of map div
-        .setView([{latitude}, {longitude}], {zoomlevel});
-
-    var layer = L.tileLayer('{url}/{z}/{x}/{y}.{extension}', {
-        tms: false,
-        attribution: '{attribution}'
-    });
-    layer.addTo(map);
+    var opts = {
+        style: '{backgroundLayerName}',
+        target: 'nlmaps-holder',
+        center: {
+            longitude: {longitude},
+            latitude: {latitude}
+        },
+        overlay: '{overlay}',
+        marker: {marker},
+        zoom: {zoomlevel}
+    };
+    var map = nlmaps.createMap(opts);
 &lt;/script>
     </script>
-
     <script type="text/javascript" src="https://unpkg.com/leaflet@1.0.3/dist/leaflet.js"></script>
     <script type="text/javascript" src="https://api.mapbox.com/mapbox.js/v3.1.0/mapbox.js"></script>
     <script type="text/javascript" src="https://openlayers.org/en/v4.1.0/build/ol.js"></script>
     <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?v=3&key=AIzaSyAHhkVptxb8zlX0LZqkLf-RHC9Uvik_fDc"></script>
+    <script src="https://rawgit.com/webmapper/nlmaps/master/dist/nlmaps.iife.js"></script>
     <script type="text/javascript" src="app.js" async defer></script>
 </body>
 </html>

@@ -45,7 +45,7 @@ var nlmapsLeaflet_cjs = createCommonjsModule(function (module, exports) {
         break;
       case 'drone-no-fly-zones':
         wmsParameters.workSpaceName = 'dronenoflyzones';
-        wmsParameters.layerName = 'luchtvaartgebieden';
+        wmsParameters.layerName = 'luchtvaartgebieden,landingsite';
         wmsParameters.styleName = '';
         break;
       case 'hoogte':
@@ -572,7 +572,7 @@ var nlmapsOpenlayers_cjs = createCommonjsModule(function (module, exports) {
         break;
       case 'drone-no-fly-zones':
         wmsParameters.workSpaceName = 'dronenoflyzones';
-        wmsParameters.layerName = 'luchtvaartgebieden';
+        wmsParameters.layerName = 'luchtvaartgebieden,landingsite';
         wmsParameters.styleName = '';
         break;
       case 'hoogte':
@@ -1048,7 +1048,7 @@ var nlmapsGooglemaps_cjs = createCommonjsModule(function (module, exports) {
         break;
       case 'drone-no-fly-zones':
         wmsParameters.workSpaceName = 'dronenoflyzones';
-        wmsParameters.layerName = 'luchtvaartgebieden';
+        wmsParameters.layerName = 'luchtvaartgebieden,landingsite';
         wmsParameters.styleName = '';
         break;
       case 'hoogte':

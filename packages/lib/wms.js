@@ -25,7 +25,7 @@ function mapWmsProvider(name){
         break;
       case 'drone-no-fly-zones':
         wmsParameters.workSpaceName = 'dronenoflyzones';
-        wmsParameters.layerName = 'luchtvaartgebieden';
+        wmsParameters.layerName = 'luchtvaartgebieden,landingsite';
         wmsParameters.styleName = '';
         break;
       case 'hoogte':

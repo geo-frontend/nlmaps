@@ -1,4 +1,4 @@
-import { getProvider, getWmsProvider, geolocator_icon, geocoder } from '../../lib/index.js';
+import { getProvider, getWmsProvider, geolocator_icon, geocoder, markerUrl } from '../../lib/index.js';
 
 function AttributionControl(controlDiv, attrControlText) {
   if (typeof google === 'object' && typeof google.maps === 'object') {
@@ -276,21 +276,33 @@ function overlayLayer(map=map, name) {
   return wmsLayer;
 }
 
-function markerLayer(lat, lng) {  
-  let markerLocationLatLng; 
-  if (lat != undefined && lng != undefined) {
-    markerLocationLatLng = new google.maps.LatLng(lat, lng);
-  } 
+function markerLayer(latLngObject) {  
+  let lat;
+  let lng;
 
+  if (typeof latLngObject == 'undefined') {
+    const mapCenter = getMapCenter(map);
+    lat = mapCenter.latitude;
+    lng = mapCenter.longitude;
+  } else {
+    lat = latLngObject.latitude;
+    lng = latLngObject.longitude;
+  }
+
+  const markerLocationLatLng = new google.maps.LatLng(lat, lng);
   const marker = new google.maps.Marker({
     title: 'marker',
-    position: markerLocationLatLng
+    position: markerLocationLatLng,
+    icon: markerUrl
   });
   return marker;
 }
 
 function getMapCenter(map) {
-  return [map.getCenter().lat(), map.getCenter().lng()];
+  return {
+    latitude: map.getCenter().lat(), 
+    longitude: map.getCenter().lng()
+  };
 }
 
 // Until the building works properly, this is here. Should be in browser-test.js ///
@@ -314,7 +326,7 @@ function getMapCenter(map) {
 // console.log(geocoderC);
 
 // var wmsLayer = overlayLayer(map, 'gebouwen');
-// markerLayer(52,5);
+// markerLayer();
 
 // map.controls[google.maps.ControlPosition.TOP_LEFT].push(geocoderC);
 export { bgLayer, overlayLayer, markerLayer, getMapCenter, geoLocatorControl, geocoderControl };

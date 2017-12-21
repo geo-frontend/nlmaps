@@ -9,7 +9,7 @@ const baseTileUrl = 'https://geodata.nationaalgeoregister.nl/tiles/service/wmts/
 export default class Maps {
     constructor(selector = '.js-wizard-map') {
         this.$wizardMap = $(selector);
-        if ( !this.$wizardMap.length ) {
+        if (!this.$wizardMap.length) {
             return;
         }
         this.$geoButton = $('.js-get-geo');
@@ -53,40 +53,78 @@ export default class Maps {
             this.wizardFormValues = this.$wizardForm.serializeArray();
             this.wizardMapService = this.wizardFormValues[0].value;
             this.wizardMapColor = this.wizardFormValues[1].value;
+            this.wizardShowMarker = this.wizardFormValues[2].value;
+            this.wizardOverlay = this.wizardFormValues[3].value;
             this.currentUrl = baseTileUrl;
             this.extension = 'png';
 
             switch (this.wizardMapColor) {
+                case 'default':
+                    this.backgroundLayerName = 'standaard';
+                    break;
                 case 'pastel':
+                    this.backgroundLayerName = 'pastel';
                     this.currentUrl = 'https://geodata.nationaalgeoregister.nl/tiles/service/wmts/brtachtergrondkaartpastel/EPSG:3857';
-                break;
+                    break;
                 case 'grey':
+                    this.backgroundLayerName = 'grijs';
                     this.currentUrl = 'https://geodata.nationaalgeoregister.nl/tiles/service/wmts/brtachtergrondkaartgrijs/EPSG:3857';
-                break;
+                    break;
                 case 'air':
+                    this.backgroundLayerName = 'luchtfoto';
                     this.currentUrl = 'https://geodata.nationaalgeoregister.nl/luchtfoto/rgb/wmts/1.0.0/2016_ortho25/EPSG:3857';
                     this.extension = 'jpeg';
-                break;
+                    break;
+            }
+
+            switch (this.wizardOverlay) {
+                case 'wms-none':
+                    this.overlay = false;
+                    break;
+                case 'wms-percelen':
+                    this.overlay = 'percelen';
+                    break;
+                case 'wms-gebouwen':
+                    this.overlay = 'gebouwen';
+                    break;
+                case 'wms-hoogtebestand':
+                    this.overlay = 'hoogtebestand';
+                    break;
+                case 'wms-drone-no-fly-zone':
+                    this.overlay = 'drone-no-fly-zone';
+                    break;
+            }
+
+            switch (this.wizardShowMarker) {
+                case 'marker-yes':
+                    this.showMarker = true;
+                    break;
+                case 'marker-no':
+                    this.showMarker = false;
+                    break;
+                default:
+                    this.showMarker = true;
             }
 
             switch (this.wizardMapService) {
                 case 'google-maps':
                     this.currentMap = 'google-maps';
                     this.setGoogleMap();
-                break;
+                    break;
                 case 'leaflet':
                     this.currentMap = 'leaflet';
                     this.setLeafletMap();
-                break;
+                    break;
                 case 'open-layers':
                     this.currentMap = 'open-layers';
                     this.setOpenLayersMap();
-                break;
+                    break;
                 case 'mapbox':
                     this.currentMap = 'mapbox';
                     this.setMapboxMap();
-                break;
+                    break;
             }
+
         }).trigger('change');
     }
 
@@ -94,32 +132,19 @@ export default class Maps {
         this.createMap();
 
         /* eslint-disable */
-        let map = new google.maps.Map(document.getElementById(this.currentMap), {
+        nlmaps.lib = 'googlemaps';
+        var opts = {
+            style: this.backgroundLayerName,
+            target: this.currentMap,
             center: {
-                lat: this.latitude,
-                lng: this.longitude
+                longitude: this.longitude,
+                latitude: this.latitude
             },
+            overlay: this.overlay,
+            marker: this.showMarker,
             zoom: this.zoom
-        });
-
-        // basemap from amsterdam for now
-        let nlMap = new google.maps.ImageMapType({
-            getTileUrl: (coord, zoom) => {
-                return `${this.currentUrl}/${zoom}/${coord.x}/${coord.y}.${this.extension}`;
-            },
-            tileSize: new google.maps.Size(256, 256),
-            isPng: true,
-            name: BRTAkAttr,
-            maxZoom: 22,
-            minZoom: 8
-        });
-
-        map.mapTypes.set('NLmaps', nlMap);
-        map.setOptions({
-            mapTypeControl: false,
-        });
-
-        map.setMapTypeId('NLmaps');
+        };
+        var map = nlmaps.createMap(opts);
 
         google.maps.event.addListener(map, 'center_changed', () => {
             let center = map.getCenter();
@@ -141,19 +166,20 @@ export default class Maps {
 
     setLeafletMap() {
         this.createMap();
-
         /* eslint-disable */
-        let map = L.map(this.currentMap, {
-            center: [this.latitude, this.longitude],
-            layers: [
-                new L.tileLayer(
-                    `${this.currentUrl}/{z}/{x}/{y}.${this.extension}`, {
-                        attribution: BRTAkAttr
-                    }
-                )
-            ],
+        nlmaps.lib = 'leaflet';
+        var opts = {
+            style: this.backgroundLayerName,
+            target: this.currentMap,
+            center: {
+                longitude: this.longitude,
+                latitude: this.latitude
+            },
+            overlay: this.overlay,
+            marker: this.showMarker,
             zoom: this.zoom
-        });
+        };
+        var map = nlmaps.createMap(opts);
         /* eslint-enable */
 
         map.on('move', () => {
@@ -179,39 +205,26 @@ export default class Maps {
 
     setOpenLayersMap() {
         this.createMap();
+        /* eslint-disable */        
+        nlmaps.lib = 'openlayers';
+        var opts = {
+            style: this.backgroundLayerName,
+            target: this.currentMap,
+            center: {
+                longitude: this.longitude,
+                latitude: this.latitude
+            },
+            overlay: this.overlay,
+            marker: this.showMarker,
+            zoom: this.zoom
+        };
 
-        /* eslint-disable */
-        let map = new ol.Map({
-            controls: ol.control.defaults({
-                attributionOptions: ({
-                    collapsible: false
-                })
-            }),
-            layers: [
-                new ol.layer.Tile({
-                    source: new ol.source.XYZ({
-                        url: `${this.currentUrl}/{z}/{x}/{y}.${this.extension}`,
-                        attributions: [
-                            new ol.Attribution({
-                                html: BRTAkAttr
-                            })
-                        ]
-                    })
-                })
-            ],
-            view: new ol.View({
-                center: ol.proj.fromLonLat([this.longitude, this.latitude]),
-                zoom: this.zoom
-            }),
-            target: this.currentMap
-        });
-
+        var map = nlmaps.createMap(opts);
         map.on('moveend', () => {
             let center = ol.proj.toLonLat(map.getView().getCenter());
             this.latitude = center[1].toFixed(6);
             this.longitude = center[0].toFixed(6);
             this.zoom = map.getView().getZoom();
-
             this.updateCode();
         });
         /* eslint-enable */
@@ -223,16 +236,20 @@ export default class Maps {
         this.createMap();
 
         /* eslint-disable */
-        const map = L.mapbox
-                        .map(this.currentMap)
-                        .setView([this.latitude, this.longitude], this.zoom);
-
-        const layer = L.tileLayer(`${this.currentUrl}/{z}/{x}/{y}.${this.extension}`, {
-            tms: false,
-            attribution: BRTAkAttr
-        });
+        nlmaps.lib = 'leaflet';
+        var opts = {
+            style: this.backgroundLayerName,
+            target: this.currentMap,
+            center: {
+                longitude: this.longitude,
+                latitude: this.latitude
+            },
+            overlay: this.overlay,
+            marker: this.showMarker,
+            zoom: this.zoom
+        };
+        var map = nlmaps.createMap(opts);
         /* eslint-enable */
-        layer.addTo(map);
 
         map.on('move', () => {
             let center = map.getCenter();
@@ -262,16 +279,16 @@ export default class Maps {
         switch (this.currentMap) {
             case 'google-maps':
                 this.setGoogleMap();
-            break;
+                break;
             case 'leaflet':
                 this.setLeafletMap();
-            break;
+                break;
             case 'open-layers':
                 this.setOpenLayersMap();
-            break;
+                break;
             case 'mapbox':
                 this.setMapboxMap();
-            break;
+                break;
         }
     }
 
@@ -292,7 +309,9 @@ export default class Maps {
 
     updateCode() {
         let code = this.getCodeTemplate();
-
+        code = code.replace(/{overlay}/g, this.overlay);
+        code = code.replace(/{marker}/g, this.showMarker);
+        code = code.replace(/{backgroundLayerName}/g, this.backgroundLayerName);
         code = code.replace(/{latitude}/g, this.latitude);
         code = code.replace(/{longitude}/g, this.longitude);
         code = code.replace(/{zoomlevel}/g, this.zoom);

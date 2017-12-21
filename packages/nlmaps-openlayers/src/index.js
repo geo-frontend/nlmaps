@@ -1,4 +1,4 @@
-import { getProvider, getWmsProvider, geolocator_icon, geocoder } from '../../lib';
+import { getProvider, getWmsProvider, geolocator_icon, geocoder, markerUrl } from '../../lib';
 
 let baseTileUrl = 'http://tiles.energielabelatlas.nl/v2/osm';
 const BRTAkAttr = 'Kaartgegevens &copy; <a href="cbs.nl">CBS</a>, <a href="kadaster.nl">Kadaster</a>, <a href="openstreetmap.org">OpenStreetMap contributors</a>';
@@ -21,16 +21,29 @@ function bgLayer(name='standaard') {
     throw 'openlayers is not defined';
   }
 }
-function markerLayer(lat, lng) {
-  var markerStyle = new ol.style.Style({
+function markerLayer(latLngObject) {
+  let markerStyle = new ol.style.Style({
     image: new ol.style.Icon(
       ({
-        anchor: [0.5, 0.5],
-        src: 'marker_icon.png',
-        scale: 0.3
+        anchor: [32, 63],
+        anchorXUnits: 'pixels',
+        anchorYUnits: 'pixels',
+        src: markerUrl,
+        scale: 1
       })
     )
   });
+  let lat;
+  let lng;
+
+  if (typeof latLngObject == 'undefined') {
+    const mapCenter = getMapCenter(map);
+    lat = mapCenter.latitude;
+    lng = mapCenter.longitude
+  } else {
+    lat = latLngObject.latitude;
+    lng = latLngObject.longitude;
+  }
 
   const center = ol.proj.fromLonLat([lng, lat]);
 
@@ -59,8 +72,7 @@ function overlayLayer(name) {
         params: {
           LAYERS: wmsProvider.layers,
           VERSION: wmsProvider.version,
-          STYLES: wmsProvider.styles,
-          TILED: true
+          STYLES: wmsProvider.styles
         }
       })
     })
@@ -211,8 +223,10 @@ function zoomTo(point, map) {
 function getMapCenter(map) {
   const EPSG3857Coords = map.getView().getCenter();
   const lngLatCoords = ol.proj.toLonLat(EPSG3857Coords);
-  const latLngCoords = lngLatCoords.reverse();
-  return latLngCoords;
+  return {
+    longitude: lngLatCoords[0],
+    latitude: lngLatCoords[1]
+  };
 }
 /// Until the building works properly, this is here. Should be in browser-test.js ///
 // let map = new ol.Map({
@@ -225,9 +239,9 @@ function getMapCenter(map) {
 
 // let layer = bgLayer();
 // map.addLayer(layer);
-// let overlay = overlayLayer('kadastrale-kaart')
+// let overlay = overlayLayer('gebouwen')
 // map.addLayer(overlay);
-// let marker = markerLayer(52,5);
+// let marker = markerLayer();
 // map.addLayer(marker);
 
 // const geocoderC = geocoderControl(geocoder);

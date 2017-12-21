@@ -55,6 +55,4 @@ geocoder.lookup = function(id) {
     });
 }
 
-
-
 export { geocoder };

@@ -1,4 +1,4 @@
-import { getProvider, getWmsProvider, geolocator_icon, geocoder } from '../../lib/index.js';
+import { getProvider, getWmsProvider, geolocator_icon, geocoder, markerUrl } from '../../lib/index.js';
 
 if (typeof L !== 'undefined' && typeof L === 'object') {
 L.NlmapsBgLayer = L.TileLayer.extend({
@@ -210,9 +210,26 @@ L.geocoderControl = function(geocoder) {
 }
 
 }
-function markerLayer(lat, lng) {
+function markerLayer(latLngObject) {
   if (typeof L !== 'undefined' && typeof L === 'object') {
-    return new L.marker([lat, lng]);
+    let lat;
+    let lng;
+    // LatLngObject should always be defined when it is called from the main package.
+    if (typeof latLngObject == 'undefined') {
+      const center = getMapCenter(map);
+      lat = center.latitude;
+      lng = center.longitude;
+    } else {
+      lat = latLngObject.latitude;
+      lng = latLngObject.longitude;
+    }
+    return new L.marker([lat, lng], {
+      icon: new L.icon({
+        iconUrl: markerUrl,
+        iconSize: [64, 64],
+        iconAnchor: [32, 63]
+      })
+    });
   }
 }
 
@@ -242,18 +259,20 @@ function geocoderControl(geocoder) {
 
 function getMapCenter(map) {
   const latLngObject = map.getCenter();
-  return [latLngObject.lat, latLngObject.lng];
+  return {
+    latitude: latLngObject.lat, 
+    longitude: latLngObject.lng
+  };
 }
 
-/// Until the building works properly, this is here. Should be in browser-test.js /// 
+// Until the building works properly, this is here. Should be in browser-test.js /// 
 // var map = L.map('map').setView([52, 5], 10);
-// var standaard = bgLayer();
+// var standaard = bgLayer('pastel');
 // const overlay = overlayLayer('gebouwen');
-// // const marker = markerLayer();
+// const marker = markerLayer();
 
 // standaard.addTo(map);
 // overlay.addTo(map);
-
-// L.geocoderControl(geocoder).addTo(map);
 // marker.addTo(map);
+// L.geocoderControl(geocoder).addTo(map);
 export { bgLayer, overlayLayer, markerLayer, getMapCenter, geoLocatorControl, geocoderControl};

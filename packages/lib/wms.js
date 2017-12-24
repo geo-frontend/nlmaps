@@ -48,17 +48,14 @@ function mapWmsProvider(name, options){
       wmsParameters.layerName = options.layerName;
       wmsParameters.styleName = options.styleName;
     }
-    
-    if (wmsBaseUrl == '') {
-      wmsParameters.url = wmsBaseUrl(wmsParameters.workSpaceName);
-    }
-  
+
+    wmsParameters.url = wmsBaseUrl(wmsParameters.workSpaceName);
+   
     return wmsParameters;
   }
   
   function makeWmsProvider(name) {
     const wmsParameters = mapWmsProvider(name);
-  
     return {
       url: wmsParameters.url,
       service: 'WMS',

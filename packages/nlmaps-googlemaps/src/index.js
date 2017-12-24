@@ -45,104 +45,6 @@ function geoLocatorControl (geolocator, map){
     return controlUI;
 }
 
-function geocoderControl(geocoder) {
-  const container = document.createElement('div');
-  const searchDiv = document.createElement('div');
-  const input = document.createElement('input');
-  const results = document.createElement('div');
-  const controlWidth = '300px'
-
-  container.style.width = controlWidth;
-  input.id = 'nlmaps-geocoder-control-input';
-  input.placeholder = 'Zoeken op adres...'
-  input.style.padding = '4px 10px';
-  input.style.width = '100%';
-  input.style.border = 'none';
-  input.style.backgroundColor = '#fff';
-  input.style.boxShadow = '0 1px 5px rgba(0, 0, 0, 0.65)';
-  input.style.height = '26px';
-  input.style.borderRadius = '5px 5px';
-
-  input.addEventListener('input', function(e){
-    suggest(e.target.value, map);
-  });
-
-  input.addEventListener('focus', function(e){
-    suggest(e.target.value, map);
-  });
-  results.id = 'nlmaps-geocoder-control-results';
-  results.style.width = controlWidth;
-
-  container.appendChild(searchDiv);
-  searchDiv.appendChild(input);
-  container.appendChild(results);
-
-  return container;
-}
-
-function suggest(query, map) {
-  if (query.length < 4) {
-    clearSuggestResults();
-    return;
-  }
-
-  geocoder.suggest(query).then((results) => {
-    showSuggestResults(results.response.docs, map);
-  });
-}
-
-function lookup(id, map) {
-  geocoder.lookup(id).then((result) => {
-    zoomTo(result.centroide_ll, map);
-    showLookupResult(result.weergavenaam);
-    clearSuggestResults();
-  });
-}
-
-
-
-function clearSuggestResults() {
-  document.getElementById('nlmaps-geocoder-control-results').innerHTML = '';
-}
-
-function showLookupResult(name) {
-  document.getElementById('nlmaps-geocoder-control-input').value = name;
-}
-
-function showSuggestResults(results, map) {
-  const resultList = document.createElement('ul');
-  resultList.style.padding = '10px 10px 2px 10px';
-  resultList.style.width = '100%';
-  resultList.style.background = '#FFFFFF';
-  resultList.style.borderRadius = '5px 5px';
-  resultList.style.boxShadow = '0 1px 5px rgba(0, 0, 0, 0.65)';
-  
-  results.forEach((result) => {
-    const li = document.createElement('li');
-    li.innerHTML = result.weergavenaam;
-    li.id = result.id;
-    li.style.cursor = 'pointer';
-    li.style.padding = '5px';
-    li.style.listStyleType = 'none';
-    li.style.marginBottom = '5px';
-    li.addEventListener('click', function(e) {
-      lookup(e.target.id, map);
-    });
-
-    li.addEventListener('mouseenter', function(e) {
-      li.style.background = '#6C62A6';
-      li.style.color = '#FFFFFF';
-    });
-
-    li.addEventListener('mouseleave', function(e) {
-      li.style.background = '#FFFFFF';
-      li.style.color = '#333';
-    });
-    resultList.appendChild(li);
-  });
-  clearSuggestResults();
-  document.getElementById('nlmaps-geocoder-control-results').appendChild(resultList);
-}
 
 function zoomTo(point, map) {
   map.setCenter({lat: point.coordinates[1], lng: point.coordinates[0]});
@@ -272,7 +174,7 @@ function overlayLayer(map=map, name) {
   const wmsTiledOptions = getWmsTiledOptions(wmsProvider);
   const wmsLayer = new WMSTiled(map, wmsTiledOptions);
   wmsLayer.name = 'wms';
-
+  
   return wmsLayer;
 }
 
@@ -305,6 +207,12 @@ function getMapCenter(map) {
   };
 }
 
+function geocoderControl(map) {
+  const control = geocoder.createControl(zoomTo, map);
+  map.getDiv().appendChild(control);
+}
+
+
 // Until the building works properly, this is here. Should be in browser-test.js ///
 // var map = new google.maps.Map(document.getElementById('map'), {
 //   center: { lat: 52, lng: 5 },
@@ -322,11 +230,10 @@ function getMapCenter(map) {
 //   }
 // });
 // map.setMapTypeId('Brt Achtergrondkaart');
-// const geocoderC = geocoderControl(geocoder, map);
-// console.log(geocoderC);
 
-// var wmsLayer = overlayLayer(map, 'gebouwen');
-// markerLayer();
+// // var wmsLayer = overlayLayer(map, 'gebouwen');
+// // markerLayer();
 
-// map.controls[google.maps.ControlPosition.TOP_LEFT].push(geocoderC);
+// geocoderControl(map);
+
 export { bgLayer, overlayLayer, markerLayer, getMapCenter, geoLocatorControl, geocoderControl };

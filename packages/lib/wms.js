@@ -1,51 +1,57 @@
 function wmsBaseUrl(workSpaceName) {
-    return 'https://geodata.nationaalgeoregister.nl/' + workSpaceName + '/wms?';
-  }
+  return 'https://geodata.nationaalgeoregister.nl/' + workSpaceName + '/wms?';
+}
 
-function mapWmsProvider(name){
-    const wmsParameters = {
-      workSpaceName: '',
-      layerName: '',
-      styleName: '',
-      url: '',
-      minZoom: 0,
-      maxZoom: 24,
-    };
-  
-    switch (name) {
-      case 'gebouwen':
-        wmsParameters.workSpaceName = 'bag';
-        wmsParameters.layerName = 'pand';
-        wmsParameters.styleName = '';
-        break;
-      case 'percelen':
-        wmsParameters.workSpaceName = 'kadastralekaartv3';
-        wmsParameters.layerName = 'kadastralekaart';
-        wmsParameters.styleName = '';
-        break;
-      case 'drone-no-fly-zones':
-        wmsParameters.workSpaceName = 'dronenoflyzones';
-        wmsParameters.layerName = 'luchtvaartgebieden,landingsite';
-        wmsParameters.styleName = '';
-        break;
-      case 'hoogte':
-        wmsParameters.workSpaceName = 'ahn2';
-        wmsParameters.layerName = 'ahn2_05m_int';
-        wmsParameters.styleName = 'ahn2:ahn2_05m_detail';
-        break;
-      case 'gemeenten':
-        wmsParameters.workSpaceName = 'bestuurlijkegrenzen';
-        wmsParameters.layerName = 'gemeenten';
-        wmsParameters.styleName = 'bestuurlijkegrenzen:bestuurlijkegrenzen_gemeentegrenzen';
-        break;
-      case 'provincies':
-        wmsParameters.workSpaceName = 'bestuurlijkegrenzen';
-        wmsParameters.layerName = 'provincies';
-        wmsParameters.styleName = 'bestuurlijkegrenzen:bestuurlijkegrenzen_provinciegrenzen';
-        break;
+function mapWmsProvider(name, options){
+  const wmsParameters = {
+    workSpaceName: '',
+    layerName: '',
+    styleName: '',
+    url: '',
+    minZoom: 0,
+    maxZoom: 24,
+  };
+
+  switch (name) {
+    case 'gebouwen':
+      wmsParameters.workSpaceName = 'bag';
+      wmsParameters.layerName = 'pand';
+      wmsParameters.styleName = '';
+      break;
+    case 'percelen':
+      wmsParameters.workSpaceName = 'kadastralekaartv3';
+      wmsParameters.layerName = 'kadastralekaart';
+      wmsParameters.styleName = '';
+      break;
+    case 'drone-no-fly-zones':
+      wmsParameters.workSpaceName = 'dronenoflyzones';
+      wmsParameters.layerName = 'luchtvaartgebieden,landingsite';
+      wmsParameters.styleName = '';
+      break;
+    case 'hoogte':
+      wmsParameters.workSpaceName = 'ahn2';
+      wmsParameters.layerName = 'ahn2_05m_int';
+      wmsParameters.styleName = 'ahn2:ahn2_05m_detail';
+      break;
+    case 'gemeenten':
+      wmsParameters.workSpaceName = 'bestuurlijkegrenzen';
+      wmsParameters.layerName = 'gemeenten';
+      wmsParameters.styleName = 'bestuurlijkegrenzen:bestuurlijkegrenzen_gemeentegrenzen';
+      break;
+    case 'provincies':
+      wmsParameters.workSpaceName = 'bestuurlijkegrenzen';
+      wmsParameters.layerName = 'provincies';
+      wmsParameters.styleName = 'bestuurlijkegrenzen:bestuurlijkegrenzen_provinciegrenzen';
+      break;
+    default: 
+      wmsParameters.url = options.url;
+      wmsParameters.layerName = options.layerName;
+      wmsParameters.styleName = options.styleName;
     }
-  
-    wmsParameters.url = wmsBaseUrl(wmsParameters.workSpaceName);
+    
+    if (wmsBaseUrl == '') {
+      wmsParameters.url = wmsBaseUrl(wmsParameters.workSpaceName);
+    }
   
     return wmsParameters;
   }

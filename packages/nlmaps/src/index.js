@@ -253,6 +253,11 @@ nlmaps.createMap = function(useropts = {}) {
   // Background layer
   const backgroundLayer = createBackgroundLayer(nlmaps.lib, map, opts.style);
   addLayerToMap(nlmaps.lib, backgroundLayer, map, opts.style);
+  
+  // Geocoder
+  if (opts.search) {
+    addGeocoderControlToMap(nlmaps.lib, map);
+  }
 
   // Marker layer
   if (opts.marker) {
@@ -263,9 +268,6 @@ nlmaps.createMap = function(useropts = {}) {
     const markerLayer = createMarkerLayer(nlmaps.lib, map, markerLocation);
     addLayerToMap(nlmaps.lib, markerLayer, map);
   }
-
-  // Geocoder
-  addGeocoderControlToMap(nlmaps.lib, geocoder, map);
 
   // Overlay layer
   if (opts.overlay && opts.overlay != 'false') {
@@ -292,21 +294,8 @@ function addGeoLocControlToMap(lib, geolocator, map){
   }
 }
 
-function addGeocoderControlToMap(lib, geocoder, map){
-  let control;
-  switch (lib) {
-    case 'leaflet':
-      nlmaps[lib].geocoderControl(geocoder).addTo(map);  
-      break;
-    case 'googlemaps':
-      control = nlmaps[lib].geocoderControl(geocoder, map);
-      map.controls[google.maps.ControlPosition.TOP_LEFT].push(control);
-      break;
-    case 'openlayers':
-      control = nlmaps[lib].geocoderControl(geocoder, map);
-      map.addControl(control);
-      break;
-  }
+function addGeocoderControlToMap(lib, map){
+  nlmaps[lib].geocoderControl(map);
 }
 
 nlmaps.geoLocate = function(map, useropts = {}){

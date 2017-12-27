@@ -16,15 +16,18 @@ function getProvider(name) {
   if (name in BASEMAP_PROVIDERS) {
     var provider = BASEMAP_PROVIDERS[name];
 
+    // eslint-disable-next-line no-console
     if (provider.deprecated && console && console.warn) {
+      // eslint-disable-next-line no-console
       console.warn(name + " is a deprecated style; it will be redirected to its replacement. For performance improvements, please change your reference.");
     }
 
     return provider;
   } else {
+     // eslint-disable-next-line no-console
     console.error('NL Maps error: You asked for a style which does not exist! Available styles: ' +  Object.keys(PROVIDERS).join(', '));
   }
-};
+}
 
 /*
  * Get the named wmsProvider, or throw an exception if it doesn't exist.
@@ -33,15 +36,18 @@ function getWmsProvider(name) {
   if (name in WMS_PROVIDERS) {
     let wmsProvider = WMS_PROVIDERS[name];
 
+    // eslint-disable-next-line no-console
     if (wmsProvider.deprecated && console && console.warn) {
+       // eslint-disable-next-line no-console
       console.warn(name + " is a deprecated style; it will be redirected to its replacement. For performance improvements, please change your reference.");
     }
 
     return wmsProvider;
   } else {
+    // eslint-disable-next-line no-console
     console.error('NL Maps error: You asked for a style which does not exist! Available styles: ' +  Object.keys(WMS_PROVIDERS).join(', '));
   }
-};
+}
 
 
 //use named export instead of default because we might want

@@ -1,6 +1,5 @@
 const lufostring = 'luchtfoto/rgb';
 const brtstring = 'tiles/service';
-const baseurl = '';
 const servicecrs = '/EPSG:3857';
 const attr = 'Kaartgegevens &copy; <a href="https://www.kadaster.nl">Kadaster</a> | <a href="https://www.verbeterdekaart.nl">Verbeter de kaart</a>';
 function baseUrl(name) {
@@ -40,7 +39,7 @@ function makeProvider(name, format, minZoom, maxZoom) {
     "attribution":  attr,
     "name":         `${name === 'luchtfoto' ? '' : 'NLMaps '} ${name}`
   };
-};
+}
 
 const BASEMAP_PROVIDERS =  {
   "standaard":    makeProvider("standaard", "png", 6, 19),

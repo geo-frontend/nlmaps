@@ -1,8 +1,5 @@
 import { getProvider, getWmsProvider, geolocator_icon, geocoder, markerUrl } from '../../lib';
 
-let baseTileUrl = 'http://tiles.energielabelatlas.nl/v2/osm';
-const BRTAkAttr = 'Kaartgegevens &copy; <a href="cbs.nl">CBS</a>, <a href="kadaster.nl">Kadaster</a>, <a href="openstreetmap.org">OpenStreetMap contributors</a>';
-
 function bgLayer(name='standaard') {
   const provider = getProvider(name);
   if (typeof ol === "object") {
@@ -36,6 +33,7 @@ function markerLayer(latLngObject) {
   let lat;
   let lng;
 
+  // eslint-disable-next-line eqeqeq
   if (typeof latLngObject == 'undefined') {
     const mapCenter = getMapCenter(map);
     lat = mapCenter.latitude;
@@ -97,7 +95,7 @@ function geoLocatorControl(geolocator, map){
   myControlEl.style.right = '.5em';
   myControlEl.style.top = '.5em';
 
-  myControlEl.addEventListener('click',function(e){
+  myControlEl.addEventListener('click', function(){
     geolocator.start();
   });
 

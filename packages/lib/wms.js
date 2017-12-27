@@ -43,17 +43,17 @@ function mapWmsProvider(name, options){
       wmsParameters.layerName = 'provincies';
       wmsParameters.styleName = 'bestuurlijkegrenzen:bestuurlijkegrenzen_provinciegrenzen';
       break;
-    default: 
+    default:
       wmsParameters.url = options.url;
       wmsParameters.layerName = options.layerName;
       wmsParameters.styleName = options.styleName;
     }
 
     wmsParameters.url = wmsBaseUrl(wmsParameters.workSpaceName);
-   
+
     return wmsParameters;
   }
-  
+
   function makeWmsProvider(name) {
     const wmsParameters = mapWmsProvider(name);
     return {
@@ -67,7 +67,7 @@ function mapWmsProvider(name, options){
       format: 'image/png',
     }
   }
-  
+
   const WMS_PROVIDERS = {
     "gebouwen": makeWmsProvider('gebouwen'),
     "percelen": makeWmsProvider('percelen'),

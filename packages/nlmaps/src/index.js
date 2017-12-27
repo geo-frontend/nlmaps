@@ -1,34 +1,33 @@
 
-import { bgLayer as bgL, 
-         overlayLayer as overlayL, 
-         markerLayer as markerL, 
+import { bgLayer as bgL,
+         overlayLayer as overlayL,
+         markerLayer as markerL,
          getMapCenter as centerL,
          geocoderControl as geocoderL,
          geoLocatorControl as glL } from '../../nlmaps-leaflet/build/nlmaps-leaflet.cjs.js';
 
-import { bgLayer as bgOL, 
-         overlayLayer as overlayOL, 
-         markerLayer as markerOL, 
+import { bgLayer as bgOL,
+         overlayLayer as overlayOL,
+         markerLayer as markerOL,
          getMapCenter as centerOL,
          geocoderControl as geocoderOL,
          geoLocatorControl as glO } from '../../nlmaps-openlayers/build/nlmaps-openlayers.cjs.js';
 
-import { bgLayer as bgGM, 
-         overlayLayer as overlayGM, 
-         markerLayer as markerGM, 
+import { bgLayer as bgGM,
+         overlayLayer as overlayGM,
+         markerLayer as markerGM,
          getMapCenter as centerGM,
-         geocoderControl as geocoderGM, 
+         geocoderControl as geocoderGM,
          geoLocatorControl as glG } from '../../nlmaps-googlemaps/build/nlmaps-googlemaps.cjs.js';
 
 // import { bgLayer as bgL, geoLocatorControl as glL } from 'nlmaps-leaflet';
 
-// import { bgLayer as bgOL, 
+// import { bgLayer as bgOL,
 //          geoLocatorControl as glO } from 'nlmaps-openlayers';
 
-// import { bgLayer as bgGM, 
+// import { bgLayer as bgGM,
 //          geoLocatorControl as glG } from 'nlmaps-googlemaps';
 
-import { getProvider, geocoder } from '../../lib/index.js';
 import geoLocator from '../../nlmaps-geolocator/src/index.js';
 
 let nlmaps = {
@@ -87,7 +86,7 @@ function testWhichLib() {
   } else {
     return defined[0];
   }
-};
+}
 
 function initMap(lib, opts){
   let map;
@@ -111,10 +110,13 @@ function initMap(lib, opts){
       });
   }
   return map;
-};
+}
 
-//can set center, with optional zoom.
+// can set center, with optional zoom.
+// eslint-disable-next-line no-unused-vars
 function setMapLoc(lib, opts, map) {
+  let oldZoom;
+  let view;
   switch (lib) {
     case 'leaflet':
       map.panTo([opts.lat,opts.lon]);
@@ -125,8 +127,8 @@ function setMapLoc(lib, opts, map) {
       if (opts.zoom) {map.setZoom(opts.zoom)}
       break;
     case 'openlayers':
-      let oldZoom = map.getView().getZoom();
-      let view = new ol.View({
+      oldZoom = map.getView().getZoom();
+      view = new ol.View({
           center: ol.proj.fromLonLat([opts.lon,opts.lat]),
           zoom: opts.zoom? opts.zoom: oldZoom
         });
@@ -135,8 +137,8 @@ function setMapLoc(lib, opts, map) {
 }
 
 
-function addGoogleLayer(layer, map, name) {
-  // Markers are not considered to be a layer in google maps. Therefore, they must be added differently. 
+function addGoogleLayer(layer, map) {
+  // Markers are not considered to be a layer in google maps. Therefore, they must be added differently.
   // It is important that a layer has the title 'marker' in order to be recognized as a layer.
   if (layer.title === 'marker') {
     layer.setMap(map);
@@ -165,13 +167,13 @@ function addGoogleLayer(layer, map, name) {
   map.setMapTypeId(layer.name);
 }
 
-function addLayerToMap(lib, layer, map, name) {
+function addLayerToMap(lib, layer, map) {
   switch (lib) {
     case 'leaflet':
       map.addLayer(layer);
       break;
     case 'googlemaps':
-      addGoogleLayer(layer, map, name);
+      addGoogleLayer(layer, map);
       break;
     case 'openlayers':
       map.addLayer(layer);
@@ -179,59 +181,67 @@ function addLayerToMap(lib, layer, map, name) {
   }
 }
 function createBackgroundLayer(lib,  map, name) {
+  let bgLayer;
   switch (lib) {
     case 'leaflet':
-      return nlmaps.leaflet.bgLayer(name);
+      bgLayer = nlmaps.leaflet.bgLayer(name);
       break;
     case 'googlemaps':
-      return nlmaps.googlemaps.bgLayer(map, name)
+      bgLayer = nlmaps.googlemaps.bgLayer(map, name)
       break;
     case 'openlayers':
-      return nlmaps.openlayers.bgLayer(name);
+      bgLayer = nlmaps.openlayers.bgLayer(name);
       break;
   }
+  return bgLayer;
 }
 
 function createOverlayLayer(lib, map, name) {
+  let overlayLayer;
   switch (lib) {
     case 'leaflet':
-      return nlmaps.leaflet.overlayLayer(name);
+      overlayLayer = nlmaps.leaflet.overlayLayer(name);
       break;
     case 'googlemaps':
-      return nlmaps.googlemaps.overlayLayer(map, name);
+      overlayLayer = nlmaps.googlemaps.overlayLayer(map, name);
       break;
     case 'openlayers':
-      return nlmaps.openlayers.overlayLayer(name);
+      overlayLayer = nlmaps.openlayers.overlayLayer(name);
       break;
   }
+  return overlayLayer;
 }
 
 function createMarkerLayer(lib, map, latLngObject) {
+  let markerLayer;
   switch (lib) {
-    case 'leaflet': 
-      return nlmaps.leaflet.markerLayer(latLngObject);
+    case 'leaflet':
+      markerLayer = nlmaps.leaflet.markerLayer(latLngObject);
       break;
-    case 'googlemaps': 
-      return nlmaps.googlemaps.markerLayer(latLngObject);
+    case 'googlemaps':
+      markerLayer = nlmaps.googlemaps.markerLayer(latLngObject);
       break;
     case 'openlayers':
-      return nlmaps.openlayers.markerLayer(latLngObject);
+      markerLayer = nlmaps.openlayers.markerLayer(latLngObject);
       break;
   }
+  return markerLayer;
 }
 
 function getMapCenter(lib, map) {
+  let mapCenter;
   switch (lib) {
-    case 'leaflet': 
-      return centerL(map);
+    case 'leaflet':
+      mapCenter = centerL(map);
       break;
-    case 'googlemaps': 
-      return centerGM(map);
+    case 'googlemaps':
+      mapCenter = centerGM(map);
       break;
     case 'openlayers':
-      return centerOL(map);
+      mapCenter = centerOL(map);
       break;
   }
+  return mapCenter;
 }
 
 function mergeOpts(defaultopts, useropts){
@@ -246,14 +256,15 @@ nlmaps.createMap = function(useropts = {}) {
   if (nlmaps.lib === 'too many libs' || nlmaps.lib === 'too few libs') {
     throw({message:'one and only one map library can be defined. Please Refer to the documentation to see which map libraries are supported.'});
   }
-  } catch (e) {
+} catch (e) {
+    // eslint-disable-next-line no-console
     console.error(e.message)
   }
   const map = initMap(nlmaps.lib, opts);
   // Background layer
   const backgroundLayer = createBackgroundLayer(nlmaps.lib, map, opts.style);
   addLayerToMap(nlmaps.lib, backgroundLayer, map, opts.style);
-  
+
   // Geocoder
   if (opts.search) {
     addGeocoderControlToMap(nlmaps.lib, map);
@@ -270,7 +281,7 @@ nlmaps.createMap = function(useropts = {}) {
   }
 
   // Overlay layer
-  if (opts.overlay && opts.overlay != 'false') {
+  if (opts.overlay && opts.overlay !== 'false') {
     const overlayLayer = createOverlayLayer(nlmaps.lib, map, opts.overlay);
     addLayerToMap(nlmaps.lib, overlayLayer, map);
   }
@@ -281,7 +292,7 @@ function addGeoLocControlToMap(lib, geolocator, map){
   let control;
   switch (lib) {
     case 'leaflet':
-      nlmaps[lib].geoLocatorControl(geolocator).addTo(map);  
+      nlmaps[lib].geoLocatorControl(geolocator).addTo(map);
       break;
     case 'googlemaps':
       control = nlmaps[lib].geoLocatorControl(geolocator, map);

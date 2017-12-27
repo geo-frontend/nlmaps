@@ -30,8 +30,9 @@ const GeoLocator = function (opts) {
       return state.started;
     },
     log (){
-        console.log(state);
-        return this;
+      // eslint-disable-next-line no-console
+      console.log(state);
+      return this;
     }
   };
 };
@@ -39,7 +40,7 @@ const GeoLocator = function (opts) {
 function geoLocator(opts){
   if ('geolocation' in navigator) {
     let geolocator = emitonoff(GeoLocator(opts));
-    geolocator.on('position', function(position) {
+    geolocator.on('position', function() {
       this.stop();
     });
     return geolocator;

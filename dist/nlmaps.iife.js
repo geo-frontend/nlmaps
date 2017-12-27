@@ -18,11 +18,178 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 var nlmapsLeaflet_cjs = createCommonjsModule(function (module, exports) {
   Object.defineProperty(exports, '__esModule', { value: true });
 
+  var geocoder = {
+    suggestUrl: 'https://geodata.nationaalgeoregister.nl/locatieserver/v3/suggest?',
+    lookupUrl: 'https://geodata.nationaalgeoregister.nl/locatieserver/v3/lookup?'
+  };
+
+  function httpGetAsync(url) {
+    return new Promise(function (resolve, reject) {
+      var xmlHttp = new XMLHttpRequest();
+      xmlHttp.onreadystatechange = function () {
+        if (xmlHttp.readyState == 4 && xmlHttp.status == 200) {
+          resolve(JSON.parse(xmlHttp.responseText));
+        }
+      };
+      xmlHttp.open("GET", url, true); // true for asynchronous 
+      xmlHttp.send(null);
+    });
+  }
+
+  function wktPointToGeoJson(wktPoint) {
+    if (!wktPoint.includes('POINT')) {
+      throw TypeError('Provided WKT geometry is not a point.');
+    }
+    var coordinateTuple = wktPoint.split('(')[1].split(')')[0];
+    var x = parseFloat(coordinateTuple.split(' ')[0]);
+    var y = parseFloat(coordinateTuple.split(' ')[1]);
+
+    return {
+      type: 'Point',
+      coordinates: [x, y]
+    };
+  }
+
+  /**
+   * Make a call to PDOK locatieserver v3 suggest service. This service is meant for geocoder autocomplete functionality. For
+   * additional documentation, check https://github.com/PDOK/locatieserver/wiki/API-Locatieserver.
+   * @param {string} searchTerm The term which to search for
+   */
+  geocoder.doSuggestRequest = function (searchTerm) {
+    return httpGetAsync(this.suggestUrl + 'q=' + encodeURIComponent(searchTerm));
+  };
+
+  /**
+   * Make a call to PDOK locatieserver v3 lookup service. This service provides information about objects found through the suggest service. For additional 
+   * documentation, check: https://github.com/PDOK/locatieserver/wiki/API-Locatieserver
+   * @param {string} id The id of the feature that is to be looked up.
+   */
+  geocoder.doLookupRequest = function (id) {
+    return httpGetAsync(this.lookupUrl + 'id=' + encodeURIComponent(id)).then(function (lookupResult) {
+      // A lookup request should always return 1 result
+      var geocodeResult = lookupResult.response.docs[0];
+      geocodeResult.centroide_ll = wktPointToGeoJson(geocodeResult.centroide_ll);
+      geocodeResult.centroide_rd = wktPointToGeoJson(geocodeResult.centroide_rd);
+      return geocodeResult;
+    });
+  };
+
+  geocoder.createControl = function (zoomFunction, map) {
+    var _this = this;
+
+    this.zoomTo = zoomFunction;
+    this.map = map;
+    var container = document.createElement('div');
+    var searchDiv = document.createElement('div');
+    var input = document.createElement('input');
+    var results = document.createElement('div');
+    var controlWidth = '300px';
+
+    container.style.width = controlWidth;
+    container.style.zIndex = 1000000;
+    container.style.position = 'absolute';
+    container.style.top = '70px';
+    container.style.left = '12px';
+    input.id = 'nlmaps-geocoder-control-input';
+    input.placeholder = 'Zoeken op adres...';
+    input.style.padding = '4px 10px';
+    input.style.width = '100%';
+    input.style.border = 'none';
+    input.style.backgroundColor = '#fff';
+    input.style.boxShadow = '0 1px 5px rgba(0, 0, 0, 0.65)';
+    input.style.height = '26px';
+    input.style.borderRadius = '5px 5px';
+
+    input.addEventListener('input', function (e) {
+      _this.suggest(e.target.value);
+    });
+
+    input.addEventListener('focus', function (e) {
+      _this.suggest(e.target.value);
+    });
+    results.id = 'nlmaps-geocoder-control-results';
+    results.style.width = controlWidth;
+
+    container.appendChild(searchDiv);
+    searchDiv.appendChild(input);
+    container.appendChild(results);
+
+    return container;
+  };
+
+  geocoder.suggest = function (query) {
+    var _this2 = this;
+
+    if (query.length < 4) {
+      this.clearSuggestResults();
+      return;
+    }
+
+    this.doSuggestRequest(query).then(function (results) {
+      _this2.showSuggestResults(results.response.docs);
+    });
+  };
+
+  geocoder.lookup = function (id) {
+    var _this3 = this;
+
+    this.doLookupRequest(id).then(function (result) {
+      _this3.zoomTo(result.centroide_ll, _this3.map);
+      _this3.showLookupResult(result.weergavenaam);
+      _this3.clearSuggestResults();
+    });
+  };
+
+  geocoder.clearSuggestResults = function () {
+    document.getElementById('nlmaps-geocoder-control-results').innerHTML = '';
+  };
+
+  geocoder.showLookupResult = function (name) {
+    document.getElementById('nlmaps-geocoder-control-input').value = name;
+  };
+
+  geocoder.showSuggestResults = function (results) {
+    var _this4 = this;
+
+    var resultList = document.createElement('ul');
+    resultList.style.padding = '10px 10px 2px 10px';
+    resultList.style.width = '100%';
+    resultList.style.background = '#FFFFFF';
+    resultList.style.borderRadius = '5px 5px';
+    resultList.style.boxShadow = '0 1px 5px rgba(0, 0, 0, 0.65)';
+
+    results.forEach(function (result) {
+      var li = document.createElement('li');
+      li.innerHTML = result.weergavenaam;
+      li.id = result.id;
+      li.style.cursor = 'pointer';
+      li.style.padding = '5px';
+      li.style.listStyleType = 'none';
+      li.style.marginBottom = '5px';
+      li.addEventListener('click', function (e) {
+        _this4.lookup(e.target.id);
+      });
+
+      li.addEventListener('mouseenter', function (e) {
+        li.style.background = '#6C62A6';
+        li.style.color = '#FFFFFF';
+      });
+
+      li.addEventListener('mouseleave', function (e) {
+        li.style.background = '#FFFFFF';
+        li.style.color = '#333';
+      });
+      resultList.appendChild(li);
+    });
+    this.clearSuggestResults();
+    document.getElementById('nlmaps-geocoder-control-results').appendChild(resultList);
+  };
+
   function wmsBaseUrl(workSpaceName) {
     return 'https://geodata.nationaalgeoregister.nl/' + workSpaceName + '/wms?';
   }
 
-  function mapWmsProvider(name) {
+  function mapWmsProvider(name, options) {
     var wmsParameters = {
       workSpaceName: '',
       layerName: '',
@@ -63,6 +230,10 @@ var nlmapsLeaflet_cjs = createCommonjsModule(function (module, exports) {
         wmsParameters.layerName = 'provincies';
         wmsParameters.styleName = 'bestuurlijkegrenzen:bestuurlijkegrenzen_provinciegrenzen';
         break;
+      default:
+        wmsParameters.url = options.url;
+        wmsParameters.layerName = options.layerName;
+        wmsParameters.styleName = options.styleName;
     }
 
     wmsParameters.url = wmsBaseUrl(wmsParameters.workSpaceName);
@@ -72,7 +243,6 @@ var nlmapsLeaflet_cjs = createCommonjsModule(function (module, exports) {
 
   function makeWmsProvider(name) {
     var wmsParameters = mapWmsProvider(name);
-
     return {
       url: wmsParameters.url,
       service: 'WMS',
@@ -288,131 +458,8 @@ var nlmapsLeaflet_cjs = createCommonjsModule(function (module, exports) {
       onRemove: function onRemove(map) {}
     });
 
-    L.Control.GeocoderControl = L.Control.extend({
-      options: {
-        position: 'topleft'
-      },
-      initialize: function initialize(options) {
-        // set default options if nothing is set (merge one step deep)
-        for (var i in options) {
-          if (_typeof$$1(this.options[i]) === 'object') {
-            L.extend(this.options[i], options[i]);
-          } else {
-            this.options[i] = options[i];
-          }
-        }
-      },
-
-      onAdd: function onAdd(map) {
-        var container = L.DomUtil.create('div');
-        var searchDiv = L.DomUtil.create('div');
-        var results = L.DomUtil.create('div');
-        var input = L.DomUtil.create('input');
-
-        searchDiv.appendChild(input);
-        container.appendChild(searchDiv);
-        container.appendChild(results);
-
-        L.DomEvent.addListener(input, 'input', function (e) {
-          this.suggest(e.target.value);
-        }, this);
-
-        L.DomEvent.addListener(input, 'focus', function (e) {
-          this.suggest(e.target.value);
-        }, this);
-
-        var controlWidth = '300px';
-        container.id = 'nlmaps-geocoder-control';
-        searchDiv.style.width = controlWidth;
-
-        input.id = 'nlmaps-geocoder-control-input';
-        input.placeholder = 'Zoeken op adres...';
-        input.style.padding = '4px 10px';
-        input.style.width = '100%';
-        input.style.border = 'none';
-        input.style.backgroundColor = '#fff';
-        input.style.boxShadow = '0 1px 5px rgba(0, 0, 0, 0.65)';
-        input.style.height = '26px';
-        input.style.borderRadius = '5px 5px';
-        results.id = 'nlmaps-geocoder-control-results';
-        results.style.width = controlWidth;
-        return container;
-      },
-      onRemove: function onRemove(map) {},
-      suggest: function suggest(query) {
-        var _this = this;
-
-        if (query.length < 4) {
-          this.clearSuggestResults();
-          return;
-        }
-        this.options.geocoder.suggest(query).then(function (results) {
-          _this.showSuggestResults(results.response.docs);
-        });
-      },
-      showSuggestResults: function showSuggestResults(results) {
-        var _this2 = this;
-
-        var resultList = L.DomUtil.create('ul');
-        resultList.style.padding = '10px 10px 2px 10px';
-        resultList.style.width = '100%';
-        resultList.style.background = '#FFFFFF';
-        resultList.style.borderRadius = '5px 5px';
-        resultList.style.boxShadow = '0 1px 5px rgba(0, 0, 0, 0.65)';
-
-        results.forEach(function (result) {
-          var li = L.DomUtil.create('li');
-          li.innerHTML = result.weergavenaam;
-          li.id = result.id;
-          li.style.cursor = 'pointer';
-          li.style.padding = '5px';
-          li.style.listStyleType = 'none';
-          li.style.marginBottom = '5px';
-          L.DomEvent.addListener(li, 'click', function (e) {
-            this.lookup(e.target.id);
-          }, _this2);
-
-          L.DomEvent.addListener(li, 'mouseenter', function (e) {
-            li.style.background = '#6C62A6';
-            li.style.color = '#FFFFFF';
-          }, _this2);
-
-          L.DomEvent.addListener(li, 'mouseleave', function (e) {
-            li.style.background = '#FFFFFF';
-            li.style.color = '#333';
-          }, _this2);
-          resultList.appendChild(li);
-        });
-        this.clearSuggestResults();
-        document.getElementById('nlmaps-geocoder-control-results').appendChild(resultList);
-      },
-      clearSuggestResults: function clearSuggestResults() {
-        var resultContainer = document.getElementById('nlmaps-geocoder-control-results');
-        resultContainer.innerHTML = '';
-      },
-      lookup: function lookup(id) {
-        var _this3 = this;
-
-        this.options.geocoder.lookup(id).then(function (result) {
-          _this3.zoomTo(result.centroide_ll);
-          _this3.showLookupResult(result.weergavenaam);
-          _this3.clearSuggestResults();
-        });
-      },
-      zoomTo: function zoomTo(point) {
-        this._map.fitBounds(L.geoJSON(point).getBounds(), { maxZoom: 18 });
-      },
-      showLookupResult: function showLookupResult(name) {
-        document.getElementById('nlmaps-geocoder-control-input').value = name;
-      }
-    });
-
     L.geoLocatorControl = function (geolocator) {
       return new L.Control.GeoLocatorControl({ geolocator: geolocator });
-    };
-
-    L.geocoderControl = function (geocoder$$1) {
-      return new L.Control.GeocoderControl({ geocoder: geocoder$$1 });
     };
   }
   function markerLayer(latLngObject) {
@@ -455,11 +502,13 @@ var nlmapsLeaflet_cjs = createCommonjsModule(function (module, exports) {
       return L.geoLocatorControl(geolocator);
     }
   }
+  function zoomTo(point, map) {
+    map.fitBounds(L.geoJSON(point).getBounds(), { maxZoom: 18 });
+  }
 
-  function geocoderControl(geocoder$$1) {
-    if (typeof L !== 'undefined' && (typeof L === 'undefined' ? 'undefined' : _typeof$$1(L)) === 'object') {
-      return L.geocoderControl(geocoder$$1);
-    }
+  function geocoderControl(map) {
+    var control = geocoder.createControl(zoomTo, map);
+    map.getContainer().appendChild(control);
   }
 
   function getMapCenter(map) {
@@ -526,7 +575,7 @@ var nlmapsOpenlayers_cjs = createCommonjsModule(function (module, exports) {
    * additional documentation, check https://github.com/PDOK/locatieserver/wiki/API-Locatieserver.
    * @param {string} searchTerm The term which to search for
    */
-  geocoder.suggest = function (searchTerm) {
+  geocoder.doSuggestRequest = function (searchTerm) {
     return httpGetAsync(this.suggestUrl + 'q=' + encodeURIComponent(searchTerm));
   };
 
@@ -535,7 +584,7 @@ var nlmapsOpenlayers_cjs = createCommonjsModule(function (module, exports) {
    * documentation, check: https://github.com/PDOK/locatieserver/wiki/API-Locatieserver
    * @param {string} id The id of the feature that is to be looked up.
    */
-  geocoder.lookup = function (id) {
+  geocoder.doLookupRequest = function (id) {
     return httpGetAsync(this.lookupUrl + 'id=' + encodeURIComponent(id)).then(function (lookupResult) {
       // A lookup request should always return 1 result
       var geocodeResult = lookupResult.response.docs[0];
@@ -545,11 +594,122 @@ var nlmapsOpenlayers_cjs = createCommonjsModule(function (module, exports) {
     });
   };
 
+  geocoder.createControl = function (zoomFunction, map) {
+    var _this = this;
+
+    this.zoomTo = zoomFunction;
+    this.map = map;
+    var container = document.createElement('div');
+    var searchDiv = document.createElement('div');
+    var input = document.createElement('input');
+    var results = document.createElement('div');
+    var controlWidth = '300px';
+
+    container.style.width = controlWidth;
+    container.style.zIndex = 1000000;
+    container.style.position = 'absolute';
+    container.style.top = '70px';
+    container.style.left = '12px';
+    input.id = 'nlmaps-geocoder-control-input';
+    input.placeholder = 'Zoeken op adres...';
+    input.style.padding = '4px 10px';
+    input.style.width = '100%';
+    input.style.border = 'none';
+    input.style.backgroundColor = '#fff';
+    input.style.boxShadow = '0 1px 5px rgba(0, 0, 0, 0.65)';
+    input.style.height = '26px';
+    input.style.borderRadius = '5px 5px';
+
+    input.addEventListener('input', function (e) {
+      _this.suggest(e.target.value);
+    });
+
+    input.addEventListener('focus', function (e) {
+      _this.suggest(e.target.value);
+    });
+    results.id = 'nlmaps-geocoder-control-results';
+    results.style.width = controlWidth;
+
+    container.appendChild(searchDiv);
+    searchDiv.appendChild(input);
+    container.appendChild(results);
+
+    return container;
+  };
+
+  geocoder.suggest = function (query) {
+    var _this2 = this;
+
+    if (query.length < 4) {
+      this.clearSuggestResults();
+      return;
+    }
+
+    this.doSuggestRequest(query).then(function (results) {
+      _this2.showSuggestResults(results.response.docs);
+    });
+  };
+
+  geocoder.lookup = function (id) {
+    var _this3 = this;
+
+    this.doLookupRequest(id).then(function (result) {
+      _this3.zoomTo(result.centroide_ll, _this3.map);
+      _this3.showLookupResult(result.weergavenaam);
+      _this3.clearSuggestResults();
+    });
+  };
+
+  geocoder.clearSuggestResults = function () {
+    document.getElementById('nlmaps-geocoder-control-results').innerHTML = '';
+  };
+
+  geocoder.showLookupResult = function (name) {
+    document.getElementById('nlmaps-geocoder-control-input').value = name;
+  };
+
+  geocoder.showSuggestResults = function (results) {
+    var _this4 = this;
+
+    var resultList = document.createElement('ul');
+    resultList.style.padding = '10px 10px 2px 10px';
+    resultList.style.width = '100%';
+    resultList.style.background = '#FFFFFF';
+    resultList.style.borderRadius = '5px 5px';
+    resultList.style.boxShadow = '0 1px 5px rgba(0, 0, 0, 0.65)';
+
+    results.forEach(function (result) {
+      var li = document.createElement('li');
+      li.innerHTML = result.weergavenaam;
+      li.id = result.id;
+      li.style.cursor = 'pointer';
+      li.style.padding = '5px';
+      li.style.listStyleType = 'none';
+      li.style.marginBottom = '5px';
+      li.addEventListener('click', function (e) {
+        _this4.lookup(e.target.id);
+      });
+
+      li.addEventListener('mouseenter', function (e) {
+        li.style.background = '#6C62A6';
+        li.style.color = '#FFFFFF';
+      });
+
+      li.addEventListener('mouseleave', function (e) {
+        li.style.background = '#FFFFFF';
+        li.style.color = '#333';
+      });
+      resultList.appendChild(li);
+    });
+    this.clearSuggestResults();
+    document.getElementById('nlmaps-geocoder-control-results').appendChild(resultList);
+  };
+
   function wmsBaseUrl(workSpaceName) {
     return 'https://geodata.nationaalgeoregister.nl/' + workSpaceName + '/wms?';
   }
 
-  function mapWmsProvider(name) {
+  function mapWmsProvider(name, options) {
     var wmsParameters = {
       workSpaceName: '',
       layerName: '',
@@ -590,6 +750,10 @@ var nlmapsOpenlayers_cjs = createCommonjsModule(function (module, exports) {
         wmsParameters.layerName = 'provincies';
         wmsParameters.styleName = 'bestuurlijkegrenzen:bestuurlijkegrenzen_provinciegrenzen';
         break;
+      default:
+        wmsParameters.url = options.url;
+        wmsParameters.layerName = options.layerName;
+        wmsParameters.styleName = options.styleName;
     }
 
     wmsParameters.url = wmsBaseUrl(wmsParameters.workSpaceName);
@@ -599,7 +763,6 @@ var nlmapsOpenlayers_cjs = createCommonjsModule(function (module, exports) {
 
   function makeWmsProvider(name) {
     var wmsParameters = mapWmsProvider(name);
-
     return {
       url: wmsParameters.url,
       service: 'WMS',
@@ -831,106 +994,6 @@ var nlmapsOpenlayers_cjs = createCommonjsModule(function (module, exports) {
     return control;
   }
 
-  function suggest(query, map) {
-    if (query.length < 4) {
-      clearSuggestResults();
-      return;
-    }
-
-    geocoder.suggest(query).then(function (results) {
-      showSuggestResults(results.response.docs, map);
-    });
-  }
-
-  function lookup(id, map) {
-    geocoder.lookup(id).then(function (result) {
-      zoomTo(result.centroide_ll, map);
-      showLookupResult(result.weergavenaam);
-      clearSuggestResults();
-    });
-  }
-
-  function showLookupResult(name) {
-    document.getElementById('nlmaps-geocoder-control-input').value = name;
-  }
-
-  function showSuggestResults(results, map) {
-    var resultList = document.createElement('ul');
-    resultList.style.padding = '10px 10px 2px 10px';
-    resultList.style.width = '100%';
-    resultList.style.background = '#FFFFFF';
-    resultList.style.borderRadius = '5px 5px';
-    resultList.style.boxShadow = '0 1px 5px rgba(0, 0, 0, 0.65)';
-
-    results.forEach(function (result) {
-      var li = document.createElement('li');
-      li.innerHTML = result.weergavenaam;
-      li.id = result.id;
-      li.style.cursor = 'pointer';
-      li.style.padding = '5px';
-      li.style.listStyleType = 'none';
-      li.style.marginBottom = '5px';
-      li.addEventListener('click', function (e) {
-        lookup(e.target.id, map);
-      });
-
-      li.addEventListener('mouseenter', function (e) {
-        li.style.background = '#6C62A6';
-        li.style.color = '#FFFFFF';
-      });
-
-      li.addEventListener('mouseleave', function (e) {
-        li.style.background = '#FFFFFF';
-        li.style.color = '#333';
-      });
-      resultList.appendChild(li);
-    });
-    clearSuggestResults();
-    document.getElementById('nlmaps-geocoder-control-results').appendChild(resultList);
-  }
-
-  function clearSuggestResults() {
-    document.getElementById('nlmaps-geocoder-control-results').innerHTML = '';
-  }
-
-  function geocoderControl(geocoder$$1, map) {
-    var container = document.createElement('div');
-    var searchDiv = document.createElement('div');
-    var input = document.createElement('input');
-    var results = document.createElement('div');
-    var controlWidth = '300px';
-    container.style.left = '.5em';
-    container.style.top = '4.5em';
-    container.style.width = controlWidth;
-    container.className = 'ol-control';
-    input.id = 'nlmaps-geocoder-control-input';
-    input.placeholder = 'Zoeken op adres...';
-    input.style.padding = '4px 10px';
-    input.style.width = '100%';
-    input.style.border = 'none';
-    input.style.backgroundColor = '#fff';
-    input.style.boxShadow = '0 1px 5px rgba(0, 0, 0, 0.65)';
-    input.style.height = '26px';
-    input.style.borderRadius = '5px 5px';
-
-    input.addEventListener('input', function (e) {
-      suggest(e.target.value, map);
-    });
-
-    input.addEventListener('focus', function (e) {
-      suggest(e.target.value, map);
-    });
-    results.id = 'nlmaps-geocoder-control-results';
-    results.style.width = controlWidth;
-
-    container.appendChild(searchDiv);
-    searchDiv.appendChild(input);
-    container.appendChild(results);
-
-    var control = new ol.control.Control({ element: container });
-    return control;
-  }
-
   function zoomTo(point, map) {
     var newCenter = ol.proj.fromLonLat(point.coordinates);
     map.getView().setCenter(newCenter);
@@ -944,6 +1007,12 @@ var nlmapsOpenlayers_cjs = createCommonjsModule(function (module, exports) {
       longitude: lngLatCoords[0],
       latitude: lngLatCoords[1]
     };
+  }
+
+  function geocoderControl(map) {
+    var control = geocoder.createControl(zoomTo, map);
+    control = new ol.control.Control({ element: control });
+    map.addControl(control);
   }
 
   exports.bgLayer = bgLayer;
@@ -1002,7 +1071,7 @@ var nlmapsGooglemaps_cjs = createCommonjsModule(function (module, exports) {
    * additional documentation, check https://github.com/PDOK/locatieserver/wiki/API-Locatieserver.
    * @param {string} searchTerm The term which to search for
    */
-  geocoder.suggest = function (searchTerm) {
+  geocoder.doSuggestRequest = function (searchTerm) {
     return httpGetAsync(this.suggestUrl + 'q=' + encodeURIComponent(searchTerm));
   };
 
@@ -1011,7 +1080,7 @@ var nlmapsGooglemaps_cjs = createCommonjsModule(function (module, exports) {
    * documentation, check: https://github.com/PDOK/locatieserver/wiki/API-Locatieserver
    * @param {string} id The id of the feature that is to be looked up.
    */
-  geocoder.lookup = function (id) {
+  geocoder.doLookupRequest = function (id) {
     return httpGetAsync(this.lookupUrl + 'id=' + encodeURIComponent(id)).then(function (lookupResult) {
       // A lookup request should always return 1 result
       var geocodeResult = lookupResult.response.docs[0];
@@ -1021,11 +1090,122 @@ var nlmapsGooglemaps_cjs = createCommonjsModule(function (module, exports) {
     });
   };
 
+  geocoder.createControl = function (zoomFunction, map) {
+    var _this = this;
+
+    this.zoomTo = zoomFunction;
+    this.map = map;
+    var container = document.createElement('div');
+    var searchDiv = document.createElement('div');
+    var input = document.createElement('input');
+    var results = document.createElement('div');
+    var controlWidth = '300px';
+
+    container.style.width = controlWidth;
+    container.style.zIndex = 1000000;
+    container.style.position = 'absolute';
+    container.style.top = '70px';
+    container.style.left = '12px';
+    input.id = 'nlmaps-geocoder-control-input';
+    input.placeholder = 'Zoeken op adres...';
+    input.style.padding = '4px 10px';
+    input.style.width = '100%';
+    input.style.border = 'none';
+    input.style.backgroundColor = '#fff';
+    input.style.boxShadow = '0 1px 5px rgba(0, 0, 0, 0.65)';
+    input.style.height = '26px';
+    input.style.borderRadius = '5px 5px';
+
+    input.addEventListener('input', function (e) {
+      _this.suggest(e.target.value);
+    });
+
+    input.addEventListener('focus', function (e) {
+      _this.suggest(e.target.value);
+    });
+    results.id = 'nlmaps-geocoder-control-results';
+    results.style.width = controlWidth;
+
+    container.appendChild(searchDiv);
+    searchDiv.appendChild(input);
+    container.appendChild(results);
+
+    return container;
+  };
+
+  geocoder.suggest = function (query) {
+    var _this2 = this;
+
+    if (query.length < 4) {
+      this.clearSuggestResults();
+      return;
+    }
+
+    this.doSuggestRequest(query).then(function (results) {
+      _this2.showSuggestResults(results.response.docs);
+    });
+  };
+
+  geocoder.lookup = function (id) {
+    var _this3 = this;
+
+    this.doLookupRequest(id).then(function (result) {
+      _this3.zoomTo(result.centroide_ll, _this3.map);
+      _this3.showLookupResult(result.weergavenaam);
+      _this3.clearSuggestResults();
+    });
+  };
+
+  geocoder.clearSuggestResults = function () {
+    document.getElementById('nlmaps-geocoder-control-results').innerHTML = '';
+  };
+
+  geocoder.showLookupResult = function (name) {
+    document.getElementById('nlmaps-geocoder-control-input').value = name;
+  };
+
+  geocoder.showSuggestResults = function (results) {
+    var _this4 = this;
+
+    var resultList = document.createElement('ul');
+    resultList.style.padding = '10px 10px 2px 10px';
+    resultList.style.width = '100%';
+    resultList.style.background = '#FFFFFF';
+    resultList.style.borderRadius = '5px 5px';
+    resultList.style.boxShadow = '0 1px 5px rgba(0, 0, 0, 0.65)';
+
+    results.forEach(function (result) {
+      var li = document.createElement('li');
+      li.innerHTML = result.weergavenaam;
+      li.id = result.id;
+      li.style.cursor = 'pointer';
+      li.style.padding = '5px';
+      li.style.listStyleType = 'none';
+      li.style.marginBottom = '5px';
+      li.addEventListener('click', function (e) {
+        _this4.lookup(e.target.id);
+      });
+
+      li.addEventListener('mouseenter', function (e) {
+        li.style.background = '#6C62A6';
+        li.style.color = '#FFFFFF';
+      });
+
+      li.addEventListener('mouseleave', function (e) {
+        li.style.background = '#FFFFFF';
+        li.style.color = '#333';
+      });
+      resultList.appendChild(li);
+    });
+    this.clearSuggestResults();
+    document.getElementById('nlmaps-geocoder-control-results').appendChild(resultList);
+  };
+
   function wmsBaseUrl(workSpaceName) {
     return 'https://geodata.nationaalgeoregister.nl/' + workSpaceName + '/wms?';
   }
 
-  function mapWmsProvider(name) {
+  function mapWmsProvider(name, options) {
     var wmsParameters = {
       workSpaceName: '',
       layerName: '',
@@ -1066,6 +1246,10 @@ var nlmapsGooglemaps_cjs = createCommonjsModule(function (module, exports) {
         wmsParameters.layerName = 'provincies';
         wmsParameters.styleName = 'bestuurlijkegrenzen:bestuurlijkegrenzen_provinciegrenzen';
         break;
+      default:
+        wmsParameters.url = options.url;
+        wmsParameters.layerName = options.layerName;
+        wmsParameters.styleName = options.styleName;
     }
 
     wmsParameters.url = wmsBaseUrl(wmsParameters.workSpaceName);
@@ -1075,7 +1259,6 @@ var nlmapsGooglemaps_cjs = createCommonjsModule(function (module, exports) {
 
   function makeWmsProvider(name) {
     var wmsParameters = mapWmsProvider(name);
-
     return {
       url: wmsParameters.url,
       service: 'WMS',
@@ -1240,103 +1423,6 @@ var nlmapsGooglemaps_cjs = createCommonjsModule(function (module, exports) {
       map.setCenter({ lat: position.coords.latitude, lng: position.coords.longitude });
     });
     return controlUI;
-  }
-
-  function geocoderControl(geocoder$$1) {
-    var container = document.createElement('div');
-    var searchDiv = document.createElement('div');
-    var input = document.createElement('input');
-    var results = document.createElement('div');
-    var controlWidth = '300px';
-
-    container.style.width = controlWidth;
-    input.id = 'nlmaps-geocoder-control-input';
-    input.placeholder = 'Zoeken op adres...';
-    input.style.padding = '4px 10px';
-    input.style.width = '100%';
-    input.style.border = 'none';
-    input.style.backgroundColor = '#fff';
-    input.style.boxShadow = '0 1px 5px rgba(0, 0, 0, 0.65)';
-    input.style.height = '26px';
-    input.style.borderRadius = '5px 5px';
-
-    input.addEventListener('input', function (e) {
-      suggest(e.target.value, map);
-    });
-
-    input.addEventListener('focus', function (e) {
-      suggest(e.target.value, map);
-    });
-    results.id = 'nlmaps-geocoder-control-results';
-    results.style.width = controlWidth;
-
-    container.appendChild(searchDiv);
-    searchDiv.appendChild(input);
-    container.appendChild(results);
-
-    return container;
-  }
-
-  function suggest(query, map) {
-    if (query.length < 4) {
-      clearSuggestResults();
-      return;
-    }
-
-    geocoder.suggest(query).then(function (results) {
-      showSuggestResults(results.response.docs, map);
-    });
-  }
-
-  function lookup(id, map) {
-    geocoder.lookup(id).then(function (result) {
-      zoomTo(result.centroide_ll, map);
-      showLookupResult(result.weergavenaam);
-      clearSuggestResults();
-    });
-  }
-
-  function clearSuggestResults() {
-    document.getElementById('nlmaps-geocoder-control-results').innerHTML = '';
-  }
-
-  function showLookupResult(name) {
-    document.getElementById('nlmaps-geocoder-control-input').value = name;
-  }
-
-  function showSuggestResults(results, map) {
-    var resultList = document.createElement('ul');
-    resultList.style.padding = '10px 10px 2px 10px';
-    resultList.style.width = '100%';
-    resultList.style.background = '#FFFFFF';
-    resultList.style.borderRadius = '5px 5px';
-    resultList.style.boxShadow = '0 1px 5px rgba(0, 0, 0, 0.65)';
-
-    results.forEach(function (result) {
-      var li = document.createElement('li');
-      li.innerHTML = result.weergavenaam;
-      li.id = result.id;
-      li.style.cursor = 'pointer';
-      li.style.padding = '5px';
-      li.style.listStyleType = 'none';
-      li.style.marginBottom = '5px';
-      li.addEventListener('click', function (e) {
-        lookup(e.target.id, map);
-      });
-
-      li.addEventListener('mouseenter', function (e) {
-        li.style.background = '#6C62A6';
-        li.style.color = '#FFFFFF';
-      });
-
-      li.addEventListener('mouseleave', function (e) {
-        li.style.background = '#FFFFFF';
-        li.style.color = '#333';
-      });
-      resultList.appendChild(li);
-    });
-    clearSuggestResults();
-    document.getElementById('nlmaps-geocoder-control-results').appendChild(resultList);
   }
 
   function zoomTo(point, map) {
@@ -1509,6 +1595,11 @@ var nlmapsGooglemaps_cjs = createCommonjsModule(function (module, exports) {
     };
   }
 
+  function geocoderControl(map) {
+    var control = geocoder.createControl(zoomTo, map);
+    map.getDiv().appendChild(control);
+  }
+
   exports.bgLayer = bgLayer;
   exports.overlayLayer = overlayLayer;
   exports.markerLayer = markerLayer;
@@ -1525,60 +1616,83 @@ var nlmapsGooglemaps_cjs_4 = nlmapsGooglemaps_cjs.markerLayer;
 var nlmapsGooglemaps_cjs_5 = nlmapsGooglemaps_cjs.overlayLayer;
 var nlmapsGooglemaps_cjs_6 = nlmapsGooglemaps_cjs.bgLayer;
 
-const geocoder = {
-    suggestUrl: 'https://geodata.nationaalgeoregister.nl/locatieserver/v3/suggest?',
-    lookupUrl: 'https://geodata.nationaalgeoregister.nl/locatieserver/v3/lookup?'
-};
-
-function httpGetAsync(url) {
-    return new Promise((resolve, reject) => {
-        var xmlHttp = new XMLHttpRequest();
-        xmlHttp.onreadystatechange = function () {
-            if (xmlHttp.readyState == 4 && xmlHttp.status == 200) {
-                resolve(JSON.parse(xmlHttp.responseText));
-            }
-        };
-        xmlHttp.open("GET", url, true); // true for asynchronous 
-        xmlHttp.send(null);
-    });
+function wmsBaseUrl(workSpaceName) {
+  return 'https://geodata.nationaalgeoregister.nl/' + workSpaceName + '/wms?';
 }
 
-function wktPointToGeoJson(wktPoint) {
-    if (!wktPoint.includes('POINT')) {
-        throw TypeError('Provided WKT geometry is not a point.');
-    }
-    const coordinateTuple = wktPoint.split('(')[1].split(')')[0];
-    const x = parseFloat(coordinateTuple.split(' ')[0]);
-    const y = parseFloat(coordinateTuple.split(' ')[1]);
+function mapWmsProvider(name, options) {
+  const wmsParameters = {
+    workSpaceName: '',
+    layerName: '',
+    styleName: '',
+    url: '',
+    minZoom: 0,
+    maxZoom: 24
+  };
 
-    return {
-        type: 'Point',
-        coordinates: [x, y]
-    };
+  switch (name) {
+    case 'gebouwen':
+      wmsParameters.workSpaceName = 'bag';
+      wmsParameters.layerName = 'pand';
+      wmsParameters.styleName = '';
+      break;
+    case 'percelen':
+      wmsParameters.workSpaceName = 'kadastralekaartv3';
+      wmsParameters.layerName = 'kadastralekaart';
+      wmsParameters.styleName = '';
+      break;
+    case 'drone-no-fly-zones':
+      wmsParameters.workSpaceName = 'dronenoflyzones';
+      wmsParameters.layerName = 'luchtvaartgebieden,landingsite';
+      wmsParameters.styleName = '';
+      break;
+    case 'hoogte':
+      wmsParameters.workSpaceName = 'ahn2';
+      wmsParameters.layerName = 'ahn2_05m_int';
+      wmsParameters.styleName = 'ahn2:ahn2_05m_detail';
+      break;
+    case 'gemeenten':
+      wmsParameters.workSpaceName = 'bestuurlijkegrenzen';
+      wmsParameters.layerName = 'gemeenten';
+      wmsParameters.styleName = 'bestuurlijkegrenzen:bestuurlijkegrenzen_gemeentegrenzen';
+      break;
+    case 'provincies':
+      wmsParameters.workSpaceName = 'bestuurlijkegrenzen';
+      wmsParameters.layerName = 'provincies';
+      wmsParameters.styleName = 'bestuurlijkegrenzen:bestuurlijkegrenzen_provinciegrenzen';
+      break;
+    default:
+      wmsParameters.url = options.url;
+      wmsParameters.layerName = options.layerName;
+      wmsParameters.styleName = options.styleName;
+  }
+
+  wmsParameters.url = wmsBaseUrl(wmsParameters.workSpaceName);
+
+  return wmsParameters;
 }
 
-/**
- * Make a call to PDOK locatieserver v3 suggest service. This service is meant for geocoder autocomplete functionality. For
- * additional documentation, check https://github.com/PDOK/locatieserver/wiki/API-Locatieserver.
- * @param {string} searchTerm The term which to search for
- */
-geocoder.suggest = function (searchTerm) {
-    return httpGetAsync(`${this.suggestUrl}q=${encodeURIComponent(searchTerm)}`);
-};
+function makeWmsProvider(name) {
+  const wmsParameters = mapWmsProvider(name);
+  return {
+    url: wmsParameters.url,
+    service: 'WMS',
+    version: '1.1.1',
+    request: 'GetMap',
+    layers: wmsParameters.layerName,
+    styles: wmsParameters.styleName,
+    transparent: true,
+    format: 'image/png'
+  };
+}
 
-/**
- * Make a call to PDOK locatieserver v3 lookup service. This service provides information about objects found through the suggest service. For additional 
- * documentation, check: https://github.com/PDOK/locatieserver/wiki/API-Locatieserver
- * @param {string} id The id of the feature that is to be looked up.
- */
-geocoder.lookup = function (id) {
-    return httpGetAsync(`${this.lookupUrl}id=${encodeURIComponent(id)}`).then(lookupResult => {
-        // A lookup request should always return 1 result
-        const geocodeResult = lookupResult.response.docs[0];
-        geocodeResult.centroide_ll = wktPointToGeoJson(geocodeResult.centroide_ll);
-        geocodeResult.centroide_rd = wktPointToGeoJson(geocodeResult.centroide_rd);
-        return geocodeResult;
-    });
+const WMS_PROVIDERS = {
+  "gebouwen": makeWmsProvider('gebouwen'),
+  "percelen": makeWmsProvider('percelen'),
+  "drone-no-fly-zones": makeWmsProvider('drone-no-fly-zones'),
+  "hoogte": makeWmsProvider('hoogte'),
+  "gemeenten": makeWmsProvider('gemeenten'),
+  "provincies": makeWmsProvider('provincies')
 };
 
 const lufostring = 'luchtfoto/rgb';
@@ -1967,6 +2081,11 @@ nlmaps.createMap = function () {
   var backgroundLayer = createBackgroundLayer(nlmaps.lib, map, opts.style);
   addLayerToMap(nlmaps.lib, backgroundLayer, map, opts.style);
 
+  // Geocoder
+  if (opts.search) {
+    addGeocoderControlToMap(nlmaps.lib, map);
+  }
+
   // Marker layer
   if (opts.marker) {
     var markerLocation = opts.marker;
@@ -1976,9 +2095,6 @@ nlmaps.createMap = function () {
     var markerLayer$$1 = createMarkerLayer(nlmaps.lib, map, markerLocation);
     addLayerToMap(nlmaps.lib, markerLayer$$1, map);
   }
-
-  // Geocoder
-  addGeocoderControlToMap(nlmaps.lib, geocoder, map);
 
   // Overlay layer
   if (opts.overlay && opts.overlay != 'false') {
@@ -2005,21 +2121,8 @@ function addGeoLocControlToMap(lib, geolocator, map) {
   }
 }
 
-function addGeocoderControlToMap(lib, geocoder$$1, map) {
-  var control = void 0;
-  switch (lib) {
-    case 'leaflet':
-      nlmaps[lib].geocoderControl(geocoder$$1).addTo(map);
-      break;
-    case 'googlemaps':
-      control = nlmaps[lib].geocoderControl(geocoder$$1, map);
-      map.controls[google.maps.ControlPosition.TOP_LEFT].push(control);
-      break;
-    case 'openlayers':
-      control = nlmaps[lib].geocoderControl(geocoder$$1, map);
-      map.addControl(control);
-      break;
-  }
+function addGeocoderControlToMap(lib, map) {
+  nlmaps[lib].geocoderControl(map);
 }
 
 nlmaps.geoLocate = function (map) {

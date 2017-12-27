@@ -5,7 +5,7 @@ function wmsBaseUrl(workSpaceName) {
   return 'https://geodata.nationaalgeoregister.nl/' + workSpaceName + '/wms?';
 }
 
-function mapWmsProvider(name) {
+function mapWmsProvider(name, options) {
   const wmsParameters = {
     workSpaceName: '',
     layerName: '',
@@ -46,6 +46,10 @@ function mapWmsProvider(name) {
       wmsParameters.layerName = 'provincies';
       wmsParameters.styleName = 'bestuurlijkegrenzen:bestuurlijkegrenzen_provinciegrenzen';
       break;
+    default:
+      wmsParameters.url = options.url;
+      wmsParameters.layerName = options.layerName;
+      wmsParameters.styleName = options.styleName;
   }
 
   wmsParameters.url = wmsBaseUrl(wmsParameters.workSpaceName);
@@ -55,7 +59,6 @@ function mapWmsProvider(name) {
 
 function makeWmsProvider(name) {
   const wmsParameters = mapWmsProvider(name);
-
   return {
     url: wmsParameters.url,
     service: 'WMS',
@@ -269,131 +272,8 @@ if (typeof L !== 'undefined' && (typeof L === 'undefined' ? 'undefined' : _typeo
     onRemove: function onRemove(map) {}
   });
 
-  L.Control.GeocoderControl = L.Control.extend({
-    options: {
-      position: 'topleft'
-    },
-    initialize: function initialize(options) {
-      // set default options if nothing is set (merge one step deep)
-      for (var i in options) {
-        if (_typeof(this.options[i]) === 'object') {
-          L.extend(this.options[i], options[i]);
-        } else {
-          this.options[i] = options[i];
-        }
-      }
-    },
-
-    onAdd: function onAdd(map) {
-      var container = L.DomUtil.create('div');
-      var searchDiv = L.DomUtil.create('div');
-      var results = L.DomUtil.create('div');
-      var input = L.DomUtil.create('input');
-
-      searchDiv.appendChild(input);
-      container.appendChild(searchDiv);
-      container.appendChild(results);
-
-      L.DomEvent.addListener(input, 'input', function (e) {
-        this.suggest(e.target.value);
-      }, this);
-
-      L.DomEvent.addListener(input, 'focus', function (e) {
-        this.suggest(e.target.value);
-      }, this);
-
-      var controlWidth = '300px';
-      container.id = 'nlmaps-geocoder-control';
-      searchDiv.style.width = controlWidth;
-
-      input.id = 'nlmaps-geocoder-control-input';
-      input.placeholder = 'Zoeken op adres...';
-      input.style.padding = '4px 10px';
-      input.style.width = '100%';
-      input.style.border = 'none';
-      input.style.backgroundColor = '#fff';
-      input.style.boxShadow = '0 1px 5px rgba(0, 0, 0, 0.65)';
-      input.style.height = '26px';
-      input.style.borderRadius = '5px 5px';
-      results.id = 'nlmaps-geocoder-control-results';
-      results.style.width = controlWidth;
-      return container;
-    },
-    onRemove: function onRemove(map) {},
-    suggest: function suggest(query) {
-      var _this = this;
-
-      if (query.length < 4) {
-        this.clearSuggestResults();
-        return;
-      }
-      this.options.geocoder.suggest(query).then(function (results) {
-        _this.showSuggestResults(results.response.docs);
-      });
-    },
-    showSuggestResults: function showSuggestResults(results) {
-      var _this2 = this;
-
-      var resultList = L.DomUtil.create('ul');
-      resultList.style.padding = '10px 10px 2px 10px';
-      resultList.style.width = '100%';
-      resultList.style.background = '#FFFFFF';
-      resultList.style.borderRadius = '5px 5px';
-      resultList.style.boxShadow = '0 1px 5px rgba(0, 0, 0, 0.65)';
-
-      results.forEach(function (result) {
-        var li = L.DomUtil.create('li');
-        li.innerHTML = result.weergavenaam;
-        li.id = result.id;
-        li.style.cursor = 'pointer';
-        li.style.padding = '5px';
-        li.style.listStyleType = 'none';
-        li.style.marginBottom = '5px';
-        L.DomEvent.addListener(li, 'click', function (e) {
-          this.lookup(e.target.id);
-        }, _this2);
-
-        L.DomEvent.addListener(li, 'mouseenter', function (e) {
-          li.style.background = '#6C62A6';
-          li.style.color = '#FFFFFF';
-        }, _this2);
-
-        L.DomEvent.addListener(li, 'mouseleave', function (e) {
-          li.style.background = '#FFFFFF';
-          li.style.color = '#333';
-        }, _this2);
-        resultList.appendChild(li);
-      });
-      this.clearSuggestResults();
-      document.getElementById('nlmaps-geocoder-control-results').appendChild(resultList);
-    },
-    clearSuggestResults: function clearSuggestResults() {
-      var resultContainer = document.getElementById('nlmaps-geocoder-control-results');
-      resultContainer.innerHTML = '';
-    },
-    lookup: function lookup(id) {
-      var _this3 = this;
-
-      this.options.geocoder.lookup(id).then(function (result) {
-        _this3.zoomTo(result.centroide_ll);
-        _this3.showLookupResult(result.weergavenaam);
-        _this3.clearSuggestResults();
-      });
-    },
-    zoomTo: function zoomTo(point) {
-      this._map.fitBounds(L.geoJSON(point).getBounds(), { maxZoom: 18 });
-    },
-    showLookupResult: function showLookupResult(name) {
-      document.getElementById('nlmaps-geocoder-control-input').value = name;
-    }
-  });
-
   L.geoLocatorControl = function (geolocator) {
     return new L.Control.GeoLocatorControl({ geolocator: geolocator });
-  };
-
-  L.geocoderControl = function (geocoder$$1) {
-    return new L.Control.GeocoderControl({ geocoder: geocoder$$1 });
   };
 }
 function bgLayer(name) {

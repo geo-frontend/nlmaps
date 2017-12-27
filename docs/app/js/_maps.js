@@ -55,6 +55,7 @@ export default class Maps {
             this.wizardMapColor = this.wizardFormValues[1].value;
             this.wizardShowMarker = this.wizardFormValues[2].value;
             this.wizardOverlay = this.wizardFormValues[3].value;
+            this.wizardShowGeocoder = this.wizardFormValues[4].value;
             this.currentUrl = baseTileUrl;
             this.extension = 'png';
 
@@ -88,10 +89,10 @@ export default class Maps {
                     this.overlay = 'gebouwen';
                     break;
                 case 'wms-hoogtebestand':
-                    this.overlay = 'hoogtebestand';
+                    this.overlay = 'hoogte';
                     break;
                 case 'wms-drone-no-fly-zone':
-                    this.overlay = 'drone-no-fly-zone';
+                    this.overlay = 'drone-no-fly-zones';
                     break;
             }
 
@@ -104,6 +105,20 @@ export default class Maps {
                     break;
                 default:
                     this.showMarker = true;
+            }
+
+            switch (this.wizardShowGeocoder) {
+                case 'geocoder-yes':
+                    console.log('YES');
+                    this.geocoder = true;
+                    break;
+                case 'geocoder-no':
+                    console.log('noooo');
+                    this.geocoder = false;
+                    break;
+                default:
+                    console.log('default')
+                    this.geocoder = false;
             }
 
             switch (this.wizardMapService) {
@@ -142,14 +157,15 @@ export default class Maps {
             },
             overlay: this.overlay,
             marker: this.showMarker,
-            zoom: this.zoom
+            zoom: this.zoom,
+            search: this.geocoder
         };
         var map = nlmaps.createMap(opts);
 
         google.maps.event.addListener(map, 'center_changed', () => {
             let center = map.getCenter();
-            this.latitude = center.lat().toFixed(6);
-            this.longitude = center.lng().toFixed(6);
+            this.latitude = center.lat();
+            this.longitude = center.lng();
 
             this.updateCode();
         });
@@ -175,6 +191,7 @@ export default class Maps {
                 longitude: this.longitude,
                 latitude: this.latitude
             },
+            search: this.geocoder,
             overlay: this.overlay,
             marker: this.showMarker,
             zoom: this.zoom
@@ -184,8 +201,8 @@ export default class Maps {
 
         map.on('move', () => {
             let center = map.getCenter();
-            this.latitude = center.lat.toFixed(6);
-            this.longitude = center.lng.toFixed(6);
+            this.latitude = center.lat;
+            this.longitude = center.lng;
             this.zoom = map.getZoom();
 
             this.updateCode();
@@ -215,6 +232,7 @@ export default class Maps {
                 latitude: this.latitude
             },
             overlay: this.overlay,
+            search: this.geocoder,
             marker: this.showMarker,
             zoom: this.zoom
         };
@@ -222,8 +240,8 @@ export default class Maps {
         var map = nlmaps.createMap(opts);
         map.on('moveend', () => {
             let center = ol.proj.toLonLat(map.getView().getCenter());
-            this.latitude = center[1].toFixed(6);
-            this.longitude = center[0].toFixed(6);
+            this.latitude = center[1];
+            this.longitude = center[0];
             this.zoom = map.getView().getZoom();
             this.updateCode();
         });
@@ -245,6 +263,7 @@ export default class Maps {
                 latitude: this.latitude
             },
             overlay: this.overlay,
+            search: this.geocoder,
             marker: this.showMarker,
             zoom: this.zoom
         };
@@ -253,8 +272,8 @@ export default class Maps {
 
         map.on('move', () => {
             let center = map.getCenter();
-            this.latitude = center.lat.toFixed(6);
-            this.longitude = center.lng.toFixed(6);
+            this.latitude = center.lat;
+            this.longitude = center.lng;
             this.zoom = map.getZoom();
 
             this.updateCode();
@@ -311,6 +330,7 @@ export default class Maps {
         let code = this.getCodeTemplate();
         code = code.replace(/{overlay}/g, this.overlay);
         code = code.replace(/{marker}/g, this.showMarker);
+        code = code.replace(/{geocoder}/g, this.geocoder);
         code = code.replace(/{backgroundLayerName}/g, this.backgroundLayerName);
         code = code.replace(/{latitude}/g, this.latitude);
         code = code.replace(/{longitude}/g, this.longitude);

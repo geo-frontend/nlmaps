@@ -58,7 +58,6 @@ export default class Maps {
             this.wizardShowGeocoder = this.wizardFormValues[4].value;
             this.currentUrl = baseTileUrl;
             this.extension = 'png';
-
             switch (this.wizardMapColor) {
                 case 'default':
                     this.backgroundLayerName = 'standaard';
@@ -109,15 +108,12 @@ export default class Maps {
 
             switch (this.wizardShowGeocoder) {
                 case 'geocoder-yes':
-                    console.log('YES');
                     this.geocoder = true;
                     break;
                 case 'geocoder-no':
-                    console.log('noooo');
                     this.geocoder = false;
                     break;
                 default:
-                    console.log('default')
                     this.geocoder = false;
             }
 

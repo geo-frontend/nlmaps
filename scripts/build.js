@@ -4,8 +4,6 @@ const helpers = require('./helpers');
 const { spawn } = require('child_process')
 
 const tasks = helpers.tasks();
-console.log('hooooo')
-console.log(tasks)
 
 const rollup_args = ['-c', 'config/rollup.all.js'];
 

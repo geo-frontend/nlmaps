@@ -1,8 +1,8 @@
 const conf = require('./conf.json');
 const ArgumentParser = require('argparse').ArgumentParser;
 
-console.log('what are the argvars?')
-console.log(process.argv)
+//console.log('what are the argvars?')
+//console.log(process.argv)
 const parser = new ArgumentParser({
   version: '0.0.1',
   addHelp:true,

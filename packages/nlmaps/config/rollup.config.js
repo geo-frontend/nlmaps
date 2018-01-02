@@ -10,12 +10,13 @@ import uglify from 'rollup-plugin-uglify';
 export default config => {
   return {
     input: 'src/index.js',
-    name: 'nlmaps',
     output: {
       file: config.dest,
       format: config.format,
+      name: config.format === 'iife' ? 'window' : 'nlmaps',
     },
     external: config.external,
+    extend: config.format === 'iife' ? true : false,
     plugins: [
       commonjs(),
       resolve({

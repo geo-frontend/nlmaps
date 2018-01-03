@@ -100,6 +100,7 @@ geocoder.createControl = function(zoomFunction, map) {
 }
 
 geocoder.suggest = function(query) {
+    console.log('suggesting');
     if (query.length < 4) {
         this.clearSuggestResults();
         return;
@@ -111,7 +112,9 @@ geocoder.suggest = function(query) {
 }
 
 geocoder.lookup = function (id) {
+    console.log('doing lookup')
     this.doLookupRequest(id).then((result) => {
+        console.log('1 more lookup')
         this.zoomTo(result.centroide_ll, this.map);
         this.showLookupResult(result.weergavenaam);
         this.clearSuggestResults();

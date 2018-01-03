@@ -24,14 +24,16 @@ var nlmapsLeaflet_cjs = createCommonjsModule(function (module, exports) {
   };
 
   function httpGetAsync(url) {
+    // eslint-disable-next-line no-unused-vars
     return new Promise(function (resolve, reject) {
       var xmlHttp = new XMLHttpRequest();
       xmlHttp.onreadystatechange = function () {
+        // eslint-disable-next-line eqeqeq
         if (xmlHttp.readyState == 4 && xmlHttp.status == 200) {
           resolve(JSON.parse(xmlHttp.responseText));
         }
       };
-      xmlHttp.open("GET", url, true); // true for asynchronous 
+      xmlHttp.open("GET", url, true); // true for asynchronous
       xmlHttp.send(null);
     });
   }
@@ -60,7 +62,7 @@ var nlmapsLeaflet_cjs = createCommonjsModule(function (module, exports) {
   };
 
   /**
-   * Make a call to PDOK locatieserver v3 lookup service. This service provides information about objects found through the suggest service. For additional 
+   * Make a call to PDOK locatieserver v3 lookup service. This service provides information about objects found through the suggest service. For additional
    * documentation, check: https://github.com/PDOK/locatieserver/wiki/API-Locatieserver
    * @param {string} id The id of the feature that is to be looked up.
    */
@@ -120,6 +122,7 @@ var nlmapsLeaflet_cjs = createCommonjsModule(function (module, exports) {
   geocoder.suggest = function (query) {
     var _this2 = this;
 
+    console.log('suggesting');
     if (query.length < 4) {
       this.clearSuggestResults();
       return;
@@ -133,7 +136,9 @@ var nlmapsLeaflet_cjs = createCommonjsModule(function (module, exports) {
   geocoder.lookup = function (id) {
     var _this3 = this;
 
+    console.log('doing lookup');
     this.doLookupRequest(id).then(function (result) {
+      console.log('1 more lookup');
       _this3.zoomTo(result.centroide_ll, _this3.map);
       _this3.showLookupResult(result.weergavenaam);
       _this3.clearSuggestResults();
@@ -170,12 +175,12 @@ var nlmapsLeaflet_cjs = createCommonjsModule(function (module, exports) {
         _this4.lookup(e.target.id);
       });
 
-      li.addEventListener('mouseenter', function (e) {
+      li.addEventListener('mouseenter', function () {
         li.style.background = '#6C62A6';
         li.style.color = '#FFFFFF';
       });
 
-      li.addEventListener('mouseleave', function (e) {
+      li.addEventListener('mouseleave', function () {
         li.style.background = '#FFFFFF';
         li.style.color = '#333';
       });
@@ -314,7 +319,7 @@ var nlmapsLeaflet_cjs = createCommonjsModule(function (module, exports) {
     "luchtfoto": makeProvider("luchtfoto", "jpeg", 6, 19)
   };
 
-  var geolocator_icon = '<?xml version="1.0" encoding="UTF-8" standalone="no"?><svg xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns="http://www.w3.org/2000/svg" height="7.0556mm" width="7.0556mm" version="1.1" xmlns:cc="http://creativecommons.org/ns#" xmlns:dc="http://purl.org/dc/elements/1.1/" viewBox="0 0 24.999999 24.999999"> <metadata>  <rdf:RDF>   <cc:Work rdf:about="">    <dc:format>image/svg+xml</dc:format>    <dc:type rdf:resource="http://purl.org/dc/dcmitype/StillImage"/>    <dc:title/>   </cc:Work>  </rdf:RDF> </metadata> <g transform="translate(-151.39 -117.97)">  <g transform="translate(.39250 .85750)">   <path style="color-rendering:auto;text-decoration-color:#000000;color:#000000;shape-rendering:auto;solid-color:#000000;text-decoration-line:none;fill:#191919;mix-blend-mode:normal;block-progression:tb;text-indent:0;image-rendering:auto;white-space:normal;text-decoration-style:solid;isolation:auto;text-transform:none" d="m163.5 123.27c-3.4931 0-6.3379 2.8448-6.3379 6.3379s2.8448 6.3398 6.3379 6.3398 6.3379-2.8467 6.3379-6.3398-2.8448-6.3379-6.3379-6.3379zm0 1.3008c2.7905 0 5.0391 2.2466 5.0391 5.0371s-2.2485 5.0391-5.0391 5.0391c-2.7905 0-5.0391-2.2485-5.0391-5.0391 0-2.7905 2.2485-5.0371 5.0391-5.0371z"/>   <circle cx="163.5" cy="129.61" r="1.9312" style="fill:#191919"/>   <path style="color-rendering:auto;text-decoration-color:#000000;color:#000000;shape-rendering:auto;solid-color:#000000;text-decoration-line:none;fill:#191919;fill-rule:evenodd;mix-blend-mode:normal;block-progression:tb;text-indent:0;image-rendering:auto;white-space:normal;text-decoration-style:solid;isolation:auto;text-transform:none" d="m162.85 120.57v3.3555h1.3008v-3.3555h-1.3008z"/>   <path style="color-rendering:auto;text-decoration-color:#000000;color:#000000;shape-rendering:auto;solid-color:#000000;text-decoration-line:none;fill:#191919;fill-rule:evenodd;mix-blend-mode:normal;block-progression:tb;text-indent:0;image-rendering:auto;white-space:normal;text-decoration-style:solid;isolation:auto;text-transform:none" d="m162.85 135.3v3.3555h1.3008v-3.3555h-1.3008z"/>   <path style="color-rendering:auto;text-decoration-color:#000000;color:#000000;shape-rendering:auto;solid-color:#000000;text-decoration-line:none;fill:#191919;fill-rule:evenodd;mix-blend-mode:normal;block-progression:tb;text-indent:0;image-rendering:auto;white-space:normal;text-decoration-style:solid;isolation:auto;text-transform:none" d="m154.46 128.96v1.2988h3.3535v-1.2988h-3.3535z"/>   <path style="color-rendering:auto;text-decoration-color:#000000;color:#000000;shape-rendering:auto;solid-color:#000000;text-decoration-line:none;fill:#191919;fill-rule:evenodd;mix-blend-mode:normal;block-progression:tb;text-indent:0;image-rendering:auto;white-space:normal;text-decoration-style:solid;isolation:auto;text-transform:none" d="m169.19 128.96v1.2988h3.3535v-1.2988h-3.3535z"/>  </g> </g></svg>';
+  var geolocator_icon = '<?xml version="1.0" encoding="UTF-8" standalone="no"?>\n<svg xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns="http://www.w3.org/2000/svg" height="7.0556mm" width="7.0556mm" version="1.1"\nxmlns:cc="http://creativecommons.org/ns#" xmlns:dc="http://purl.org/dc/elements/1.1/" viewBox="0 0 24.999999 24.999999">\n<metadata>  <rdf:RDF>   <cc:Work rdf:about="">    <dc:format>image/svg+xml</dc:format>    <dc:type rdf:resource="http://purl.org/dc/dcmitype/StillImage"/>\n<dc:title/>   </cc:Work>  </rdf:RDF> </metadata> <g transform="translate(-151.39 -117.97)">  <g transform="translate(.39250 .85750)">\n<path style="color-rendering:auto;text-decoration-color:#000000;color:#000000;shape-rendering:auto;solid-color:#000000;text-decoration-line:none;fill:#191919;mix-blend-mode:normal;block-progression:tb;text-indent:0;image-rendering:auto;white-space:normal;text-decoration-style:solid;isolation:auto;text-transform:none" d="m163.5 123.27c-3.4931 0-6.3379 2.8448-6.3379 6.3379s2.8448 6.3398 6.3379 6.3398 6.3379-2.8467 6.3379-6.3398-2.8448-6.3379-6.3379-6.3379zm0 1.3008c2.7905 0 5.0391 2.2466 5.0391 5.0371s-2.2485 5.0391-5.0391 5.0391c-2.7905 0-5.0391-2.2485-5.0391-5.0391 0-2.7905 2.2485-5.0371 5.0391-5.0371z"/><circle cx="163.5" cy="129.61" r="1.9312" style="fill:#191919"/>\n<path style="color-rendering:auto;text-decoration-color:#000000;color:#000000;shape-rendering:auto;solid-color:#000000;text-decoration-line:none;fill:#191919;fill-rule:evenodd;mix-blend-mode:normal;block-progression:tb;text-indent:0;image-rendering:auto;white-space:normal;text-decoration-style:solid;isolation:auto;text-transform:none" d="m162.85 120.57v3.3555h1.3008v-3.3555h-1.3008z"/>   <path style="color-rendering:auto;text-decoration-color:#000000;color:#000000;shape-rendering:auto;solid-color:#000000;text-decoration-line:none;fill:#191919;fill-rule:evenodd;mix-blend-mode:normal;block-progression:tb;text-indent:0;image-rendering:auto;white-space:normal;text-decoration-style:solid;isolation:auto;text-transform:none" d="m162.85 135.3v3.3555h1.3008v-3.3555h-1.3008z"/>   <path style="color-rendering:auto;text-decoration-color:#000000;color:#000000;shape-rendering:auto;solid-color:#000000;text-decoration-line:none;fill:#191919;fill-rule:evenodd;mix-blend-mode:normal;block-progression:tb;text-indent:0;image-rendering:auto;white-space:normal;text-decoration-style:solid;isolation:auto;text-transform:none" d="m154.46 128.96v1.2988h3.3535v-1.2988h-3.3535z"/>\n<path style="color-rendering:auto;text-decoration-color:#000000;color:#000000;shape-rendering:auto;solid-color:#000000;text-decoration-line:none;fill:#191919;fill-rule:evenodd;mix-blend-mode:normal;block-progression:tb;text-indent:0;image-rendering:auto;white-space:normal;text-decoration-style:solid;isolation:auto;text-transform:none" d="m169.19 128.96v1.2988h3.3535v-1.2988h-3.3535z"/>  </g> </g></svg>';
 
   var markerUrl = 'https://rawgit.com/webmapper/nlmaps/master/dist/assets/rijksoverheid-marker.png';
 
@@ -331,12 +336,15 @@ var nlmapsLeaflet_cjs = createCommonjsModule(function (module, exports) {
     if (name in BASEMAP_PROVIDERS) {
       var provider = BASEMAP_PROVIDERS[name];
 
+      // eslint-disable-next-line no-console
       if (provider.deprecated && console && console.warn) {
+        // eslint-disable-next-line no-console
         console.warn(name + " is a deprecated style; it will be redirected to its replacement. For performance improvements, please change your reference.");
       }
 
       return provider;
     } else {
+      // eslint-disable-next-line no-console
       console.error('NL Maps error: You asked for a style which does not exist! Available styles: ' + Object.keys(PROVIDERS).join(', '));
     }
   }
@@ -348,12 +356,15 @@ var nlmapsLeaflet_cjs = createCommonjsModule(function (module, exports) {
     if (name in WMS_PROVIDERS) {
       var wmsProvider = WMS_PROVIDERS[name];
 
+      // eslint-disable-next-line no-console
       if (wmsProvider.deprecated && console && console.warn) {
+        // eslint-disable-next-line no-console
         console.warn(name + " is a deprecated style; it will be redirected to its replacement. For performance improvements, please change your reference.");
       }
 
       return wmsProvider;
     } else {
+      // eslint-disable-next-line no-console
       console.error('NL Maps error: You asked for a style which does not exist! Available styles: ' + Object.keys(WMS_PROVIDERS).join(', '));
     }
   }
@@ -444,7 +455,7 @@ var nlmapsLeaflet_cjs = createCommonjsModule(function (module, exports) {
         function moveMap(position) {
           map.panTo([position.coords.latitude, position.coords.longitude]);
         }
-        L.DomEvent.on(div, 'click', function (e) {
+        L.DomEvent.on(div, 'click', function () {
           this.options.geolocator.start();
           L.DomUtil.addClass(div, 'started');
         }, this);
@@ -455,7 +466,9 @@ var nlmapsLeaflet_cjs = createCommonjsModule(function (module, exports) {
         });
         return div;
       },
-      onRemove: function onRemove(map) {}
+      onRemove: function onRemove(map) {
+        return map;
+      }
     });
 
     L.geoLocatorControl = function (geolocator) {
@@ -467,6 +480,7 @@ var nlmapsLeaflet_cjs = createCommonjsModule(function (module, exports) {
       var lat = void 0;
       var lng = void 0;
       // LatLngObject should always be defined when it is called from the main package.
+      // eslint-disable-next-line eqeqeq
       if (typeof latLngObject == 'undefined') {
         var center = getMapCenter(map);
         lat = center.latitude;
@@ -498,7 +512,7 @@ var nlmapsLeaflet_cjs = createCommonjsModule(function (module, exports) {
   }
 
   function geoLocatorControl(geolocator) {
-    if (typeof L !== 'undefined' && (typeof L === 'undefined' ? 'undefined' : _typeof$$1(L)) === 'object') {
+    if (typeof L !== 'undefined' && (typeof L === 'undefined' ? 'undefined' : _typeof$$1(L)) == 'object') {
       return L.geoLocatorControl(geolocator);
     }
   }
@@ -544,14 +558,16 @@ var nlmapsOpenlayers_cjs = createCommonjsModule(function (module, exports) {
   };
 
   function httpGetAsync(url) {
+    // eslint-disable-next-line no-unused-vars
     return new Promise(function (resolve, reject) {
       var xmlHttp = new XMLHttpRequest();
       xmlHttp.onreadystatechange = function () {
+        // eslint-disable-next-line eqeqeq
         if (xmlHttp.readyState == 4 && xmlHttp.status == 200) {
           resolve(JSON.parse(xmlHttp.responseText));
         }
       };
-      xmlHttp.open("GET", url, true); // true for asynchronous 
+      xmlHttp.open("GET", url, true); // true for asynchronous
       xmlHttp.send(null);
     });
   }
@@ -580,7 +596,7 @@ var nlmapsOpenlayers_cjs = createCommonjsModule(function (module, exports) {
   };
 
   /**
-   * Make a call to PDOK locatieserver v3 lookup service. This service provides information about objects found through the suggest service. For additional 
+   * Make a call to PDOK locatieserver v3 lookup service. This service provides information about objects found through the suggest service. For additional
    * documentation, check: https://github.com/PDOK/locatieserver/wiki/API-Locatieserver
    * @param {string} id The id of the feature that is to be looked up.
    */
@@ -640,6 +656,7 @@ var nlmapsOpenlayers_cjs = createCommonjsModule(function (module, exports) {
   geocoder.suggest = function (query) {
     var _this2 = this;
 
+    console.log('suggesting');
     if (query.length < 4) {
       this.clearSuggestResults();
       return;
@@ -653,7 +670,9 @@ var nlmapsOpenlayers_cjs = createCommonjsModule(function (module, exports) {
   geocoder.lookup = function (id) {
     var _this3 = this;
 
+    console.log('doing lookup');
     this.doLookupRequest(id).then(function (result) {
+      console.log('1 more lookup');
       _this3.zoomTo(result.centroide_ll, _this3.map);
       _this3.showLookupResult(result.weergavenaam);
       _this3.clearSuggestResults();
@@ -690,12 +709,12 @@ var nlmapsOpenlayers_cjs = createCommonjsModule(function (module, exports) {
         _this4.lookup(e.target.id);
       });
 
-      li.addEventListener('mouseenter', function (e) {
+      li.addEventListener('mouseenter', function () {
         li.style.background = '#6C62A6';
         li.style.color = '#FFFFFF';
       });
 
-      li.addEventListener('mouseleave', function (e) {
+      li.addEventListener('mouseleave', function () {
         li.style.background = '#FFFFFF';
         li.style.color = '#333';
       });
@@ -834,7 +853,7 @@ var nlmapsOpenlayers_cjs = createCommonjsModule(function (module, exports) {
     "luchtfoto": makeProvider("luchtfoto", "jpeg", 6, 19)
   };
 
-  var geolocator_icon = '<?xml version="1.0" encoding="UTF-8" standalone="no"?><svg xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns="http://www.w3.org/2000/svg" height="7.0556mm" width="7.0556mm" version="1.1" xmlns:cc="http://creativecommons.org/ns#" xmlns:dc="http://purl.org/dc/elements/1.1/" viewBox="0 0 24.999999 24.999999"> <metadata>  <rdf:RDF>   <cc:Work rdf:about="">    <dc:format>image/svg+xml</dc:format>    <dc:type rdf:resource="http://purl.org/dc/dcmitype/StillImage"/>    <dc:title/>   </cc:Work>  </rdf:RDF> </metadata> <g transform="translate(-151.39 -117.97)">  <g transform="translate(.39250 .85750)">   <path style="color-rendering:auto;text-decoration-color:#000000;color:#000000;shape-rendering:auto;solid-color:#000000;text-decoration-line:none;fill:#191919;mix-blend-mode:normal;block-progression:tb;text-indent:0;image-rendering:auto;white-space:normal;text-decoration-style:solid;isolation:auto;text-transform:none" d="m163.5 123.27c-3.4931 0-6.3379 2.8448-6.3379 6.3379s2.8448 6.3398 6.3379 6.3398 6.3379-2.8467 6.3379-6.3398-2.8448-6.3379-6.3379-6.3379zm0 1.3008c2.7905 0 5.0391 2.2466 5.0391 5.0371s-2.2485 5.0391-5.0391 5.0391c-2.7905 0-5.0391-2.2485-5.0391-5.0391 0-2.7905 2.2485-5.0371 5.0391-5.0371z"/>   <circle cx="163.5" cy="129.61" r="1.9312" style="fill:#191919"/>   <path style="color-rendering:auto;text-decoration-color:#000000;color:#000000;shape-rendering:auto;solid-color:#000000;text-decoration-line:none;fill:#191919;fill-rule:evenodd;mix-blend-mode:normal;block-progression:tb;text-indent:0;image-rendering:auto;white-space:normal;text-decoration-style:solid;isolation:auto;text-transform:none" d="m162.85 120.57v3.3555h1.3008v-3.3555h-1.3008z"/>   <path style="color-rendering:auto;text-decoration-color:#000000;color:#000000;shape-rendering:auto;solid-color:#000000;text-decoration-line:none;fill:#191919;fill-rule:evenodd;mix-blend-mode:normal;block-progression:tb;text-indent:0;image-rendering:auto;white-space:normal;text-decoration-style:solid;isolation:auto;text-transform:none" d="m162.85 135.3v3.3555h1.3008v-3.3555h-1.3008z"/>   <path style="color-rendering:auto;text-decoration-color:#000000;color:#000000;shape-rendering:auto;solid-color:#000000;text-decoration-line:none;fill:#191919;fill-rule:evenodd;mix-blend-mode:normal;block-progression:tb;text-indent:0;image-rendering:auto;white-space:normal;text-decoration-style:solid;isolation:auto;text-transform:none" d="m154.46 128.96v1.2988h3.3535v-1.2988h-3.3535z"/>   <path style="color-rendering:auto;text-decoration-color:#000000;color:#000000;shape-rendering:auto;solid-color:#000000;text-decoration-line:none;fill:#191919;fill-rule:evenodd;mix-blend-mode:normal;block-progression:tb;text-indent:0;image-rendering:auto;white-space:normal;text-decoration-style:solid;isolation:auto;text-transform:none" d="m169.19 128.96v1.2988h3.3535v-1.2988h-3.3535z"/>  </g> </g></svg>';
+  var geolocator_icon = '<?xml version="1.0" encoding="UTF-8" standalone="no"?>\n<svg xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns="http://www.w3.org/2000/svg" height="7.0556mm" width="7.0556mm" version="1.1"\nxmlns:cc="http://creativecommons.org/ns#" xmlns:dc="http://purl.org/dc/elements/1.1/" viewBox="0 0 24.999999 24.999999">\n<metadata>  <rdf:RDF>   <cc:Work rdf:about="">    <dc:format>image/svg+xml</dc:format>    <dc:type rdf:resource="http://purl.org/dc/dcmitype/StillImage"/>\n<dc:title/>   </cc:Work>  </rdf:RDF> </metadata> <g transform="translate(-151.39 -117.97)">  <g transform="translate(.39250 .85750)">\n<path style="color-rendering:auto;text-decoration-color:#000000;color:#000000;shape-rendering:auto;solid-color:#000000;text-decoration-line:none;fill:#191919;mix-blend-mode:normal;block-progression:tb;text-indent:0;image-rendering:auto;white-space:normal;text-decoration-style:solid;isolation:auto;text-transform:none" d="m163.5 123.27c-3.4931 0-6.3379 2.8448-6.3379 6.3379s2.8448 6.3398 6.3379 6.3398 6.3379-2.8467 6.3379-6.3398-2.8448-6.3379-6.3379-6.3379zm0 1.3008c2.7905 0 5.0391 2.2466 5.0391 5.0371s-2.2485 5.0391-5.0391 5.0391c-2.7905 0-5.0391-2.2485-5.0391-5.0391 0-2.7905 2.2485-5.0371 5.0391-5.0371z"/><circle cx="163.5" cy="129.61" r="1.9312" style="fill:#191919"/>\n<path style="color-rendering:auto;text-decoration-color:#000000;color:#000000;shape-rendering:auto;solid-color:#000000;text-decoration-line:none;fill:#191919;fill-rule:evenodd;mix-blend-mode:normal;block-progression:tb;text-indent:0;image-rendering:auto;white-space:normal;text-decoration-style:solid;isolation:auto;text-transform:none" d="m162.85 120.57v3.3555h1.3008v-3.3555h-1.3008z"/>   <path style="color-rendering:auto;text-decoration-color:#000000;color:#000000;shape-rendering:auto;solid-color:#000000;text-decoration-line:none;fill:#191919;fill-rule:evenodd;mix-blend-mode:normal;block-progression:tb;text-indent:0;image-rendering:auto;white-space:normal;text-decoration-style:solid;isolation:auto;text-transform:none" d="m162.85 135.3v3.3555h1.3008v-3.3555h-1.3008z"/>   <path style="color-rendering:auto;text-decoration-color:#000000;color:#000000;shape-rendering:auto;solid-color:#000000;text-decoration-line:none;fill:#191919;fill-rule:evenodd;mix-blend-mode:normal;block-progression:tb;text-indent:0;image-rendering:auto;white-space:normal;text-decoration-style:solid;isolation:auto;text-transform:none" d="m154.46 128.96v1.2988h3.3535v-1.2988h-3.3535z"/>\n<path style="color-rendering:auto;text-decoration-color:#000000;color:#000000;shape-rendering:auto;solid-color:#000000;text-decoration-line:none;fill:#191919;fill-rule:evenodd;mix-blend-mode:normal;block-progression:tb;text-indent:0;image-rendering:auto;white-space:normal;text-decoration-style:solid;isolation:auto;text-transform:none" d="m169.19 128.96v1.2988h3.3535v-1.2988h-3.3535z"/>  </g> </g></svg>';
 
   var markerUrl = 'https://rawgit.com/webmapper/nlmaps/master/dist/assets/rijksoverheid-marker.png';
 
@@ -851,12 +870,15 @@ var nlmapsOpenlayers_cjs = createCommonjsModule(function (module, exports) {
     if (name in BASEMAP_PROVIDERS) {
       var provider = BASEMAP_PROVIDERS[name];
 
+      // eslint-disable-next-line no-console
       if (provider.deprecated && console && console.warn) {
+        // eslint-disable-next-line no-console
         console.warn(name + " is a deprecated style; it will be redirected to its replacement. For performance improvements, please change your reference.");
       }
 
       return provider;
     } else {
+      // eslint-disable-next-line no-console
       console.error('NL Maps error: You asked for a style which does not exist! Available styles: ' + Object.keys(PROVIDERS).join(', '));
     }
   }
@@ -868,12 +890,15 @@ var nlmapsOpenlayers_cjs = createCommonjsModule(function (module, exports) {
     if (name in WMS_PROVIDERS) {
       var wmsProvider = WMS_PROVIDERS[name];
 
+      // eslint-disable-next-line no-console
       if (wmsProvider.deprecated && console && console.warn) {
+        // eslint-disable-next-line no-console
         console.warn(name + " is a deprecated style; it will be redirected to its replacement. For performance improvements, please change your reference.");
       }
 
       return wmsProvider;
     } else {
+      // eslint-disable-next-line no-console
       console.error('NL Maps error: You asked for a style which does not exist! Available styles: ' + Object.keys(WMS_PROVIDERS).join(', '));
     }
   }
@@ -914,6 +939,7 @@ var nlmapsOpenlayers_cjs = createCommonjsModule(function (module, exports) {
     var lat = void 0;
     var lng = void 0;
 
+    // eslint-disable-next-line eqeqeq
     if (typeof latLngObject == 'undefined') {
       var mapCenter = getMapCenter(map);
       lat = mapCenter.latitude;
@@ -973,7 +999,7 @@ var nlmapsOpenlayers_cjs = createCommonjsModule(function (module, exports) {
     myControlEl.style.right = '.5em';
     myControlEl.style.top = '.5em';
 
-    myControlEl.addEventListener('click', function (e) {
+    myControlEl.addEventListener('click', function () {
       geolocator.start();
     });
 
@@ -1040,14 +1066,16 @@ var nlmapsGooglemaps_cjs = createCommonjsModule(function (module, exports) {
   };
 
   function httpGetAsync(url) {
+    // eslint-disable-next-line no-unused-vars
     return new Promise(function (resolve, reject) {
       var xmlHttp = new XMLHttpRequest();
       xmlHttp.onreadystatechange = function () {
+        // eslint-disable-next-line eqeqeq
         if (xmlHttp.readyState == 4 && xmlHttp.status == 200) {
           resolve(JSON.parse(xmlHttp.responseText));
         }
       };
-      xmlHttp.open("GET", url, true); // true for asynchronous 
+      xmlHttp.open("GET", url, true); // true for asynchronous
       xmlHttp.send(null);
     });
   }
@@ -1076,7 +1104,7 @@ var nlmapsGooglemaps_cjs = createCommonjsModule(function (module, exports) {
   };
 
   /**
-   * Make a call to PDOK locatieserver v3 lookup service. This service provides information about objects found through the suggest service. For additional 
+   * Make a call to PDOK locatieserver v3 lookup service. This service provides information about objects found through the suggest service. For additional
    * documentation, check: https://github.com/PDOK/locatieserver/wiki/API-Locatieserver
    * @param {string} id The id of the feature that is to be looked up.
    */
@@ -1136,6 +1164,7 @@ var nlmapsGooglemaps_cjs = createCommonjsModule(function (module, exports) {
   geocoder.suggest = function (query) {
     var _this2 = this;
 
+    console.log('suggesting');
     if (query.length < 4) {
       this.clearSuggestResults();
       return;
@@ -1149,7 +1178,9 @@ var nlmapsGooglemaps_cjs = createCommonjsModule(function (module, exports) {
   geocoder.lookup = function (id) {
     var _this3 = this;
 
+    console.log('doing lookup');
     this.doLookupRequest(id).then(function (result) {
+      console.log('1 more lookup');
       _this3.zoomTo(result.centroide_ll, _this3.map);
       _this3.showLookupResult(result.weergavenaam);
       _this3.clearSuggestResults();
@@ -1186,12 +1217,12 @@ var nlmapsGooglemaps_cjs = createCommonjsModule(function (module, exports) {
         _this4.lookup(e.target.id);
       });
 
-      li.addEventListener('mouseenter', function (e) {
+      li.addEventListener('mouseenter', function () {
         li.style.background = '#6C62A6';
         li.style.color = '#FFFFFF';
       });
 
-      li.addEventListener('mouseleave', function (e) {
+      li.addEventListener('mouseleave', function () {
         li.style.background = '#FFFFFF';
         li.style.color = '#333';
       });
@@ -1330,7 +1361,7 @@ var nlmapsGooglemaps_cjs = createCommonjsModule(function (module, exports) {
     "luchtfoto": makeProvider("luchtfoto", "jpeg", 6, 19)
   };
 
-  var geolocator_icon = '<?xml version="1.0" encoding="UTF-8" standalone="no"?><svg xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns="http://www.w3.org/2000/svg" height="7.0556mm" width="7.0556mm" version="1.1" xmlns:cc="http://creativecommons.org/ns#" xmlns:dc="http://purl.org/dc/elements/1.1/" viewBox="0 0 24.999999 24.999999"> <metadata>  <rdf:RDF>   <cc:Work rdf:about="">    <dc:format>image/svg+xml</dc:format>    <dc:type rdf:resource="http://purl.org/dc/dcmitype/StillImage"/>    <dc:title/>   </cc:Work>  </rdf:RDF> </metadata> <g transform="translate(-151.39 -117.97)">  <g transform="translate(.39250 .85750)">   <path style="color-rendering:auto;text-decoration-color:#000000;color:#000000;shape-rendering:auto;solid-color:#000000;text-decoration-line:none;fill:#191919;mix-blend-mode:normal;block-progression:tb;text-indent:0;image-rendering:auto;white-space:normal;text-decoration-style:solid;isolation:auto;text-transform:none" d="m163.5 123.27c-3.4931 0-6.3379 2.8448-6.3379 6.3379s2.8448 6.3398 6.3379 6.3398 6.3379-2.8467 6.3379-6.3398-2.8448-6.3379-6.3379-6.3379zm0 1.3008c2.7905 0 5.0391 2.2466 5.0391 5.0371s-2.2485 5.0391-5.0391 5.0391c-2.7905 0-5.0391-2.2485-5.0391-5.0391 0-2.7905 2.2485-5.0371 5.0391-5.0371z"/>   <circle cx="163.5" cy="129.61" r="1.9312" style="fill:#191919"/>   <path style="color-rendering:auto;text-decoration-color:#000000;color:#000000;shape-rendering:auto;solid-color:#000000;text-decoration-line:none;fill:#191919;fill-rule:evenodd;mix-blend-mode:normal;block-progression:tb;text-indent:0;image-rendering:auto;white-space:normal;text-decoration-style:solid;isolation:auto;text-transform:none" d="m162.85 120.57v3.3555h1.3008v-3.3555h-1.3008z"/>   <path style="color-rendering:auto;text-decoration-color:#000000;color:#000000;shape-rendering:auto;solid-color:#000000;text-decoration-line:none;fill:#191919;fill-rule:evenodd;mix-blend-mode:normal;block-progression:tb;text-indent:0;image-rendering:auto;white-space:normal;text-decoration-style:solid;isolation:auto;text-transform:none" d="m162.85 135.3v3.3555h1.3008v-3.3555h-1.3008z"/>   <path style="color-rendering:auto;text-decoration-color:#000000;color:#000000;shape-rendering:auto;solid-color:#000000;text-decoration-line:none;fill:#191919;fill-rule:evenodd;mix-blend-mode:normal;block-progression:tb;text-indent:0;image-rendering:auto;white-space:normal;text-decoration-style:solid;isolation:auto;text-transform:none" d="m154.46 128.96v1.2988h3.3535v-1.2988h-3.3535z"/>   <path style="color-rendering:auto;text-decoration-color:#000000;color:#000000;shape-rendering:auto;solid-color:#000000;text-decoration-line:none;fill:#191919;fill-rule:evenodd;mix-blend-mode:normal;block-progression:tb;text-indent:0;image-rendering:auto;white-space:normal;text-decoration-style:solid;isolation:auto;text-transform:none" d="m169.19 128.96v1.2988h3.3535v-1.2988h-3.3535z"/>  </g> </g></svg>';
+  var geolocator_icon = '<?xml version="1.0" encoding="UTF-8" standalone="no"?>\n<svg xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns="http://www.w3.org/2000/svg" height="7.0556mm" width="7.0556mm" version="1.1"\nxmlns:cc="http://creativecommons.org/ns#" xmlns:dc="http://purl.org/dc/elements/1.1/" viewBox="0 0 24.999999 24.999999">\n<metadata>  <rdf:RDF>   <cc:Work rdf:about="">    <dc:format>image/svg+xml</dc:format>    <dc:type rdf:resource="http://purl.org/dc/dcmitype/StillImage"/>\n<dc:title/>   </cc:Work>  </rdf:RDF> </metadata> <g transform="translate(-151.39 -117.97)">  <g transform="translate(.39250 .85750)">\n<path style="color-rendering:auto;text-decoration-color:#000000;color:#000000;shape-rendering:auto;solid-color:#000000;text-decoration-line:none;fill:#191919;mix-blend-mode:normal;block-progression:tb;text-indent:0;image-rendering:auto;white-space:normal;text-decoration-style:solid;isolation:auto;text-transform:none" d="m163.5 123.27c-3.4931 0-6.3379 2.8448-6.3379 6.3379s2.8448 6.3398 6.3379 6.3398 6.3379-2.8467 6.3379-6.3398-2.8448-6.3379-6.3379-6.3379zm0 1.3008c2.7905 0 5.0391 2.2466 5.0391 5.0371s-2.2485 5.0391-5.0391 5.0391c-2.7905 0-5.0391-2.2485-5.0391-5.0391 0-2.7905 2.2485-5.0371 5.0391-5.0371z"/><circle cx="163.5" cy="129.61" r="1.9312" style="fill:#191919"/>\n<path style="color-rendering:auto;text-decoration-color:#000000;color:#000000;shape-rendering:auto;solid-color:#000000;text-decoration-line:none;fill:#191919;fill-rule:evenodd;mix-blend-mode:normal;block-progression:tb;text-indent:0;image-rendering:auto;white-space:normal;text-decoration-style:solid;isolation:auto;text-transform:none" d="m162.85 120.57v3.3555h1.3008v-3.3555h-1.3008z"/>   <path style="color-rendering:auto;text-decoration-color:#000000;color:#000000;shape-rendering:auto;solid-color:#000000;text-decoration-line:none;fill:#191919;fill-rule:evenodd;mix-blend-mode:normal;block-progression:tb;text-indent:0;image-rendering:auto;white-space:normal;text-decoration-style:solid;isolation:auto;text-transform:none" d="m162.85 135.3v3.3555h1.3008v-3.3555h-1.3008z"/>   <path style="color-rendering:auto;text-decoration-color:#000000;color:#000000;shape-rendering:auto;solid-color:#000000;text-decoration-line:none;fill:#191919;fill-rule:evenodd;mix-blend-mode:normal;block-progression:tb;text-indent:0;image-rendering:auto;white-space:normal;text-decoration-style:solid;isolation:auto;text-transform:none" d="m154.46 128.96v1.2988h3.3535v-1.2988h-3.3535z"/>\n<path style="color-rendering:auto;text-decoration-color:#000000;color:#000000;shape-rendering:auto;solid-color:#000000;text-decoration-line:none;fill:#191919;fill-rule:evenodd;mix-blend-mode:normal;block-progression:tb;text-indent:0;image-rendering:auto;white-space:normal;text-decoration-style:solid;isolation:auto;text-transform:none" d="m169.19 128.96v1.2988h3.3535v-1.2988h-3.3535z"/>  </g> </g></svg>';
 
   var markerUrl = 'https://rawgit.com/webmapper/nlmaps/master/dist/assets/rijksoverheid-marker.png';
 
@@ -1347,12 +1378,15 @@ var nlmapsGooglemaps_cjs = createCommonjsModule(function (module, exports) {
     if (name in BASEMAP_PROVIDERS) {
       var provider = BASEMAP_PROVIDERS[name];
 
+      // eslint-disable-next-line no-console
       if (provider.deprecated && console && console.warn) {
+        // eslint-disable-next-line no-console
         console.warn(name + " is a deprecated style; it will be redirected to its replacement. For performance improvements, please change your reference.");
       }
 
       return provider;
     } else {
+      // eslint-disable-next-line no-console
       console.error('NL Maps error: You asked for a style which does not exist! Available styles: ' + Object.keys(PROVIDERS).join(', '));
     }
   }
@@ -1364,12 +1398,15 @@ var nlmapsGooglemaps_cjs = createCommonjsModule(function (module, exports) {
     if (name in WMS_PROVIDERS) {
       var wmsProvider = WMS_PROVIDERS[name];
 
+      // eslint-disable-next-line no-console
       if (wmsProvider.deprecated && console && console.warn) {
+        // eslint-disable-next-line no-console
         console.warn(name + " is a deprecated style; it will be redirected to its replacement. For performance improvements, please change your reference.");
       }
 
       return wmsProvider;
     } else {
+      // eslint-disable-next-line no-console
       console.error('NL Maps error: You asked for a style which does not exist! Available styles: ' + Object.keys(WMS_PROVIDERS).join(', '));
     }
   }
@@ -1416,7 +1453,7 @@ var nlmapsGooglemaps_cjs = createCommonjsModule(function (module, exports) {
     controlUI.style.width = '26px';
     controlUI.style.borderRadius = '26px 26px';
     controlUI.style.margin = '.5em';
-    controlUI.addEventListener('click', function (e) {
+    controlUI.addEventListener('click', function () {
       geolocator.start();
     }, this);
     geolocator.on('position', function (position) {
@@ -1495,7 +1532,7 @@ var nlmapsGooglemaps_cjs = createCommonjsModule(function (module, exports) {
       var provider = getProvider(name);
       var GoogleLayerOpts = makeGoogleLayerOpts(provider);
       var layer = new google.maps.ImageMapType(GoogleLayerOpts);
-      //warning: tight coupling with nlmaps.createMap
+      // warning: tight coupling with nlmaps.createMap
       var ourmap = map || this.map || 'undefined';
       if (typeof ourmap !== 'undefined') {
         makeGoogleAttrControl(ourmap, provider.attribution);
@@ -1569,7 +1606,7 @@ var nlmapsGooglemaps_cjs = createCommonjsModule(function (module, exports) {
   function markerLayer(latLngObject) {
     var lat = void 0;
     var lng = void 0;
-
+    // eslint-disable-next-line eqeqeq
     if (typeof latLngObject == 'undefined') {
       var mapCenter = getMapCenter(map);
       lat = mapCenter.latitude;
@@ -1615,142 +1652,6 @@ var nlmapsGooglemaps_cjs_3 = nlmapsGooglemaps_cjs.getMapCenter;
 var nlmapsGooglemaps_cjs_4 = nlmapsGooglemaps_cjs.markerLayer;
 var nlmapsGooglemaps_cjs_5 = nlmapsGooglemaps_cjs.overlayLayer;
 var nlmapsGooglemaps_cjs_6 = nlmapsGooglemaps_cjs.bgLayer;
-
-function wmsBaseUrl(workSpaceName) {
-  return 'https://geodata.nationaalgeoregister.nl/' + workSpaceName + '/wms?';
-}
-
-function mapWmsProvider(name, options) {
-  const wmsParameters = {
-    workSpaceName: '',
-    layerName: '',
-    styleName: '',
-    url: '',
-    minZoom: 0,
-    maxZoom: 24
-  };
-
-  switch (name) {
-    case 'gebouwen':
-      wmsParameters.workSpaceName = 'bag';
-      wmsParameters.layerName = 'pand';
-      wmsParameters.styleName = '';
-      break;
-    case 'percelen':
-      wmsParameters.workSpaceName = 'kadastralekaartv3';
-      wmsParameters.layerName = 'kadastralekaart';
-      wmsParameters.styleName = '';
-      break;
-    case 'drone-no-fly-zones':
-      wmsParameters.workSpaceName = 'dronenoflyzones';
-      wmsParameters.layerName = 'luchtvaartgebieden,landingsite';
-      wmsParameters.styleName = '';
-      break;
-    case 'hoogte':
-      wmsParameters.workSpaceName = 'ahn2';
-      wmsParameters.layerName = 'ahn2_05m_int';
-      wmsParameters.styleName = 'ahn2:ahn2_05m_detail';
-      break;
-    case 'gemeenten':
-      wmsParameters.workSpaceName = 'bestuurlijkegrenzen';
-      wmsParameters.layerName = 'gemeenten';
-      wmsParameters.styleName = 'bestuurlijkegrenzen:bestuurlijkegrenzen_gemeentegrenzen';
-      break;
-    case 'provincies':
-      wmsParameters.workSpaceName = 'bestuurlijkegrenzen';
-      wmsParameters.layerName = 'provincies';
-      wmsParameters.styleName = 'bestuurlijkegrenzen:bestuurlijkegrenzen_provinciegrenzen';
-      break;
-    default:
-      wmsParameters.url = options.url;
-      wmsParameters.layerName = options.layerName;
-      wmsParameters.styleName = options.styleName;
-  }
-
-  wmsParameters.url = wmsBaseUrl(wmsParameters.workSpaceName);
-
-  return wmsParameters;
-}
-
-function makeWmsProvider(name) {
-  const wmsParameters = mapWmsProvider(name);
-  return {
-    url: wmsParameters.url,
-    service: 'WMS',
-    version: '1.1.1',
-    request: 'GetMap',
-    layers: wmsParameters.layerName,
-    styles: wmsParameters.styleName,
-    transparent: true,
-    format: 'image/png'
-  };
-}
-
-const WMS_PROVIDERS = {
-  "gebouwen": makeWmsProvider('gebouwen'),
-  "percelen": makeWmsProvider('percelen'),
-  "drone-no-fly-zones": makeWmsProvider('drone-no-fly-zones'),
-  "hoogte": makeWmsProvider('hoogte'),
-  "gemeenten": makeWmsProvider('gemeenten'),
-  "provincies": makeWmsProvider('provincies')
-};
-
-const lufostring = 'luchtfoto/rgb';
-const brtstring = 'tiles/service';
-const servicecrs = '/EPSG:3857';
-const attr = 'Kaartgegevens &copy; <a href="https://www.kadaster.nl">Kadaster</a> | <a href="https://www.verbeterdekaart.nl">Verbeter de kaart</a>';
-function baseUrl(name) {
-  return `https://geodata.nationaalgeoregister.nl/${name === 'luchtfoto' ? lufostring : brtstring}/wmts/`;
-}
-
-function mapLayerName(layername) {
-  let name;
-  switch (layername) {
-    case 'standaard':
-      name = 'brtachtergrondkaart';
-      break;
-    case 'grijs':
-      name = 'brtachtergrondkaartgrijs';
-      break;
-    case 'pastel':
-      name = 'brtachtergrondkaartpastel';
-      break;
-    case 'luchtfoto':
-      name = '2016_ortho25';
-      break;
-    default:
-      name = 'brtachtergrondkaart';
-  }
-  return name;
-}
-
-function makeProvider(name, format, minZoom, maxZoom) {
-  const baseurl = baseUrl(name);
-  const urlname = mapLayerName(name);
-  return {
-    "bare_url": [baseurl, urlname, servicecrs].join(""),
-    "url": [baseurl, urlname, servicecrs, "/{z}/{x}/{y}.", format].join(""),
-    "format": format,
-    "minZoom": minZoom,
-    "maxZoom": maxZoom,
-    "attribution": attr,
-    "name": `${name === 'luchtfoto' ? '' : 'NLMaps '} ${name}`
-  };
-}
-
-const BASEMAP_PROVIDERS = {
-  "standaard": makeProvider("standaard", "png", 6, 19),
-  "pastel": makeProvider("pastel", "png", 6, 19),
-  "grijs": makeProvider("grijs", "png", 6, 19),
-  "luchtfoto": makeProvider("luchtfoto", "jpeg", 6, 19)
-};
-
-/*parts copied from maps.stamen.com: https://github.com/stamen/maps.stamen.com/blob/master/js/tile.stamen.js
- * copyright (c) 2012, Stamen Design
- * under BSD 3-Clause license: https://github.com/stamen/maps.stamen.com/blob/master/LICENSE
- */
-//https://geodata.nationaalgeoregister.nl/tiles/service/wmts/
-//https://geodata.nationaalgeoregister.nl/luchtfoto/rgb/wmts/
 
 var emitonoff = createCommonjsModule(function (module) {
   var EmitOnOff = module.exports = function (thing) {
@@ -1852,6 +1753,7 @@ var GeoLocator = function GeoLocator(opts) {
       return state.started;
     },
     log: function log() {
+      // eslint-disable-next-line no-console
       console.log(state);
       return this;
     }
@@ -1861,7 +1763,7 @@ var GeoLocator = function GeoLocator(opts) {
 function geoLocator(opts) {
   if ('geolocation' in navigator) {
     var geolocator = emitonoff(GeoLocator(opts));
-    geolocator.on('position', function (position) {
+    geolocator.on('position', function () {
       this.stop();
     });
     return geolocator;
@@ -1873,10 +1775,10 @@ function geoLocator(opts) {
 
 // import { bgLayer as bgL, geoLocatorControl as glL } from 'nlmaps-leaflet';
 
-// import { bgLayer as bgOL, 
+// import { bgLayer as bgOL,
 //          geoLocatorControl as glO } from 'nlmaps-openlayers';
 
-// import { bgLayer as bgGM, 
+// import { bgLayer as bgGM,
 //          geoLocatorControl as glG } from 'nlmaps-googlemaps';
 
 var nlmaps = {
@@ -1960,8 +1862,8 @@ function initMap(lib, opts) {
   return map;
 }
 
-function addGoogleLayer(layer, map, name) {
-  // Markers are not considered to be a layer in google maps. Therefore, they must be added differently. 
+function addGoogleLayer(layer, map) {
+  // Markers are not considered to be a layer in google maps. Therefore, they must be added differently.
   // It is important that a layer has the title 'marker' in order to be recognized as a layer.
   if (layer.title === 'marker') {
     layer.setMap(map);
@@ -1990,13 +1892,13 @@ function addGoogleLayer(layer, map, name) {
   map.setMapTypeId(layer.name);
 }
 
-function addLayerToMap(lib, layer, map, name) {
+function addLayerToMap(lib, layer, map) {
   switch (lib) {
     case 'leaflet':
       map.addLayer(layer);
       break;
     case 'googlemaps':
-      addGoogleLayer(layer, map, name);
+      addGoogleLayer(layer, map);
       break;
     case 'openlayers':
       map.addLayer(layer);
@@ -2004,59 +1906,67 @@ function addLayerToMap(lib, layer, map, name) {
   }
 }
 function createBackgroundLayer(lib, map, name) {
+  var bgLayer$$1 = void 0;
   switch (lib) {
     case 'leaflet':
-      return nlmaps.leaflet.bgLayer(name);
+      bgLayer$$1 = nlmaps.leaflet.bgLayer(name);
       break;
     case 'googlemaps':
-      return nlmaps.googlemaps.bgLayer(map, name);
+      bgLayer$$1 = nlmaps.googlemaps.bgLayer(map, name);
       break;
     case 'openlayers':
-      return nlmaps.openlayers.bgLayer(name);
+      bgLayer$$1 = nlmaps.openlayers.bgLayer(name);
       break;
   }
+  return bgLayer$$1;
 }
 
 function createOverlayLayer(lib, map, name) {
+  var overlayLayer$$1 = void 0;
   switch (lib) {
     case 'leaflet':
-      return nlmaps.leaflet.overlayLayer(name);
+      overlayLayer$$1 = nlmaps.leaflet.overlayLayer(name);
       break;
     case 'googlemaps':
-      return nlmaps.googlemaps.overlayLayer(map, name);
+      overlayLayer$$1 = nlmaps.googlemaps.overlayLayer(map, name);
       break;
     case 'openlayers':
-      return nlmaps.openlayers.overlayLayer(name);
+      overlayLayer$$1 = nlmaps.openlayers.overlayLayer(name);
       break;
   }
+  return overlayLayer$$1;
 }
 
 function createMarkerLayer(lib, map, latLngObject) {
+  var markerLayer$$1 = void 0;
   switch (lib) {
     case 'leaflet':
-      return nlmaps.leaflet.markerLayer(latLngObject);
+      markerLayer$$1 = nlmaps.leaflet.markerLayer(latLngObject);
       break;
     case 'googlemaps':
-      return nlmaps.googlemaps.markerLayer(latLngObject);
+      markerLayer$$1 = nlmaps.googlemaps.markerLayer(latLngObject);
       break;
     case 'openlayers':
-      return nlmaps.openlayers.markerLayer(latLngObject);
+      markerLayer$$1 = nlmaps.openlayers.markerLayer(latLngObject);
       break;
   }
+  return markerLayer$$1;
 }
 
 function getMapCenter$$1(lib, map) {
+  var mapCenter = void 0;
   switch (lib) {
     case 'leaflet':
-      return nlmapsLeaflet_cjs_3(map);
+      mapCenter = nlmapsLeaflet_cjs_3(map);
       break;
     case 'googlemaps':
-      return nlmapsGooglemaps_cjs_3(map);
+      mapCenter = nlmapsGooglemaps_cjs_3(map);
       break;
     case 'openlayers':
-      return nlmapsOpenlayers_cjs_3(map);
+      mapCenter = nlmapsOpenlayers_cjs_3(map);
       break;
   }
+  return mapCenter;
 }
 
 function mergeOpts(defaultopts, useropts) {
@@ -2074,6 +1984,7 @@ nlmaps.createMap = function () {
       throw { message: 'one and only one map library can be defined. Please Refer to the documentation to see which map libraries are supported.' };
     }
   } catch (e) {
+    // eslint-disable-next-line no-console
     console.error(e.message);
   }
   var map = initMap(nlmaps.lib, opts);
@@ -2097,7 +2008,7 @@ nlmaps.createMap = function () {
   }
 
   // Overlay layer
-  if (opts.overlay && opts.overlay != 'false') {
+  if (opts.overlay && opts.overlay !== 'false') {
     var overlayLayer$$1 = createOverlayLayer(nlmaps.lib, map, opts.overlay);
     addLayerToMap(nlmaps.lib, overlayLayer$$1, map);
   }

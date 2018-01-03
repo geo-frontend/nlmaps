@@ -77,4 +77,4 @@ function mapWmsProvider(name, options){
     "provincies": makeWmsProvider('provincies')
   };
 
-  export { WMS_PROVIDERS }
+  export { WMS_PROVIDERS, makeWmsProvider }

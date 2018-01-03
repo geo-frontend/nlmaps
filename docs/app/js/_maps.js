@@ -321,7 +321,7 @@ export default class Maps {
         $('.map').hide(); // First hide all other maps
 
         $(`#${this.currentMap}`).remove();
-
+        $(`#nlmaps-geocoder-control-results`).remove();
         let $map = $(`<div class="map" id="${this.currentMap}">`).appendTo(this.$wizardMap);
 
         return $map;

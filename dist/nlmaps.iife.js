@@ -122,7 +122,6 @@ var nlmapsLeaflet_cjs = createCommonjsModule(function (module, exports) {
   geocoder.suggest = function (query) {
     var _this2 = this;
 
-    console.log('suggesting');
     if (query.length < 4) {
       this.clearSuggestResults();
       return;
@@ -136,9 +135,7 @@ var nlmapsLeaflet_cjs = createCommonjsModule(function (module, exports) {
   geocoder.lookup = function (id) {
     var _this3 = this;
 
-    console.log('doing lookup');
     this.doLookupRequest(id).then(function (result) {
-      console.log('1 more lookup');
       _this3.zoomTo(result.centroide_ll, _this3.map);
       _this3.showLookupResult(result.weergavenaam);
       _this3.clearSuggestResults();
@@ -156,7 +153,6 @@ var nlmapsLeaflet_cjs = createCommonjsModule(function (module, exports) {
   geocoder.showSuggestResults = function (results) {
     var _this4 = this;
 
-    console.log('show suggest result');
     var resultList = document.createElement('ul');
     resultList.style.padding = '10px 10px 2px 10px';
     resultList.style.width = '100%';
@@ -165,7 +161,6 @@ var nlmapsLeaflet_cjs = createCommonjsModule(function (module, exports) {
     resultList.style.boxShadow = '0 1px 5px rgba(0, 0, 0, 0.65)';
 
     results.forEach(function (result) {
-      console.log('show suggest result for loop');
 
       var li = document.createElement('li');
       li.innerHTML = result.weergavenaam;
@@ -175,7 +170,6 @@ var nlmapsLeaflet_cjs = createCommonjsModule(function (module, exports) {
       li.style.listStyleType = 'none';
       li.style.marginBottom = '5px';
       li.addEventListener('click', function (e) {
-        console.log(e.target.id, 'Lookup id');
         _this4.lookup(e.target.id);
       });
 
@@ -662,7 +656,6 @@ var nlmapsOpenlayers_cjs = createCommonjsModule(function (module, exports) {
   geocoder.suggest = function (query) {
     var _this2 = this;
 
-    console.log('suggesting');
     if (query.length < 4) {
       this.clearSuggestResults();
       return;
@@ -676,9 +669,7 @@ var nlmapsOpenlayers_cjs = createCommonjsModule(function (module, exports) {
   geocoder.lookup = function (id) {
     var _this3 = this;
 
-    console.log('doing lookup');
     this.doLookupRequest(id).then(function (result) {
-      console.log('1 more lookup');
       _this3.zoomTo(result.centroide_ll, _this3.map);
       _this3.showLookupResult(result.weergavenaam);
       _this3.clearSuggestResults();
@@ -696,7 +687,6 @@ var nlmapsOpenlayers_cjs = createCommonjsModule(function (module, exports) {
   geocoder.showSuggestResults = function (results) {
     var _this4 = this;
 
-    console.log('show suggest result');
     var resultList = document.createElement('ul');
     resultList.style.padding = '10px 10px 2px 10px';
     resultList.style.width = '100%';
@@ -705,7 +695,6 @@ var nlmapsOpenlayers_cjs = createCommonjsModule(function (module, exports) {
     resultList.style.boxShadow = '0 1px 5px rgba(0, 0, 0, 0.65)';
 
     results.forEach(function (result) {
-      console.log('show suggest result for loop');
 
       var li = document.createElement('li');
       li.innerHTML = result.weergavenaam;
@@ -715,7 +704,6 @@ var nlmapsOpenlayers_cjs = createCommonjsModule(function (module, exports) {
       li.style.listStyleType = 'none';
       li.style.marginBottom = '5px';
       li.addEventListener('click', function (e) {
-        console.log(e.target.id, 'Lookup id');
         _this4.lookup(e.target.id);
       });
 
@@ -1174,7 +1162,6 @@ var nlmapsGooglemaps_cjs = createCommonjsModule(function (module, exports) {
   geocoder.suggest = function (query) {
     var _this2 = this;
 
-    console.log('suggesting');
     if (query.length < 4) {
       this.clearSuggestResults();
       return;
@@ -1188,9 +1175,7 @@ var nlmapsGooglemaps_cjs = createCommonjsModule(function (module, exports) {
   geocoder.lookup = function (id) {
     var _this3 = this;
 
-    console.log('doing lookup');
     this.doLookupRequest(id).then(function (result) {
-      console.log('1 more lookup');
       _this3.zoomTo(result.centroide_ll, _this3.map);
       _this3.showLookupResult(result.weergavenaam);
       _this3.clearSuggestResults();
@@ -1208,7 +1193,6 @@ var nlmapsGooglemaps_cjs = createCommonjsModule(function (module, exports) {
   geocoder.showSuggestResults = function (results) {
     var _this4 = this;
 
-    console.log('show suggest result');
     var resultList = document.createElement('ul');
     resultList.style.padding = '10px 10px 2px 10px';
     resultList.style.width = '100%';
@@ -1217,7 +1201,6 @@ var nlmapsGooglemaps_cjs = createCommonjsModule(function (module, exports) {
     resultList.style.boxShadow = '0 1px 5px rgba(0, 0, 0, 0.65)';
 
     results.forEach(function (result) {
-      console.log('show suggest result for loop');
 
       var li = document.createElement('li');
       li.innerHTML = result.weergavenaam;
@@ -1227,7 +1210,6 @@ var nlmapsGooglemaps_cjs = createCommonjsModule(function (module, exports) {
       li.style.listStyleType = 'none';
       li.style.marginBottom = '5px';
       li.addEventListener('click', function (e) {
-        console.log(e.target.id, 'Lookup id');
         _this4.lookup(e.target.id);
       });
 

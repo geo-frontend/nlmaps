@@ -49,7 +49,15 @@ export default class Maps {
     }
 
     handleForm() {
-        this.$wizardForm.on('change', () => {
+        this.$wizardForm.on('change', (e) => {
+            // NOTE: Fallback for geocoder. This prevents the view from refreshing when clicking on a geocoding result.
+            if (e.originalEvent != null) {
+                const isGeocoder = e.originalEvent.target.id == 'nlmaps-geocoder-control-input';
+                if (isGeocoder) {
+                    return;
+                }
+            }
+
             this.wizardFormValues = this.$wizardForm.serializeArray();
             this.wizardMapService = this.wizardFormValues[0].value;
             this.wizardMapColor = this.wizardFormValues[1].value;
@@ -58,6 +66,7 @@ export default class Maps {
             this.wizardShowGeocoder = this.wizardFormValues[4].value;
             this.currentUrl = baseTileUrl;
             this.extension = 'png';
+            
             switch (this.wizardMapColor) {
                 case 'default':
                     this.backgroundLayerName = 'standaard';
@@ -290,7 +299,7 @@ export default class Maps {
     setGeoLocation(coords) {
         this.latitude = coords.latitude;
         this.longitude = coords.longitude;
-
+        coonsole.log('Running another update cycle');
         switch (this.currentMap) {
             case 'google-maps':
                 this.setGoogleMap();
@@ -308,6 +317,7 @@ export default class Maps {
     }
 
     createMap() {
+        console.log('running creation cycle', this);
         $('.map').hide(); // First hide all other maps
 
         $(`#${this.currentMap}`).remove();

@@ -100,7 +100,6 @@ geocoder.createControl = function(zoomFunction, map) {
 }
 
 geocoder.suggest = function(query) {
-    console.log('suggesting');
     if (query.length < 4) {
         this.clearSuggestResults();
         return;
@@ -112,9 +111,7 @@ geocoder.suggest = function(query) {
 }
 
 geocoder.lookup = function (id) {
-    console.log('doing lookup')
     this.doLookupRequest(id).then((result) => {
-        console.log('1 more lookup')
         this.zoomTo(result.centroide_ll, this.map);
         this.showLookupResult(result.weergavenaam);
         this.clearSuggestResults();
@@ -130,7 +127,6 @@ geocoder.showLookupResult = function(name) {
 }
 
 geocoder.showSuggestResults = function(results) {
-    console.log('show suggest result');
     const resultList = document.createElement('ul');
     resultList.style.padding = '10px 10px 2px 10px';
     resultList.style.width = '100%';
@@ -139,7 +135,6 @@ geocoder.showSuggestResults = function(results) {
     resultList.style.boxShadow = '0 1px 5px rgba(0, 0, 0, 0.65)';
 
     results.forEach((result) => {
-        console.log('show suggest result for loop');
 
         const li = document.createElement('li');
         li.innerHTML = result.weergavenaam;
@@ -149,7 +144,6 @@ geocoder.showSuggestResults = function(results) {
         li.style.listStyleType = 'none';
         li.style.marginBottom = '5px';
         li.addEventListener('click', (e) => {
-            console.log(e.target.id, 'Lookup id');
             this.lookup(e.target.id);
         });
 

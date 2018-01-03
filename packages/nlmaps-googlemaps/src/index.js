@@ -36,7 +36,7 @@ function geoLocatorControl (geolocator, map){
     controlUI.style.width = '26px';
     controlUI.style.borderRadius = '26px 26px';
     controlUI.style.margin = '.5em';
-    controlUI.addEventListener( 'click', function(e){
+    controlUI.addEventListener( 'click', function(){
       geolocator.start();
     }, this);
     geolocator.on('position', function(position) {
@@ -109,7 +109,7 @@ function bgLayer (map, name='standaard') {
     const provider = getProvider(name);
     const GoogleLayerOpts = makeGoogleLayerOpts(provider);
     let layer = new google.maps.ImageMapType(GoogleLayerOpts);
-    //warning: tight coupling with nlmaps.createMap
+    // warning: tight coupling with nlmaps.createMap
     let ourmap =  map || this.map || 'undefined';
     if (typeof ourmap !== 'undefined') {
       makeGoogleAttrControl(ourmap, provider.attribution)
@@ -174,14 +174,14 @@ function overlayLayer(map=map, name) {
   const wmsTiledOptions = getWmsTiledOptions(wmsProvider);
   const wmsLayer = new WMSTiled(map, wmsTiledOptions);
   wmsLayer.name = 'wms';
-  
+
   return wmsLayer;
 }
 
-function markerLayer(latLngObject) {  
+function markerLayer(latLngObject) {
   let lat;
   let lng;
-
+  // eslint-disable-next-line eqeqeq
   if (typeof latLngObject == 'undefined') {
     const mapCenter = getMapCenter(map);
     lat = mapCenter.latitude;
@@ -202,7 +202,7 @@ function markerLayer(latLngObject) {
 
 function getMapCenter(map) {
   return {
-    latitude: map.getCenter().lat(), 
+    latitude: map.getCenter().lat(),
     longitude: map.getCenter().lng()
   };
 }

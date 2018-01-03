@@ -11,21 +11,14 @@
     "sourceType": "module"
   },
   "rules": {
-    "indent": [
-      "error",
-      2
-    ],
-    "linebreak-style": [
-      "error",
-      "unix"
-    ],
-    "quotes": [
-      "error",
-      "single"
-    ],
-    "semi": [
-      "error",
-      "always"
-    ]
+    "linebreak-style": "off",
+    "comma-dangle": "off",
+    "max-len": ["error", { "code": 160 }],
+    "no-else-return": "off",
+    "eqeqeq": ["error", "always", { "null": "ignore" }],
+    "arrow-body-style": "off", // ["error", "as-needed"],
+    "no-plusplus": "off",
+    "no-else-return": "off",
+    "no-undef": "off" // is set to off as old-school non-es6 module imports are frequently used.
   }
 }

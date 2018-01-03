@@ -4,14 +4,16 @@ const geocoder = {
 };
 
 function httpGetAsync(url) {
+    // eslint-disable-next-line no-unused-vars
     return new Promise((resolve, reject) => {
         var xmlHttp = new XMLHttpRequest();
-        xmlHttp.onreadystatechange = function() { 
+        xmlHttp.onreadystatechange = function() {
+            // eslint-disable-next-line eqeqeq
             if (xmlHttp.readyState == 4 && xmlHttp.status == 200) {
-                resolve(JSON.parse(xmlHttp.responseText));  
+                resolve(JSON.parse(xmlHttp.responseText));
             }
         }
-        xmlHttp.open("GET", url, true); // true for asynchronous 
+        xmlHttp.open("GET", url, true); // true for asynchronous
         xmlHttp.send(null);
     });
 }
@@ -24,7 +26,7 @@ function wktPointToGeoJson(wktPoint) {
     const x = parseFloat(coordinateTuple.split(' ')[0]);
     const y = parseFloat(coordinateTuple.split(' ')[1]);
 
-    return { 
+    return {
         type: 'Point',
         coordinates: [x,y]
     }
@@ -41,7 +43,7 @@ geocoder.doSuggestRequest = function(searchTerm) {
 }
 
 /**
- * Make a call to PDOK locatieserver v3 lookup service. This service provides information about objects found through the suggest service. For additional 
+ * Make a call to PDOK locatieserver v3 lookup service. This service provides information about objects found through the suggest service. For additional
  * documentation, check: https://github.com/PDOK/locatieserver/wiki/API-Locatieserver
  * @param {string} id The id of the feature that is to be looked up.
  */
@@ -96,7 +98,7 @@ geocoder.createControl = function(zoomFunction, map) {
 
     return container;
 }
-  
+
 geocoder.suggest = function(query) {
     if (query.length < 4) {
         this.clearSuggestResults();
@@ -115,15 +117,15 @@ geocoder.lookup = function (id) {
         this.clearSuggestResults();
     });
 }
-  
+
 geocoder.clearSuggestResults = function() {
     document.getElementById('nlmaps-geocoder-control-results').innerHTML = '';
 }
-  
+
 geocoder.showLookupResult = function(name) {
     document.getElementById('nlmaps-geocoder-control-input').value = name;
 }
-  
+
 geocoder.showSuggestResults = function(results) {
     const resultList = document.createElement('ul');
     resultList.style.padding = '10px 10px 2px 10px';
@@ -131,7 +133,7 @@ geocoder.showSuggestResults = function(results) {
     resultList.style.background = '#FFFFFF';
     resultList.style.borderRadius = '5px 5px';
     resultList.style.boxShadow = '0 1px 5px rgba(0, 0, 0, 0.65)';
-    
+
     results.forEach((result) => {
         const li = document.createElement('li');
         li.innerHTML = result.weergavenaam;
@@ -144,12 +146,12 @@ geocoder.showSuggestResults = function(results) {
             this.lookup(e.target.id);
         });
 
-        li.addEventListener('mouseenter', (e) => {
+        li.addEventListener('mouseenter', () => {
             li.style.background = '#6C62A6';
             li.style.color = '#FFFFFF';
         });
 
-        li.addEventListener('mouseleave', (e) => {
+        li.addEventListener('mouseleave', () => {
             li.style.background = '#FFFFFF';
             li.style.color = '#333';
         });

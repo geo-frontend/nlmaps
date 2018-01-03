@@ -29,7 +29,7 @@ L.NlmapsOverlayLayer = L.TileLayer.WMS.extend({
       layers: wmsProvider.layers,
       styles: wmsProvider.styles,
       version: wmsProvider.version,
-      transparent: wmsProvider.transparent, 
+      transparent: wmsProvider.transparent,
       format: wmsProvider.format
     });
     L.TileLayer.WMS.prototype.initialize.call(this, wmsProvider.url, wmsParams);
@@ -74,7 +74,7 @@ L.Control.GeoLocatorControl = L.Control.extend({
     function moveMap(position){
       map.panTo([position.coords.latitude,position.coords.longitude])
     }
-    L.DomEvent.on(div, 'click', function(e){
+    L.DomEvent.on(div, 'click', function(){
       this.options.geolocator.start();
       L.DomUtil.addClass(div, 'started');
     }, this);
@@ -85,7 +85,9 @@ L.Control.GeoLocatorControl = L.Control.extend({
     })
     return div;
   },
-  onRemove: function(map){}
+  onRemove: function(map){
+    return map;
+  }
 });
 
 
@@ -100,6 +102,7 @@ function markerLayer(latLngObject) {
     let lat;
     let lng;
     // LatLngObject should always be defined when it is called from the main package.
+    // eslint-disable-next-line eqeqeq
     if (typeof latLngObject == 'undefined') {
       const center = getMapCenter(map);
       lat = center.latitude;
@@ -131,7 +134,7 @@ function overlayLayer(name) {
 }
 
 function geoLocatorControl(geolocator) {
-  if (typeof L !== 'undefined' && typeof L === 'object') {
+  if (typeof L !== 'undefined' && typeof L == 'object') {
     return L.geoLocatorControl(geolocator);
   }
 }
@@ -147,12 +150,12 @@ function geocoderControl(map) {
 function getMapCenter(map) {
   const latLngObject = map.getCenter();
   return {
-    latitude: latLngObject.lat, 
+    latitude: latLngObject.lat,
     longitude: latLngObject.lng
   };
 }
 
-// Until the building works properly, this is here. Should be in browser-test.js /// 
+// Until the building works properly, this is here. Should be in browser-test.js ///
 // var map = L.map('map').setView([52, 5], 10);
 // console.log(map);
 // var standaard = bgLayer('pastel');

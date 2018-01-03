@@ -130,6 +130,7 @@ geocoder.showLookupResult = function(name) {
 }
 
 geocoder.showSuggestResults = function(results) {
+    console.log('show suggest result');
     const resultList = document.createElement('ul');
     resultList.style.padding = '10px 10px 2px 10px';
     resultList.style.width = '100%';
@@ -138,6 +139,8 @@ geocoder.showSuggestResults = function(results) {
     resultList.style.boxShadow = '0 1px 5px rgba(0, 0, 0, 0.65)';
 
     results.forEach((result) => {
+        console.log('show suggest result for loop');
+
         const li = document.createElement('li');
         li.innerHTML = result.weergavenaam;
         li.id = result.id;

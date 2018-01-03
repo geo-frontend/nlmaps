@@ -146,6 +146,7 @@ geocoder.showSuggestResults = function(results) {
         li.style.listStyleType = 'none';
         li.style.marginBottom = '5px';
         li.addEventListener('click', (e) => {
+            console.log(e.target.id, 'Lookup id');
             this.lookup(e.target.id);
         });
 

@@ -27,6 +27,8 @@ L.NlmapsOverlayLayer = L.TileLayer.WMS.extend({
     const wmsProvider = getWmsProvider(name);
     const wmsParams = L.Util.extend({}, options, {
       layers: wmsProvider.layers,
+      maxZoom: 24,
+      minZoom: 1,
       styles: wmsProvider.styles,
       version: wmsProvider.version,
       transparent: wmsProvider.transparent,

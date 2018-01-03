@@ -172,6 +172,7 @@ var nlmapsLeaflet_cjs = createCommonjsModule(function (module, exports) {
       li.style.listStyleType = 'none';
       li.style.marginBottom = '5px';
       li.addEventListener('click', function (e) {
+        console.log(e.target.id, 'Lookup id');
         _this4.lookup(e.target.id);
       });
 
@@ -408,6 +409,8 @@ var nlmapsLeaflet_cjs = createCommonjsModule(function (module, exports) {
         var wmsProvider = getWmsProvider(name);
         var wmsParams = L.Util.extend({}, options, {
           layers: wmsProvider.layers,
+          maxZoom: 24,
+          minZoom: 1,
           styles: wmsProvider.styles,
           version: wmsProvider.version,
           transparent: wmsProvider.transparent,
@@ -706,6 +709,7 @@ var nlmapsOpenlayers_cjs = createCommonjsModule(function (module, exports) {
       li.style.listStyleType = 'none';
       li.style.marginBottom = '5px';
       li.addEventListener('click', function (e) {
+        console.log(e.target.id, 'Lookup id');
         _this4.lookup(e.target.id);
       });
 
@@ -1214,6 +1218,7 @@ var nlmapsGooglemaps_cjs = createCommonjsModule(function (module, exports) {
       li.style.listStyleType = 'none';
       li.style.marginBottom = '5px';
       li.addEventListener('click', function (e) {
+        console.log(e.target.id, 'Lookup id');
         _this4.lookup(e.target.id);
       });
 

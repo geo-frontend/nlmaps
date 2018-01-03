@@ -224,6 +224,8 @@ if (typeof L !== 'undefined' && (typeof L === 'undefined' ? 'undefined' : _typeo
       var wmsProvider = getWmsProvider(name);
       var wmsParams = L.Util.extend({}, options, {
         layers: wmsProvider.layers,
+        maxZoom: 24,
+        minZoom: 1,
         styles: wmsProvider.styles,
         version: wmsProvider.version,
         transparent: wmsProvider.transparent,

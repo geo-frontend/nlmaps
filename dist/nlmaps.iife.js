@@ -156,6 +156,7 @@ var nlmapsLeaflet_cjs = createCommonjsModule(function (module, exports) {
   geocoder.showSuggestResults = function (results) {
     var _this4 = this;
 
+    console.log('show suggest result');
     var resultList = document.createElement('ul');
     resultList.style.padding = '10px 10px 2px 10px';
     resultList.style.width = '100%';
@@ -164,6 +165,8 @@ var nlmapsLeaflet_cjs = createCommonjsModule(function (module, exports) {
     resultList.style.boxShadow = '0 1px 5px rgba(0, 0, 0, 0.65)';
 
     results.forEach(function (result) {
+      console.log('show suggest result for loop');
+
       var li = document.createElement('li');
       li.innerHTML = result.weergavenaam;
       li.id = result.id;
@@ -693,6 +696,7 @@ var nlmapsOpenlayers_cjs = createCommonjsModule(function (module, exports) {
   geocoder.showSuggestResults = function (results) {
     var _this4 = this;
 
+    console.log('show suggest result');
     var resultList = document.createElement('ul');
     resultList.style.padding = '10px 10px 2px 10px';
     resultList.style.width = '100%';
@@ -701,6 +705,8 @@ var nlmapsOpenlayers_cjs = createCommonjsModule(function (module, exports) {
     resultList.style.boxShadow = '0 1px 5px rgba(0, 0, 0, 0.65)';
 
     results.forEach(function (result) {
+      console.log('show suggest result for loop');
+
       var li = document.createElement('li');
       li.innerHTML = result.weergavenaam;
       li.id = result.id;
@@ -1202,6 +1208,7 @@ var nlmapsGooglemaps_cjs = createCommonjsModule(function (module, exports) {
   geocoder.showSuggestResults = function (results) {
     var _this4 = this;
 
+    console.log('show suggest result');
     var resultList = document.createElement('ul');
     resultList.style.padding = '10px 10px 2px 10px';
     resultList.style.width = '100%';
@@ -1210,6 +1217,8 @@ var nlmapsGooglemaps_cjs = createCommonjsModule(function (module, exports) {
     resultList.style.boxShadow = '0 1px 5px rgba(0, 0, 0, 0.65)';
 
     results.forEach(function (result) {
+      console.log('show suggest result for loop');
+
       var li = document.createElement('li');
       li.innerHTML = result.weergavenaam;
       li.id = result.id;

@@ -60,8 +60,8 @@ function markerLayer(latLngObject) {
   });
 }
 
-function overlayLayer(name) {
-  const wmsProvider = getWmsProvider(name);
+function overlayLayer(name, options) {
+  const wmsProvider = getWmsProvider(name, options);
   if (typeof ol === "object") {
     return new ol.layer.Tile({
       source: new ol.source.TileWMS({

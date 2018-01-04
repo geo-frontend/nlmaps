@@ -24,7 +24,9 @@ L.nlmapsBgLayer = function (options, source) {
 
 L.NlmapsOverlayLayer = L.TileLayer.WMS.extend({
   initialize: function(name = '', options) {
-    const wmsProvider = getWmsProvider(name);
+    const wmsProvider = getWmsProvider(name, options);
+    const url = wmsProvider.url;
+    delete wmsProvider.url;
     const wmsParams = L.Util.extend({}, options, {
       layers: wmsProvider.layers,
       maxZoom: 24,
@@ -34,7 +36,7 @@ L.NlmapsOverlayLayer = L.TileLayer.WMS.extend({
       transparent: wmsProvider.transparent,
       format: wmsProvider.format
     });
-    L.TileLayer.WMS.prototype.initialize.call(this, wmsProvider.url, wmsParams);
+    L.TileLayer.WMS.prototype.initialize.call(this, url, wmsParams);
   }
 });
 
@@ -129,9 +131,9 @@ function bgLayer(name) {
   }
 }
 
-function overlayLayer(name) {
+function overlayLayer(name, options) {
   if (typeof L !== 'undefined' && typeof L === 'object') {
-    return L.nlmapsOverlayLayer(name);
+    return L.nlmapsOverlayLayer(name, options);
   }
 }
 
@@ -159,14 +161,14 @@ function getMapCenter(map) {
 
 // Until the building works properly, this is here. Should be in browser-test.js ///
 // var map = L.map('map').setView([52, 5], 10);
-// console.log(map);
 // var standaard = bgLayer('pastel');
-// const overlay = overlayLayer('gebouwen');
-// const marker = markerLayer();
+// const overlay = overlayLayer('drone-no-fly-zones', {
+//   url: 'https://geodata.nationaalgeoregister.nl/drone-no-fly-zones/wms?',
+//   layerName: 'luchtvaartgebieden,landingsite',
+//   styleName: ''
+// });
 
 // standaard.addTo(map);
 // overlay.addTo(map);
-// marker.addTo(map);
-// geocoderControl(map);
-// L.geocoderControl(geocoder).addTo(map);
+
 export { bgLayer, overlayLayer, markerLayer, getMapCenter, geoLocatorControl, geocoderControl};

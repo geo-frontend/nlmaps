@@ -169,8 +169,8 @@ function WMSTiled(mapObject, wmsTiledOptions) {
     return mapObject.overlayMapTypes.push(layer);
 }
 
-function overlayLayer(map=map, name) {
-  const wmsProvider = getWmsProvider(name);
+function overlayLayer(map=map, name, options) {
+  const wmsProvider = getWmsProvider(name, options);
   const wmsTiledOptions = getWmsTiledOptions(wmsProvider);
   const wmsLayer = new WMSTiled(map, wmsTiledOptions);
   wmsLayer.name = 'wms';
@@ -231,8 +231,8 @@ function geocoderControl(map) {
 // });
 // map.setMapTypeId('Brt Achtergrondkaart');
 
-// // var wmsLayer = overlayLayer(map, 'gebouwen');
-// // markerLayer();
+// var wmsLayer = overlayLayer(map, 'gebouwen');
+// markerLayer();
 
 // geocoderControl(map);
 

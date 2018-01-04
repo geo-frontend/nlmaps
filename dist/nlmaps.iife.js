@@ -238,14 +238,15 @@ var nlmapsLeaflet_cjs = createCommonjsModule(function (module, exports) {
         wmsParameters.layerName = options.layerName;
         wmsParameters.styleName = options.styleName;
     }
-
-    wmsParameters.url = wmsBaseUrl(wmsParameters.workSpaceName);
+    if (wmsParameters.url === '') {
+      wmsParameters.url = wmsBaseUrl(wmsParameters.workSpaceName);
+    }
 
     return wmsParameters;
   }
 
-  function makeWmsProvider(name) {
-    var wmsParameters = mapWmsProvider(name);
+  function makeWmsProvider(name, options) {
+    var wmsParameters = mapWmsProvider(name, options);
     return {
       url: wmsParameters.url,
       service: 'WMS',
@@ -350,21 +351,22 @@ var nlmapsLeaflet_cjs = createCommonjsModule(function (module, exports) {
   /*
    * Get the named wmsProvider, or throw an exception if it doesn't exist.
    **/
-  function getWmsProvider(name) {
+  function getWmsProvider(name, options) {
+    var wmsProvider = void 0;
     if (name in WMS_PROVIDERS) {
-      var wmsProvider = WMS_PROVIDERS[name];
+      wmsProvider = WMS_PROVIDERS[name];
 
       // eslint-disable-next-line no-console
       if (wmsProvider.deprecated && console && console.warn) {
         // eslint-disable-next-line no-console
-        console.warn(name + " is a deprecated style; it will be redirected to its replacement. For performance improvements, please change your reference.");
+        console.warn(name + " is a deprecated wms; it will be redirected to its replacement. For performance improvements, please change your reference.");
       }
-
-      return wmsProvider;
     } else {
+      wmsProvider = makeWmsProvider(name, options);
       // eslint-disable-next-line no-console
-      console.error('NL Maps error: You asked for a style which does not exist! Available styles: ' + Object.keys(WMS_PROVIDERS).join(', '));
+      console.log('NL Maps: You asked for a wms which does not exist! Available wmses: ' + Object.keys(WMS_PROVIDERS).join(', ') + '. Provide an options object to make your own WMS.');
     }
+    return wmsProvider;
   }
 
   var _typeof$$1 = typeof Symbol === "function" && _typeof(Symbol.iterator) === "symbol" ? function (obj) {
@@ -403,7 +405,9 @@ var nlmapsLeaflet_cjs = createCommonjsModule(function (module, exports) {
         var name = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : '';
         var options = arguments[1];
 
-        var wmsProvider = getWmsProvider(name);
+        var wmsProvider = getWmsProvider(name, options);
+        var url = wmsProvider.url;
+        delete wmsProvider.url;
         var wmsParams = L.Util.extend({}, options, {
           layers: wmsProvider.layers,
           maxZoom: 24,
@@ -413,7 +417,7 @@ var nlmapsLeaflet_cjs = createCommonjsModule(function (module, exports) {
           transparent: wmsProvider.transparent,
           format: wmsProvider.format
         });
-        L.TileLayer.WMS.prototype.initialize.call(this, wmsProvider.url, wmsParams);
+        L.TileLayer.WMS.prototype.initialize.call(this, url, wmsParams);
       }
     });
 
@@ -505,9 +509,9 @@ var nlmapsLeaflet_cjs = createCommonjsModule(function (module, exports) {
     }
   }
 
-  function overlayLayer(name) {
+  function overlayLayer(name, options) {
     if (typeof L !== 'undefined' && (typeof L === 'undefined' ? 'undefined' : _typeof$$1(L)) === 'object') {
-      return L.nlmapsOverlayLayer(name);
+      return L.nlmapsOverlayLayer(name, options);
     }
   }
 
@@ -772,14 +776,15 @@ var nlmapsOpenlayers_cjs = createCommonjsModule(function (module, exports) {
         wmsParameters.layerName = options.layerName;
         wmsParameters.styleName = options.styleName;
     }
-
-    wmsParameters.url = wmsBaseUrl(wmsParameters.workSpaceName);
+    if (wmsParameters.url === '') {
+      wmsParameters.url = wmsBaseUrl(wmsParameters.workSpaceName);
+    }
 
     return wmsParameters;
   }
 
-  function makeWmsProvider(name) {
-    var wmsParameters = mapWmsProvider(name);
+  function makeWmsProvider(name, options) {
+    var wmsParameters = mapWmsProvider(name, options);
     return {
       url: wmsParameters.url,
       service: 'WMS',
@@ -884,21 +889,22 @@ var nlmapsOpenlayers_cjs = createCommonjsModule(function (module, exports) {
   /*
    * Get the named wmsProvider, or throw an exception if it doesn't exist.
    **/
-  function getWmsProvider(name) {
+  function getWmsProvider(name, options) {
+    var wmsProvider = void 0;
     if (name in WMS_PROVIDERS) {
-      var wmsProvider = WMS_PROVIDERS[name];
+      wmsProvider = WMS_PROVIDERS[name];
 
       // eslint-disable-next-line no-console
       if (wmsProvider.deprecated && console && console.warn) {
         // eslint-disable-next-line no-console
-        console.warn(name + " is a deprecated style; it will be redirected to its replacement. For performance improvements, please change your reference.");
+        console.warn(name + " is a deprecated wms; it will be redirected to its replacement. For performance improvements, please change your reference.");
       }
-
-      return wmsProvider;
     } else {
+      wmsProvider = makeWmsProvider(name, options);
       // eslint-disable-next-line no-console
-      console.error('NL Maps error: You asked for a style which does not exist! Available styles: ' + Object.keys(WMS_PROVIDERS).join(', '));
+      console.log('NL Maps: You asked for a wms which does not exist! Available wmses: ' + Object.keys(WMS_PROVIDERS).join(', ') + '. Provide an options object to make your own WMS.');
     }
+    return wmsProvider;
   }
 
   var _typeof$$1 = typeof Symbol === "function" && _typeof(Symbol.iterator) === "symbol" ? function (obj) {
@@ -964,8 +970,8 @@ var nlmapsOpenlayers_cjs = createCommonjsModule(function (module, exports) {
     });
   }
 
-  function overlayLayer(name) {
-    var wmsProvider = getWmsProvider(name);
+  function overlayLayer(name, options) {
+    var wmsProvider = getWmsProvider(name, options);
     if ((typeof ol === 'undefined' ? 'undefined' : _typeof$$1(ol)) === "object") {
       return new ol.layer.Tile({
         source: new ol.source.TileWMS({
@@ -1278,14 +1284,15 @@ var nlmapsGooglemaps_cjs = createCommonjsModule(function (module, exports) {
         wmsParameters.layerName = options.layerName;
         wmsParameters.styleName = options.styleName;
     }
-
-    wmsParameters.url = wmsBaseUrl(wmsParameters.workSpaceName);
+    if (wmsParameters.url === '') {
+      wmsParameters.url = wmsBaseUrl(wmsParameters.workSpaceName);
+    }
 
     return wmsParameters;
   }
 
-  function makeWmsProvider(name) {
-    var wmsParameters = mapWmsProvider(name);
+  function makeWmsProvider(name, options) {
+    var wmsParameters = mapWmsProvider(name, options);
     return {
       url: wmsParameters.url,
       service: 'WMS',
@@ -1390,21 +1397,22 @@ var nlmapsGooglemaps_cjs = createCommonjsModule(function (module, exports) {
   /*
    * Get the named wmsProvider, or throw an exception if it doesn't exist.
    **/
-  function getWmsProvider(name) {
+  function getWmsProvider(name, options) {
+    var wmsProvider = void 0;
     if (name in WMS_PROVIDERS) {
-      var wmsProvider = WMS_PROVIDERS[name];
+      wmsProvider = WMS_PROVIDERS[name];
 
       // eslint-disable-next-line no-console
       if (wmsProvider.deprecated && console && console.warn) {
         // eslint-disable-next-line no-console
-        console.warn(name + " is a deprecated style; it will be redirected to its replacement. For performance improvements, please change your reference.");
+        console.warn(name + " is a deprecated wms; it will be redirected to its replacement. For performance improvements, please change your reference.");
       }
-
-      return wmsProvider;
     } else {
+      wmsProvider = makeWmsProvider(name, options);
       // eslint-disable-next-line no-console
-      console.error('NL Maps error: You asked for a style which does not exist! Available styles: ' + Object.keys(WMS_PROVIDERS).join(', '));
+      console.log('NL Maps: You asked for a wms which does not exist! Available wmses: ' + Object.keys(WMS_PROVIDERS).join(', ') + '. Provide an options object to make your own WMS.');
     }
+    return wmsProvider;
   }
 
   var _typeof$$1 = typeof Symbol === "function" && _typeof(Symbol.iterator) === "symbol" ? function (obj) {
@@ -1590,8 +1598,9 @@ var nlmapsGooglemaps_cjs = createCommonjsModule(function (module, exports) {
   function overlayLayer() {
     var map = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : map;
     var name = arguments[1];
+    var options = arguments[2];
 
-    var wmsProvider = getWmsProvider(name);
+    var wmsProvider = getWmsProvider(name, options);
     var wmsTiledOptions = getWmsTiledOptions(wmsProvider);
     var wmsLayer = new WMSTiled(map, wmsTiledOptions);
     wmsLayer.name = 'wms';

@@ -5,7 +5,7 @@
 //https://geodata.nationaalgeoregister.nl/tiles/service/wmts/
 //https://geodata.nationaalgeoregister.nl/luchtfoto/rgb/wmts/
 import { geocoder } from './geocoder.js';
-import { WMS_PROVIDERS } from './wms.js';
+import { WMS_PROVIDERS, makeWmsProvider } from './wms.js';
 import { BASEMAP_PROVIDERS } from './basemap.js';
 import { geolocator_icon, marker_icon, search_icon, markerUrl } from './icons.js';
 
@@ -32,21 +32,24 @@ function getProvider(name) {
 /*
  * Get the named wmsProvider, or throw an exception if it doesn't exist.
  **/
-function getWmsProvider(name) {
+function getWmsProvider(name, options) {
+  let wmsProvider;
   if (name in WMS_PROVIDERS) {
-    let wmsProvider = WMS_PROVIDERS[name];
+    wmsProvider = WMS_PROVIDERS[name];
 
     // eslint-disable-next-line no-console
     if (wmsProvider.deprecated && console && console.warn) {
        // eslint-disable-next-line no-console
-      console.warn(name + " is a deprecated style; it will be redirected to its replacement. For performance improvements, please change your reference.");
+      console.warn(name + " is a deprecated wms; it will be redirected to its replacement. For performance improvements, please change your reference.");
     }
 
-    return wmsProvider;
   } else {
+    wmsProvider = makeWmsProvider(name, options);
     // eslint-disable-next-line no-console
-    console.error('NL Maps error: You asked for a style which does not exist! Available styles: ' +  Object.keys(WMS_PROVIDERS).join(', '));
+    console.log('NL Maps: You asked for a wms which does not exist! Available wmses: ' +  Object.keys(WMS_PROVIDERS).join(', ') +  '. Provide an options object to make your own WMS.');
+    
   }
+  return wmsProvider;  
 }
 
 

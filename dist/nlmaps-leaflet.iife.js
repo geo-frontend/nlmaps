@@ -51,14 +51,15 @@ function mapWmsProvider(name, options) {
       wmsParameters.layerName = options.layerName;
       wmsParameters.styleName = options.styleName;
   }
-
-  wmsParameters.url = wmsBaseUrl(wmsParameters.workSpaceName);
+  if (wmsParameters.url === '') {
+    wmsParameters.url = wmsBaseUrl(wmsParameters.workSpaceName);
+  }
 
   return wmsParameters;
 }
 
-function makeWmsProvider(name) {
-  const wmsParameters = mapWmsProvider(name);
+function makeWmsProvider(name, options) {
+  const wmsParameters = mapWmsProvider(name, options);
   return {
     url: wmsParameters.url,
     service: 'WMS',
@@ -168,21 +169,22 @@ function getProvider(name) {
 /*
  * Get the named wmsProvider, or throw an exception if it doesn't exist.
  **/
-function getWmsProvider(name) {
+function getWmsProvider(name, options) {
+  let wmsProvider;
   if (name in WMS_PROVIDERS) {
-    let wmsProvider = WMS_PROVIDERS[name];
+    wmsProvider = WMS_PROVIDERS[name];
 
     // eslint-disable-next-line no-console
     if (wmsProvider.deprecated && console && console.warn) {
       // eslint-disable-next-line no-console
-      console.warn(name + " is a deprecated style; it will be redirected to its replacement. For performance improvements, please change your reference.");
+      console.warn(name + " is a deprecated wms; it will be redirected to its replacement. For performance improvements, please change your reference.");
     }
-
-    return wmsProvider;
   } else {
+    wmsProvider = makeWmsProvider(name, options);
     // eslint-disable-next-line no-console
-    console.error('NL Maps error: You asked for a style which does not exist! Available styles: ' + Object.keys(WMS_PROVIDERS).join(', '));
+    console.log('NL Maps: You asked for a wms which does not exist! Available wmses: ' + Object.keys(WMS_PROVIDERS).join(', ') + '. Provide an options object to make your own WMS.');
   }
+  return wmsProvider;
 }
 
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) {
@@ -221,7 +223,9 @@ if (typeof L !== 'undefined' && (typeof L === 'undefined' ? 'undefined' : _typeo
       var name = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : '';
       var options = arguments[1];
 
-      var wmsProvider = getWmsProvider(name);
+      var wmsProvider = getWmsProvider(name, options);
+      var url = wmsProvider.url;
+      delete wmsProvider.url;
       var wmsParams = L.Util.extend({}, options, {
         layers: wmsProvider.layers,
         maxZoom: 24,
@@ -231,7 +235,7 @@ if (typeof L !== 'undefined' && (typeof L === 'undefined' ? 'undefined' : _typeo
         transparent: wmsProvider.transparent,
         format: wmsProvider.format
       });
-      L.TileLayer.WMS.prototype.initialize.call(this, wmsProvider.url, wmsParams);
+      L.TileLayer.WMS.prototype.initialize.call(this, url, wmsParams);
     }
   });
 

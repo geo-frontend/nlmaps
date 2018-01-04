@@ -276,11 +276,50 @@ For aerial imagery:
 
 ## Developing
 
-[Lerna](https://lernajs.io/) is used for optimising the workflow around managing multi-package JavaScript projects with git and npm. Because of some seeming subtleties of Rollup's interaction with Lerna or NPM, there is a different build script. Use the following procedure to publish the packages:
+### Installation/set up
 
-1. `node build-all.js` can't use npm run or lerna run because rollup can't handle non-externalized dependencies when lerna is symlinking them.
-2. `lerna exec npm -- install` If you need to update dependencies
-3. git `add` and `commit`
-4. `lerna publish` choose version numbers for each changed package
+To develop `nlmaps`, clone the repository and then in the directory run:
 
-Then go to the release page and annotate the latest release for the 'nlmaps' package.
+    lerna bootstrap
+    npm install
+
+`lerna bootstrap` symlinks cross-dependencies between the subpackages into each others' `node_modules` directory so that they can `require()` or `import` each other without having to actually download from npmjs.com
+
+### General development notes
+There are some issues when trying to call rollup from npm scripts, so there is a set of scripts in `scripts/` that should be called directly. The usage is as follows:
+
+* `node scripts/build` to build the source from `packages/PACKAGE/src` into `packages/PACKAGE/build` 
+* `node scripts/test` to run tests in `packages/PACKAGE/test` -- runs `unit-test.js` with Node and copies/compiles browser test js and html to build.
+* `node scripts/serve` to run live-reload servers watching `build`, for use with the test html pages.
+* `node scripts/serve-dev` to build, test and serve.
+* `node scripts/publish` doesn't actually publish, but copies the build output to the top-level `dist/` directory.
+
+All the above scripts can either operate on all subpackages (the default), or on a subset of packages by using the `-p` flag:
+
+    //only builds nlmaps-leaflet and nlmaps-openlayers
+    node scripts/build -p leaflet,openlayers
+
+The list of packages to consider is specified in `scripts/conf.json`.
+
+The scripts can be run in watch mode to recompile/retest when source/test files change:
+
+    //build leaflet, and rebuild on source file changes
+    node scripts/build --watch -p leaflet
+
+This is not applicable to the `serve` script, which always live-reloads.
+
+You can use the wrapper `serve-dev` to run the whole development setup, but note that all logging will go to one terminal and may be out of order, making it difficult to interpret. You may therefore want to run different combinations of commands for different subpackages in separate terminals for clarity.
+
+**Also, NOTE:** the live server runs with basic SSL. You have to open the test pages with `https://` or they won't work. You will also need to add an exception for the self-signed security certificates the first time you open them.
+
+### Publishing
+
+[Lerna](https://lernajs.io/) is used for optimising the workflow around managing multi-package JavaScript projects with git and npm. Because of some seeming subtleties of Rollup's interaction with Lerna or NPM, there is a different build script. Use the following procedure to publish the packages.
+
+1. `lerna exec npm -- install` If you need to update dependencies
+2. `node scripts/build` can't use npm run or lerna run because rollup can't handle non-externalized dependencies when lerna is symlinking them.
+3. `node scripts publish` this doesn't actually publish yet, but copies the transpiled output from `packages/*/build/` to the top-level `dist/` directory.
+4. git `add` and `commit`
+5. `lerna publish`   choose version numbers for each changed package
+
+This publishes to npm as well as creates new git tags for the releases, which are pushed to Github. To finish the release, go to the  Github repo's release page and annotate the latest release for the 'nlmaps' package (this makes it show up under the 'latest' path on Github).

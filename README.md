@@ -310,6 +310,8 @@ This is not applicable to the `serve` script, which always live-reloads.
 
 You can use the wrapper `serve-dev` to run the whole development setup, but note that all logging will go to one terminal and may be out of order, making it difficult to interpret. You may therefore want to run different combinations of commands for different subpackages in separate terminals for clarity.
 
+**Note on testing:** The test script looks for a file called 'unit-test.js' to execute; this is meant for testing in nodejs. For the browser, it copies everything matching the glob `*test.html` to the build dir; and for the actual test scripts, it calls rollup with `rollup.test.js` as the config file for each package. These currently use `browser-test.js` as the main entrypoint.
+
 **Also, NOTE:** the live server runs with basic SSL. You have to open the test pages with `https://` or they won't work. You will also need to add an exception for the self-signed security certificates the first time you open them.
 
 ### Publishing

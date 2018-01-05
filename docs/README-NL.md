@@ -188,8 +188,8 @@ Maakt een control voor de betreffende bibliotheek die communiceert met de opgege
 
 Argumenten:
 
-* geolocator _object geolocator_ (**verplicht**): De `geolocator` waar de control mee verbonden moet worden. Als je deze methode gebuikt, zul je waarschijnlijk de geolocator ook zelf aanmaken met de [nlmaps-geolocator](https://www.npmjs.com/package/nlmaps-geolocator) package.
-* map _object map_ (alleen voor Google Maps): de `map` waarmee de control geassocieerd moet worden.
+* geolocator _object geolocator_ (**verplicht**). De `geolocator` waar de control mee verbonden moet worden. Als je deze methode gebuikt, zul je waarschijnlijk de geolocator ook zelf aanmaken met de [nlmaps-geolocator](https://www.npmjs.com/package/nlmaps-geolocator) package.
+* map _object map_ (alleen voor Google Maps). De `map` waarmee de control geassocieerd moet worden.
 
 Geeft een `geolocator` control terug.
 

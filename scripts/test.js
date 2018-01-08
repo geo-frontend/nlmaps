@@ -53,7 +53,7 @@ function main(){
   //watch all *test.html files and copy them to build if they change
   tasks.forEach(task => {
     let baseTestDir = 'packages/' + helpers.packagePath(task) + '/test/';
-    let testDirGlob = baseTestDir + '*browser-test.js';
+    let testDirGlob = baseTestDir + '*test.html';
     //force copy once on init
     shell.ls(testDirGlob).forEach(path => copyHtml)
     //watch for changes if --watch

@@ -4,7 +4,7 @@ let    map = new google.maps.Map(document.getElementById('map'), {
       center: {lat: 52, lng: 5},
       zoom: 8
     });
-    let ElaMap = bgLayer.bgLayer();
+    let ElaMap = bgLayer();
 
 
     let mapTypeIds = ['Brt Achtergrondkaart', 'roadmap']

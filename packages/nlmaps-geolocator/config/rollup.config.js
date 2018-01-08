@@ -9,9 +9,13 @@ import uglify from 'rollup-plugin-uglify';
 export default config => {
   return {
     input: config.format === 'iife' ? 'src/browser.js' : 'src/index.js',
-    format: config.format,
-    moduleName: config.format === 'iife' ? 'window' : 'nlmapsOL',
-    dest: config.dest,
+    output: {
+      format: config.format,
+      file: config.dest,
+      name: config.format === 'iife' ? 'window' : 'nlmapsGeolocator',
+    },
+    external: config.external,
+    extend: config.format === 'iife' ? true : false,
     plugins: [
       commonjs(),
       resolve({

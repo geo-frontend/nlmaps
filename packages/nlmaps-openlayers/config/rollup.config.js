@@ -10,11 +10,13 @@ import image from 'rollup-plugin-image';
 export default config => {
   return {
     input: config.format === 'iife' ? 'src/browser.js' : 'src/index.js',
-    name: config.format === 'iife' ? 'window' : 'nlmapsOL',
     output: {
       file: config.dest,
-      format: config.format
+      format: config.format,
+      name: config.format === 'iife' ? 'window' : 'nlmapsOL',
     },
+    external: config.external,
+    extend: config.format === 'iife' ? true : false,
     plugins: [
       image(),
       commonjs(),

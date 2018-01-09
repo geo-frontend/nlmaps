@@ -1,7 +1,5 @@
 # NL Maps
 
-Automatische configuratie van BRT-Achtergrondkaart lagen in [Leaflet](http://leafletjs.com/), [Google Maps](https://developers.google.com/maps/documentation/javascript/), [Mapbox](https://www.mapbox.com/mapbox.js/), of [OpenLayers](http://openlayers.org/).
-
 **Inhoud**
 
 * [Doel](#doel)
@@ -37,8 +35,8 @@ De [NL Maps wizard](https://nlmaps.nl/#wizard) maakt het heel eenvoudig om te be
 
 Je hebt één van de volgende bibliotheken nodig: Leaflet, Google Maps of OpenLayers. `nlmaps` detecteert automatisch welke aanwezig is (en beschouwt het momenteel als een fout als meer dan één aanwezig is). Voor meer informatie over het gebruik van de betreffende bibliotheken raadpleeg de eigen documentatie:
 
-* [Leaflet](http://leafletjs.com/examples.html)
 * [Google Maps](https://developers.google.com/maps/documentation/javascript/)
+* [Leaflet](http://leafletjs.com/examples.html)
 * [Mapbox](https://www.mapbox.com/mapbox.js/api/v3.1.1/)
 * [OpenLayers](http://openlayers.org/en/latest/doc/quickstart.html)
 
@@ -67,12 +65,13 @@ Leaflet, Google Maps, Mapbox of OpenLayers zullen ook beschikbaar moeten zijn in
 
 Maakt een kaart, met gebruik van Leaflet, Google Maps, Mapbox of OpenLayers, waar een BRT-Achtergrondkaartlaag al aan is toegevoegd als achtergrondlaag. De kaart wordt geconfigureerd met een options object met de volgende eigenschappen:
 
-* style: _string_ (optioneel). Gebruik er een van `'standaard'`, `'pastel'`, '`grijs'` of `'luchtfoto'`, de standaardwaarde is `'standaard'`.
-* target: _string_ (verplicht). De id van `div` waar de kaart in moet worden gemaakt.
+* target: _string_ (**verplicht**). De id van `div` waar de kaart in moet worden gemaakt.
 * center: _object_ (optioneel). Het object met de eigenschappen `latitude` en `longitude` om het initiële kaartbeeld in te stellen. De standaardwaarde is het centrum van Nederland.
 * zoom: _number_ (optioneel). Het zoomniveau voor het initiële kaartbeeld. De standaardwaarde is `8`.
-* marker: _boolean_ or _object_ (optioneel). Gebruik er een van `'true'` of `'false'` om in te stellen of er een marker wordt getoond op de locatie van `center`. De standaardwaarde is `'false'`. Om de positie expliciet in te stellen, geef een object met de eigenschappen `latitude` en `longitude`.
-* overlay: _string_ (optioneel). Gebruik er een van `'drone-no-fly-zones'`, `'gebouwen'`, `'gemeenten'`, `'hoogte'`, `'percelen'` of `'provincies'`. Hiermee stel je een kaart in, die over de BRT-Achtergrondkaart of luchtfoto wordt getoond.
+* style: _string_ (optioneel). De stijl van de referentiekaart. Gebruik er een van `'standaard'`, `'pastel'`, '`grijs'` of `'luchtfoto'`. De standaardwaarde is `'standaard'`.
+* marker: _boolean_ or _object_ (optioneel). Gebruik `'true'` of `'false'` om in te stellen of er een marker wordt getoond op de locatie van `center`. De standaardwaarde is `'false'`. Om de positie expliciet in te stellen, geef een object met de eigenschappen `latitude` en `longitude`.
+* overlay: _string_ (optioneel). Hiermee stel je een kaart in, die over de BRT-Achtergrondkaart of luchtfoto wordt getoond. Gebruik er een van `'drone-no-fly-zones'`, `'gebouwen'`, `'gemeenten'`, `'hoogte'`, `'percelen'` of `'provincies'`.
+* search: _boolean_ (optioneel). Gebruik `'true'` of `'false'` om in te stellen of er een zoekveld voor plaatsen en adressen wordt getoond. De standaardwaarde is `'false'`.
 
 Geeft een `map` object terug.
 
@@ -87,7 +86,8 @@ Geeft een `map` object terug.
       },
       zoom: 15,
       marker: true,
-      overlay: 'hoogte'
+      overlay: 'hoogte',
+      search: true
     };
     let map = nlmaps.createMap(opts);
    
@@ -95,7 +95,7 @@ Geeft een `map` object terug.
 
 Maakt een geolocator control en voegt deze toe aan de kaart. Een klik op de control initialiseert een verzoek aan de browser geolocation API en centreert de kaart op de resulterende locatie. De geolocator kan ook worden ingesteld om meteen een geolocation verzoek uit te voeren, zonder te wachten tot de gebruiker op de control klikt.
 
-* map: _object map_ (verplicht). De `map` waar de geolocator aan moet worden toegevoegd.
+* map: _object map_ (**verplicht**). De `map` waar de geolocator aan moet worden toegevoegd.
 * options _object_ (optioneel). Een object met een toegestane eigenschap: `start: true|false`. Indien de waarde `true` is ingesteld, dan wordt meteen een geolocation verzoek uitgevoerd.
 
 Geeft een `geolocator` object terug. Zie de [nlmaps-geolocator](https://www.npmjs.com/package/nlmaps-geolocator) package voor meer informatie.
@@ -107,9 +107,9 @@ Geeft een `geolocator` object terug. Zie de [nlmaps-geolocator](https://www.npmj
 
 ### `nlmaps.<leaflet|openlayers>.bgLayer([style<string>]) | nlmaps.googlemaps.bgLayer(map, [style])`
 
-Maakt een laag voor de betreffende bibliotheek die tegels opvraagt voor de tegelset `style`. Als `style` wordt weggelaten, vraagt het de 'standaard' tegelset op. Selecteer `nlmaps.leaflet` om `nlmaps`met Mapbox te gebruiken.
+Maakt een laag voor de betreffende bibliotheek die tegels opvraagt voor de tegelset `style`. Als `style` wordt weggelaten, vraagt het de 'standaard' tegelset op. Selecteer `nlmaps.leaflet` om `nlmaps` met Mapbox te gebruiken.
 
-**NOOT:** voor Googe Maps moet je ook een `map` object meegeven als eerste argument ( als je dus ook een `style` meegeeft, geef dan als eerste argument `map`).
+**NOOT:** voor Google Maps moet je ook een `map` object meegeven als eerste argument ( als je dus ook een `style` meegeeft, geef dan als eerste argument `map`).
 
 Argumenten:
 
@@ -125,11 +125,11 @@ Geeft een `layer` object terug.
 
 ### `nlmaps.<googlemaps|leaflet|openlayers>.markerLayer([coords<object>])`
 
-Maakt een laag voor de betreffende bibliotheek om een marker op de locatie `coords` te plaatsen. Om `nlmaps` te gebruiken met Mapbox, selecteer `nlmaps.leaflet`.
+Maakt een laag voor de betreffende bibliotheek om een marker op de locatie `coords` te plaatsen. Selecteer `nlmaps.leaflet` om `nlmaps` met Mapbox te gebruiken.
 
 Arguments:
 
-* coords: _object_ . Dit object heeft de eigenschappen `latitude` en `longitude` om de locatie van de marker in te stellen.
+* coords: _object_ (**verplicht**). Dit object heeft de eigenschappen `latitude` en `longitude` om de locatie van de marker in te stellen.
 
 Geeft een `layer` object terug.
 
@@ -143,14 +143,14 @@ Geeft een `layer` object terug.
 
 ### `nlmaps.<leaflet|openlayers>.overlayLayer([overlay<string>]) | nlmaps.googlemaps.overlayLayer(map, [overlay])`
 
-Maakt een laag voor de betreffende bibliotheek die afbeeldingen opvraagt voor de `overlay` kaart. Selecteer `nlmaps.leaflet` om `nlmaps`met Mapbox te gebruiken.
+Maakt een laag voor de betreffende bibliotheek die afbeeldingen opvraagt voor een van de standaard `overlay` kaarten. Selecteer `nlmaps.leaflet` om `nlmaps` met Mapbox te gebruiken.
 
-**NOOT:** voor Googe Maps moet je ook een `map` object meegeven als eerste argument ( als je dus ook een `style` meegeeft, geef dan als eerste argument `map`).
+**NOOT:** voor Google Maps moet je ook een `map` object meegeven als eerste argument ( als je dus ook een `style` meegeeft, geef dan als eerste argument `map`).
 
 Argumenten:
 
 * map: _map.object_ (alleen voor Google Maps). De `map` waar de laag aan moet worden toegevoegd.
-* overlay: _string_ . Naam van de kaart die geladen moet worden. Een van `'drone-no-fly-zones'`, `'gebouwen'`, `'gemeenten'`, `'hoogte'`, `'percelen'` of '`provincies`'.
+* overlay: _string_ (**verplicht**). Naam van de kaart die geladen moet worden. Een van `'drone-no-fly-zones'`, `'gebouwen'`, `'gemeenten'`, `'hoogte'`, `'percelen'` of '`provincies`'.
 
 Geeft een `layer` object terug.
 
@@ -158,14 +158,38 @@ Geeft een `layer` object terug.
 
     const overlay = nlmaps.googlemaps.overlayLayer('drone-no-fly-zones');
 
+### `nlmaps.<leaflet|openlayers>.overlayLayer([overlay<string>],[endpoint<object>]) | nlmaps.googlemaps.overlayLayer(map, [overlay], [endpoint])`
+
+Maakt een laag voor de betreffende bibliotheek die afbeeldingen opvraagt voor een aanpasbare `overlay` **W**eb **M**apping **S**ervice (WMS). De service moet voldoen aan de [OGC WMS specificatie](http://www.opengeospatial.org/standards/wms) en de Spherical Mercator (EPSG:3857) projectie ondersteunen . Selecteer `nlmaps.leaflet` om `nlmaps` met Mapbox te gebruiken.
+
+**NOOT:** voor Google Maps moet je ook een `map` object meegeven als eerste argument ( als je dus ook een `style` meegeeft, geef dan als eerste argument `map`).
+
+Argumenten:
+
+* map: _map.object_ (alleen voor Google Maps). De `map` waar de laag aan moet worden toegevoegd.
+* overlay: _string_ (**verplicht**). Naam van de kaart die geladen moet worden. Een van `'drone-no-fly-zones'`, `'gebouwen'`, `'gemeenten'`, `'hoogte'`, `'percelen'` of '`provincies`'.
+* endpoint: _object_ (**verplicht**). Dit object heeft de eigenschappen `url`, `layerName` en `styleName` om de **W**eb **M**apping **S**ervice (WMS) in te stellen.
+
+Geeft een `layer` object terug.
+
+**Voorbeeld (OpenLayers)**
+
+    const endpoint = {
+      url: 'https://geodata.nationaalgeoregister.nl/fysischgeografischeregios/ows?',
+      layerName: 'fysischgeografischeregios',
+      styleName: 'fysischgeografischeregios:fysischgeografischeregios'
+    };
+    const overlay = nlmaps.openlayers.overlayLayer('fysisch-geografische-regios', endpoint);
+    map.addLayer(overlay);
+
 ### `nlmaps.<leaflet|openlayers>.geoLocatorControl(geolocator) | nlmaps.googlemaps.geoLocatorControl(geolocator, map)`
 
 Maakt een control voor de betreffende bibliotheek die communiceert met de opgegeven `geolocator`. De control heeft een hele simpele interface: klik om een geolocation verzoek te initialiseren en de kaart op het resultaat te laten centreren. De aangemaakte control moet je zelf toevoegen aan de kaart.
 
 Argumenten:
 
-* geolocator _object geolocator_ (verplicht): De `geolocator` waar de control mee verbonden moet worden. Als je deze methode gebuikt, zul je waarschijnlijk de geolocator ook zelf aanmaken met de [nlmaps-geolocator](https://www.npmjs.com/package/nlmaps-geolocator) package.
-* map _object map_ (alleen voor Google Maps): de `map` waarmee de control geassocieerd moet worden.
+* geolocator _object geolocator_ (**verplicht**). De `geolocator` waar de control mee verbonden moet worden. Als je deze methode gebuikt, zul je waarschijnlijk de geolocator ook zelf aanmaken met de [nlmaps-geolocator](https://www.npmjs.com/package/nlmaps-geolocator) package.
+* map _object map_ (alleen voor Google Maps). De `map` waarmee de control geassocieerd moet worden.
 
 Geeft een `geolocator` control terug.
 

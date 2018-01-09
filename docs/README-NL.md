@@ -107,9 +107,9 @@ Geeft een `geolocator` object terug. Zie de [nlmaps-geolocator](https://www.npmj
 
 ### `nlmaps.<leaflet|openlayers>.bgLayer([style<string>]) | nlmaps.googlemaps.bgLayer(map, [style])`
 
-Maakt een laag voor de betreffende bibliotheek die tegels opvraagt voor de tegelset `style`. Als `style` wordt weggelaten, vraagt het de 'standaard' tegelset op. Selecteer `nlmaps.leaflet` om `nlmaps`met Mapbox te gebruiken.
+Maakt een laag voor de betreffende bibliotheek die tegels opvraagt voor de tegelset `style`. Als `style` wordt weggelaten, vraagt het de 'standaard' tegelset op. Selecteer `nlmaps.leaflet` om `nlmaps` met Mapbox te gebruiken.
 
-**NOOT:** voor Googe Maps moet je ook een `map` object meegeven als eerste argument ( als je dus ook een `style` meegeeft, geef dan als eerste argument `map`).
+**NOOT:** voor Google Maps moet je ook een `map` object meegeven als eerste argument ( als je dus ook een `style` meegeeft, geef dan als eerste argument `map`).
 
 Argumenten:
 
@@ -125,7 +125,7 @@ Geeft een `layer` object terug.
 
 ### `nlmaps.<googlemaps|leaflet|openlayers>.markerLayer([coords<object>])`
 
-Maakt een laag voor de betreffende bibliotheek om een marker op de locatie `coords` te plaatsen. Om `nlmaps` te gebruiken met Mapbox, selecteer `nlmaps.leaflet`.
+Maakt een laag voor de betreffende bibliotheek om een marker op de locatie `coords` te plaatsen. Selecteer `nlmaps.leaflet` om `nlmaps` met Mapbox te gebruiken.
 
 Arguments:
 
@@ -143,9 +143,9 @@ Geeft een `layer` object terug.
 
 ### `nlmaps.<leaflet|openlayers>.overlayLayer([overlay<string>]) | nlmaps.googlemaps.overlayLayer(map, [overlay])`
 
-Maakt een laag voor de betreffende bibliotheek die afbeeldingen opvraagt voor een van de standaard `overlay` kaarten. Selecteer `nlmaps.leaflet` om `nlmaps`met Mapbox te gebruiken.
+Maakt een laag voor de betreffende bibliotheek die afbeeldingen opvraagt voor een van de standaard `overlay` kaarten. Selecteer `nlmaps.leaflet` om `nlmaps` met Mapbox te gebruiken.
 
-**NOOT:** voor Googe Maps moet je ook een `map` object meegeven als eerste argument ( als je dus ook een `style` meegeeft, geef dan als eerste argument `map`).
+**NOOT:** voor Google Maps moet je ook een `map` object meegeven als eerste argument ( als je dus ook een `style` meegeeft, geef dan als eerste argument `map`).
 
 Argumenten:
 
@@ -160,9 +160,9 @@ Geeft een `layer` object terug.
 
 ### `nlmaps.<leaflet|openlayers>.overlayLayer([overlay<string>],[endpoint<object>]) | nlmaps.googlemaps.overlayLayer(map, [overlay], [endpoint])`
 
-Maakt een laag voor de betreffende bibliotheek die afbeeldingen opvraagt voor een aanpasbare `overlay` **W**eb **M**apping **S**ervice (WMS). De service moet voldoen aan de [OGC WMS specificatie](http://www.opengeospatial.org/standards/wms) en de Spherical Mercator (EPSG:3857) projectie ondersteunen . Selecteer `nlmaps.leaflet` om `nlmaps`met Mapbox te gebruiken.
+Maakt een laag voor de betreffende bibliotheek die afbeeldingen opvraagt voor een aanpasbare `overlay` **W**eb **M**apping **S**ervice (WMS). De service moet voldoen aan de [OGC WMS specificatie](http://www.opengeospatial.org/standards/wms) en de Spherical Mercator (EPSG:3857) projectie ondersteunen . Selecteer `nlmaps.leaflet` om `nlmaps` met Mapbox te gebruiken.
 
-**NOOT:** voor Googe Maps moet je ook een `map` object meegeven als eerste argument ( als je dus ook een `style` meegeeft, geef dan als eerste argument `map`).
+**NOOT:** voor Google Maps moet je ook een `map` object meegeven als eerste argument ( als je dus ook een `style` meegeeft, geef dan als eerste argument `map`).
 
 Argumenten:
 

@@ -4,7 +4,7 @@ let    map = new google.maps.Map(document.getElementById('map'), {
       center: {lat: 52, lng: 5},
       zoom: 8
     });
-    let ElaMap = bgLayer.bgLayer();
+    let ElaMap = bgLayer(map);
 
 
     let mapTypeIds = ['Brt Achtergrondkaart', 'roadmap']
@@ -18,7 +18,7 @@ let    map = new google.maps.Map(document.getElementById('map'), {
     });
     map.setMapTypeId('Brt Achtergrondkaart');
     let geolocator = geoLocator();
-    let control = bgLayer.geoLocatorControl(geolocator, map);
+    let control = geoLocatorControl(geolocator, map);
     map.controls[google.maps.ControlPosition.TOP_LEFT].push(control);
 
 

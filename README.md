@@ -344,7 +344,7 @@ You can use the wrapper `serve-dev` to run the whole development setup, but note
 
 1. `lerna exec npm -- install` If you need to update dependencies
 2. `node scripts/build` can't use npm run or lerna run because rollup can't handle non-externalized dependencies when lerna is symlinking them.
-3. `node scripts publish` this doesn't actually publish yet, but copies the transpiled output from `packages/*/build/` to the top-level `dist/` directory.
+3. `node scripts/publish` this doesn't actually publish yet, but copies the transpiled output from `packages/*/build/` to the top-level `dist/` directory.
 4. git `add` and `commit`
 5. `lerna publish`   choose version numbers for each changed package
 

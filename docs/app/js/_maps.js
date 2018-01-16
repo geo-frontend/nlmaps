@@ -317,7 +317,6 @@ export default class Maps {
     }
 
     createMap() {
-        console.log('running creation cycle', this);
         $('.map').hide(); // First hide all other maps
 
         $(`#${this.currentMap}`).remove();

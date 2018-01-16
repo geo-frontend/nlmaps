@@ -300,11 +300,54 @@ Voor de luchtfoto's:
 
 ## Ontwikkelen
 
+
+### Installatie/configuratie
+
+Om aan `nlmaps` te werken, clone de repository en voer uit in de nieuwe directory:
+
+    lerna  bootstrap
+    npm install
+
+`lerna bootstrap` maakt symlinks van de subpackages in elkaars `node_modules` mappen zodat zij elkaar kunnen importeren met `require()` of `import` zonder de bestanden van npmjs.com te moeten downloaden.
+
+### Algemene informatie over ontwikkelen
+Er zijn een aantal problemen het het aanroepen van rollup vanuit npm scripts, dus is er voor dit project een set scripts in `scripts/` die direct aangeroepen dienen te worden. Ze worden als volgt gebruikt:
+
+
+* `node scripts/build` om de broncode vanuit `packages/PACKAGE/src` te compileren naar `packages/PACKAGE/build` 
+* `node scripts/test` om tests in `packages/PACKAGE/test`  te draaien -- voert `unit-test.js` uit met Node and kopiëert/compileert html en js ten behoevevan browser tests naar `build/`.
+* `node scripts/serve` om live-reload servers te draaien die  verversen bij veranderingen in `build`. Voor gebruik met de test html-bestanden.
+* `node scripts/serve-dev` om build, test en serve tegelijk uit te voeren.
+* `node scripts/publish` Publiceert niet daadwerkelijk, maar kopiëert de output van de build stap naar de `dist/` directory in de bovenste map.
+
+Alle bovengenoemde scripts kunnen worden aangeroepen voor alle subpackages (dit is standaard), of voor een selectie van de subpackages door gebruikt van de `-p` vlag:
+
+    //bouwt alleen nlmaps-leaflet en nlmaps-openlayers
+    node scripts/build -p leaflet,openlayers
+
+De lijst van packages die de scripts in beschouwing nemen staat in `scripts/conf.json`.
+
+De scripts kunnen worden gedraaid in watch-modus om te hercompileren/hertesten wanneer een bron- of testbestand verandert:
+
+    //bouw leaflet, en herbouw wanneer de bronbestanden veranderen
+    node scripts/build --watch -p leaflet
+    
+Dit is niet van toepassing op de `serve` script, die altijd automatisch ververst.
+
+Je kan de wrapper `serve-dev` aanroepen om de hele ontwikkel-opstelling in één keer te draaien, maar let wel dat alle logberichten naar één terminal zullen gaan en misschien in de verkeerde volgorde zullen staan. Om het overzicht te behouden kan het daarom wenselijk zijn om verschillende  combinaties van commando's voor verschillende subpackages in aparte terminal-vensters te draaien.
+
+**Noot over testen:** de test-script zoekt naar een bestand genaamd 'unit-test.js' hebben om uit te voeren; deze is bedoeld om door NodeJS uitgevoerd te worden (unit tests en dergelijke). Daarnaast kopiëert het alles dat dat de glob `*test.html` past naar de build-map. En voor het uitvoeren van de browser tests roept het `rollup.test.js` aan uit de `config` map van elk subpackage.
+
+**Verder:** de live-reload server draait met SSL. De testpagina's moeten daarom worden geopend met `https://`, anders zullen ze niet werken. De eerste keer zal een uitzondering moeten worden toegevoegd voor de self-signed security certificaten die worden gebruikt.
+
+### Publiceren
+
 [Lerna](https://lernajs.io/) wordt gebruikt voor het beheren van dit multi-package JavaScript project. Omdat Rollup en Lerna of NPM niet helemaal samengaan is er een aparte build script. Gebruik de volgende procedure om de packages te publiceren:
 
-1. `node build-all.js` Kan niet met npm run of lerna run omdat rollup niet met de gesymlinkte dependencies van lerna om kan gaan
-2. `lerna exec npm -- install` indien dependencies bijgewerkt moeten worden
-3. git `add` en `commit`
-4. `lerna publish` kiest nieuwe versienummers voor elke package die is veranderd
+1. `lerna exec npm -- install` in het geval dat dependencies bijgewerkt moeten worden
+2. `node scripts/build` Kan niet met npm run of lerna run omdat rollup niet met de gesymlinkte dependencies van lerna om kan gaan
+3. `node scripts/publish` publiceert nog niet daadwerkelijk, maar kopiëert de build output van `packages/*/build/` naar de bovenste `dist/` map.
+4. git `add` en `commit`.
+5. `lerna publish` kies versienummers voor elk package dat is veranderd.
 
-Ga daarna naar de release pagina en annoteer de laatste release voor de 'nlmaps' package.
+De laatste stap publiceert naar npm, creëert git tags en pusht deze naar Github. Om de release af te maken, ga je daarna naar de release pagina van de Github repo en annoteer de laatste release van de 'nlmaps' package (dit zorgt ervoor dat het beschikbaar komt onder het pad 'latest' op Github).

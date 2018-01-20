@@ -167,7 +167,7 @@ export default class Maps {
         };
         var map = nlmaps.createMap(opts);
 
-        google.maps.event.addListener(map, 'center_changed', () => {
+        google.maps.event.addListener(map, 'dragend', () => {
             let center = map.getCenter();
             this.latitude = center.lat();
             this.longitude = center.lng();
@@ -180,6 +180,7 @@ export default class Maps {
 
             this.updateCode();
         });
+
         /* eslint-enable */
 
         this.updateCode();
@@ -204,16 +205,7 @@ export default class Maps {
         var map = nlmaps.createMap(opts);
         /* eslint-enable */
 
-        map.on('move', () => {
-            let center = map.getCenter();
-            this.latitude = center.lat;
-            this.longitude = center.lng;
-            this.zoom = map.getZoom();
-
-            this.updateCode();
-        });
-
-        map.on('zoom', () => {
+        map.on('moveend', () => {
             let center = map.getCenter();
             this.latitude = center.lat;
             this.longitude = center.lng;
@@ -275,16 +267,7 @@ export default class Maps {
         var map = nlmaps.createMap(opts);
         /* eslint-enable */
 
-        map.on('move', () => {
-            let center = map.getCenter();
-            this.latitude = center.lat;
-            this.longitude = center.lng;
-            this.zoom = map.getZoom();
-
-            this.updateCode();
-        });
-
-        map.on('zoom', () => {
+        map.on('moveend', () => {
             let center = map.getCenter();
             this.latitude = center.lat;
             this.longitude = center.lng;
@@ -337,8 +320,8 @@ export default class Maps {
         code = code.replace(/{marker}/g, this.showMarker);
         code = code.replace(/{geocoder}/g, this.geocoder);
         code = code.replace(/{backgroundLayerName}/g, this.backgroundLayerName);
-        code = code.replace(/{latitude}/g, this.latitude);
-        code = code.replace(/{longitude}/g, this.longitude);
+        code = code.replace(/{latitude}/g, this.latitude.toFixed(6));
+        code = code.replace(/{longitude}/g, this.longitude.toFixed(6));
         code = code.replace(/{zoomlevel}/g, this.zoom);
         code = code.replace(/{url}/g, this.currentUrl);
         code = code.replace(/{extension}/g, this.extension);

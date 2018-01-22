@@ -1,4 +1,4 @@
-var nlmaps = (function () {
+(function (exports) {
 'use strict';
 
 function unwrapExports (x) {
@@ -90,7 +90,7 @@ var nlmapsLeaflet_cjs = createCommonjsModule(function (module, exports) {
     container.style.width = controlWidth;
     container.style.zIndex = 1000000;
     container.style.position = 'absolute';
-    container.style.top = '70px';
+    container.style.top = '15px';
     container.style.left = '12px';
     input.id = 'nlmaps-geocoder-control-input';
     input.placeholder = 'Zoeken op adres...';
@@ -628,7 +628,7 @@ var nlmapsOpenlayers_cjs = createCommonjsModule(function (module, exports) {
     container.style.width = controlWidth;
     container.style.zIndex = 1000000;
     container.style.position = 'absolute';
-    container.style.top = '70px';
+    container.style.top = '15px';
     container.style.left = '12px';
     input.id = 'nlmaps-geocoder-control-input';
     input.placeholder = 'Zoeken op adres...';
@@ -1136,7 +1136,7 @@ var nlmapsGooglemaps_cjs = createCommonjsModule(function (module, exports) {
     container.style.width = controlWidth;
     container.style.zIndex = 1000000;
     container.style.position = 'absolute';
-    container.style.top = '70px';
+    container.style.top = '15px';
     container.style.left = '12px';
     input.id = 'nlmaps-geocoder-control-input';
     input.placeholder = 'Zoeken op adres...';
@@ -1848,12 +1848,14 @@ function initMap(lib, opts) {
   switch (lib) {
     case 'leaflet':
       map = L.map(opts.target).setView([opts.center.latitude, opts.center.longitude], opts.zoom);
+      map.zoomControl.setPosition('topright');
       break;
     case 'googlemaps':
       map = new google.maps.Map(document.getElementById(opts.target), {
         center: { lat: opts.center.latitude, lng: opts.center.longitude },
         zoom: opts.zoom
       });
+
       break;
     case 'openlayers':
       map = new ol.Map({
@@ -1863,6 +1865,9 @@ function initMap(lib, opts) {
         }),
         target: opts.target
       });
+      map.getTargetElement().getElementsByClassName('ol-zoom')[0].style.cssText = "top: 5px !important; right: 5px !important";
+      map.getTargetElement().getElementsByClassName('ol-zoom')[0].classList.remove('ol-zoom');
+      break;
   }
   return map;
 }
@@ -1879,7 +1884,8 @@ function addGoogleLayer(layer, map) {
     map.setOptions({
       mapTypeControl: true,
       mapTypeControlOptions: {
-        mapTypeIds: mapTypeIds
+        mapTypeIds: mapTypeIds,
+        position: google.maps.ControlPosition.BOTTOM_LEFT
       }
     });
     return;
@@ -1889,7 +1895,8 @@ function addGoogleLayer(layer, map) {
   map.setOptions({
     mapTypeControl: true,
     mapTypeControlOptions: {
-      mapTypeIds: mapTypeIds
+      mapTypeIds: mapTypeIds,
+      position: google.maps.ControlPosition.BOTTOM_LEFT
     }
   });
 
@@ -2051,4 +2058,4 @@ nlmaps.geoLocate = function (map) {
 
 return nlmaps;
 
-}());
+}((this.window = this.window || {})));

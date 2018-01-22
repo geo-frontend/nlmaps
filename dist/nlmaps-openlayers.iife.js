@@ -1,4 +1,4 @@
-var window = (function (exports) {
+(function (exports) {
 'use strict';
 
 function wmsBaseUrl(workSpaceName) {
@@ -227,6 +227,4 @@ function geoLocatorControl(geolocator, map) {
 exports.bgLayer = bgLayer;
 exports.geoLocatorControl = geoLocatorControl;
 
-return exports;
-
-}({}));
+}((this.window = this.window || {})));

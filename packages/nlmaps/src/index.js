@@ -93,12 +93,14 @@ function initMap(lib, opts){
   switch (lib) {
     case 'leaflet':
       map = L.map(opts.target).setView([opts.center.latitude, opts.center.longitude], opts.zoom);
+      map.zoomControl.setPosition('topright');
       break;
     case 'googlemaps':
       map = new google.maps.Map(document.getElementById(opts.target), {
         center: {lat: opts.center.latitude, lng: opts.center.longitude},
         zoom: opts.zoom
       });
+      
       break;
     case 'openlayers':
       map = new ol.Map({
@@ -108,6 +110,9 @@ function initMap(lib, opts){
         }),
         target: opts.target
       });
+      map.getTargetElement().getElementsByClassName('ol-zoom')[0].style.cssText = "top: 5px !important; right: 5px !important"
+      map.getTargetElement().getElementsByClassName('ol-zoom')[0].classList.remove('ol-zoom');
+      break;
   }
   return map;
 }
@@ -149,7 +154,8 @@ function addGoogleLayer(layer, map) {
     map.setOptions({
       mapTypeControl: true,
       mapTypeControlOptions: {
-        mapTypeIds: mapTypeIds
+        mapTypeIds: mapTypeIds,
+        position: google.maps.ControlPosition.BOTTOM_LEFT
       }
     });
     return;
@@ -159,7 +165,8 @@ function addGoogleLayer(layer, map) {
   map.setOptions({
     mapTypeControl: true,
     mapTypeControlOptions: {
-      mapTypeIds: mapTypeIds
+      mapTypeIds: mapTypeIds,
+      position: google.maps.ControlPosition.BOTTOM_LEFT
     }
   });
 

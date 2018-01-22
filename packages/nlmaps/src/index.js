@@ -322,4 +322,4 @@ nlmaps.geoLocate = function(map, useropts = {}){
   addGeoLocControlToMap(nlmaps.lib, geolocator, map);
 }
 
-export default nlmaps;
+export {nlmaps};

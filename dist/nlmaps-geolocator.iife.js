@@ -1,4 +1,4 @@
-var window = (function (exports) {
+(function (exports) {
 'use strict';
 
 function createCommonjsModule(fn, module) {
@@ -105,6 +105,7 @@ var GeoLocator = function GeoLocator(opts) {
       return state.started;
     },
     log: function log() {
+      // eslint-disable-next-line no-console
       console.log(state);
       return this;
     }
@@ -114,7 +115,7 @@ var GeoLocator = function GeoLocator(opts) {
 function geoLocator(opts) {
   if ('geolocation' in navigator) {
     var geolocator = emitonoff(GeoLocator(opts));
-    geolocator.on('position', function (position) {
+    geolocator.on('position', function () {
       this.stop();
     });
     return geolocator;
@@ -126,6 +127,4 @@ function geoLocator(opts) {
 
 exports.geoLocator = geoLocator;
 
-return exports;
-
-}({}));
+}((this.window = this.window || {})));

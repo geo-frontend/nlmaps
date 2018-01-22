@@ -1853,7 +1853,12 @@ function initMap(lib, opts) {
     case 'googlemaps':
       map = new google.maps.Map(document.getElementById(opts.target), {
         center: { lat: opts.center.latitude, lng: opts.center.longitude },
-        zoom: opts.zoom
+        zoom: opts.zoom,
+        zoomControl: true,
+        zoomControlOptions: {
+          position: google.maps.ControlPosition.LEFT_BOTTOM
+        },
+        fullscreenControl: false
       });
 
       break;

@@ -2056,6 +2056,6 @@ nlmaps.geoLocate = function (map) {
   addGeoLocControlToMap(nlmaps.lib, geolocator, map);
 };
 
-return nlmaps;
+exports.nlmaps = nlmaps;
 
 }((this.window = this.window || {})));

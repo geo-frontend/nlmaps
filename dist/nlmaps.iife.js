@@ -1848,7 +1848,7 @@ function initMap(lib, opts) {
   switch (lib) {
     case 'leaflet':
       map = L.map(opts.target).setView([opts.center.latitude, opts.center.longitude], opts.zoom);
-      map.zoomControl.setPosition('topright');
+      map.zoomControl.setPosition('bottomleft');
       break;
     case 'googlemaps':
       map = new google.maps.Map(document.getElementById(opts.target), {
@@ -1865,7 +1865,7 @@ function initMap(lib, opts) {
         }),
         target: opts.target
       });
-      map.getTargetElement().getElementsByClassName('ol-zoom')[0].style.cssText = "top: 5px !important; right: 5px !important";
+      map.getTargetElement().getElementsByClassName('ol-zoom')[0].style.cssText = "left: 5px !important; bottom: 5px !important";
       map.getTargetElement().getElementsByClassName('ol-zoom')[0].classList.remove('ol-zoom');
       break;
   }

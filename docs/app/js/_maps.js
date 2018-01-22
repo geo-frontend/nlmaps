@@ -5,6 +5,7 @@ const browser = require('browser-detect')();
 
 const BRTAkAttr = 'NLMaps | Kaartgegevens &copy; <a href="https://www.kadaster.nl">Kadaster</a> | <a href="http://www.verbeterdekaart.nl">Verbeter de kaart</a>';
 const baseTileUrl = 'https://geodata.nationaalgeoregister.nl/tiles/service/wmts/brtachtergrondkaart/EPSG:3857';
+const coordPrecision = 6;
 
 export default class Maps {
     constructor(selector = '.js-wizard-map') {
@@ -282,7 +283,6 @@ export default class Maps {
     setGeoLocation(coords) {
         this.latitude = coords.latitude;
         this.longitude = coords.longitude;
-        coonsole.log('Running another update cycle');
         switch (this.currentMap) {
             case 'google-maps':
                 this.setGoogleMap();
@@ -320,8 +320,8 @@ export default class Maps {
         code = code.replace(/{marker}/g, this.showMarker);
         code = code.replace(/{geocoder}/g, this.geocoder);
         code = code.replace(/{backgroundLayerName}/g, this.backgroundLayerName);
-        code = code.replace(/{latitude}/g, this.latitude.toFixed(6));
-        code = code.replace(/{longitude}/g, this.longitude.toFixed(6));
+        code = code.replace(/{latitude}/g, this.latitude.toFixed(coordPrecision));
+        code = code.replace(/{longitude}/g, this.longitude.toFixed(coordPrecision));
         code = code.replace(/{zoomlevel}/g, this.zoom);
         code = code.replace(/{url}/g, this.currentUrl);
         code = code.replace(/{extension}/g, this.extension);

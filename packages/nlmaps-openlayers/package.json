@@ -31,7 +31,9 @@
     "rollup-plugin-image": "^1.0.2",
     "rollup-plugin-node-builtins": "^2.1.2",
     "rollup-plugin-node-globals": "^1.1.0",
-    "rollup-plugin-uglify": "^2.0.1",
     "tape": "^4.6.3"
+  },
+  "dependencies": {
+    "rollup-plugin-uglify-es": "0.0.1"
   }
 }

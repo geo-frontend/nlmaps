@@ -34,7 +34,8 @@
   "dependencies": {
     "nlmaps-googlemaps": "^2.0.0",
     "nlmaps-leaflet": "^2.0.0",
-    "nlmaps-openlayers": "^2.0.0"
+    "nlmaps-openlayers": "^2.0.0",
+    "rollup-plugin-uglify-es": "0.0.1"
   },
   "devDependencies": {
     "live-server-https": "0.0.2",

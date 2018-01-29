@@ -17,6 +17,8 @@ The `nlmaps` JavaScript library allows you to create layers for Leaflet, Google 
 ## Usage example
 
     let map = nlmaps.createMap({style: 'grijs', target: 'nlmaps-holder'});
+    
+**NOTE:** for more examples and a detailed tutorial, see the [examples directory](examples)
 
 Available map styles:
 

@@ -1,0 +1,172 @@
+<!doctype html>
+<html lang="nl">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <title>NL Maps</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="apple-touch-icon" sizes="57x57" href="assets/favicon/apple-icon-57x57.png">
+    <link rel="apple-touch-icon" sizes="60x60" href="assets/favicon/apple-icon-60x60.png">
+    <link rel="apple-touch-icon" sizes="72x72" href="assets/favicon/apple-icon-72x72.png">
+    <link rel="apple-touch-icon" sizes="76x76" href="assets/favicon/apple-icon-76x76.png">
+    <link rel="apple-touch-icon" sizes="114x114" href="assets/favicon/apple-icon-114x114.png">
+    <link rel="apple-touch-icon" sizes="120x120" href="assets/favicon/apple-icon-120x120.png">
+    <link rel="apple-touch-icon" sizes="144x144" href="assets/favicon/apple-icon-144x144.png">
+    <link rel="apple-touch-icon" sizes="152x152" href="assets/favicon/apple-icon-152x152.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="assets/favicon/apple-icon-180x180.png">
+    <link rel="icon" type="image/png" sizes="192x192"  href="assets/favicon/android-icon-192x192.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="assets/favicon/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="96x96" href="assets/favicon/favicon-96x96.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="assets/favicon/favicon-16x16.png">
+    <link rel="manifest" href="assets/favicon/manifest.json">
+    <meta name="msapplication-TileColor" content="#ffffff">
+    <meta name="msapplication-TileImage" content="assets/favicon/ms-icon-144x144.png">
+    <meta name="theme-color" content="#ffffff">
+    <link rel="stylesheet" href="app.css">
+    <link rel="stylesheet" href="assets/fonts/icon-font/css/fontello.css">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.0.3/dist/leaflet.css">
+    <link rel="stylesheet" href="https://api.mapbox.com/mapbox.js/v3.1.0/mapbox.css">
+    <link rel="stylesheet" href="https://openlayers.org/en/v4.1.0/css/ol.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/webfont/1.5.18/webfont.js"></script>
+    <script>
+        WebFont.load({
+            google: {
+                families: ['Montserrat:400', 'Nunito:400,400i,600,600i']
+            }
+        });
+    </script>
+</head>
+<body{% block body_attributes %}{% endblock %}>
+    <div class="wrapper">
+        {% block header %}
+            {% include '_header.twig' %}
+        {% endblock %}
+        {% block content %}{% endblock %}
+        {% block footer %}
+            {% include '_footer.twig' %}
+        {% endblock %}
+    </div>
+    <script type="text/template" id="forum-item">
+        <li class="forum-item">
+            <article class="faq">
+                <a href="{link}" target="_blank" class="faq-link">
+                    <div class="faq-content">
+                        <h1 class="heading faq-heading">{title}</h1>
+                        <span class="faq-date">Laatste reactie op {date}</span>
+                    </div>
+                    <div class="faq-metas">
+                        <span class="faq-meta faq-comments">{comments}</span>
+                        <span class="faq-meta faq-upvotes">{likes}</span>
+                    </div>
+                </a>
+            </article>
+        </li>
+    </script>
+    <script type="text/template" id="google-maps-template">
+&lt;div id="nlmaps-holder">&lt;/div>
+
+&lt;script src="https://maps.googleapis.com/maps/api/js?v=3&amp;amp;key=YOUR-API-KEY">&lt;/script>
+&lt;script src="https://rawgit.com/kadaster/nlmaps/master/dist/nlmaps.iife.js">&lt;/script>
+&lt;script>
+    var nlMapsHolder = document.getElementById('nlmaps-holder');
+    nlMapsHolder.style.height = '300px'; // Change to required height
+
+    var opts = {
+        style: '{backgroundLayerName}',
+        target: 'nlmaps-holder',
+        center: {
+            longitude: {longitude},
+            latitude: {latitude}
+        },
+        search: {geocoder},
+        overlay: '{overlay}',
+        marker: {marker},
+        zoom: {zoomlevel}
+    };
+    var map = nlmaps.createMap(opts);
+&lt;/script>
+    </script>
+    <script type="text/template" id="leaflet-template">
+&lt;div id="nlmaps-holder">&lt;/div>
+
+&lt;link rel="stylesheet" href="https://unpkg.com/leaflet@1.0.3/dist/leaflet.css">
+&lt;script src="https://unpkg.com/leaflet@1.0.3/dist/leaflet.js">&lt;/script>
+&lt;script src="https://rawgit.com/kadaster/nlmaps/master/dist/nlmaps.iife.js">&lt;/script>
+&lt;script>
+    var nlMapsHolder = document.getElementById('nlmaps-holder');
+    nlMapsHolder.style.height = '300px'; // Change to required height
+    
+    var opts = {
+        style: '{backgroundLayerName}',
+        target: 'nlmaps-holder',
+        center: {
+            longitude: {longitude},
+            latitude: {latitude}
+        },
+        overlay: '{overlay}',
+        marker: {marker},
+        zoom: {zoomlevel},
+        search: {geocoder}
+    };
+    var map = nlmaps.createMap(opts);
+&lt;/script>
+    </script>
+    <script type="text/template" id="open-layers-template">
+&lt;div id="nlmaps-holder">&lt;/div>
+
+&lt;link rel="stylesheet" href="https://openlayers.org/en/v4.1.0/css/ol.css">
+&lt;script src="https://openlayers.org/en/v4.1.0/build/ol.js">&lt;/script>
+&lt;script src="https://rawgit.com/kadaster/nlmaps/master/dist/nlmaps.iife.js">&lt;/script>
+&lt;script>
+    var nlMapsHolder = document.getElementById('nlmaps-holder');
+    nlMapsHolder.style.height = '300px'; // Change to required height
+
+    var opts = {
+        style: '{backgroundLayerName}',
+        target: 'nlmaps-holder',
+        center: {
+            longitude: {longitude},
+            latitude: {latitude}
+        },
+        overlay: '{overlay}',
+        marker: {marker},
+        search: {geocoder},
+        zoom: {zoomlevel}
+    };
+    var map = nlmaps.createMap(opts);
+&lt;/script>
+    </script>
+    <script type="text/template" id="mapbox-template">
+&lt;div id="nlmaps-holder">&lt;/div>
+
+&lt;link rel="stylesheet" href="https://api.mapbox.com/mapbox.js/v3.1.1/mapbox.css">
+&lt;script src="https://api.mapbox.com/mapbox.js/v3.1.0/mapbox.js">&lt;/script>
+&lt;script src="https://rawgit.com/kadaster/nlmaps/master/dist/nlmaps.iife.js">&lt;/script>
+
+&lt;script>
+    var nlMapsHolder = document.getElementById('nlmaps-holder');
+    nlMapsHolder.style.height = '300px'; // Change to required height
+
+    var opts = {
+        style: '{backgroundLayerName}',
+        target: 'nlmaps-holder',
+        center: {
+            longitude: {longitude},
+            latitude: {latitude}
+        },
+        overlay: '{overlay}',
+        marker: {marker},
+        search: {geocoder},
+        zoom: {zoomlevel}
+    };
+    var map = nlmaps.createMap(opts);
+&lt;/script>
+    </script>
+    <script src="https://unpkg.com/leaflet@1.0.3/dist/leaflet.js"></script>
+    <script src="https://api.mapbox.com/mapbox.js/v3.1.0/mapbox.js"></script>
+    <script src="https://openlayers.org/en/v4.1.0/build/ol.js"></script>
+    <script src="https://maps.googleapis.com/maps/api/js?v=3&amp;key=AIzaSyAHhkVptxb8zlX0LZqkLf-RHC9Uvik_fDc"></script>
+    <script src="https://rawgit.com/kadaster/nlmaps/master/dist/nlmaps.iife.js"></script>
+    <script src="app.js" async defer></script>
+</body>
+</html>

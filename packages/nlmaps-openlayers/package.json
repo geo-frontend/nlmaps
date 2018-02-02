@@ -1,12 +1,12 @@
 {
   "name": "nlmaps-openlayers",
-  "version": "2.0.0",
+  "version": "2.1.0",
   "description": "",
   "main": "build/nlmaps-openlayers.cjs.js",
   "module": "build/nlmaps-openlayers.es.js",
   "scripts": {
     "test": "node test/test.js",
-    "build": "rollup -c config/rollup.cjs.js && rollup -c config/rollup.es.js && BROWSER=true rollup -c config/rollup.iife.js && cp build/nlmaps-openlayers.iife.js ../../dist/",
+    "build": "rollup -c config/rollup.cjs.js && rollup -c config/rollup.es.js && rollup -c config/rollup.iife.js && cp build/nlmaps-openlayers.iife.js ../../dist/",
     "watch-test": "nodemon --watch test --watch build --exec 'npm run test'",
     "watch-code": "nodemon --watch src --exec npm run build",
     "watch-all": "npm-run-all --parallel watch-code watch-test",
@@ -28,9 +28,12 @@
   "devDependencies": {
     "openlayers": "^4.1.1",
     "rollup-plugin-eslint": "^4.0.0",
+    "rollup-plugin-image": "^1.0.2",
     "rollup-plugin-node-builtins": "^2.1.2",
     "rollup-plugin-node-globals": "^1.1.0",
-    "rollup-plugin-uglify": "^2.0.1",
     "tape": "^4.6.3"
+  },
+  "dependencies": {
+    "rollup-plugin-uglify-es": "0.0.1"
   }
 }

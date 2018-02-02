@@ -1,7 +1,4 @@
 node_modules
 npm-debug.log
 **/**/build/*
-!**/**/build/*.cjs.js
 lerna-debug.log
-
-packages/nlmaps-geolocator/npm-debug.log.1773222065

@@ -1,10 +1,8 @@
 # NL Maps
 
-Automatische configuratie van BRT-Achtergrondkaart lagen in [Leaflet](http://leafletjs.com/), [Google Maps](https://developers.google.com/maps/documentation/javascript/), [Mapbox](https://www.mapbox.com/mapbox.js/), of [OpenLayers](http://openlayers.org/).
-
 **Inhoud**
 
-* [Waarvoor](#waarvoor)
+* [Doel](#doel)
 * [Gebruiksvoorbeeld](#gebruiksvoorbeeld)
 * [Opzetten](#opzetten)
 * [API documentatie](#api-documentatie)
@@ -12,8 +10,7 @@ Automatische configuratie van BRT-Achtergrondkaart lagen in [Leaflet](http://lea
 * [Ruwe tegel URL's](#ruwe-tegel-urls)
 * [Ontwikkelen](#ontwikkelen)
 
-
-## Waarvoor
+## Doel
 
 Met de `nlmaps` JavaScript bibliotheek kun je kaartlagen van de BRT-Achtergrondkaart maken voor Leaflet, Google Maps, Mapbox of OpenLayers. Je hoeft daardoor niet zelf de tegel-URL's te kennen. Om het nog makkelijker te maken, detecteert `nlmaps` automatisch de kaart bibliotheek die je gebruikt en maakt hiermee een kaart waar een van de BRT-Achtergrondkaart stijlen aan is toegevoegd.
 
@@ -38,8 +35,8 @@ De [NL Maps wizard](https://nlmaps.nl/#wizard) maakt het heel eenvoudig om te be
 
 Je hebt één van de volgende bibliotheken nodig: Leaflet, Google Maps of OpenLayers. `nlmaps` detecteert automatisch welke aanwezig is (en beschouwt het momenteel als een fout als meer dan één aanwezig is). Voor meer informatie over het gebruik van de betreffende bibliotheken raadpleeg de eigen documentatie:
 
-* [Leaflet](http://leafletjs.com/examples.html)
 * [Google Maps](https://developers.google.com/maps/documentation/javascript/)
+* [Leaflet](http://leafletjs.com/examples.html)
 * [Mapbox](https://www.mapbox.com/mapbox.js/api/v3.1.1/)
 * [OpenLayers](http://openlayers.org/en/latest/doc/quickstart.html)
 
@@ -58,9 +55,9 @@ Tenslotte heb je nog de `nlmaps` bibliotheek zelf nodig. Deze kun je downloaden 
     //ES2015 Modules
     import nlmaps from 'nlmaps';
 
-Leaflet, Google Maps, Mapbox of OpenLayers zullen ook beschikbaar moeten zijn in je webpagina. Een manier om dit voor elkaar te krijgen is om een package te installeren die je kaartbibliotheek wrapt voor Node: dat doe je met `npm install -S <package-naam>` (bijvoorbeeld, [leaflet-headless](https://www.npmjs.com/package/leaflet-headless), [google-maps](https://www.npmjs.com/package/google-maps) or [openlayers](https://www.npmjs.com/package/openlayers)). Je kan je kaartbibliotheek ook natuurlijk als script zetten in het html-bestand waar je app output in terecht komt.
+Leaflet, Google Maps, Mapbox of OpenLayers zullen ook beschikbaar moeten zijn in je webpagina. Een manier om dit voor elkaar te krijgen is om een package te installeren die je kaartbibliotheek wrapt voor Node: dat doe je met `npm install -S <package-naam>` (bijvoorbeeld, [leaflet](https://www.npmjs.com/package/leaflet), [google-maps](https://www.npmjs.com/package/google-maps) or [openlayers](https://www.npmjs.com/package/openlayers)). Je kan je kaartbibliotheek ook natuurlijk als script zetten in het html-bestand waar je app output in terecht komt.
 
-**Over het gebruik van Mapbox:** Als je de Mapbox bibliotheek gebruikt, volg dan de instructies voor Leaflet. Mapbox bevat de Leaflet bibliotheek en zal dus op dezelfde manier werken.
+**Over het gebruik van Mapbox:** Als je de Mapbox-bibliotheek gebruikt, volg dan de instructies voor Leaflet. Mapbox bevat de Leaflet-bibliotheek en zal dus op dezelfde manier werken.
 
 ## API documentation
 
@@ -68,10 +65,13 @@ Leaflet, Google Maps, Mapbox of OpenLayers zullen ook beschikbaar moeten zijn in
 
 Maakt een kaart, met gebruik van Leaflet, Google Maps, Mapbox of OpenLayers, waar een BRT-Achtergrondkaartlaag al aan is toegevoegd als achtergrondlaag. De kaart wordt geconfigureerd met een options object met de volgende eigenschappen:
 
-* style: _string_ (optioneel). een van `'standaard'`, `'pastel'`, '`grijs'` of `'luchtfoto'`, default `'standaard'`.
-* target: _string_ (verplicht). id van `div` waar de kaart in moet worden gemaakt.
-* center: _object_ (optioneel). object met latitude en longitude eigenschappen voor het instellen van het initiële kaartbeeld. Standaard rond het centrum van Nederland.
-* zoom: _number_ (optioneel). Zoomniveau voor het initiële kaartbeeld. Standaard `8`.
+* target: _string_ (**verplicht**). De id van `div` waar de kaart in moet worden gemaakt.
+* center: _object_ (optioneel). Het object met de eigenschappen `latitude` en `longitude` om het initiële kaartbeeld in te stellen. De standaardwaarde is het centrum van Nederland.
+* zoom: _number_ (optioneel). Het zoomniveau voor het initiële kaartbeeld. De standaardwaarde is `8`.
+* style: _string_ (optioneel). De stijl van de referentiekaart. Gebruik er een van `'standaard'`, `'pastel'`, '`grijs'` of `'luchtfoto'`. De standaardwaarde is `'standaard'`.
+* marker: _boolean_ or _object_ (optioneel). Gebruik `'true'` of `'false'` om in te stellen of er een marker wordt getoond op de locatie van `center`. De standaardwaarde is `'false'`. Om de positie expliciet in te stellen, geef een object met de eigenschappen `latitude` en `longitude`.
+* overlay: _string_ (optioneel). Hiermee stel je een kaart in, die over de BRT-Achtergrondkaart of luchtfoto wordt getoond. Gebruik er een van `'drone-no-fly-zones'`, `'gebouwen'`, `'gemeenten'`, `'hoogte'`, `'percelen'` of `'provincies'`.
+* search: _boolean_ (optioneel). Gebruik `'true'` of `'false'` om in te stellen of er een zoekveld voor plaatsen en adressen wordt getoond. De standaardwaarde is `'false'`.
 
 Geeft een `map` object terug.
 
@@ -84,16 +84,19 @@ Geeft een `map` object terug.
         longitude: 5.4534,
         latitude: 52.3112
       },
-      zoom: 15
+      zoom: 15,
+      marker: true,
+      overlay: 'hoogte',
+      search: true
     };
     let map = nlmaps.createMap(opts);
    
-### nlmaps.geolocate(map<map object>, options<object>)
+### `nlmaps.geoLocate(map<map object>, options<object>)`
 
 Maakt een geolocator control en voegt deze toe aan de kaart. Een klik op de control initialiseert een verzoek aan de browser geolocation API en centreert de kaart op de resulterende locatie. De geolocator kan ook worden ingesteld om meteen een geolocation verzoek uit te voeren, zonder te wachten tot de gebruiker op de control klikt.
 
-* map: _object map_ (verplicht). De `map` waar de geolocator aan moet worden toegevoegd.
-* options _object_ (optioneel). Een object met een toegestane eigenschap: `start: true|false`. Wanneer `true`, voert de geocoder meteen een geolocation verzoek uit.
+* map: _object map_ (**verplicht**). De `map` waar de geolocator aan moet worden toegevoegd.
+* options _object_ (optioneel). Een object met een toegestane eigenschap: `start: true|false`. Indien de waarde `true` is ingesteld, dan wordt meteen een geolocation verzoek uitgevoerd.
 
 Geeft een `geolocator` object terug. Zie de [nlmaps-geolocator](https://www.npmjs.com/package/nlmaps-geolocator) package voor meer informatie.
 
@@ -104,35 +107,93 @@ Geeft een `geolocator` object terug. Zie de [nlmaps-geolocator](https://www.npmj
 
 ### `nlmaps.<leaflet|openlayers>.bgLayer([style<string>]) | nlmaps.googlemaps.bgLayer(map, [style])`
 
-Maakt een laag voor de betreffende bibliotheek die tegels opvraagt voor de tegelset `style`. Als `style` wordt weggelaten, vraagt het de 'standaard' tegelset op. Om `nlmaps` te gebruiken met Mapbox, selecteer `leaflet`.
+Maakt een laag voor de betreffende bibliotheek die tegels opvraagt voor de tegelset `style`. Als `style` wordt weggelaten, vraagt het de 'standaard' tegelset op. Selecteer `nlmaps.leaflet` om `nlmaps` met Mapbox te gebruiken.
 
-**NOOT:** voor Googe Maps moet je ook een `map` object meegeven als eerste argument. Dus als je ook een style meegeeft, geef dan als eerste argument `map`. Dit is nodig voor het maken van de Attributie control, omdat Google Maps dit niet automatisch configureert.
+**NOOT:** voor Google Maps moet je ook een `map` object meegeven als eerste argument ( als je dus ook een `style` meegeeft, geef dan als eerste argument `map`).
 
 Argumenten:
 
 * map: _map.object_ (alleen voor Google Maps). De `map` waar de laag aan moet worden toegevoegd.
-* style: _string_ (optioneel). Naam van de tegelset die moet worden geladen. Een van `'standaard'`, `'pastel'`,`'grijs'` of '`luchtfoto`'; standaardwaarde is `'standaard'`.
+* style: _string_ (optioneel). Naam van de tegelset die geladen moet worden. Een van `'standaard'`, `'pastel'`,`'grijs'` of '`luchtfoto`'; standaardwaarde is `'standaard'`.
 
 Geeft een `layer` object terug.
 
-**Voorbeeld**
+**Voorbeeld (OpenLayers)**
 
     const layer = nlmaps.openlayers.bgLayer();
-    layer.addTo(map);
+    layer.addLayer(map);
 
+### `nlmaps.<googlemaps|leaflet|openlayers>.markerLayer([coords<object>])`
 
-### nlmaps.<leaflet|openlayers>.geoLocatorControl(geolocator) | nlmaps.googlemaps.geoLocatorControl(geolocator, map)
+Maakt een laag voor de betreffende bibliotheek om een marker op de locatie `coords` te plaatsen. Selecteer `nlmaps.leaflet` om `nlmaps` met Mapbox te gebruiken.
+
+Arguments:
+
+* coords: _object_ (**verplicht**). Dit object heeft de eigenschappen `latitude` en `longitude` om de locatie van de marker in te stellen.
+
+Geeft een `layer` object terug.
+
+**Voorbeeld (Leaflet)**
+
+    const marker = nlmaps.leaflet.markerLayer({
+      longitude: 5.4534,
+      latitude: 52.3112
+    });
+    marker.addTo(map);
+
+### `nlmaps.<leaflet|openlayers>.overlayLayer([overlay<string>]) | nlmaps.googlemaps.overlayLayer(map, [overlay])`
+
+Maakt een laag voor de betreffende bibliotheek die afbeeldingen opvraagt voor een van de standaard `overlay` kaarten. Selecteer `nlmaps.leaflet` om `nlmaps` met Mapbox te gebruiken.
+
+**NOOT:** voor Google Maps moet je ook een `map` object meegeven als eerste argument ( als je dus ook een `style` meegeeft, geef dan als eerste argument `map`).
+
+Argumenten:
+
+* map: _map.object_ (alleen voor Google Maps). De `map` waar de laag aan moet worden toegevoegd.
+* overlay: _string_ (**verplicht**). Naam van de kaart die geladen moet worden. Een van `'drone-no-fly-zones'`, `'gebouwen'`, `'gemeenten'`, `'hoogte'`, `'percelen'` of '`provincies`'.
+
+Geeft een `layer` object terug.
+
+**Voorbeeld (Google Maps)**
+
+    const overlay = nlmaps.googlemaps.overlayLayer('drone-no-fly-zones');
+
+### `nlmaps.<leaflet|openlayers>.overlayLayer([overlay<string>],[endpoint<object>]) | nlmaps.googlemaps.overlayLayer(map, [overlay], [endpoint])`
+
+Maakt een laag voor de betreffende bibliotheek die afbeeldingen opvraagt voor een aanpasbare `overlay` **W**eb **M**apping **S**ervice (WMS). De service moet voldoen aan de [OGC WMS specificatie](http://www.opengeospatial.org/standards/wms) en de Spherical Mercator (EPSG:3857) projectie ondersteunen . Selecteer `nlmaps.leaflet` om `nlmaps` met Mapbox te gebruiken.
+
+**NOOT:** voor Google Maps moet je ook een `map` object meegeven als eerste argument ( als je dus ook een `style` meegeeft, geef dan als eerste argument `map`).
+
+Argumenten:
+
+* map: _map.object_ (alleen voor Google Maps). De `map` waar de laag aan moet worden toegevoegd.
+* overlay: _string_ (**verplicht**). Naam van de kaart die geladen moet worden. Een van `'drone-no-fly-zones'`, `'gebouwen'`, `'gemeenten'`, `'hoogte'`, `'percelen'` of '`provincies`'.
+* endpoint: _object_ (**verplicht**). Dit object heeft de eigenschappen `url`, `layerName` en `styleName` om de **W**eb **M**apping **S**ervice (WMS) in te stellen.
+
+Geeft een `layer` object terug.
+
+**Voorbeeld (OpenLayers)**
+
+    const endpoint = {
+      url: 'https://geodata.nationaalgeoregister.nl/fysischgeografischeregios/ows?',
+      layerName: 'fysischgeografischeregios',
+      styleName: 'fysischgeografischeregios:fysischgeografischeregios'
+    };
+    const overlay = nlmaps.openlayers.overlayLayer('fysisch-geografische-regios', endpoint);
+    map.addLayer(overlay);
+
+### `nlmaps.<leaflet|openlayers>.geoLocatorControl(geolocator) | nlmaps.googlemaps.geoLocatorControl(geolocator, map)`
 
 Maakt een control voor de betreffende bibliotheek die communiceert met de opgegeven `geolocator`. De control heeft een hele simpele interface: klik om een geolocation verzoek te initialiseren en de kaart op het resultaat te laten centreren. De aangemaakte control moet je zelf toevoegen aan de kaart.
 
 Argumenten:
 
-* geolocator _object geolocator_ (verplicht): De `geolocator` waar de control mee verbonden moet worden. Als je deze methode gebuikt, zul je waarschijnlijk de geolocator ook zelf aanmaken met de [nlmaps-geolocator](https://www.npmjs.com/package/nlmaps-geolocator) package.
-* map _object map_ (alleen voor Google Maps): de `map` waarmee de control geassocieerd moet worden.
+* geolocator _object geolocator_ (**verplicht**). De `geolocator` waar de control mee verbonden moet worden. Als je deze methode gebuikt, zul je waarschijnlijk de geolocator ook zelf aanmaken met de [nlmaps-geolocator](https://www.npmjs.com/package/nlmaps-geolocator) package.
+* map _object map_ (alleen voor Google Maps). De `map` waarmee de control geassocieerd moet worden.
 
-Geeft een geolocator control terug.
+Geeft een `geolocator` control terug.
 
-**Voorbeeld**
+**Voorbeeld (Leaflet)**
 
     import geoLocator from 'nlmaps-geolocator';
     import geoLocatorControl from 'nlmaps-leaflet';
@@ -146,8 +207,9 @@ Als je al een kaartbibliotheek gebruikt in jouw project, kan je de `bgLayer()` f
 
 ### Leaflet
 
-    let map = L.map('map').setView([52.20936, 5.970745], 10);
+    let map = L.map('map').setView( new L.LatLng(52.20936, 5.970745), 10);
     let mylayer = nlmaps.leaflet.bgLayer('grijs').addTo(map);
+    let marker = nlmaps.leaflet.markerLayer({longitude: 5.5, latitude: 52.5}).addTo(map);
 
 ### OpenLayers
 
@@ -158,8 +220,10 @@ Als je al een kaartbibliotheek gebruikt in jouw project, kan je de `bgLayer()` f
       }),
       target: 'map'
     });
-    let layer = nlmaps.openlayers.bgLayer(); //calling bgLayer with no argument defaults to the 'standaard' style
+    let layer = nlmaps.openlayers.bgLayer();
     map.addLayer(layer);
+    let marker = nlmaps.openlayers.markerLayer(true)
+    map.addLayer(marker);
 
 ### Google Maps
 
@@ -170,7 +234,7 @@ Voor Google Maps is iets meer code nodig, omdat we onze laag handmatig aan de `m
       zoom: 8
     });
     
-    let mylayer = nlmaps.openlayers.bgLayer(map, 'pastel'); //don't forget to pass map as first argument
+    let mylayer = nlmaps.googlemaps.bgLayer(map, 'pastel');
     
     //add your map to the available layers
     map.mapTypes.set(mylayer.name, mylayer);
@@ -188,14 +252,18 @@ Om te voldoen aan de[gebruiksvoorwaarden](https://developers.google.com/maps/ter
       }
     });
 
+    let overlay = nlmaps.googlemaps.overlayLayer(map, 'drone-no-fly-zones');
 
-### Alleen de `bgLayer` functie voor jouw kaartbibliotheek laden
+    let marker = nlmaps.googlemaps.markerLayer({longitude: 5.0, latitude: 52.5});
+    marker.setMap(map);
+
+### Neem alleen bibliotheek-specifieke functies op
 
 Als je zoveel mogelijk bytes wil besparen, kun je in plaats van de hele `nlmaps` package de sub-module voor jouw kaartbibliotheek direct toevoegen. Elk van deze modules heeft een `bgLayer()` functie die een laag voor de betreffende bibliotheek teruggeeft, en een `geoLocatorControl()` functie die een control voor de geolocator maakt.
 
 **Web browser:**
 
-Download de betreffende `nlmaps-<maplib>.min.js` [release](https://github.com/kadaster/nlmaps/releases/latest) Download de broncode en pak het uit, en selecteer het betreffende bestand uit de `dist` map. Als je deze nu als script laadt in je webpagina, zul je een `bgLayer()` en `geoLocatorControl()` functie hebben die werkt met de betreffende kaartbibliotheek. Om Mapbox te gebruiken, selecteer `leaflet`.
+Download de betreffende `nlmaps-<maplib>.min.js` [release](https://github.com/kadaster/nlmaps/releases/latest) Download de broncode en pak het uit, en selecteer het betreffende bestand uit de `dist` map. Als je deze nu als script laadt in je webpagina, zul je een `bgLayer()` en `geoLocatorControl()` functie hebben die werkt met de betreffende kaartbibliotheek. Selecteer `nlmaps.leaflet` om Mapbox te gebruiken.
 
 **NodeJS:**
 
@@ -203,11 +271,12 @@ Download de betreffende `nlmaps-<maplib>.min.js` [release](https://github.com/ka
     
     //CommonJS
     let bgLayer = require('nlmaps-leaflet').bgLayer; //note the use of property off of require
+    let marker = require('nlmaps-leaflet').markerLayer;
     
     //ES2015
-    import { bgLayer } from 'nlmaps-leaflet';
+    import { bgLayer, markerLayer } from 'nlmaps-leaflet';
 
-Deze functies kunnen vervolgens op dezelfde manier worden gebruikt als de `nlmaps.<maplib>.bgLayer()` functies uit de `nlmaps` package.
+Deze functies kunnen vervolgens op dezelfde manier worden gebruikt als de functies uit de `nlmaps` package.
 
 ### De kaart of kaartlaag verwijderen of bewerken
 
@@ -219,7 +288,7 @@ Je kunt ook de `nlmaps-geolocator` package zelf gebruiken, in plaats van deze aa
 
 ## Ruwe tegel URL's
 
-De tegel URL's die `nlmaps` configureert volgen deze templates:
+De URL's naar de kaarttegels die `nlmaps` configureert volgen deze sjablonen:
 
 Voor de BRT-Achtergrondkaart serie:
 
@@ -227,16 +296,58 @@ Voor de BRT-Achtergrondkaart serie:
 
 Voor de luchtfoto's:
 
-    https://geodata.nationaalgeoregister.nl/luchtfoto/rgb/wmts/1.0.0/2016_ortho25/EPSG:3857/{z}/{x}/{y}.png
-
+    https://geodata.nationaalgeoregister.nl/luchtfoto/rgb/wmts/1.0.0/2016_ortho25/EPSG:3857/{z}/{x}/{y}.jpeg
 
 ## Ontwikkelen
 
+
+### Installatie/configuratie
+
+Om aan `nlmaps` te werken, clone de repository en voer uit in de nieuwe directory:
+
+    lerna  bootstrap
+    npm install
+
+`lerna bootstrap` maakt symlinks van de subpackages in elkaars `node_modules` mappen zodat zij elkaar kunnen importeren met `require()` of `import` zonder de bestanden van npmjs.com te moeten downloaden.
+
+### Algemene informatie over ontwikkelen
+Er zijn een aantal problemen het het aanroepen van rollup vanuit npm scripts, dus is er voor dit project een set scripts in `scripts/` die direct aangeroepen dienen te worden. Ze worden als volgt gebruikt:
+
+
+* `node scripts/build` om de broncode vanuit `packages/PACKAGE/src` te compileren naar `packages/PACKAGE/build` 
+* `node scripts/test` om tests in `packages/PACKAGE/test`  te draaien -- voert `unit-test.js` uit met Node and kopiëert/compileert html en js ten behoevevan browser tests naar `build/`.
+* `node scripts/serve` om live-reload servers te draaien die  verversen bij veranderingen in `build`. Voor gebruik met de test html-bestanden.
+* `node scripts/serve-dev` om build, test en serve tegelijk uit te voeren.
+* `node scripts/publish` Publiceert niet daadwerkelijk, maar kopiëert de output van de build stap naar de `dist/` directory in de bovenste map.
+
+Alle bovengenoemde scripts kunnen worden aangeroepen voor alle subpackages (dit is standaard), of voor een selectie van de subpackages door gebruikt van de `-p` vlag:
+
+    //bouwt alleen nlmaps-leaflet en nlmaps-openlayers
+    node scripts/build -p leaflet,openlayers
+
+De lijst van packages die de scripts in beschouwing nemen staat in `scripts/conf.json`.
+
+De scripts kunnen worden gedraaid in watch-modus om te hercompileren/hertesten wanneer een bron- of testbestand verandert:
+
+    //bouw leaflet, en herbouw wanneer de bronbestanden veranderen
+    node scripts/build --watch -p leaflet
+    
+Dit is niet van toepassing op de `serve` script, die altijd automatisch ververst.
+
+Je kan de wrapper `serve-dev` aanroepen om de hele ontwikkel-opstelling in één keer te draaien, maar let wel dat alle logberichten naar één terminal zullen gaan en misschien in de verkeerde volgorde zullen staan. Om het overzicht te behouden kan het daarom wenselijk zijn om verschillende  combinaties van commando's voor verschillende subpackages in aparte terminal-vensters te draaien.
+
+**Noot over testen:** de test-script zoekt naar een bestand genaamd 'unit-test.js' hebben om uit te voeren; deze is bedoeld om door NodeJS uitgevoerd te worden (unit tests en dergelijke). Daarnaast kopiëert het alles dat dat de glob `*test.html` past naar de build-map. En voor het uitvoeren van de browser tests roept het `rollup.test.js` aan uit de `config` map van elk subpackage.
+
+**Verder:** de live-reload server draait met SSL. De testpagina's moeten daarom worden geopend met `https://`, anders zullen ze niet werken. De eerste keer zal een uitzondering moeten worden toegevoegd voor de self-signed security certificaten die worden gebruikt.
+
+### Publiceren
+
 [Lerna](https://lernajs.io/) wordt gebruikt voor het beheren van dit multi-package JavaScript project. Omdat Rollup en Lerna of NPM niet helemaal samengaan is er een aparte build script. Gebruik de volgende procedure om de packages te publiceren:
 
-1. `node build-all.js` Kan niet met npm run of lerna run omdat rollup niet met de gesymlinkte dependencies van lerna om kan gaan
-2. `lerna exec npm -- install` indien dependencies geupdated moeten worden
-3. git `add` en `commit`
-4. `lerna publish` kiest nieuwe versienummers voor elke package die is veranderd
+1. `lerna exec npm -- install` in het geval dat dependencies bijgewerkt moeten worden
+2. `node scripts/build` Kan niet met npm run of lerna run omdat rollup niet met de gesymlinkte dependencies van lerna om kan gaan
+3. `node scripts/publish` publiceert nog niet daadwerkelijk, maar kopiëert de build output van `packages/*/build/` naar de bovenste `dist/` map.
+4. git `add` en `commit`.
+5. `lerna publish` kies versienummers voor elk package dat is veranderd.
 
-Ga daarna naar de release pagina en annoteer de laatste release voor de 'nlmaps' package.
+De laatste stap publiceert naar npm, creëert git tags en pusht deze naar Github. Om de release af te maken, ga je daarna naar de release pagina van de Github repo en annoteer de laatste release van de 'nlmaps' package (dit zorgt ervoor dat het beschikbaar komt onder het pad 'latest' op Github).

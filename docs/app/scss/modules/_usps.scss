@@ -1,0 +1,167 @@
+.usps {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.usps-item {
+    padding: 0 0 16px;
+
+    & + & {
+        padding-top: 30px;
+        border-top: 1px solid $line-color;
+    }
+}
+
+.usp {
+    position: relative;
+    max-width: 400px;
+    margin: 0 auto;
+    padding: 90px 0 0;
+    text-align: center;
+
+    &:before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 50%;
+        width: 64px;
+        height: 64px;
+        border-radius: 100%;
+        transform: translate(-50%, 0%);
+        background: $brand-primary;
+    }
+
+    &:after {
+        @include fontello('\e837');
+        position: absolute;
+        top: 0;
+        left: 50%;
+        width: 64px;
+        height: 64px;
+        margin: 0;
+        transform: translate(-50%, 0%);
+        font-size: 32px;
+        line-height: 64px;
+        text-align: center;
+        color: #fff;
+    }
+}
+
+.usp-precise { // Modifier
+    &:after {
+        font-size: 24px;
+    }
+}
+
+.usp-official { // Modifier
+    &:after {
+        content: '\e839';
+    }
+}
+
+.usp-embedding { // Modifier
+    &:after {
+        content: '\e838';
+    }
+}
+
+@include mq($from: mobile) {
+    .usp {
+        padding: 0 0 0 100px;
+        text-align: left;
+
+        &:before {
+            left: 0;
+            width: 64px;
+            height: 64px;
+        }
+
+        &:after {
+            left: 0;
+            width: 64px;
+            height: 64px;
+            font-size: 32px;
+            line-height: 64px;
+        }
+    }
+}
+
+@include mq($from: tablet) {
+    .usps {
+        display: flex;
+        margin: 0 -20px;
+    }
+
+    .usps-item {
+        flex: 1;
+        padding: 0 20px;
+
+        & + & {
+            padding-top: 0;
+            border-top: none;
+        }
+    }
+
+    .usp {
+        padding: 95px 0 0;
+
+        &:before {
+            left: 50%;
+            width: 64px;
+            height: 64px;
+            transform: translate(-50%, 0%);
+        }
+
+        &:after {
+            left: 50%;
+            width: 64px;
+            height: 64px;
+            transform: translate(-50%, 0%);
+            font-size: 32px;
+            line-height: 64px;
+        }
+    }
+
+    .usp-precise { // Modifier
+        &:after {
+            font-size: 48px;
+        }
+    }
+
+    .usp-heading {
+        font-size: $font-size-medium;
+    }
+}
+
+@include mq($from: desktop) {
+    .usp {
+        padding: 0 0 0 100px;
+
+        &:before {
+            left: 0;
+            width: 64px;
+            height: 64px;
+            transform: inherit;
+        }
+
+        &:after {
+            left: 0;
+            width: 64px;
+            height: 64px;
+            transform: inherit;
+            font-size: 32px;
+            line-height: 64px;
+        }
+    }
+
+    .usp-heading {
+        font-size: 18px;
+    }
+}
+
+@include mq($from: wide) {
+    .usp-heading {
+        font-size: $font-size-medium;
+    }
+}

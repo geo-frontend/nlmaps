@@ -1,0 +1,65 @@
+.header {
+    position: absolute;
+    z-index: 1;
+    top: 0;
+    left: 0;
+    right: 0;
+    padding: 20px 0 0;
+}
+
+.logo-nlmaps {
+    display: inline-block;
+    width: 100px;
+
+    svg {
+        width: 100%;
+        height: auto;
+    }
+}
+
+.logo-kadaster {
+    display: inline-block;
+    width: 60px;
+
+    svg {
+        width: 100%;
+        height: auto;
+    }
+
+    polyline,
+    path {
+        fill: #fff;
+    }
+
+    .header & {
+        float: right;
+    }
+}
+
+@include mq($from: tablet) {
+    .header {
+        padding-top: 24px;
+    }
+
+    .logo-nlmaps {
+        width: 142px;
+    }
+
+    .logo-kadaster {
+        width: 90px;
+    }
+}
+
+@include mq($from: wide) {
+    .header {
+        padding-top: 55px;
+    }
+
+    .logo-nlmaps {
+        width: 142px;
+    }
+
+    .logo-kadaster {
+        width: 90px;
+    }
+}

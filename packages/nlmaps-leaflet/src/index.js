@@ -1,7 +1,6 @@
-import { getProvider, geolocator_icon } from '../../lib/index.js';
+import { getProvider, getWmsProvider, geolocator_icon, geocoder, markerUrl } from '../../lib/index.js';
 
-
-if (typeof L !== 'undefined' && typeof L === 'object'){
+if (typeof L !== 'undefined' && typeof L === 'object') {
 L.NlmapsBgLayer = L.TileLayer.extend({
   initialize: function(name='standaard', options) {
     const provider = getProvider(name);
@@ -15,11 +14,37 @@ L.NlmapsBgLayer = L.TileLayer.extend({
     L.TileLayer.prototype.initialize.call(this, provider.url, opts);
   }
 });
+
 /*
- *      * Factory function for consistency with Leaflet conventions
- *           */
+ * Factory function for consistency with Leaflet conventions
+ **/
 L.nlmapsBgLayer = function (options, source) {
   return new L.NlmapsBgLayer(options, source);
+};
+
+L.NlmapsOverlayLayer = L.TileLayer.WMS.extend({
+  initialize: function(name = '', options) {
+    const wmsProvider = getWmsProvider(name, options);
+    const url = wmsProvider.url;
+    delete wmsProvider.url;
+    const wmsParams = L.Util.extend({}, options, {
+      layers: wmsProvider.layers,
+      maxZoom: 24,
+      minZoom: 1,
+      styles: wmsProvider.styles,
+      version: wmsProvider.version,
+      transparent: wmsProvider.transparent,
+      format: wmsProvider.format
+    });
+    L.TileLayer.WMS.prototype.initialize.call(this, url, wmsParams);
+  }
+});
+
+/*
+ * Factory function for consistency with Leaflet conventions
+ **/
+L.nlmapsOverlayLayer = function (options, source) {
+  return new L.NlmapsOverlayLayer(options, source);
 };
 
 L.Control.GeoLocatorControl = L.Control.extend({
@@ -27,14 +52,14 @@ L.Control.GeoLocatorControl = L.Control.extend({
     position: 'topright'
   },
   initialize: function (options) {
-            // set default options if nothing is set (merge one step deep)
-            for (var i in options) {
-                if (typeof this.options[i] === 'object') {
-                    L.extend(this.options[i], options[i]);
-                } else {
-                    this.options[i] = options[i];
-                }
-            }
+    // set default options if nothing is set (merge one step deep)
+    for (let i in options) {
+        if (typeof this.options[i] === 'object') {
+            L.extend(this.options[i], options[i]);
+        } else {
+            this.options[i] = options[i];
+        }
+    }
   },
 
   onAdd: function(map){
@@ -53,7 +78,7 @@ L.Control.GeoLocatorControl = L.Control.extend({
     function moveMap(position){
       map.panTo([position.coords.latitude,position.coords.longitude])
     }
-    L.DomEvent.on(div, 'click', function(e){
+    L.DomEvent.on(div, 'click', function(){
       this.options.geolocator.start();
       L.DomUtil.addClass(div, 'started');
     }, this);
@@ -64,8 +89,11 @@ L.Control.GeoLocatorControl = L.Control.extend({
     })
     return div;
   },
-  onRemove: function(map){}
-})
+  onRemove: function(map){
+    return map;
+  }
+});
+
 
 L.geoLocatorControl = function(geolocator){
   return new L.Control.GeoLocatorControl({geolocator:geolocator});
@@ -73,19 +101,74 @@ L.geoLocatorControl = function(geolocator){
 
 
 }
+function markerLayer(latLngObject) {
+  if (typeof L !== 'undefined' && typeof L === 'object') {
+    let lat;
+    let lng;
+    // LatLngObject should always be defined when it is called from the main package.
+    // eslint-disable-next-line eqeqeq
+    if (typeof latLngObject == 'undefined') {
+      const center = getMapCenter(map);
+      lat = center.latitude;
+      lng = center.longitude;
+    } else {
+      lat = latLngObject.latitude;
+      lng = latLngObject.longitude;
+    }
+    return new L.marker([lat, lng], {
+      icon: new L.icon({
+        iconUrl: markerUrl,
+        iconSize: [64, 64],
+        iconAnchor: [32, 63]
+      })
+    });
+  }
+}
 
 function bgLayer(name) {
   if (typeof L !== 'undefined' && typeof L === 'object') {
-    return L.nlmapsBgLayer(name)
+    return L.nlmapsBgLayer(name);
+  }
+}
+
+function overlayLayer(name, options) {
+  if (typeof L !== 'undefined' && typeof L === 'object') {
+    return L.nlmapsOverlayLayer(name, options);
   }
 }
 
 function geoLocatorControl(geolocator) {
-  if (typeof L !== 'undefined' && typeof L === 'object') {
-    return L.geoLocatorControl(geolocator)
+  if (typeof L !== 'undefined' && typeof L == 'object') {
+    return L.geoLocatorControl(geolocator);
   }
-
-  
+}
+function zoomTo(point, map) {
+  map.fitBounds(L.geoJSON(point).getBounds(), {maxZoom: 18});
 }
 
-export { bgLayer, geoLocatorControl };
+function geocoderControl(map) {
+  const control = geocoder.createControl(zoomTo, map);
+  map.getContainer().appendChild(control);
+}
+
+function getMapCenter(map) {
+  const latLngObject = map.getCenter();
+  return {
+    latitude: latLngObject.lat,
+    longitude: latLngObject.lng
+  };
+}
+
+// Until the building works properly, this is here. Should be in browser-test.js ///
+// var map = L.map('map').setView([52, 5], 10);
+// var standaard = bgLayer('pastel');
+// const overlay = overlayLayer('drone-no-fly-zones', {
+//   url: 'https://geodata.nationaalgeoregister.nl/drone-no-fly-zones/wms?',
+//   layerName: 'luchtvaartgebieden,landingsite',
+//   styleName: ''
+// });
+
+// standaard.addTo(map);
+// overlay.addTo(map);
+
+export { bgLayer, overlayLayer, markerLayer, getMapCenter, geoLocatorControl, geocoderControl};

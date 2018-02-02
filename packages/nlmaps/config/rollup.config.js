@@ -4,16 +4,19 @@ import eslint from 'rollup-plugin-eslint';
 import resolve from '../../../node_modules/rollup-plugin-node-resolve/dist/rollup-plugin-node-resolve.es.js';
 import commonjs from '../../../node_modules/rollup-plugin-commonjs/dist/rollup-plugin-commonjs.es.js';
 import replace from '../../../node_modules/rollup-plugin-replace/dist/rollup-plugin-replace.es.js';
-import uglify from 'rollup-plugin-uglify';
+import uglify from 'rollup-plugin-uglify-es';
 
 
 export default config => {
   return {
-    entry: 'src/index.js',
-    format: config.format,
-    moduleName: 'nlmaps',
-    dest: config.dest,
+    input: 'src/index.js',
+    output: {
+      file: config.dest,
+      format: config.format,
+      name: config.format === 'iife' ? 'window' : 'nlmaps',
+    },
     external: config.external,
+    extend: config.format === 'iife' ? true : false,
     plugins: [
       commonjs(),
       resolve({

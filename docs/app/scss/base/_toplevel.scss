@@ -1,0 +1,30 @@
+html,
+body {
+    height: 100%;
+    overflow-x: hidden;
+}
+
+body {
+    position: relative;
+    min-height: 100%;
+}
+
+.wrapper {
+    width: 100%;
+    height: auto;
+    min-height: 100%;
+}
+
+.container-narrow { // Modifier
+    max-width: (800 + $grid-gutter-width);
+}
+
+@keyframes spin {
+    0% {
+        transform: rotate(0deg);
+    }
+
+    100% {
+        transform: rotate(359deg);
+    }
+}

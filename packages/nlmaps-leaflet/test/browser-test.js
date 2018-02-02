@@ -1,5 +1,17 @@
 let test = require('tape');
+let geoLocator = require('../../nlmaps-geolocator');
 
+
+//remove a div and re-add one with the same name at the same location.
+//helper to reset DOM for new tests.
+function resetMapDiv(id) {
+  const elem = document.getElementById(id);
+  let par = elem.parentNode;
+  par.removeChild(elem);
+  let div = document.createElement('div');
+  div.setAttribute('id', id);
+  par.appendChild(div);
+}
 
 let URL = 'https://geodata.nationaalgeoregister.nl/tiles/service/wmts/brtachtergrondkaart/EPSG:3857/{z}/{x}/{y}.png';
 let ATTR = 'Kaartgegevens &copy; <a href="kadaster.nl">Kadaster</a>';
@@ -27,5 +39,15 @@ test('nlmaps can create a layer object', function(t) {
   layers.grijs = bgLayer('grijs');
   L.control.layers(layers).addTo(map)
   t.end();
+})
+
+test('geolocator', function(t) {
+  resetMapDiv('map');
+  let map = L.map('map').setView([52, 5], 10);
+  let layer = bgLayer('pastel');
+  layer.addTo(map);
+  const geolocator = geoLocator();
+  const control = geoLocatorControl(geolocator);
+  control.addTo(map);
 })
 

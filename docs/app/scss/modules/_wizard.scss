@@ -1,0 +1,223 @@
+.wizard {
+    position: relative;
+    padding: 0 0 15px;
+
+    &:before {
+        content: '';
+        position: absolute;
+        left: 50%;
+        width: 100vw;
+        height: calc(100% - 60px);
+        margin: 60px 0 0;
+        transform: translateX(-50%);
+        background: $brand-primary;
+    }
+}
+
+.wizard-steps {
+    position: relative;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    background: #fff;
+    box-shadow: 0 10px 40px 10px rgba(#000, 0.08);
+    counter-reset: step;
+}
+
+.wizard-step {
+    padding: 20px;
+    counter-increment: step;
+
+    & + & {
+        border-top: 1px solid $line-color;
+    }
+
+    &:before {
+        content: counter(step);
+        display: inline-block;
+        width: 24px;
+        height: 24px;
+        margin: 0 6px 0 0;
+        border-radius: 100%;
+        line-height: 24px;
+        font-style: normal;
+        text-align: center;
+        background: $brand-primary;
+        color: #fff;
+    }
+}
+
+.wizard-step-heading {
+    font-family: $font-family-brand;
+    font-size: $font-size-base;
+    line-height: 1;
+}
+
+.wizard-step-explanation {
+    display: block;
+    margin-right: 15px;
+    color: #a5a5a5;
+    font-size: 13px;
+}
+
+.wizard-step-content {
+    padding: 30px 0 0;
+}
+
+.wizard-map {
+    position: relative;
+
+    .map {
+        position: relative;
+        display: block;
+        width: 100%;
+        height: 30vh;
+    }
+}
+
+.wizard-geo {
+    position: absolute;
+    z-index: 1000; // Needs to be on top of all maps
+    top: 10px;
+    right: 10px;
+    border: none;
+    background: $brand-primary;
+    color: #fff;
+
+    &:before {
+        @include fontello('\e802');
+        margin: 0 10px 0 0;
+        padding: 0;
+    }
+
+    &:hover {
+        background: $brand-secondary;
+    }
+
+    &:disabled {
+        &:hover {
+            background: $brand-primary;
+            cursor: default;
+        }
+
+        &:before {
+            content: '\e803';
+            animation: spin 2s infinite linear;
+        }
+    }
+}
+
+.wizard-code-block {
+    position: relative;
+}
+
+.wizard-copy {
+    position: absolute;
+    top: 0;
+    right: 0;
+    display: inline-block;
+    padding: 5px 10px;
+    border: none;
+    background: $brand-primary;
+    color: #fff;
+
+    &:after {
+        @include fontello('\f0c5');
+        margin: 0 0 0 10px;
+    }
+
+    &:hover,
+    &:focus {
+        background: #fff;
+        color: $brand-primary;
+        text-decoration: none;
+    }
+}
+
+.wizard-code {
+    display: block;
+    padding: 50px 20px 20px;
+    background: #f3f3f3;
+    font-size: $font-size-small;
+    white-space: pre-wrap;
+    word-break: break-word;
+}
+
+.wizard-option {
+    position: relative;
+
+    input {
+        position: absolute;
+        width: 1px;
+        height: 1px;
+        padding: 0;
+        margin: -1px;
+        border: 0;
+        overflow: hidden;
+        clip: rect(0, 0, 0, 0);
+
+        &:checked + label {
+            border-color: $brand-secondary;
+        }
+    }
+
+    label {
+        width: 100%;
+        padding: 10px 16px;
+        border: 2px solid transparent;
+        border-radius: 10px;
+        cursor: pointer;
+
+        &:focus,
+        &:hover {
+            border-color: mix(#fff, $brand-secondary, 70%);
+        }
+    }
+}
+
+@include mq($from: tablet) {
+    .wizard {
+        &:before {
+            height: 100%;
+        }
+    }
+
+    .wizard-step {
+        display: flex;
+        padding: 40px;
+
+        &:before {
+            width: 32px;
+            height: 32px;
+            margin: 0 15px 0 0;
+            font-size: $font-size-medium;
+            line-height: 32px;
+        }
+    }
+
+    .wizard-step-heading {
+        display: block;
+        flex: 1;
+        font-size: $font-size-large;
+        line-height: 1.25;
+    }
+
+    .wizard-step-content {
+        flex: 2;
+        padding: 0;
+    }
+
+    .wizard-option {
+        & + & {
+            margin: 0 0 0 15px;
+        }
+
+        label {
+            width: auto;
+        }
+    }
+
+    .wizard-code {
+        padding: 20px;
+    }
+}

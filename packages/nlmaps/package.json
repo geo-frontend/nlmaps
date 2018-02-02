@@ -1,6 +1,6 @@
 {
   "name": "nlmaps",
-  "version": "2.0.0",
+  "version": "2.1.0",
   "engines": {
     "node": ">=6.0.0 <=6.11"
   },
@@ -9,7 +9,7 @@
   "module": "build/nlmaps.es.js",
   "scripts": {
     "test": "node test/test.js",
-    "build": "rollup -c config/rollup.es.js  && rollup -c config/rollup.cjs.js && BROWSER=true rollup -c config/rollup.iife.js && cp build/nlmaps.iife.js ../../dist/",
+    "build": "rollup -c config/rollup.es.js  && rollup -c config/rollup.cjs.js && rollup -c config/rollup.iife.js && cp build/nlmaps.iife.js ../../dist/",
     "watch-test": "nodemon --watch test --watch build --exec 'npm run test'",
     "watch-code": "nodemon --watch src --exec npm run build",
     "watch-all": "npm-run-all --parallel watch-code watch-test",
@@ -32,9 +32,10 @@
   "author": "Hans Fast <hans@webmapper.net>",
   "license": "MIT",
   "dependencies": {
-    "nlmaps-googlemaps": "^2.0.0",
-    "nlmaps-leaflet": "^2.0.0",
-    "nlmaps-openlayers": "^2.0.0"
+    "nlmaps-googlemaps": "^2.1.0",
+    "nlmaps-leaflet": "^2.1.0",
+    "nlmaps-openlayers": "^2.1.0",
+    "rollup-plugin-uglify-es": "0.0.1"
   },
   "devDependencies": {
     "live-server-https": "0.0.2",

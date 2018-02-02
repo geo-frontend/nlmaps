@@ -1,0 +1,76 @@
+.section {
+    padding: 32px 0;
+}
+
+.section-brand { // Modifier
+    background: $brand-secondary;
+    color: #fff;
+}
+
+.section-wizard { // Modifier
+    padding: 32px 0 0;
+}
+
+.section-intro {
+    margin: 0 0 30px;
+    text-align: center;
+}
+
+.section-heading {
+    font-size: $font-size-medium;
+    text-align: center;
+}
+
+.section-actions {
+    position: relative;
+    margin: 60px 0 0;
+    text-align: center;
+
+    .btn + .btn {
+        margin-top: 20px;
+    }
+
+    .section-wizard & {
+        color: #fff;
+    }
+}
+
+@include mq($from: mobile) {
+    .section {
+        padding: 60px 0;
+    }
+
+    .section-actions {
+        .btn + .btn {
+            margin: 0 0 0 20px;
+        }
+    }
+}
+
+@include mq($from: tablet) {
+    .section {
+        padding: 7vh 0;
+    }
+
+    .section-intro {
+        margin: 0 0 48px;
+    }
+
+    .section-heading {
+        font-size: $font-size-large;
+    }
+}
+
+@include mq($from: wide) {
+    .section {
+        padding: 10vh 0;
+    }
+
+    .section-intro {
+        margin: 0 0 60px;
+    }
+
+    .section-heading {
+        font-size: $font-size-largest;
+    }
+}

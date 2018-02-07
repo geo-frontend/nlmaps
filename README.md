@@ -349,3 +349,8 @@ You can use the wrapper `serve-dev` to run the whole development setup, but note
 5. `lerna publish`   choose version numbers for each changed package
 
 This publishes to npm as well as creates new git tags for the releases, which are pushed to Github. To finish the release, go to the  Github repo's release page and annotate the latest release for the 'nlmaps' package (this makes it show up under the 'latest' path on Github).
+
+### Building the webpage
+To build the webpage goto the docs folder and make sure you have gulp installed. 
+
+Run `gulp build` to start the build process. When the process is finished the compiled website and assets are available in the build folder.

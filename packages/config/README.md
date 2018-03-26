@@ -12,8 +12,8 @@
 **defaults**: `object` default settings for base-layers:
 * **crs**: `string` epsg code to be used, eg `epsg:3857`
 * **attr**: `html-string` attribution string to be shown on the map
-* **minZoom**: `integer` minimum zoomlevel for the map
-* **maxZoom**: `integer` maximum zoomlevel for the map
+* **minZoom**: `integer` minimum zoomlevel for the base-layer
+* **maxZoom**: `integer` maximum zoomlevel for the base-layer
 * **type**: `string` type of the baselayer service. Currently only `wmts` is supported
 * **format**: `string` format of the baselayer, eg `png`, `jpeg`
 * **baseUrl**: `string` default webservice url, can be overwritten with the `url` parameter in the `layers` object
@@ -29,8 +29,8 @@
 * **version**: `string` WMS version eg `1.1.0`
 * **transparent**: `boolean` WMS parameter whether or not to request transparency
 * **format**: `string` WMS-style image format eg. `image/png`
-* **minZoom**: `integer` minimum zoomlevel for the map
-* **maxZoom**: `integer` maximum zoomlevel for the map
+* **minZoom**: `integer` minimum zoomlevel for the wms-layer
+* **maxZoom**: `integer` maximum zoomlevel for the wms-layer
 
 **layers**: `array` layer specific settings:
 * **name**: `string` user friendly name

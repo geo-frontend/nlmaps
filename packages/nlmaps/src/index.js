@@ -155,6 +155,8 @@ function addGoogleLayer(layer, map) {
     return;
   }
 
+  let mapTypeIds = [layer.name, 'roadmap'];
+  
   if (layer.name === 'wms') {
     map.setOptions({
       mapTypeControl: true,
@@ -165,7 +167,6 @@ function addGoogleLayer(layer, map) {
     });
     return;
   }
-  let mapTypeIds = [layer.name, 'roadmap'];
 
   map.setOptions({
     mapTypeControl: true,

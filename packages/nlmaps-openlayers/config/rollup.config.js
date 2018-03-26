@@ -11,10 +11,11 @@ export default config => {
   return {
     input: config.output.format === 'iife' ? 'src/browser.js' : 'src/index.js',
     output: {
-      file: config.dest,
+      file: config.output.file,
       format: config.output.format,
       name: config.output.format === 'iife' ? 'window' : 'nlmapsOL',
       extend: config.output.format === 'iife' ? true : false,
+      sourcemap:true
     },
     external: config.external,
     plugins: [

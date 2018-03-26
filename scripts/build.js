@@ -2,6 +2,7 @@ const shell = require('shelljs');
 const conf = require('./conf.json');
 const helpers = require('./helpers');
 const { spawn } = require('child_process')
+const chokidar = require('chokidar');
 
 const tasks = helpers.tasks();
 
@@ -32,6 +33,19 @@ function main() {
     });
   })
 }
+
+
+//copy assets (only css now) to dist
+if (helpers.args.watch) {
+  chokidar.watch('packages/assets/css/*.css').on('all',(event, path) => {
+    console.log('copying css')
+    shell.cp('-u', path, [] +'packages/nlmaps/build/assets/css/');
+
+  })
+}
+
+//one-off copy css
+shell.cp('-uR', 'packages/assets/css/*.css', 'packages/nlmaps/build/assets/css/');
 
 if (typeof require !== 'undefined' && require.main === module) {
     main();

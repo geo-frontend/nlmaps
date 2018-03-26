@@ -11,12 +11,14 @@ export default config => {
   return {
     input: 'src/index.js',
     output: {
-      file: config.dest,
-      format: config.format,
-      name: config.format === 'iife' ? 'window' : 'nlmaps',
+      file: config.output.file,
+      format: config.output.format,
+      name: config.output.format === 'iife' ? 'window' : 'nlmaps',
+      extend: config.output.format === 'iife' ? true : false,
+      sourcemap:true
     },
     external: config.external,
-    extend: config.format === 'iife' ? true : false,
+    
     plugins: [
       commonjs(),
       resolve({

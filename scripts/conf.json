@@ -1,5 +1,5 @@
 {
     "packages": [
-        "nlmaps", "leaflet", "openlayers", "googlemaps", "geolocator"
+        "nlmaps", "leaflet", "openlayers", "googlemaps"
     ]
 }

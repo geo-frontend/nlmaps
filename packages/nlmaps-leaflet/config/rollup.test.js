@@ -13,10 +13,10 @@ export default {
   output: {
     format: 'iife',
     file: 'build/browser-test.js',
+    extend: true,
     name: 'window'
   },
   external: '',
-  extend: true,
   plugins: [
     commonjs(),
     globals(),

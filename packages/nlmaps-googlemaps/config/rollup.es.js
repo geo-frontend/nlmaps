@@ -1,7 +1,10 @@
 import config from './rollup.config';
 
 export default config({
-  format: 'es',
-  dest: 'build/nlmaps-googlemaps.es.js',
+  output: {
+    format: 'es',
+    file: 'build/nlmaps-googlemaps.es.js',
+    sourceMap: true
+  },
   browser: false
 })

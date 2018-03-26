@@ -13,6 +13,7 @@ export default config => {
       format: config.format,
       file: config.dest,
       name: config.format === 'iife' ? 'window' : 'nlmapsGeolocator',
+      sourcemap: true
     },
     external: config.external,
     extend: config.format === 'iife' ? true : false,

@@ -7,16 +7,16 @@ import replace from '../../../node_modules/rollup-plugin-replace/dist/rollup-plu
 import uglify from 'rollup-plugin-uglify-es';
 import image from 'rollup-plugin-image';
 
-export default config => {
+export default config => {  
   return {
-    input: config.format === 'iife' ? 'src/browser.js' : 'src/index.js',
+    input: config.output.format === 'iife' ? 'src/browser.js' : 'src/index.js',
     output: {
       file: config.dest,
-      format: config.format,
-      name: config.format === 'iife' ? 'window' : 'nlmapsOL',
+      format: config.output.format,
+      name: config.output.format === 'iife' ? 'window' : 'nlmapsOL',
+      extend: config.output.format === 'iife' ? true : false,
     },
     external: config.external,
-    extend: config.format === 'iife' ? true : false,
     plugins: [
       image(),
       commonjs(),

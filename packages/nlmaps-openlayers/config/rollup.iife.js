@@ -1,7 +1,9 @@
 import config from './rollup.config';
 
 export default config({
-  format: 'iife',
-  dest: 'build/nlmaps-openlayers.iife.js',
-  browser: true
-})
+  output: {
+    format: 'iife',
+    file: 'build/nlmaps-openlayers.iife.js',
+  },
+  fileser: true
+})  

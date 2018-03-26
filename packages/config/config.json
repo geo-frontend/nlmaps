@@ -1,29 +1,27 @@
 {
     "version": 0.1,    
     "basemaps": {
-        "metadata": {
+        "defaults": {
             "crs": "EPSG:3857",
             "attr": "Kaartgegevens &copy; <a href='https://www.kadaster.nl'>Kadaster</a> | <a href='https://www.verbeterdekaart.nl'>Verbeter de kaart</a>",
             "minZoom": 6,
             "maxZoom": 19,
             "type": "wmts",
-            "format": "png"
+            "format": "png",
+            "baseUrl": "https://geodata.nationaalgeoregister.nl/tiles/service"
         },
         "layers": [
             {
                 "name": "standaard",
-                "urlname": "brtachtergrondkaart",
-                "url": "https://geodata.nationaalgeoregister.nl/tiles/service"
+                "urlname": "brtachtergrondkaart"                
             },
             {
                 "name": "grijs",
-                "urlname": "brtachtergrondkaartgrijs",
-                "url": "https://geodata.nationaalgeoregister.nl/tiles/service"
+                "urlname": "brtachtergrondkaartgrijs"
             },
             {
                 "name": "pastel",
-                "urlname": "brtachtergrondkaartpastel",
-                "url": "https://geodata.nationaalgeoregister.nl/tiles/service"
+                "urlname": "brtachtergrondkaartpastel"
             },{
                 "name": "luchtfoto",
                 "urlname": "2016_ortho25",
@@ -33,8 +31,8 @@
         ]
     },
     "wms": {
-        "metadata": {
-            "baseUrl": "https://geodata.nationaalgeoregister.nl/{workspaceName}/wms?",            
+        "defaults": {
+            "baseUrl": "https://geodata.nationaalgeoregister.nl/{workSpaceName}/wms?",            
             "version": "1.1.1",
             "transparent": true,
             "format": "image/png",

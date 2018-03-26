@@ -41,7 +41,7 @@ test('nlmaps can create a layer object', function(t) {
   t.end();
 })
 
-test('geolocator', function(t) {
+test('geolocator', function() {
   resetMapDiv('map');
   let map = L.map('map').setView([52, 5], 10);
   let layer = bgLayer('pastel');

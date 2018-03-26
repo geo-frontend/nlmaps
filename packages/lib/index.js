@@ -46,7 +46,8 @@ function getWmsProvider(name, options) {
   } else {
     wmsProvider = makeWmsProvider(name, options);
     // eslint-disable-next-line no-console
-    console.log('NL Maps: You asked for a wms which does not exist! Available wmses: ' +  Object.keys(WMS_PROVIDERS).join(', ') +  '. Provide an options object to make your own WMS.');
+    console.log('NL Maps: You asked for a wms which does not exist! Available wmses: ' +  
+    Object.keys(WMS_PROVIDERS).join(', ') +  '. Provide an options object to make your own WMS.');
     
   }
   return wmsProvider;  

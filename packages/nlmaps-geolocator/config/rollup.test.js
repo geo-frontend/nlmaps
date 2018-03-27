@@ -27,6 +27,9 @@ export default {
     eslint({
       exclude: [
         '../../../node_modules/**'
+      ],
+      include: [
+        '../../lib/**'
       ]
     }),
     babel({

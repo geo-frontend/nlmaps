@@ -13,6 +13,20 @@ if (helpers.args.watch) {
   rollup_args.unshift('--watch')
 }
 
+tasks.forEach(task => {
+  //create output directories for static assets if they don't exist yet
+  const assetsdirpath = 'packages/' + helpers.packagePath(task) + '/build/assets';
+  if (!shell.test('-e', assetsdirpath)) {
+    shell.mkdir('-p', assetsdirpath);
+  }
+  if (! shell.test('-e', assetsdirpath + '/img')) {
+    shell.mkdir('-p', assetsdirpath + '/img');
+  }
+  if (! shell.test('-e', assetsdirpath + '/css')) {
+    shell.mkdir('-p', assetsdirpath + '/css');
+  }
+})
+
 function main() {
   //run each package's rollup command from the package's directory
   //and capture/log output
@@ -32,16 +46,12 @@ function main() {
       console.log(`child process for ${task} exited with code ${code}`);
     });
   })
-  //create output directories for static assets if they don't exist yet
-  tasks.forEach(task => {
-    const assetsdirpath = 'packages/' + helpers.packagePath(task) + '/build/assets/';
-    shell.mkdir('-p', assetsdirpath + 'img', assetsdirpath + 'css' );
-  })
+
 
   //one-off copy
   tasks.forEach(task => {
-   shell.cp('-ur', 'packages/assets/css/*.css', 'packages/' + helpers.packagePath(task) + '/build/assets/css/');
-   shell.cp('-ur', 'packages/assets/img/*', 'packages/' + helpers.packagePath(task) + '/build/assets/img/');
+    shell.cp('-ur', 'packages/assets/css/*.css', 'packages/' + helpers.packagePath(task) + '/build/assets/css/');
+    shell.cp('-ur', 'packages/assets/img/*', 'packages/' + helpers.packagePath(task) + '/build/assets/img/');
 
   })
   //copy assets to dist
@@ -50,9 +60,10 @@ function main() {
       let newpath = path.split('/');
       newpath.splice(0,2);
       let newpathstring = newpath.join('/');
-      console.log(newpathstring);
       tasks.forEach( task => {
-        shell.cp('-ur', path, 'packages/' + helpers.packagePath(task) + '/build/assets/' + newpathstring);
+        if (!shell.test('-d', path)){
+          shell.cp('-ur', path, 'packages/' + helpers.packagePath(task) + '/build/assets/' + newpathstring);
+        }
            
       
       } )

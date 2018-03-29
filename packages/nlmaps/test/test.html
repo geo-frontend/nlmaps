@@ -15,7 +15,8 @@
     <script src="nlmaps.iife.js"></script>
     <script>
       let map = nlmaps.createMap({target: 'mapdiv',
-        layer: 'pastel'
+        layer: 'pastel',
+        marker: true
       });
       const geolocator = nlmaps.geoLocate(map, {start: true})
     </script>

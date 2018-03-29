@@ -24,12 +24,9 @@ export default config => {
         main: true,
         browser: true
       }),
-      eslint({
-        exclude: [
-          '../../../node_modules/**'
-        ],
+      eslint({        
         include: [
-          '../../lib/**'
+          '../lib/**'
         ]
       }),
       babel({

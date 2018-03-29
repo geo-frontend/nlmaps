@@ -2,7 +2,7 @@ const conf = require('./conf.json');
 const liveserver = require('live-server');
 const helpers = require('./helpers');
 
-const tasks = helpers.tasks();
+const tasks = helpers.tasks(true);
 
 function main() {
   const servers = tasks.map(task => {

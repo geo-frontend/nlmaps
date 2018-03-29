@@ -1,5 +1,8 @@
 {
     "packages": [
         "nlmaps", "leaflet", "openlayers", "googlemaps", "geolocator"
+    ],
+    "live_server_packages" : [
+        "nlmaps", "leaflet", "openlayers", "googlemaps"
     ]
 }

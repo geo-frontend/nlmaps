@@ -5,6 +5,7 @@ const { spawn, fork} = require('child_process');
 const chokidar = require('chokidar');
 
 const tasks = helpers.tasks();
+console.log(tasks)
 
 const rollup_args = ['-c', 'config/rollup.test.js'];
 

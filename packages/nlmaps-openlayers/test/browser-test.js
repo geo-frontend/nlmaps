@@ -11,7 +11,6 @@ export default function browserTest(){
   map.addLayer(layer);
   let geolocator = geoLocator();
   let control = bgLayer.geoLocatorControl(geolocator, map)
-  map.addControl(control)
-  console.log(control)
+  map.addControl(control)  
 
 }

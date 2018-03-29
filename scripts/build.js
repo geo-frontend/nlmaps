@@ -35,17 +35,28 @@ function main() {
 }
 
 
-//copy assets (only css now) to dist
+//copy assets to dist
 if (helpers.args.watch) {
-  chokidar.watch('packages/assets/css/*.css').on('all',(event, path) => {
-    console.log('copying css')
-    shell.cp('-u', path, [] +'packages/nlmaps/build/assets/css/');
+  chokidar.watch('packages/assets/').on('all',(event, path) => {
+    let newpath = path.split('/');
+    newpath.splice(0,2);
+    let newpathstring = newpath.join('/');
+    console.log(newpathstring);
+    tasks.forEach( task => {
+      shell.cp('-u', path, 'packages/' + helpers.packagePath(task) + '/build/assets/' + newpathstring);
+         
+    
+    } )
 
   })
 }
 
-//one-off copy css
-shell.cp('-uR', 'packages/assets/css/*.css', 'packages/nlmaps/build/assets/css/');
+//one-off copy
+tasks.forEach(task => {
+ shell.cp('-uR', 'packages/assets/css/*.css', 'packages/' + helpers.packagePath(task) + '/build/assets/css/');
+ shell.cp('-uR', 'packages/assets/img/*', 'packages/' + helpers.packagePath(task) + '/build/assets/img/');
+
+})
 
 if (typeof require !== 'undefined' && require.main === module) {
     main();

@@ -65,13 +65,10 @@ L.Control.GeoLocatorControl = L.Control.extend({
   onAdd: function(map){
     let div = L.DomUtil.create('div');
     div.id = 'nlmaps-geolocator-control';
-    div.style.backgroundColor = '#fff';
-    div.style.cursor = 'pointer';
-    div.style.boxShadow = '0 1px 5px rgba(0, 0, 0, 0.65)';
-    div.style.height = '26px';
-    div.style.width = '26px';
-    div.style.borderRadius = '26px 26px';
-    div.innerHTML = geolocator_icon;
+    div.className='nlmaps-geolocator-control';
+    let img = document.createElement('img');
+    console.log(img);
+    div.append(img);
     if (this.options.geolocator.isStarted()){
       L.DomUtil.addClass(div, 'started')
     }

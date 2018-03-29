@@ -9,6 +9,15 @@
   right: '.5em';
   top: '.5em';
 }
+
+.nlmaps-geolocator-control img {
+  background-image: url('/assets/img/geolocator_icon.svg');
+  display: block;
+  box-sizing: border-box;
+  width: 26px;
+  height: 26px;
+  content: none;
+}
 /*myControlEl.className = 'ol-control';*/
 
 

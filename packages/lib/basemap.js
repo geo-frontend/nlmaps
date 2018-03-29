@@ -19,7 +19,7 @@ function mapLayerName(layername){
       name = 'brtachtergrondkaartpastel';
       break;
     case 'luchtfoto':
-      name = '2016_ortho25';
+      name = 'Actueel_ortho25';
       break;
     default:
       name = 'brtachtergrondkaart';

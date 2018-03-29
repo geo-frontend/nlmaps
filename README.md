@@ -296,7 +296,7 @@ For BRT-Achtergrondkaart series:
 
 For aerial imagery:
 
-    https://geodata.nationaalgeoregister.nl/luchtfoto/rgb/wmts/1.0.0/2016_ortho25/EPSG:3857/{z}/{x}/{y}.jpeg
+    https://geodata.nationaalgeoregister.nl/luchtfoto/rgb/wmts/1.0.0/Actueel_ortho25/EPSG:3857/{z}/{x}/{y}.jpeg
 
 ## Developing
 

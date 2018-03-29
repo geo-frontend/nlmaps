@@ -19,7 +19,7 @@
 * **baseUrl**: `string` default webservice url, can be overwritten with the `url` parameter in the `layers` object
 
 **layers**: `array` layer specific settings:
-* **name**: `string` user friendly name
+* **name**: `string` computer friendly name
 * **layerName**: `string` name of the layer in the webservice
 * **url**: `string` base url of the service, a typical wmts service `https://host/service/layername/{z}/{x}/{y}.png` would be split like this: `[url]/[layerName]/z.x.y.[format]`
 
@@ -33,7 +33,7 @@
 * **maxZoom**: `integer` maximum zoomlevel for the wms-layer
 
 **layers**: `array` layer specific settings:
-* **name**: `string` user friendly name
+* **name**: `string` computer friendly name
 * **workSpaceName**: `string` with the workspace of the WMS layer, can be used for templating in the (base)url (common with Geoserver)
 url
 * **layerName**: `string` name of the layer in the webservice

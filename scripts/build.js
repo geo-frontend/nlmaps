@@ -32,31 +32,36 @@ function main() {
       console.log(`child process for ${task} exited with code ${code}`);
     });
   })
-}
+  //create output directories for static assets if they don't exist yet
+  tasks.forEach(task => {
+    const assetsdirpath = 'packages/' + helpers.packagePath(task) + '/build/assets/';
+    shell.mkdir('-p', assetsdirpath + 'img', assetsdirpath + 'css' );
+  })
 
-
-//copy assets to dist
-if (helpers.args.watch) {
-  chokidar.watch('packages/assets/').on('all',(event, path) => {
-    let newpath = path.split('/');
-    newpath.splice(0,2);
-    let newpathstring = newpath.join('/');
-    console.log(newpathstring);
-    tasks.forEach( task => {
-      shell.cp('-u', path, 'packages/' + helpers.packagePath(task) + '/build/assets/' + newpathstring);
-         
-    
-    } )
+  //one-off copy
+  tasks.forEach(task => {
+   shell.cp('-ur', 'packages/assets/css/*.css', 'packages/' + helpers.packagePath(task) + '/build/assets/css/');
+   shell.cp('-ur', 'packages/assets/img/*', 'packages/' + helpers.packagePath(task) + '/build/assets/img/');
 
   })
+  //copy assets to dist
+  if (helpers.args.watch) {
+    chokidar.watch('packages/assets/').on('all',(event, path) => {
+      let newpath = path.split('/');
+      newpath.splice(0,2);
+      let newpathstring = newpath.join('/');
+      console.log(newpathstring);
+      tasks.forEach( task => {
+        shell.cp('-ur', path, 'packages/' + helpers.packagePath(task) + '/build/assets/' + newpathstring);
+           
+      
+      } )
+
+    })
+  }
 }
 
-//one-off copy
-tasks.forEach(task => {
- shell.cp('-uR', 'packages/assets/css/*.css', 'packages/' + helpers.packagePath(task) + '/build/assets/css/');
- shell.cp('-uR', 'packages/assets/img/*', 'packages/' + helpers.packagePath(task) + '/build/assets/img/');
 
-})
 
 if (typeof require !== 'undefined' && require.main === module) {
     main();

@@ -82,7 +82,7 @@ export default class Maps {
                     break;
                 case 'air':
                     this.backgroundLayerName = 'luchtfoto';
-                    this.currentUrl = 'https://geodata.nationaalgeoregister.nl/luchtfoto/rgb/wmts/1.0.0/2016_ortho25/EPSG:3857';
+                    this.currentUrl = 'https://geodata.nationaalgeoregister.nl/luchtfoto/rgb/wmts/1.0.0/Actueel_ortho25/EPSG:3857';
                     this.extension = 'jpeg';
                     break;
             }

@@ -18,7 +18,11 @@ if (helpers.args.watch) {
 //to be bound
 function unitTest(task, path) {
   const testfile = 'packages/' + helpers.packagePath(task) + '/test/unit-test.js';
-  fork(testfile);
+  if (helpers.args.coverage) {
+    fork('node_modules/tap/bin/run.js', ['--cov', testfile])
+  } else {
+    fork('node_modules/tap/bin/run/js', [testfile]);
+  }
 }
 
 function copyHtml(path) {

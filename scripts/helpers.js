@@ -22,6 +22,14 @@ parser.addArgument(
     help: 'the packages to build as a comma-separated list: -p leaflet,openlayers,nlmaps'
   }
 );
+parser.addArgument(
+  [ '--coverage' ],
+  {
+    action: 'storeTrue',
+    defaultValue: false,
+    help: 'report coverage for unit tests'
+  }
+);
 
 const args = parser.parseArgs();
 

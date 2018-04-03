@@ -33,7 +33,8 @@ export default config => {
         ],
         include: [
           '../../lib/**'
-        ]
+        ],
+        throwOnError: true
       }),
       babel({
         exclude: 'node_modules/**'

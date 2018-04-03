@@ -1,4 +1,4 @@
-import { getProvider, getWmsProvider, geolocator_icon, geocoder, markerUrl } from '../../lib/index.js';
+import { getProvider, getWmsProvider, geocoder, markerUrl } from '../../lib/index.js';
 
 if (typeof L !== 'undefined' && typeof L === 'object') {
 L.NlmapsBgLayer = L.TileLayer.extend({
@@ -67,7 +67,6 @@ L.Control.GeoLocatorControl = L.Control.extend({
     div.id = 'nlmaps-geolocator-control';
     div.className='nlmaps-geolocator-control';
     let img = document.createElement('img');
-    console.log(img);
     div.append(img);
     if (this.options.geolocator.isStarted()){
       L.DomUtil.addClass(div, 'started')
@@ -135,7 +134,7 @@ function overlayLayer(name, options) {
 }
 
 function geoLocatorControl(geolocator) {
-  if (typeof L !== 'undefined' && typeof L == 'object') {
+  if (typeof L !== 'undefined' && typeof L === 'object') {
     return L.geoLocatorControl(geolocator);
   }
 }

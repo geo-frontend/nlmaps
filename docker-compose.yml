@@ -4,3 +4,6 @@ services:
     build:
       context: ./
       dockerfile: ./Dockerfile
+    volumes:
+      - "./packages:/app/packages"
+      - "./newdist:/app/dist"

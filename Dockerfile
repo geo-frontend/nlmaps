@@ -7,5 +7,8 @@ RUN apt-get update -y
 RUN npm install -g lerna rollup@0.57.1
 COPY package.json package-lock.json /app/
 COPY packages /app/packages
+COPY scripts /app/scripts
 RUN npm install
+RUN lerna init
+RUN lerna bootstrap
 RUN lerna exec npm install

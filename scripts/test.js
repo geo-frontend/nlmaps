@@ -21,7 +21,7 @@ function unitTest(task, path) {
   if (helpers.args.coverage) {
     fork('node_modules/tap/bin/run.js', ['--cov', testfile])
   } else {
-    fork('node_modules/tap/bin/run/js', [testfile]);
+    fork('node_modules/tap/bin/run.js', [testfile]);
   }
 }
 
@@ -38,7 +38,6 @@ function main(){
   //run each package's test rollup command from the package's directory
   //and capture/log output
   tasks.forEach(task => {
-    console.log(rollup_args)
     const build = spawn('rollup', rollup_args, {cwd: 'packages/' + helpers.packagePath(task)});
 
     build.stdout.on('data', (data) => {

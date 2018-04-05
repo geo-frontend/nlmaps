@@ -7,3 +7,29 @@ services:
     volumes:
       - "./packages:/app/packages"
       - "./newdist:/app/dist"
+    command: node scripts/build
+  test:
+    build:
+      context: ./
+      dockerfile: ./Dockerfile
+    volumes:
+      - "./packages:/app/packages"
+      - "./newdist:/app/dist"
+    command: node scripts/test
+  serve:
+    build:
+      context: ./
+      dockerfile: ./Dockerfile
+    volumes:
+      - "./packages:/app/packages"
+      - "./newdist:/app/dist"
+    command: node scripts/serve
+  serve-dev:
+    build:
+      context: ./
+      dockerfile: ./Dockerfile
+    volumes:
+      - "./packages:/app/packages"
+      - "./newdist:/app/dist"
+    command: node scripts/serve-dev
+

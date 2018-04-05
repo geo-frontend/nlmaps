@@ -3,6 +3,7 @@ const conf = require('./conf.json');
 const helpers = require('./helpers');
 const { spawn, fork} = require('child_process');
 const chokidar = require('chokidar');
+const exitCode = require('tap-exit-code');
 
 const tasks = helpers.tasks();
 console.log(tasks)
@@ -19,9 +20,11 @@ if (helpers.args.watch) {
 function unitTest(task, path) {
   const testfile = 'packages/' + helpers.packagePath(task) + '/test/unit-test.js';
   if (helpers.args.coverage) {
-    fork('node_modules/tap/bin/run.js', ['--cov', testfile])
+    let sub = fork('node_modules/tap/bin/run.js', ['--cov', testfile], {stdio: 'pipe'});
+    sub.stdout.pipe(exitCode()).pipe(process.stdout);
   } else {
-    fork('node_modules/tap/bin/run.js', [testfile]);
+    let sub = fork( 'node_modules/tap/bin/run.js', [testfile], {stdio: 'pipe'});
+    sub.stdout.pipe(exitCode()).pipe(process.stdout);
   }
 }
 

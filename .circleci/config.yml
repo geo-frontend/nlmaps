@@ -1,18 +1,9 @@
 # Javascript Node CircleCI 2.0 configuration file
-#
-# Check https://circleci.com/docs/2.0/language-javascript/ for more details
-#
 jobs:
   build_and_test:
     docker:
-      # specify the version you desire here
       - image: circleci/node:8.11
       
-      # Specify service dependencies here if necessary
-      # CircleCI maintains a library of pre-built images
-      # documented at https://circleci.com/docs/2.0/circleci-images/
-      # - image: circleci/mongo:3.4.4
-
     working_directory: ~/repo
 
     steps:
@@ -42,15 +33,15 @@ jobs:
       # run tests
       - run: node scripts/test
 
+  tag_release:
+    docker:      
+      - image: circleci/node:8.11
+
+    working_directory: ~/repo
+
   tagged_deploy:
     docker:
-      # specify the version you desire here
       - image: circleci/node:8.11
-      
-      # Specify service dependencies here if necessary
-      # CircleCI maintains a library of pre-built images
-      # documented at https://circleci.com/docs/2.0/circleci-images/
-      # - image: circleci/mongo:3.4.4
 
     working_directory: ~/repo
 
@@ -59,17 +50,24 @@ jobs:
 
 workflows:
   version: 2
-  build:
+  build_and_tag:
     jobs:
       - build_and_test:
           filters: 
+            tags:
+              only: /.*/
             branches:
               only:
                 - build-setup
+      - tag_release:
+          requires:
+            build_and_test  
   deploy:
     jobs:
       - tagged_deploy:
           filters:
             tags:
               only: /^v.*/
+            branches:
+              ignore: /.*/
 

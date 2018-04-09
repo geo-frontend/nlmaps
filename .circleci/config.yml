@@ -37,9 +37,9 @@ jobs:
           key: v1-dependencies-{{ checksum "package.json" }}
         
       # build nlmaps
-      - run: bash -c 'node scripts/build
+      - run: node scripts/build
 
       # run tests
-      - run: bash -c 'node scripts/test
+      - run: node scripts/test
 
 

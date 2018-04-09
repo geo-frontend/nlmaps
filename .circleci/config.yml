@@ -58,9 +58,9 @@ jobs:
 
     working_directory: ~/repo
 
-   steps:
-    - checkout
-    - run: yarn install
+    steps:
+      - checkout
+      - run: yarn install
     ### get tagged version
 
     ### build

@@ -21,10 +21,9 @@ function unitTest(task, path) {
   const testfile = 'packages/' + helpers.packagePath(task) + '/test/unit-test.js';
   if (helpers.args.coverage) {
     let sub = fork('node_modules/tap/bin/run.js', ['--cov', testfile], {stdio: 'pipe'});
-    //sub.stdout.pipe(exitCode()).pipe(process.stdout);
+    sub.stdout.pipe(exitCode()).pipe(process.stdout);
   } else {
-    let sub = fork( 'node_modules/tap/bin/run.js', [testfile], {stdio: ['pipe', 'pipe', 'pipe', 'ipc']});
-    console.dir(sub);
+    let sub = fork( 'node_modules/tap/bin/run.js', [testfile], {stdio: 'pipe'});
     sub.stdout.pipe(exitCode()).pipe(process.stdout);
   }
 }

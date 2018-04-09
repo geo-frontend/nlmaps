@@ -20,9 +20,9 @@ if (helpers.args.watch) {
 function unitTest(task, path) {
   const testfile = 'packages/' + helpers.packagePath(task) + '/test/unit-test.js';
   if (helpers.args.coverage) {
-    let sub = fork('node_modules/tap/bin/run.js', ['--cov', testfile]);
+    let sub = fork('node_modules/tap/bin/run.js', ['--cov', testfile], {stdio: 'pipe'});
   } else {
-    let sub = fork( 'node_modules/tap/bin/run.js', [testfile]);
+    let sub = fork( 'node_modules/tap/bin/run.js', [testfile], {stdio: 'pipe'});
   }
 }
 

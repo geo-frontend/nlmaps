@@ -3,7 +3,7 @@
 # Check https://circleci.com/docs/2.0/language-javascript/ for more details
 #
 jobs:
-  build_and_test:
+  build:
     docker:
       # specify the version you desire here
       - image: circleci/node:8.11
@@ -50,21 +50,22 @@ jobs:
       # CircleCI maintains a library of pre-built images
       # documented at https://circleci.com/docs/2.0/circleci-images/
       # - image: circleci/mongo:3.4.4
-
     working_directory: ~/repo
+
 workflows:
   version: 2
-  build_and_tag:
+  build:
     jobs:
-      - build_and_test:
+      - build:
         filters: 
           branches:
             only:
               - build-setup
-  tag_and_deploy:
+  deploy:
     jobs:
       - deploy:
         filters:
           tags:
-	          only: /^v.*/
+	          only: 
+              - /^v.*/
         

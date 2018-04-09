@@ -23,9 +23,9 @@ function unitTest(task, path) {
     let sub = fork('node_modules/tap/bin/run.js', ['--cov', testfile], {stdio: 'pipe'});
     //sub.stdout.pipe(exitCode()).pipe(process.stdout);
   } else {
-    let sub = fork( 'node_modules/tap/bin/run.js', [testfile], {stdio: 'inherit'});
+    let sub = fork( 'node_modules/tap/bin/run.js', [testfile], {stdio: ['pipe', 'pipe', 'pipe', 'ipc']});
     console.dir(sub);
-    //sub.stdout.pipe(exitCode()).pipe(process.stdout);
+    sub.stdout.pipe(exitCode()).pipe(process.stdout);
   }
 }
 

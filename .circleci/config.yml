@@ -2,12 +2,8 @@
 #
 # Check https://circleci.com/docs/2.0/language-javascript/ for more details
 #
-version: 2
 jobs:
-  build:
-    branches:
-      only:
-        - build-setup
+  build_and_test:
     docker:
       # specify the version you desire here
       - image: circleci/node:8.11
@@ -46,4 +42,19 @@ jobs:
       # run tests
       - run: node scripts/test
 
-
+workflows:
+  version: 2
+  build_and_tag:
+    jobs:
+      - build_master:
+        filters: 
+          branches:
+            only:
+              - build-setup
+  tag_and_deploy:
+    jobs:
+      - deploy:
+        filters:
+          tags:
+	          only: /^v.*/
+        

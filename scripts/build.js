@@ -32,7 +32,7 @@ function main() {
   //and capture/log output
   tasks.forEach(task => {
     console.log(rollup_args)
-    const build = spawn('rollup', rollup_args, {cwd: 'packages/' + helpers.packagePath(task)});
+    const build = spawn('../../node_modules/rollup/bin/rollup', rollup_args, {cwd: 'packages/' + helpers.packagePath(task)});
 
     build.stdout.on('data', (data) => {
       console.log(`${data}`);

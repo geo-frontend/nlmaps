@@ -35,6 +35,7 @@ const args = parser.parseArgs();
 
 //server argument selects packages from config for which it makes sense to start live-server.
 function determineTaskList(packages, server=false) {
+  let packages
   if ( packages === null ) {
     return server ? conf.live_server_packages : conf.packages; 
   } else if (typeof packages === 'string'){
@@ -48,8 +49,9 @@ function isServableTask(arg) {
   return conf.live_server_packages.includes(arg);
 }
 //server argument to check against all packages or only those for which starting live-server makes sense
-function isRegisteredTask(arg, server=false) {
-  const flag = server ? conf.live_server_packages.includes(arg) : conf.packages.includes(arg);
+function isRegisteredTask(arg) {
+  console.log('server is: ', this.server)
+  const flag = this.server ? conf.live_server_packages.includes(arg) : conf.packages.includes(arg);
   if (!flag) {
     console.log('WARNING: a package name (' + arg +') was provided which is not specified in scripts/conf.json. Ignoring it.')
   }
@@ -67,7 +69,9 @@ function packagePath(name){
 //using all registered packages unless the user provides a list.
 //set server=true to use live_server_package list instead of all packages.
 function tasks(server=false){
-  let tasks = determineTaskList(args.packages, server).filter(isRegisteredTask, server);
+  let that = this;
+  that.server = server;
+  let tasks = determineTaskList(args.packages, server).filter(isRegisteredTask, that);
   return tasks;
 }
 

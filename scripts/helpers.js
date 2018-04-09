@@ -35,7 +35,6 @@ const args = parser.parseArgs();
 
 //server argument selects packages from config for which it makes sense to start live-server.
 function determineTaskList(packages, server=false) {
-  let packages
   if ( packages === null ) {
     return server ? conf.live_server_packages : conf.packages; 
   } else if (typeof packages === 'string'){

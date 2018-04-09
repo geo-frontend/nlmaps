@@ -30,6 +30,7 @@ jobs:
           - v1-dependencies-
 
       - run: yarn install
+      - run: sh scripts/install.sh
 
       - save_cache:
           paths:

@@ -37,8 +37,11 @@ jobs:
             - node_modules
           key: v1-dependencies-{{ checksum "package.json" }}
         
+      # build nlmaps subpackages
+      - run: node scripts/build -p leaflet,openlayers,googlemaps,geolocator
+
       # build nlmaps
-      - run: node scripts/build
+      - run: node scripts/build -p nlmaps
 
       # run tests
       - run: node scripts/test

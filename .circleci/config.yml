@@ -49,7 +49,7 @@ jobs:
             - package.json
 
   tag_release:
-     <<: *defaults
+    <<: *defaults
     steps:
       - add_ssh_keys:
           fingerprints:

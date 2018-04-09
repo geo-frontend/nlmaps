@@ -37,7 +37,7 @@ jobs:
       - run: node scripts/test
 
       - run: mkdir -p workspace
-      - run: cp dist workspace/
+      - run: cp -r dist workspace/
       - run: cp package.json workspace/
 
       - persist_to_workspace:

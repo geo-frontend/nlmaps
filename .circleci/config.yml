@@ -36,7 +36,10 @@ jobs:
             - node_modules
           key: v1-dependencies-{{ checksum "package.json" }}
         
-      # run tests!
-      - run: yarn test
+      # build nlmaps
+      - run: bash -c 'node scripts/build
+
+      # run tests
+      - run: bash -c 'node scripts/test
 
 

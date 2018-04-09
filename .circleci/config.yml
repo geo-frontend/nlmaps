@@ -13,34 +13,35 @@ jobs:
       # documented at https://circleci.com/docs/2.0/circleci-images/
       # - image: circleci/mongo:3.4.4
 
-      working_directory: ~/repo
+    working_directory: ~/repo
 
-      steps:
-        - checkout
+    steps:
+      - checkout
 
-        # Download and cache dependencies
-        - restore_cache:
-            keys:
-            - v1-dependencies-{{ checksum "package.json" }}
-            # fallback to using the latest cache if no exact match is found
-            - v1-dependencies-
+      # Download and cache dependencies
+      - restore_cache:
+          keys:
+          - v1-dependencies-{{ checksum "package.json" }}
+          # fallback to using the latest cache if no exact match is found
+          - v1-dependencies-
 
-        - run: yarn install
-        - run: npm run bootstrap
+      - run: yarn install
+      - run: npm run bootstrap
 
-        - save_cache:
-            paths:
-              - node_modules
-            key: v1-dependencies-{{ checksum "package.json" }}
-          
-        # build nlmaps subpackages
-        - run: node scripts/build -p leaflet,openlayers,googlemaps,geolocator
+      - save_cache:
+          paths:
+            - node_modules
+          key: v1-dependencies-{{ checksum "package.json" }}
+        
+      # build nlmaps subpackages
+      - run: node scripts/build -p leaflet,openlayers,googlemaps,geolocator
 
-        # build nlmaps
-        - run: node scripts/build -p nlmaps
+      # build nlmaps
+      - run: node scripts/build -p nlmaps
 
-        # run tests
-        - run: node scripts/test
+      # run tests
+      - run: node scripts/test
+
   deploy:
     docker:
       # specify the version you desire here
@@ -50,7 +51,10 @@ jobs:
       # CircleCI maintains a library of pre-built images
       # documented at https://circleci.com/docs/2.0/circleci-images/
       # - image: circleci/mongo:3.4.4
-      working_directory: ~/repo
+    working_directory: ~/repo
+
+    steps:
+      - checkout
 
 workflows:
   version: 2
@@ -66,6 +70,5 @@ workflows:
       - deploy:
         filters:
           tags:
-	          only: 
-              - /^v.*/
+	          only: /^v.*/
         

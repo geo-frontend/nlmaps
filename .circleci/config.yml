@@ -59,7 +59,7 @@ workflows:
                 - build-setup
       - tag_release:
           requires:
-            build_and_test  
+            - build_and_test  
   deploy:
     jobs:
       - tagged_deploy:

@@ -1,7 +1,7 @@
 # Javascript Node CircleCI 2.0 configuration file
 
 defaults: &defaults
-  working_directory: /tmp
+  working_directory: ~/repo
   docker:
     - image: circleci/node:8.11
 
@@ -57,7 +57,7 @@ jobs:
       ### use the previous build!
       - attach_workspace:
           # Must be absolute path or relative path from working_directory
-          at: /tmp/workspace
+          at: ~/repo/workspace
       
       - run: cp workspace/package.json .
 

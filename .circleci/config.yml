@@ -53,9 +53,7 @@ workflows:
   build_and_tag:
     jobs:
       - build_and_test:
-          filters: 
-            tags:
-              only: /.*/
+          filters:
             branches:
               only:
                 - build-setup

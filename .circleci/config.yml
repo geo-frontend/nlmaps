@@ -30,7 +30,7 @@ jobs:
           - v1-dependencies-
 
       - run: yarn install
-      - run: sh scripts/install.sh
+      - run: npm run bootstrap
 
       - save_cache:
           paths:

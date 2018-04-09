@@ -7,7 +7,7 @@ services:
     volumes:
       - "./packages:/app/packages"
       - "./newdist:/app/dist"
-    command: node scripts/build && node scripts/test
+    command: bash -c 'node scripts/build && node scripts/test'
   test:
     build:
       context: ./

@@ -1,5 +1,6 @@
 import { getProvider, getWmsProvider, geolocator_icon, geocoder, markerUrl } from '../../lib/index.js';
 
+//TODO 'standaard' vervangen door eerste layer van baselayers
 if (typeof L !== 'undefined' && typeof L === 'object') {
 L.NlmapsBgLayer = L.TileLayer.extend({
   initialize: function(name='standaard', options) {

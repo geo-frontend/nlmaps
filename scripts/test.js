@@ -39,7 +39,7 @@ function main(){
   //run each package's test rollup command from the package's directory
   //and capture/log output
   tasks.forEach(task => {
-    const build = spawn('rollup', rollup_args, {cwd: 'packages/' + helpers.packagePath(task)});
+    const build = spawn('../../node_modules/rollup/bin/rollup', rollup_args, {cwd: 'packages/' + helpers.packagePath(task)});
 
     build.stdout.on('data', (data) => {
       console.log(`${data}`);

@@ -39,13 +39,36 @@ jobs:
 
     working_directory: ~/repo
 
+    steps:
+      - add_ssh_keys:
+          fingerprints:
+            - "aa:c3:f1:fe:8b:79:cb:f3:79:d7:1d:77:fd:79:f9:2b"
+
+      - checkout
+      ### bump current version number
+      - run: npm --no-git-tag-version version patch
+      
+      ### set version number in all the package.json
+      - run: npm run publish
+      ### commit and tag with vx.y.z
+
   tagged_deploy:
     docker:
       - image: circleci/node:8.11
 
     working_directory: ~/repo
 
-   
+   steps:
+    - checkout
+    - run: yarn install
+    ### get tagged version
+
+    ### build
+
+    ### test
+
+    ### deploy to npm
+
 
 workflows:
   version: 2
@@ -53,6 +76,8 @@ workflows:
     jobs:
       - build_and_test:
           filters:
+            tags:
+              ignore: /^v.*/
             branches:
               only:
                 - build-setup

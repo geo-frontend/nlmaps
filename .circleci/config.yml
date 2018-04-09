@@ -62,14 +62,14 @@ workflows:
   build:
     jobs:
       - build_and_test:
-        filters: 
-          branches:
-            only:
-              - build-setup
+          filters: 
+            branches:
+              only:
+                - build-setup
   deploy:
     jobs:
       - tagged_deploy:
-        filters:
-          tags:
-            only: /^v.*/
+          filters:
+            tags:
+              only: /^v.*/
 

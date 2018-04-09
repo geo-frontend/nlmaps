@@ -22,7 +22,7 @@
     "live-server-https": "0.0.2",
     "nodemon": "^1.17.3",
     "npm-run-all": "^4.0.2",
-    "rollup": "^0.41.6",
+    "rollup": "^0.57.1",
     "rollup-plugin-babel": "^2.7.1",
     "rollup-plugin-commonjs": "^8.4.1",
     "rollup-plugin-eslint": "^3.0.0",

@@ -73,9 +73,12 @@ jobs:
       - run: rmdir workspace
       
       # bump the version in the root package.json
-      - run: |
-          VERSION=$(npm --no-git-tag-version version patch)
-          echo $VERSION
+      - run:
+          command: |
+            VERSION=$(npm --no-git-tag-version version patch)
+            echo $VERSION
+          environment:
+            V: "$VERSION"
 
       # bump the version number in all the sub-package.json, using lerna
       - run: npm run publish

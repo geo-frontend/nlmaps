@@ -56,13 +56,19 @@ jobs:
     steps:
       - checkout
 
-      
-      - run: |
+      - run: head package.json
+
+      - run: |          
           git config --global user.email "github@minst.net"
           git config --global user.name "CircleCI"          
+          git checkout master
+          git pull
+          git checkout build-setup
           git checkout -b temp
           git merge master
-
+      
+      - run: head package.json
+      
       # use the read/write ssh key
       - add_ssh_keys:
           fingerprints:

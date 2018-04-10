@@ -79,7 +79,7 @@ jobs:
 
       # clean up after ourselves
       - run: |
-          rmdir workspace
+          rm -r workspace
           ls -a dist
       
       # bump the version in the root package.json

@@ -90,11 +90,12 @@ jobs:
           rm env_file
           rm yarn.lock
           git add .
+          git commit -m "$GITCOMMIT"
           git tag -a $VERSION -m "$GITCOMMIT"
 
       - run: git status
 
-      - run: git push --set-upstream origin ${CIRCLE_BRANCH}
+      - run: git push --set-upstream origin ${CIRCLE_BRANCH} --tags
 
       ### commit and tag with vx.y.z
 

@@ -66,8 +66,10 @@ jobs:
           git rebase build-setup
           git checkout build-setup
           git merge master
+          git checkout master -- package.json
           git checkout -b temp          
     
+      - run: head package.json
       
       # use the read/write ssh key
       - add_ssh_keys:

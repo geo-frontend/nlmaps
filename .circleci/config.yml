@@ -73,7 +73,7 @@ jobs:
       - run: rmdir workspace
       
       # bump the version in the root package.json
-      - run: VERSION=$(npm --no-git-tag-version version patch)
+      - run: export VERSION=$(npm --no-git-tag-version version patch)
 
       # bump the version number in all the sub-package.json, using lerna
       - run: npm run publish
@@ -85,6 +85,8 @@ jobs:
       - run: MSG="Tagged version; "
 
       - run: GITCOMMIT=$MSG$VERSION 
+
+      - run: echo $GITCOMMIT
 
       - run: git tag -a "$VERSION" -m "$GITCOMMIT"
 

@@ -83,15 +83,18 @@ jobs:
       # bump the version number in all the sub-package.json, using lerna
       - run: npm run publish
 
-      - run: git add .
-
       - run: |
           source env_file
           git config --global user.email "github@minst.net"
           git config --global user.name "CircleCI"
+          rm env_file
+          rm yarn.lock
+          git add .
           git tag -a $VERSION -m "$GITCOMMIT"
 
       - run: git status
+
+      - run: git push --set-upstream origin ${CIRCLE_BRANCH}
 
       ### commit and tag with vx.y.z
 

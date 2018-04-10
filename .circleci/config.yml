@@ -61,7 +61,7 @@ jobs:
           at: ~/repo/workspace
 
       - run: yarn install
-      - run: mv -r workspace/dist .
+      - run: mv workspace/dist ./dist
       - run: rmdir workspace
       - run: ls -a .
       ### bump current version number

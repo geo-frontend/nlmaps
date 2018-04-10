@@ -73,27 +73,20 @@ jobs:
       - run: rmdir workspace
       
       # bump the version in the root package.json
-      - run:
-          command: |
-            VERSION=$(npm --no-git-tag-version version patch)
-            echo "export VERSION=$VERSION" >> env_file
+      - run: |
+          VERSION=$(npm --no-git-tag-version version patch)
+          MSG="Tagged version; "          
+          echo "export VERSION=$VERSION" >> env_file
+          echo "export GITCOMMIT=$MSG$VERSION" >> env_file
         
       # bump the version number in all the sub-package.json, using lerna
       - run: npm run publish
 
-      - run: |
-          source env_file
-          echo $VERSION            
-      
       - run: git add .
 
-      - run: MSG="Tagged version; "
-
-      - run: GITCOMMIT=$MSG$VERSION 
-
-      - run: echo $GITCOMMIT
-
-      - run: git tag -a "$VERSION" -m "$GITCOMMIT"
+      - run: |
+          source env_file
+          git tag -a "$VERSION" -m "$GITCOMMIT"
 
       - run: git status
 

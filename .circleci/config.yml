@@ -93,9 +93,12 @@ jobs:
           git commit -m "$GITCOMMIT"
           git tag -a $VERSION -m "$GITCOMMIT"
 
-      - run: git status
+      - run: |
+          git status
+          git tag
+          git show v2.2.8
 
-      - run: git push --set-upstream origin ${CIRCLE_BRANCH} --tags
+      #- run: git push --set-upstream origin ${CIRCLE_BRANCH} --tags
 
       ### commit and tag with vx.y.z
 

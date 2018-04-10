@@ -47,8 +47,8 @@ jobs:
           # taken to be the root directory of the workspace.
           root: workspace
           paths:
-            - dist
-            - package.json
+            - ./*.*
+            
 
   tag_release:
     <<: *defaults

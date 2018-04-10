@@ -61,11 +61,8 @@ jobs:
       - run: |          
           git config --global user.email "github@minst.net"
           git config --global user.name "CircleCI"          
-          git checkout master
-          git pull
-          git checkout build-setup
-          git checkout -b temp
-          git checkout master -- package.json
+          git checkout origin/master -- package.json         
+          git checkout -b temp          
       
       - run: head package.json
       

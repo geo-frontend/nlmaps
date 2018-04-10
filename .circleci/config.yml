@@ -93,7 +93,7 @@ jobs:
           git config --global user.name "CircleCI"
           rm env_file
           rm yarn.lock          
-          git checkout -b master
+          git checkout master
           git add .
           git status
           git commit -m "$GITCOMMIT"

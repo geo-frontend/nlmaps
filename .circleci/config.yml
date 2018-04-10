@@ -74,13 +74,11 @@ jobs:
       # get the latest build
       - run: |
           rm -r dist
-          mkdir -p dist
-          mv workspace/dist/* dist/.
+          mv workspace/dist .
 
       # clean up after ourselves
       - run: |
-          rm -r workspace
-          ls -a dist
+          rmdir workspace          
       
       # bump the version in the root package.json
       - run: |
@@ -106,12 +104,9 @@ jobs:
           git branch -d temp
           git tag -a $VERSION -m "$GITCOMMIT"
 
-      - run: |                    
-          ls -a dist
-
-      # - run: |
-      #     git push
-      #     git push --tags
+      - run: |
+          git push
+          git push --tags
 
       #- run: git push --tags --set-upstream origin ${CIRCLE_BRANCH}
 

@@ -72,7 +72,9 @@ jobs:
           mv workspace/dist .
 
       # clean up after ourselves
-      - run: rmdir workspace
+      - run: |
+          rmdir workspace
+          ls -a dist
       
       # bump the version in the root package.json
       - run: |
@@ -90,20 +92,19 @@ jobs:
           git config --global user.email "github@minst.net"
           git config --global user.name "CircleCI"
           rm env_file
-          rm yarn.lock
-          git status
-          git add --all
+          rm yarn.lock          
+          git checkout -b master
+          git add .
           git status
           git commit -m "$GITCOMMIT"
           git tag -a $VERSION -m "$GITCOMMIT"
 
-      - run: |          
-          ls -a .
+      - run: |                    
           ls -a dist
 
       #- run: git push --tags origin
 
-      - run: git push --tags --set-upstream origin ${CIRCLE_BRANCH}
+      #- run: git push --tags --set-upstream origin ${CIRCLE_BRANCH}
 
       ### commit and tag with vx.y.z
 
@@ -131,16 +132,13 @@ workflows:
     jobs:
       - tagged_deploy:
           filters:
-            tags:
-              only: /^v.*/
             branches:
-              ignore: /.*/
+              only:
+                - master
   build_and_tag:
     jobs:
       - build_and_test:
-          filters:
-            tags:
-              ignore: /^v.*/
+          filters:            
             branches:
               only:
                 - build-setup

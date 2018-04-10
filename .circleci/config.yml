@@ -92,7 +92,7 @@ jobs:
           rm env_file
           rm yarn.lock
           git status
-          git add -all
+          git add --all
           git status
           git commit -m "$GITCOMMIT"
           git tag -a $VERSION -m "$GITCOMMIT"

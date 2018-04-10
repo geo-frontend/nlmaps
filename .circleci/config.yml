@@ -131,6 +131,8 @@ workflows:
           filters:
             tags:
               only: /^v.*/
+            branches:
+              ignore: /.*/
   build_and_tag:
     jobs:
       - build_and_test:

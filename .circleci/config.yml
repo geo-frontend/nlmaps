@@ -90,13 +90,15 @@ jobs:
           rm env_file
           rm yarn.lock
           git add .
-          git commit -m "$GITCOMMIT"
+          git commit -am "$GITCOMMIT"
           git tag -a $VERSION -m "$GITCOMMIT"
 
       - run: |
           git status
           git tag
           git show v2.2.8
+          ls -a .
+          ls -a dist
 
       #- run: git push --set-upstream origin ${CIRCLE_BRANCH} --tags
 

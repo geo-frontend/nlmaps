@@ -63,6 +63,7 @@ jobs:
           git config --global user.name "CircleCI"   
           git config --global push.default simple
           git checkout master
+          git pull
           git rebase build-setup
           git checkout build-setup
           git merge master

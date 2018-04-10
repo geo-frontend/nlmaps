@@ -99,7 +99,7 @@ jobs:
           ls -a .
           ls -a dist
 
-      - run: git push --tags
+      - run: git push --tags origin
 
       #- run: git push --tags --set-upstream origin ${CIRCLE_BRANCH} --tags
 

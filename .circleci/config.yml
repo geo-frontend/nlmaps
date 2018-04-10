@@ -11,8 +11,7 @@ jobs:
     <<: *defaults
     steps:
       - checkout
-      - run: mkdir -p workspace
-
+      
       # Download and cache dependencies
       - restore_cache:
           keys:
@@ -20,7 +19,10 @@ jobs:
           # fallback to using the latest cache if no exact match is found
           - v1-dependencies-
 
+      # install the necessary packages
       - run: yarn install
+
+      #run lerna bootstrap to install all subpackages
       - run: npm run bootstrap
 
       - save_cache:
@@ -36,14 +38,15 @@ jobs:
 
       # run tests
       - run: node scripts/test
+      
+      # create a persistent workspace directory to store build
+      - run: mkdir -p workspace
+      
+      # copy the build directory
+      - run: cp -r dist workspace/      
 
-      #- run: mkdir -p workspace
-      - run: cp -r dist workspace/
-      #- run: cp package.json workspace/
-
+      # persist the workspace
       - persist_to_workspace:
-          # Must be an absolute path, or relative path from working_directory. This is a directory on the container which is 
-          # taken to be the root  directory of the workspace.
           root: workspace
           paths:
             - dist            
@@ -52,24 +55,39 @@ jobs:
     <<: *defaults
     steps:
       - checkout
+      # use the read/write ssh key
       - add_ssh_keys:
           fingerprints:
             - "aa:c3:f1:fe:8b:79:cb:f3:79:d7:1d:77:fd:79:f9:2b"
-      ### use the previous build!
-      - attach_workspace:
-          # Must be absolute path or relative path from working_directory
+      # use the previous build
+      - attach_workspace:          
           at: ~/repo/workspace
 
+      # install the necessary packages
       - run: yarn install
-      - run: mv workspace/dist ./dist
-      - run: rmdir workspace
-      - run: ls -a .
-      ### bump current version number
 
-      - run: npm --no-git-tag-version version patch
+      # get the latest build
+      - run: mv workspace/dist ./dist
+
+      # clean up after ourselves
+      - run: rmdir workspace
       
-      ### set version number in all the package.json
+      # bump the version in the root package.json
+      - run: VERSION=$(npm --no-git-tag-version version patch)
+
+      # bump the version number in all the sub-package.json, using lerna
       - run: npm run publish
+
+      - run: echo $VERSION
+      
+      - run: git add .
+
+      - run: MSG="Tagged version; "
+
+      - run: GITCOMMIT=$MSG$VERSION 
+
+      - run: git tag -a $VERSION -m $GITCOMMIT
+
       ### commit and tag with vx.y.z
 
   tagged_deploy:

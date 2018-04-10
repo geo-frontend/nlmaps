@@ -12,7 +12,6 @@ jobs:
     steps:
       - checkout
       - run: mkdir -p workspace
-      - run: cp -r * workspace/
 
       # Download and cache dependencies
       - restore_cache:
@@ -47,25 +46,24 @@ jobs:
           # taken to be the root directory of the workspace.
           root: workspace
           paths:
-            - ./*.*
-            - ./*
-            - .git            
+            - dist            
 
   tag_release:
     <<: *defaults
     steps:
+      - checkout
       - add_ssh_keys:
           fingerprints:
             - "aa:c3:f1:fe:8b:79:cb:f3:79:d7:1d:77:fd:79:f9:2b"
       ### use the previous build!
       - attach_workspace:
           # Must be absolute path or relative path from working_directory
-          at: ~/repo/.
-      
-      #- run: cp workspace/package.json .
+          at: ~/repo/workspace
 
       - run: yarn install
-
+      - run: mv workspace/dist .
+      - run: rmdir workspace
+      - run: ls -a .
       ### bump current version number
 
       - run: npm --no-git-tag-version version patch

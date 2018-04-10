@@ -76,17 +76,14 @@ jobs:
       - run:
           command: |
             VERSION=$(npm --no-git-tag-version version patch)
-            echo $VERSION
-          environment:
-            V: "$VERSION"
-
+            echo "export VERSION=$VERSION" >> env_file
+        
       # bump the version number in all the sub-package.json, using lerna
       - run: npm run publish
 
       - run: |
-          echo $VERSION
-          echo ${ Environment.V }
-          echo ${ Environment.Version }          
+          source env_file
+          echo $VERSION            
       
       - run: git add .
 

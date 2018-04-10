@@ -91,6 +91,7 @@ jobs:
           git config --global user.name "CircleCI"
           rm env_file
           rm yarn.lock
+          git status
           git add .
           git commit -m "$GITCOMMIT"
           git tag -a $VERSION -m "$GITCOMMIT"
@@ -99,9 +100,9 @@ jobs:
           ls -a .
           ls -a dist
 
-      - run: git push --tags origin
+      #- run: git push --tags origin
 
-      #- run: git push --tags --set-upstream origin ${CIRCLE_BRANCH} --tags
+      - run: git push --tags --set-upstream origin ${CIRCLE_BRANCH}
 
       ### commit and tag with vx.y.z
 

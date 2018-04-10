@@ -62,7 +62,8 @@ jobs:
           git config --global user.email "github@minst.net"
           git config --global user.name "CircleCI"   
           git config --global push.default simple
-          git checkout origin/master -- package.json         
+          git checkout origin/master -- package.json    
+          git rebase master     
           git checkout -b temp          
     
       
@@ -115,7 +116,6 @@ jobs:
 
       # push everything
       - run: |
-          git pull
           git push
           git push --tags      
 

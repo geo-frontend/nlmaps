@@ -74,7 +74,8 @@ jobs:
       # get the latest build
       - run: |
           rm -r dist
-          mv workspace/dist .
+          mkdir -p dist
+          mv workspace/dist/* dist/.
 
       # clean up after ourselves
       - run: |
@@ -90,7 +91,9 @@ jobs:
           echo "export GITCOMMIT='$GITCOMMIT'" >> env_file
         
       # bump the version number in all the sub-package.json, using lerna
-      - run: npm run publish
+      - run: |
+          npm run publish
+          cat packages/nlmaps/package.json
 
       - run: |
           source env_file          
@@ -102,14 +105,13 @@ jobs:
           git merge temp
           git branch -d temp
           git tag -a $VERSION -m "$GITCOMMIT"
-          git status
 
       - run: |                    
           ls -a dist
 
-      - run: |
-          git push
-          git push --tags
+      # - run: |
+      #     git push
+      #     git push --tags
 
       #- run: git push --tags --set-upstream origin ${CIRCLE_BRANCH}
 

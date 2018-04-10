@@ -48,6 +48,8 @@ jobs:
           root: workspace
           paths:
             - ./*.*
+            - ./*
+            - ./.*
             
 
   tag_release:

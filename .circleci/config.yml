@@ -86,7 +86,9 @@ jobs:
 
       - run: GITCOMMIT=$MSG$VERSION 
 
-      - run: git tag -a $VERSION -m $GITCOMMIT
+      - run: git tag -a "$VERSION" -m "$GITCOMMIT"
+
+      - run: git status
 
       ### commit and tag with vx.y.z
 

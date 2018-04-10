@@ -86,8 +86,9 @@ jobs:
       - run: git add .
 
       - run: |
-          cat env_file
           source env_file
+          git config --global user.email "github@minst.net"
+          git config --global user.name "CircleCI"
           git tag -a $VERSION -m "$GITCOMMIT"
 
       - run: git status

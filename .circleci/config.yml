@@ -67,7 +67,9 @@ jobs:
       - run: yarn install
 
       # get the latest build
-      - run: mv workspace/dist ./dist
+      - run: |
+          rm -r dist
+          mv workspace/dist .
 
       # clean up after ourselves
       - run: rmdir workspace

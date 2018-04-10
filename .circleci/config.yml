@@ -12,7 +12,7 @@ jobs:
     steps:
       - checkout
       - run: mkdir -p workspace
-      - run: cp -r *.* workspace/
+      - run: cp -r * workspace/
 
       # Download and cache dependencies
       - restore_cache:
@@ -49,8 +49,7 @@ jobs:
           paths:
             - ./*.*
             - ./*
-            - ./.*
-            
+            - .git            
 
   tag_release:
     <<: *defaults

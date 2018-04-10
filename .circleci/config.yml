@@ -55,10 +55,13 @@ jobs:
     <<: *defaults
     steps:
       - checkout
+
+      
       - run: |
           git config --global user.email "github@minst.net"
-          git config --global user.name "CircleCI"
+          git config --global user.name "CircleCI"          
           git checkout -b temp
+          git merge master
 
       # use the read/write ssh key
       - add_ssh_keys:
@@ -93,6 +96,9 @@ jobs:
           npm run publish
           cat packages/nlmaps/package.json
 
+      # remove misc files, add&commit changes
+      # merge with master
+      # clean up and tag
       - run: |
           source env_file          
           rm env_file
@@ -104,13 +110,10 @@ jobs:
           git branch -d temp
           git tag -a $VERSION -m "$GITCOMMIT"
 
+      # push everything
       - run: |
           git push
-          git push --tags
-
-      #- run: git push --tags --set-upstream origin ${CIRCLE_BRANCH}
-
-      ### commit and tag with vx.y.z
+          git push --tags      
 
   tagged_deploy:
     docker:

@@ -120,25 +120,11 @@ jobs:
 
     steps:
       - checkout
-      - run: yarn install
-    ### get tagged version
-
-    ### build
-
-    ### test
-
-    ### deploy to npm
-
+      - run: echo "//registry.npmjs.org/:_authToken=06084f8e-d04e-4579-bab9-996831767dfe"
+      - run: npm publish
 
 workflows:
   version: 2
-  deploy:
-    jobs:
-      - tagged_deploy:
-          filters:
-            branches:
-              only:
-                - master
   build_and_tag:
     jobs:
       - build_and_test:
@@ -149,4 +135,12 @@ workflows:
       - tag_release:
           requires:
             - build_and_test
-
+  deploy:
+    jobs:
+      - tagged_deploy:
+          filters:
+            branches:
+              only:
+                - master
+            tags:
+              only: /^v.*/

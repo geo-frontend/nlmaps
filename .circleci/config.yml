@@ -95,14 +95,13 @@ jobs:
           git commit -am "$GITCOMMIT"
           git tag -a $VERSION -m "$GITCOMMIT"
 
-      - run: |
-          git status
-          git tag
-          git show v2.2.8
+      - run: |          
           ls -a .
           ls -a dist
 
-      #- run: git push --set-upstream origin ${CIRCLE_BRANCH} --tags
+      - run: git push --tags
+
+      #- run: git push --tags --set-upstream origin ${CIRCLE_BRANCH} --tags
 
       ### commit and tag with vx.y.z
 
@@ -126,6 +125,12 @@ jobs:
 
 workflows:
   version: 2
+  deploy:
+    jobs:
+      - tagged_deploy:
+          filters:
+            tags:
+              only: /^v.*/
   build_and_tag:
     jobs:
       - build_and_test:
@@ -137,13 +142,5 @@ workflows:
                 - build-setup
       - tag_release:
           requires:
-            - build_and_test  
-  deploy:
-    jobs:
-      - tagged_deploy:
-          filters:
-            tags:
-              only: /^v.*/
-            branches:
-              ignore: /.*/
+            - build_and_test
 

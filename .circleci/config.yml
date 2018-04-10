@@ -83,7 +83,10 @@ jobs:
       # bump the version number in all the sub-package.json, using lerna
       - run: npm run publish
 
-      - run: echo $VERSION
+      - run: |
+          echo $VERSION
+          echo ${ Environment.V }
+          echo ${ Environment.Version }          
       
       - run: git add .
 

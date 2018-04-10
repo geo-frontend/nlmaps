@@ -75,9 +75,10 @@ jobs:
       # bump the version in the root package.json
       - run: |
           VERSION=$(npm --no-git-tag-version version patch)
-          MSG="Tagged version; "          
+          MSG="Tagged version; "   
+          GITCOMMIT=$MSG$VERSION"
           echo "export VERSION=$VERSION" >> env_file
-          echo "export GITCOMMIT=$MSG$VERSION" >> env_file
+          echo "export GITCOMMIT=$GITCOMMIT" >> env_file
         
       # bump the version number in all the sub-package.json, using lerna
       - run: npm run publish

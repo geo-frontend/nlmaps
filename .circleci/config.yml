@@ -61,9 +61,7 @@ jobs:
       - run: |          
           git config --global user.email "github@minst.net"
           git config --global user.name "CircleCI"          
-          git checkout master
-          git pull
-          git checkout build-setup
+          git fetch upstream master:master
           git checkout -b temp
           git merge master
       

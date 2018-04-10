@@ -75,7 +75,7 @@ jobs:
       # bump the version in the root package.json
       - run: |
           VERSION=$(npm --no-git-tag-version version patch)
-          MSG="Tagged version; "   
+          MSG="Tagged version "   
           GITCOMMIT=$MSG$VERSION
           echo "export VERSION=$VERSION" >> env_file
           echo "export GITCOMMIT=$GITCOMMIT" >> env_file
@@ -86,6 +86,7 @@ jobs:
       - run: git add .
 
       - run: |
+          cat env_file
           source env_file
           git tag -a $VERSION -m "$GITCOMMIT"
 

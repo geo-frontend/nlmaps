@@ -55,6 +55,11 @@ jobs:
     <<: *defaults
     steps:
       - checkout
+      - run: |
+          git config --global user.email "github@minst.net"
+          git config --global user.name "CircleCI"
+          git checkout -b temp
+
       # use the read/write ssh key
       - add_ssh_keys:
           fingerprints:
@@ -88,16 +93,16 @@ jobs:
       - run: npm run publish
 
       - run: |
-          source env_file
-          git config --global user.email "github@minst.net"
-          git config --global user.name "CircleCI"
+          source env_file          
           rm env_file
-          rm yarn.lock          
-          git checkout master
-          git add .
-          git status
+          rm yarn.lock                    
+          git add .          
           git commit -m "$GITCOMMIT"
+          git checkout master
+          git merge temp
+          git branch -d temp
           git tag -a $VERSION -m "$GITCOMMIT"
+          git status
 
       - run: |                    
           ls -a dist

@@ -144,7 +144,7 @@ workflows:
           filters:            
             branches:
               only:
-                - build-setup
+                - develop
       - tag_release:
           requires:
             - build_and_test

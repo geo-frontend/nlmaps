@@ -66,7 +66,7 @@ jobs:
 
       - run: git pull --no-edit
           
-      - run: git checkout build-setup
+      - run: git checkout develop
       - run: git merge master          
       - run: git checkout -b temp          
     

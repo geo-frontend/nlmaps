@@ -6,9 +6,12 @@ const tasks = helpers.tasks(true);
 
 function main() {
   const servers = tasks.map(task => {
-    let serverconf = require('./liveserver/liveserver-' + task + '.json');
-    serverconf.root = 'packages/' + helpers.packagePath(task) + '/' + serverconf.root;
-    return liveserver.start(serverconf)
+    //check if this task should have a server started.
+    if (helpers.isServableTask(task)) {
+      let serverconf = require('./liveserver/liveserver-' + task + '.json');
+      serverconf.root = 'packages/' + helpers.packagePath(task) + '/' + serverconf.root;
+      return liveserver.start(serverconf)
+    }
   })
 
   process.on('SIGINT', () => {

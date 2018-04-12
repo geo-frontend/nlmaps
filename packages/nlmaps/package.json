@@ -1,6 +1,6 @@
 {
   "name": "nlmaps",
-  "version": "2.1.1",
+  "version": "2.2.7",
   "engines": {
     "node": ">=6.0.0 <=6.11"
   },
@@ -32,13 +32,14 @@
   "author": "Hans Fast <hans@webmapper.net>",
   "license": "MIT",
   "dependencies": {
-    "nlmaps-googlemaps": "^2.1.0",
-    "nlmaps-leaflet": "^2.1.0",
-    "nlmaps-openlayers": "^2.1.1",
+    "nlmaps-googlemaps": "^2.2.7",
+    "nlmaps-leaflet": "^2.2.7",
+    "nlmaps-openlayers": "^2.2.7",
     "rollup-plugin-uglify-es": "0.0.1"
   },
   "devDependencies": {
     "live-server-https": "0.0.2",
+    "rollup-plugin-eslint": "^4.0.0",
     "tape": "^4.6.3"
   },
   "bugs": {

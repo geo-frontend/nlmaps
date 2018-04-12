@@ -1,6 +1,6 @@
 {
   "name": "nlmaps-leaflet",
-  "version": "2.1.0",
+  "version": "2.2.7",
   "description": "",
   "main": "build/nlmaps-leaflet.cjs.js",
   "module": "build/nlmaps-leaflet.es.js",
@@ -27,11 +27,12 @@
   "homepage": "https://github.com:kadaster/nlmaps#README",
   "devDependencies": {
     "leaflet": "^1.0.3",
+    "leaflet-headless": "^0.2.6",
+    "puppeteer": "^1.2.0",
+    "rollup-plugin-eslint": "^4.0.0",
     "rollup-plugin-node-builtins": "^2.1.2",
     "rollup-plugin-node-globals": "^1.1.0",
+    "rollup-plugin-uglify-es": "0.0.1",
     "tape": "^4.6.3"
-  },
-  "dependencies": {
-    "rollup-plugin-uglify-es": "0.0.1"
   }
 }

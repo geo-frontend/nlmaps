@@ -3,3 +3,4 @@ npm-debug.log
 **/**/build/*
 lerna-debug.log
 .vscode
+.nyc_output

@@ -25,9 +25,14 @@ export default config => {
         browser: true
       }),
       eslint({        
-        include: [
-          '../lib/**'
-        ]
+       // include: [
+       //   '../lib/**'
+       // ],
+        exclude: [
+          '../lib/**',
+          'node_modules/**'
+        ],
+        throwOnError: true
       }),
       babel({
         exclude: 'node_modules/**'

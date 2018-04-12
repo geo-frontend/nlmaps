@@ -266,7 +266,7 @@ nlmaps.lib = testWhichLib();
 nlmaps.createMap = function(useropts = {}) {
   const opts = mergeOpts(mapdefaults, useropts);
   try {
-  if (nlmaps.lib === 'too many libs' || nlmaps.lib === 'too few libs') {
+  if (nlmaps.lib == 'too many libs' || nlmaps.lib === 'too few libs') {
     throw({message:'one and only one map library can be defined. Please Refer to the documentation to see which map libraries are supported.'});
   }
 } catch (e) {
@@ -277,6 +277,7 @@ nlmaps.createMap = function(useropts = {}) {
   // Background layer
   const backgroundLayer = createBackgroundLayer(nlmaps.lib, map, opts.style);
   addLayerToMap(nlmaps.lib, backgroundLayer, map, opts.style);
+
 
   // Geocoder
   if (opts.search) {

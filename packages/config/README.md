@@ -16,7 +16,7 @@
 * **maxZoom**: `integer` maximum zoomlevel for the base-layer
 * **type**: `string` type of the baselayer service. Currently only `wmts` is supported
 * **format**: `string` format of the baselayer, eg `png`, `jpeg`
-* **baseUrl**: `string` default webservice url, can be overwritten with the `url` parameter in the `layers` object
+* **url**: `string` default webservice url, can be overwritten with the `url` parameter in the `layers` object
 
 **layers**: `array` layer specific settings:
 * **name**: `string` computer friendly name
@@ -25,7 +25,7 @@
 
 ## wms object
 **defaults**: `object` default settings for wms-layers:
-* **baseUrl**: `string` default webservice url, supports templating, currently only `{workSpaceName}`. Can be overwritten with the `url` parameter in the `layers` object 
+* **url**: `string` default webservice url, supports templating, currently only `{workSpaceName}`. Can be overwritten with the `url` parameter in the `layers` object 
 * **version**: `string` WMS version eg `1.1.0`
 * **transparent**: `boolean` WMS parameter whether or not to request transparency
 * **format**: `string` WMS-style image format eg. `image/png`

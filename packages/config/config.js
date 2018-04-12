@@ -8,7 +8,7 @@ export default {
             "maxZoom": 19,
             "type": "wmts",
             "format": "png",
-            "baseUrl": "https://geodata.nationaalgeoregister.nl/tiles/service"
+            "url": "https://geodata.nationaalgeoregister.nl/tiles/service"
         },
         "layers": [
             {
@@ -32,7 +32,7 @@ export default {
     },
     "wms": {
         "defaults": {
-            "baseUrl": "https://geodata.nationaalgeoregister.nl/{workSpaceName}/wms?",            
+            "url": "https://geodata.nationaalgeoregister.nl/{workSpaceName}/wms?",            
             "version": "1.1.1",
             "transparent": true,
             "format": "image/png",

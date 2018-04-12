@@ -1,7 +1,5 @@
-const geocoder = {
-    suggestUrl: 'https://geodata.nationaalgeoregister.nl/locatieserver/v3/suggest?',
-    lookupUrl: 'https://geodata.nationaalgeoregister.nl/locatieserver/v3/lookup?'
-};
+import {CONFIG} from './configParser';
+const geocoder = CONFIG.GEOCODER;
 
 function httpGetAsync(url) {
     // eslint-disable-next-line no-unused-vars

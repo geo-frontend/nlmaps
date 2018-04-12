@@ -22,7 +22,7 @@ CONFIG.WMS_DEFAULTS = {
 CONFIG.BASEMAP_PROVIDERS = {};
 CONFIG.WMS_PROVIDERS = {};
 CONFIG.GEOCODER = {};
-
+CONFIG.MAP = {};
 
 
 
@@ -65,7 +65,9 @@ function parseGeocoder(geocoder) {
     CONFIG.GEOCODER.lookup = geocoder.lookupUrl;
     CONFIG.GEOCODER.suggest = geocoder.suggestUrl;
 }
-
+function parseMap(map) {
+    CONFIG.MAP = mergeConfig({},map);
+}
 function applyTemplate(layer) {
     //Check if the url is templated
     let start = layer.url.indexOf('{');
@@ -81,7 +83,7 @@ function applyTemplate(layer) {
     }
     return layer;
 }
-
+parseMap(config.map);
 parseBase(config.basemaps);
 if(config.wms!==undefined)parseWMS(config.wms);
 if(config.geocoder!==undefined)parseGeocoder(config.geocoder);

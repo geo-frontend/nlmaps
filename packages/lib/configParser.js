@@ -71,7 +71,6 @@ function parseMap(map) {
 
 function formatBasemapUrl(layer) {
   layer.url = `${layer.url}/${layer.type}/${layer.urlname}/${CONFIG.BASE_DEFAULTS.crs}/{z}/{x}/{y}.${layer.format}`;
-  console.log(layer.url)
   return layer;
 
 }

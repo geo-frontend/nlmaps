@@ -18,14 +18,9 @@ if (helpers.args.watch) {
 
 //to be bound
 function unitTest(task, path) {
-  const testfile = 'packages/' + helpers.packagePath(task) + '/test/unit-test.js';
-  if (helpers.args.coverage) {
-    let sub = fork('node_modules/tap/bin/run.js', ['--cov', testfile], {stdio: 'pipe'});
-    sub.stdout.pipe(exitCode()).pipe(process.stdout);
-  } else {
-    let sub = fork( 'node_modules/tap/bin/run.js', [testfile], {stdio: 'pipe'});
-    sub.stdout.pipe(exitCode()).pipe(process.stdout);
-  }
+  const testfile = 'packages/' + helpers.packagePath(task) + '/test/unit-test.js';  
+  let sub = fork( 'node_modules/tape/bin/tape', ['-r','babel-register','-r','./scripts/babelHelpers.js', testfile], {stdio: 'pipe'});  
+  sub.stdout.pipe(exitCode()).pipe(process.stdout);
 }
 
 function copyHtml(path) {

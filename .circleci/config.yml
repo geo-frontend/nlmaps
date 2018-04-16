@@ -38,6 +38,9 @@ jobs:
 
       # run tests
       - run: node scripts/test
+
+      # copy builds to dist
+      - run: node scripts/publish
       
       # create a persistent workspace directory to store build
       - run: mkdir -p workspace

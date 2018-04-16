@@ -7,7 +7,7 @@ export default {
             "minZoom": 6,
             "maxZoom": 19,
             "type": "wmts",
-            "format": "png",
+            "format": "jpeg",
             "url": "https://geodata.nationaalgeoregister.nl/tiles/service"
         },
         "layers": [
@@ -40,6 +40,11 @@ export default {
             "maxZoom": 24
         },
         "layers": [
+            {
+                "name": "foobar",
+                "workSpaceName": "bash",
+                "layerName": "peachy"
+            },
             {
                 "name": "gebouwen",
                 "workSpaceName": "bag",

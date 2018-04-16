@@ -4,3 +4,4 @@ npm-debug.log
 lerna-debug.log
 .vscode
 .nyc_output
+packages/config/.tmp

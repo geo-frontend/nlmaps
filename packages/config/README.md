@@ -8,6 +8,8 @@
 
 **geocoder**: `object` urls for the goecoder services
 
+**map**: `object` default settings for the map
+
 ## basemap object
 **defaults**: `object` default settings for base-layers:
 * **crs**: `string` epsg code to be used, eg `epsg:3857`
@@ -16,16 +18,16 @@
 * **maxZoom**: `integer` maximum zoomlevel for the base-layer
 * **type**: `string` type of the baselayer service. Currently only `wmts` is supported
 * **format**: `string` format of the baselayer, eg `png`, `jpeg`
-* **baseUrl**: `string` default webservice url, can be overwritten with the `url` parameter in the `layers` object
+* **url**: `string` default webservice url, can be overwritten with the `url` parameter in the `layers` object
 
 **layers**: `array` layer specific settings:
-* **name**: `string` user friendly name
+* **name**: `string` computer friendly name
 * **layerName**: `string` name of the layer in the webservice
 * **url**: `string` base url of the service, a typical wmts service `https://host/service/layername/{z}/{x}/{y}.png` would be split like this: `[url]/[layerName]/z.x.y.[format]`
 
 ## wms object
 **defaults**: `object` default settings for wms-layers:
-* **baseUrl**: `string` default webservice url, supports templating, currently only `{workSpaceName}`. Can be overwritten with the `url` parameter in the `layers` object 
+* **url**: `string` default webservice url, supports templating, currently only `{workSpaceName}`. Can be overwritten with the `url` parameter in the `layers` object 
 * **version**: `string` WMS version eg `1.1.0`
 * **transparent**: `boolean` WMS parameter whether or not to request transparency
 * **format**: `string` WMS-style image format eg. `image/png`
@@ -33,7 +35,7 @@
 * **maxZoom**: `integer` maximum zoomlevel for the wms-layer
 
 **layers**: `array` layer specific settings:
-* **name**: `string` user friendly name
+* **name**: `string` computer friendly name
 * **workSpaceName**: `string` with the workspace of the WMS layer, can be used for templating in the (base)url (common with Geoserver)
 url
 * **layerName**: `string` name of the layer in the webservice
@@ -45,9 +47,17 @@ url
 
 **lookupUrl**: `string` the url to the geocoder service (currently only locatieserver v3 supported)
 
+
+## Map object
+* **style**: `string` name of the basemaplayer to be used
+* **center**: `object` latitude and longitude of the center of the map
+* **zoom**: `integer` zoom level to start the map with
+* **attribution**: `boolean` show attribution
+* **extent**: `array` 4 floats defining the maximum extent of the map `[minX,minY,maxX,maxY]`
+
 ## Example
 ```
-{
+ {
     "version": 0.1,    
     "basemaps": {
         "defaults": {
@@ -57,7 +67,7 @@ url
             "maxZoom": 19,
             "type": "wmts",
             "format": "png",
-            "baseUrl": "https://geodata.nationaalgeoregister.nl/tiles/service"
+            "url": "https://geodata.nationaalgeoregister.nl/tiles/service"
         },
         "layers": [
             {
@@ -73,7 +83,7 @@ url
     },
     "wms": {
         "defaults": {
-            "baseUrl": "https://geodata.nationaalgeoregister.nl/{workSpaceName}/wms?",            
+            "url": "https://geodata.nationaalgeoregister.nl/{workSpaceName}/wms?",            
             "version": "1.1.1",
             "transparent": true,
             "format": "image/png",
@@ -97,6 +107,16 @@ url
     "geocoder": {
         "suggestUrl": "https://geodata.nationaalgeoregister.nl/locatieserver/v3/suggest?",
         "lookupUrl": "https://geodata.nationaalgeoregister.nl/locatieserver/v3/lookup?"
+    },
+    "map": {
+        "style": 'standaard',
+        "center": {
+            "latitude": 52.093249,
+            "longitude": 5.111994
+        },
+        "zoom": 8,
+        "attribution": true,
+        "extent": [-180,-90,180,90]
     }
 }
 ```

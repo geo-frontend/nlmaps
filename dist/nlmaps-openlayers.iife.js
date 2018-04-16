@@ -128,7 +128,7 @@
             if (!layer.name || CONFIG.BASEMAP_PROVIDERS[layer.name] !== undefined) {
                 err('basemap names need to be defined and unique: ' + layer.name);
             }
-            CONFIG.BASEMAP_PROVIDERS[layer.name] = mergeConfig(defaults, layer);
+            CONFIG.BASEMAP_PROVIDERS[layer.name] = formatBasemapUrl(mergeConfig(defaults, layer));
         });
     }
     function parseWMS(wms) {
@@ -149,6 +149,12 @@
     function parseMap(map) {
         CONFIG.MAP = mergeConfig({}, map);
     }
+
+    function formatBasemapUrl(layer) {
+        layer.url = `${layer.url}/${layer.type}/${layer.urlname}/${CONFIG.BASE_DEFAULTS.crs}/{z}/{x}/{y}.${layer.format}`;
+        return layer;
+    }
+
     function applyTemplate(layer) {
         //Check if the url is templated
         let start = layer.url.indexOf('{');

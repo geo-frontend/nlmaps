@@ -30,6 +30,12 @@ parser.addArgument(
     help: 'report coverage for unit tests'
   }
 );
+parser.addArgument(
+  [ '-c', '--config' ],
+  {
+    help: 'specify a custom config file to build nlmaps with'
+  }
+);
 
 const args = parser.parseArgs();
 

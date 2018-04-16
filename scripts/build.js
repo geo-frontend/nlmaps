@@ -13,8 +13,8 @@ if (helpers.args.watch) {
   rollup_args.unshift('--watch')
 }
 
+//create output directories for static assets if they don't exist yet
 tasks.forEach(task => {
-  //create output directories for static assets if they don't exist yet
   const assetsdirpath = 'packages/' + helpers.packagePath(task) + '/build/assets';
   if (!shell.test('-e', assetsdirpath)) {
     shell.mkdir('-p', assetsdirpath);
@@ -28,6 +28,20 @@ tasks.forEach(task => {
 })
 
 function main() {
+  //create temporary directory and copy config there.
+  //this is a workaround to be able to build nlmaps with a custom config.
+  const TEMPCONFDIR = 'packages/config/.tmp'
+  const DEFAULTCONFIGFILE = 'packages/config/config.js';
+  if (!shell.test('-e', TEMPCONFDIR)) {
+    shell.mkdir(TEMPCONFDIR);
+  }
+  if (helpers.args.config !== null) {
+    console.log('using custom config file ' + helpers.args.config);
+    shell.cp(helpers.args.config, TEMPCONFDIR + '/config.js' );
+  } else {
+    console.log('using default config file ' + DEFAULTCONFIGFILE);
+    shell.cp(DEFAULTCONFIGFILE, TEMPCONFDIR + '/config.js');
+  }
   //run each package's rollup command from the package's directory
   //and capture/log output
   tasks.forEach(task => {

@@ -84,7 +84,7 @@ var config = {
     }
 };
 
-const CONFIG = {};
+var CONFIG = {};
 
 CONFIG.BASE_DEFAULTS = {
     crs: "EPSG:3857",
@@ -121,21 +121,21 @@ function mergeConfig(defaults, config$$1) {
 }
 
 function parseBase(basemaps) {
-    let defaults = mergeConfig(CONFIG.BASE_DEFAULTS, basemaps.defaults);
+    var defaults = mergeConfig(CONFIG.BASE_DEFAULTS, basemaps.defaults);
     if (!basemaps.layers || basemaps.layers.length < 0) {
         err('no basemap defined, please define a basemap in the configuration');
     }
-    basemaps.layers.forEach(layer => {
+    basemaps.layers.forEach(function (layer) {
         if (!layer.name || CONFIG.BASEMAP_PROVIDERS[layer.name] !== undefined) {
             err('basemap names need to be defined and unique: ' + layer.name);
         }
-        CONFIG.BASEMAP_PROVIDERS[layer.name] = mergeConfig(defaults, layer);
+        CONFIG.BASEMAP_PROVIDERS[layer.name] = formatBasemapUrl(mergeConfig(defaults, layer));
     });
 }
 function parseWMS(wms) {
-    let defaults = mergeConfig(CONFIG.WMS_DEFAULTS, wms.defaults);
+    var defaults = mergeConfig(CONFIG.WMS_DEFAULTS, wms.defaults);
     if (wms.layers) {
-        wms.layers.forEach(layer => {
+        wms.layers.forEach(function (layer) {
             if (!layer.name || CONFIG.WMS_PROVIDERS[layer.name] !== undefined) {
                 err('wms names need to be defined and unique: ' + layer.name);
             }
@@ -150,12 +150,18 @@ function parseGeocoder(geocoder) {
 function parseMap(map) {
     CONFIG.MAP = mergeConfig({}, map);
 }
+
+function formatBasemapUrl(layer) {
+    layer.url = layer.url + "/" + layer.type + "/" + layer.urlname + "/" + CONFIG.BASE_DEFAULTS.crs + "/{z}/{x}/{y}." + layer.format;
+    return layer;
+}
+
 function applyTemplate(layer) {
     //Check if the url is templated
-    let start = layer.url.indexOf('{');
+    var start = layer.url.indexOf('{');
     if (start > -1) {
-        let end = layer.url.indexOf('}');
-        let template = layer.url.slice(start + 1, end);
+        var end = layer.url.indexOf('}');
+        var template = layer.url.slice(start + 1, end);
         if (template.toLowerCase() === "workspacename") {
             layer.url = layer.url.slice(0, start) + layer.workSpaceName + layer.url.slice(end + 1, -1);
         } else {
@@ -169,11 +175,11 @@ parseBase(config.basemaps);
 if (config.wms !== undefined) parseWMS(config.wms);
 if (config.geocoder !== undefined) parseGeocoder(config.geocoder);
 
-const geocoder = CONFIG.GEOCODER;
+var geocoder = CONFIG.GEOCODER;
 
 function httpGetAsync(url) {
     // eslint-disable-next-line no-unused-vars
-    return new Promise((resolve, reject) => {
+    return new Promise(function (resolve, reject) {
         var xmlHttp = new XMLHttpRequest();
         xmlHttp.onreadystatechange = function () {
             // eslint-disable-next-line eqeqeq
@@ -190,9 +196,9 @@ function wktPointToGeoJson(wktPoint) {
     if (!wktPoint.includes('POINT')) {
         throw TypeError('Provided WKT geometry is not a point.');
     }
-    const coordinateTuple = wktPoint.split('(')[1].split(')')[0];
-    const x = parseFloat(coordinateTuple.split(' ')[0]);
-    const y = parseFloat(coordinateTuple.split(' ')[1]);
+    var coordinateTuple = wktPoint.split('(')[1].split(')')[0];
+    var x = parseFloat(coordinateTuple.split(' ')[0]);
+    var y = parseFloat(coordinateTuple.split(' ')[1]);
 
     return {
         type: 'Point',
@@ -206,7 +212,7 @@ function wktPointToGeoJson(wktPoint) {
  * @param {string} searchTerm The term which to search for
  */
 geocoder.doSuggestRequest = function (searchTerm) {
-    return httpGetAsync(`${this.suggestUrl}q=${encodeURIComponent(searchTerm)}`);
+    return httpGetAsync(this.suggestUrl + 'q=' + encodeURIComponent(searchTerm));
 };
 
 /**
@@ -215,9 +221,9 @@ geocoder.doSuggestRequest = function (searchTerm) {
  * @param {string} id The id of the feature that is to be looked up.
  */
 geocoder.doLookupRequest = function (id) {
-    return httpGetAsync(`${this.lookupUrl}id=${encodeURIComponent(id)}`).then(lookupResult => {
+    return httpGetAsync(this.lookupUrl + 'id=' + encodeURIComponent(id)).then(function (lookupResult) {
         // A lookup request should always return 1 result
-        const geocodeResult = lookupResult.response.docs[0];
+        var geocodeResult = lookupResult.response.docs[0];
         geocodeResult.centroide_ll = wktPointToGeoJson(geocodeResult.centroide_ll);
         geocodeResult.centroide_rd = wktPointToGeoJson(geocodeResult.centroide_rd);
         return geocodeResult;
@@ -225,13 +231,15 @@ geocoder.doLookupRequest = function (id) {
 };
 
 geocoder.createControl = function (zoomFunction, map) {
+    var _this = this;
+
     this.zoomTo = zoomFunction;
     this.map = map;
-    const container = document.createElement('div');
-    const searchDiv = document.createElement('div');
-    const input = document.createElement('input');
-    const results = document.createElement('div');
-    const controlWidth = '300px';
+    var container = document.createElement('div');
+    var searchDiv = document.createElement('div');
+    var input = document.createElement('input');
+    var results = document.createElement('div');
+    var controlWidth = '300px';
 
     container.style.width = controlWidth;
     container.style.zIndex = 1000000;
@@ -248,12 +256,12 @@ geocoder.createControl = function (zoomFunction, map) {
     input.style.height = '26px';
     input.style.borderRadius = '5px 5px';
 
-    input.addEventListener('input', e => {
-        this.suggest(e.target.value);
+    input.addEventListener('input', function (e) {
+        _this.suggest(e.target.value);
     });
 
-    input.addEventListener('focus', e => {
-        this.suggest(e.target.value);
+    input.addEventListener('focus', function (e) {
+        _this.suggest(e.target.value);
     });
     results.id = 'nlmaps-geocoder-control-results';
     results.style.width = controlWidth;
@@ -266,21 +274,25 @@ geocoder.createControl = function (zoomFunction, map) {
 };
 
 geocoder.suggest = function (query) {
+    var _this2 = this;
+
     if (query.length < 4) {
         this.clearSuggestResults();
         return;
     }
 
-    this.doSuggestRequest(query).then(results => {
-        this.showSuggestResults(results.response.docs);
+    this.doSuggestRequest(query).then(function (results) {
+        _this2.showSuggestResults(results.response.docs);
     });
 };
 
 geocoder.lookup = function (id) {
-    this.doLookupRequest(id).then(result => {
-        this.zoomTo(result.centroide_ll, this.map);
-        this.showLookupResult(result.weergavenaam);
-        this.clearSuggestResults();
+    var _this3 = this;
+
+    this.doLookupRequest(id).then(function (result) {
+        _this3.zoomTo(result.centroide_ll, _this3.map);
+        _this3.showLookupResult(result.weergavenaam);
+        _this3.clearSuggestResults();
     });
 };
 
@@ -293,32 +305,34 @@ geocoder.showLookupResult = function (name) {
 };
 
 geocoder.showSuggestResults = function (results) {
-    const resultList = document.createElement('ul');
+    var _this4 = this;
+
+    var resultList = document.createElement('ul');
     resultList.style.padding = '10px 10px 2px 10px';
     resultList.style.width = '100%';
     resultList.style.background = '#FFFFFF';
     resultList.style.borderRadius = '5px 5px';
     resultList.style.boxShadow = '0 1px 5px rgba(0, 0, 0, 0.65)';
 
-    results.forEach(result => {
+    results.forEach(function (result) {
 
-        const li = document.createElement('li');
+        var li = document.createElement('li');
         li.innerHTML = result.weergavenaam;
         li.id = result.id;
         li.style.cursor = 'pointer';
         li.style.padding = '5px';
         li.style.listStyleType = 'none';
         li.style.marginBottom = '5px';
-        li.addEventListener('click', e => {
-            this.lookup(e.target.id);
+        li.addEventListener('click', function (e) {
+            _this4.lookup(e.target.id);
         });
 
-        li.addEventListener('mouseenter', () => {
+        li.addEventListener('mouseenter', function () {
             li.style.background = '#6C62A6';
             li.style.color = '#FFFFFF';
         });
 
-        li.addEventListener('mouseleave', () => {
+        li.addEventListener('mouseleave', function () {
             li.style.background = '#FFFFFF';
             li.style.color = '#333';
         });
@@ -328,16 +342,9 @@ geocoder.showSuggestResults = function (results) {
     document.getElementById('nlmaps-geocoder-control-results').appendChild(resultList);
 };
 
-const geolocator_icon = `<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<svg xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns="http://www.w3.org/2000/svg" height="7.0556mm" width="7.0556mm" version="1.1"
-xmlns:cc="http://creativecommons.org/ns#" xmlns:dc="http://purl.org/dc/elements/1.1/" viewBox="0 0 24.999999 24.999999">
-<metadata>  <rdf:RDF>   <cc:Work rdf:about="">    <dc:format>image/svg+xml</dc:format>    <dc:type rdf:resource="http://purl.org/dc/dcmitype/StillImage"/>
-<dc:title/>   </cc:Work>  </rdf:RDF> </metadata> <g transform="translate(-151.39 -117.97)">  <g transform="translate(.39250 .85750)">
-<path style="color-rendering:auto;text-decoration-color:#000000;color:#000000;shape-rendering:auto;solid-color:#000000;text-decoration-line:none;fill:#191919;mix-blend-mode:normal;block-progression:tb;text-indent:0;image-rendering:auto;white-space:normal;text-decoration-style:solid;isolation:auto;text-transform:none" d="m163.5 123.27c-3.4931 0-6.3379 2.8448-6.3379 6.3379s2.8448 6.3398 6.3379 6.3398 6.3379-2.8467 6.3379-6.3398-2.8448-6.3379-6.3379-6.3379zm0 1.3008c2.7905 0 5.0391 2.2466 5.0391 5.0371s-2.2485 5.0391-5.0391 5.0391c-2.7905 0-5.0391-2.2485-5.0391-5.0391 0-2.7905 2.2485-5.0371 5.0391-5.0371z"/><circle cx="163.5" cy="129.61" r="1.9312" style="fill:#191919"/>
-<path style="color-rendering:auto;text-decoration-color:#000000;color:#000000;shape-rendering:auto;solid-color:#000000;text-decoration-line:none;fill:#191919;fill-rule:evenodd;mix-blend-mode:normal;block-progression:tb;text-indent:0;image-rendering:auto;white-space:normal;text-decoration-style:solid;isolation:auto;text-transform:none" d="m162.85 120.57v3.3555h1.3008v-3.3555h-1.3008z"/>   <path style="color-rendering:auto;text-decoration-color:#000000;color:#000000;shape-rendering:auto;solid-color:#000000;text-decoration-line:none;fill:#191919;fill-rule:evenodd;mix-blend-mode:normal;block-progression:tb;text-indent:0;image-rendering:auto;white-space:normal;text-decoration-style:solid;isolation:auto;text-transform:none" d="m162.85 135.3v3.3555h1.3008v-3.3555h-1.3008z"/>   <path style="color-rendering:auto;text-decoration-color:#000000;color:#000000;shape-rendering:auto;solid-color:#000000;text-decoration-line:none;fill:#191919;fill-rule:evenodd;mix-blend-mode:normal;block-progression:tb;text-indent:0;image-rendering:auto;white-space:normal;text-decoration-style:solid;isolation:auto;text-transform:none" d="m154.46 128.96v1.2988h3.3535v-1.2988h-3.3535z"/>
-<path style="color-rendering:auto;text-decoration-color:#000000;color:#000000;shape-rendering:auto;solid-color:#000000;text-decoration-line:none;fill:#191919;fill-rule:evenodd;mix-blend-mode:normal;block-progression:tb;text-indent:0;image-rendering:auto;white-space:normal;text-decoration-style:solid;isolation:auto;text-transform:none" d="m169.19 128.96v1.2988h3.3535v-1.2988h-3.3535z"/>  </g> </g></svg>`;
+var geolocator_icon = '<?xml version="1.0" encoding="UTF-8" standalone="no"?>\n<svg xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns="http://www.w3.org/2000/svg" height="7.0556mm" width="7.0556mm" version="1.1"\nxmlns:cc="http://creativecommons.org/ns#" xmlns:dc="http://purl.org/dc/elements/1.1/" viewBox="0 0 24.999999 24.999999">\n<metadata>  <rdf:RDF>   <cc:Work rdf:about="">    <dc:format>image/svg+xml</dc:format>    <dc:type rdf:resource="http://purl.org/dc/dcmitype/StillImage"/>\n<dc:title/>   </cc:Work>  </rdf:RDF> </metadata> <g transform="translate(-151.39 -117.97)">  <g transform="translate(.39250 .85750)">\n<path style="color-rendering:auto;text-decoration-color:#000000;color:#000000;shape-rendering:auto;solid-color:#000000;text-decoration-line:none;fill:#191919;mix-blend-mode:normal;block-progression:tb;text-indent:0;image-rendering:auto;white-space:normal;text-decoration-style:solid;isolation:auto;text-transform:none" d="m163.5 123.27c-3.4931 0-6.3379 2.8448-6.3379 6.3379s2.8448 6.3398 6.3379 6.3398 6.3379-2.8467 6.3379-6.3398-2.8448-6.3379-6.3379-6.3379zm0 1.3008c2.7905 0 5.0391 2.2466 5.0391 5.0371s-2.2485 5.0391-5.0391 5.0391c-2.7905 0-5.0391-2.2485-5.0391-5.0391 0-2.7905 2.2485-5.0371 5.0391-5.0371z"/><circle cx="163.5" cy="129.61" r="1.9312" style="fill:#191919"/>\n<path style="color-rendering:auto;text-decoration-color:#000000;color:#000000;shape-rendering:auto;solid-color:#000000;text-decoration-line:none;fill:#191919;fill-rule:evenodd;mix-blend-mode:normal;block-progression:tb;text-indent:0;image-rendering:auto;white-space:normal;text-decoration-style:solid;isolation:auto;text-transform:none" d="m162.85 120.57v3.3555h1.3008v-3.3555h-1.3008z"/>   <path style="color-rendering:auto;text-decoration-color:#000000;color:#000000;shape-rendering:auto;solid-color:#000000;text-decoration-line:none;fill:#191919;fill-rule:evenodd;mix-blend-mode:normal;block-progression:tb;text-indent:0;image-rendering:auto;white-space:normal;text-decoration-style:solid;isolation:auto;text-transform:none" d="m162.85 135.3v3.3555h1.3008v-3.3555h-1.3008z"/>   <path style="color-rendering:auto;text-decoration-color:#000000;color:#000000;shape-rendering:auto;solid-color:#000000;text-decoration-line:none;fill:#191919;fill-rule:evenodd;mix-blend-mode:normal;block-progression:tb;text-indent:0;image-rendering:auto;white-space:normal;text-decoration-style:solid;isolation:auto;text-transform:none" d="m154.46 128.96v1.2988h3.3535v-1.2988h-3.3535z"/>\n<path style="color-rendering:auto;text-decoration-color:#000000;color:#000000;shape-rendering:auto;solid-color:#000000;text-decoration-line:none;fill:#191919;fill-rule:evenodd;mix-blend-mode:normal;block-progression:tb;text-indent:0;image-rendering:auto;white-space:normal;text-decoration-style:solid;isolation:auto;text-transform:none" d="m169.19 128.96v1.2988h3.3535v-1.2988h-3.3535z"/>  </g> </g></svg>';
 
-const markerUrl = 'https://rawgit.com/webmapper/nlmaps/master/dist/assets/rijksoverheid-marker.png';
+var markerUrl = 'https://rawgit.com/webmapper/nlmaps/master/dist/assets/rijksoverheid-marker.png';
 
 /*parts copied from maps.stamen.com: https://github.com/stamen/maps.stamen.com/blob/master/js/tile.stamen.js
  * copyright (c) 2012, Stamen Design
@@ -368,7 +375,7 @@ function getProvider(name) {
  * Get the named wmsProvider, or throw an exception if it doesn't exist.
  **/
 function getWmsProvider(name, options) {
-  let wmsProvider;
+  var wmsProvider = void 0;
   if (name in CONFIG.WMS_PROVIDERS) {
     wmsProvider = CONFIG.WMS_PROVIDERS[name];
 

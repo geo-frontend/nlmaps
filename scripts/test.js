@@ -4,6 +4,9 @@ const helpers = require('./helpers');
 const { spawn, fork} = require('child_process');
 const chokidar = require('chokidar');
 const exitCode = require('tap-exit-code');
+var tapSpec = require('tap-spec');
+//var tapRun = require('tap-set-exit');
+
 
 const tasks = helpers.tasks();
 console.log(tasks)
@@ -18,14 +21,12 @@ if (helpers.args.watch) {
 
 //to be bound
 function unitTest(task, path) {
-  const testfile = 'packages/' + helpers.packagePath(task) + '/test/unit-test.js';
-  if (helpers.args.coverage) {
-    let sub = fork('node_modules/tap/bin/run.js', ['--cov', testfile], {stdio: 'pipe'});
-    sub.stdout.pipe(exitCode()).pipe(process.stdout);
-  } else {
-    let sub = fork( 'node_modules/tap/bin/run.js', [testfile], {stdio: 'pipe'});
-    sub.stdout.pipe(exitCode()).pipe(process.stdout);
-  }
+  const testfile = 'packages/' + helpers.packagePath(task) + '/test/unit-test.js';  
+  let sub = fork( 'node_modules/tape/bin/tape', ['-r','babel-register','-r','./scripts/babelHelpers.js', testfile], {stdio: 'pipe'});    
+  sub.stdout.pipe(exitCode()).pipe(tapSpec()).pipe(process.stderr);
+  sub.on('exit', (code) => {
+    console.log(`test exited for ${task} exited with code ${code}`);
+  });
 }
 
 function copyHtml(path) {
@@ -54,6 +55,7 @@ function main(){
     build.on('close', (code) => {
       console.log(`child process for ${task} exited with code ${code}`);
     });
+
   })
 
 

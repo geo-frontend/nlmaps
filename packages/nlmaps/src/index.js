@@ -28,6 +28,7 @@ import { bgLayer as bgGM,
 // import { bgLayer as bgGM,
 //          geoLocatorControl as glG } from 'nlmaps-googlemaps';
 
+import {CONFIG} from '../../lib/configParser.js';
 import geoLocator from '../../nlmaps-geolocator/src/index.js';
 
 let nlmaps = {
@@ -256,7 +257,7 @@ function mergeOpts(defaultopts, useropts){
 nlmaps.lib = testWhichLib();
 
 nlmaps.createMap = function(useropts = {}) {
-  const opts = mergeOpts(mapdefaults, useropts);
+  const opts = mergeOpts(CONFIG.MAP, useropts);
   try {
   if (nlmaps.lib == 'too many libs' || nlmaps.lib === 'too few libs') {
     throw({message:'one and only one map library can be defined. Please Refer to the documentation to see which map libraries are supported.'});

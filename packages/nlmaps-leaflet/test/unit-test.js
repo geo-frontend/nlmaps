@@ -1,10 +1,10 @@
-let tap = require('../../../node_modules/tap');
+let test = require('../../../node_modules/tape-catch');
 
 let URL = 'http://tiles.energielabelatlas.nl/v2/osm/{z}/{x}/{y}.png';
 let ATTR = 'Kaartgegevens &copy; <a href="cbs.nl">CBS</a>, <a href="kadaster.nl">Kadaster</a>, <a href="openstreetmap.org">OpenStreetMap contributors</a>';
 
 
-tap.test('nlmaps can populate Leaflet with bgLayer', function(t){
+test('nlmaps can populate Leaflet with bgLayer', function(t){
   let L = require('leaflet-headless');
   let bgLayer = require('../build/nlmaps-leaflet.cjs.js');
   t.assert(typeof L.nlmapsBgLayer === 'function', 'nlmaps has populated property on L');
@@ -13,7 +13,7 @@ tap.test('nlmaps can populate Leaflet with bgLayer', function(t){
 
 });
 
-tap.test('nlmaps can create a layer object', function(t) {
+test('nlmaps can create a layer object', function(t) {
   let L = require('leaflet-headless');
   let bgLayer = require('../build/nlmaps-leaflet.cjs.js').bgLayer;
   let map = L.map(document.createElement('div')).setView([52, 4], 10);

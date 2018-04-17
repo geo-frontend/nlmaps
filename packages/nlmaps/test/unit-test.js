@@ -9,7 +9,7 @@ test('top-level nlmaps package exports makeMap, leaflet, googlemaps and openlaye
   t.equal(typeof nlmaps.leaflet , 'object', 'leaflet object exists');
   t.equal(typeof nlmaps.googlemaps, 'object', 'googlemaps object exists');
   t.equal(typeof nlmaps.openlayers , 'object', 'openlayers object exists');
-  t.notEqual(typeof nlmaps.geoLocate , 'function', 'geoLocate object exists');
+  t.equal(typeof nlmaps.geoLocate , 'function', 'geoLocate object exists');
 });
 
 //test configParser

@@ -23,15 +23,8 @@ if (helpers.args.watch) {
 function unitTest(task, path) {
   const testfile = 'packages/' + helpers.packagePath(task) + '/test/unit-test.js';  
   let sub = fork( 'node_modules/tape/bin/tape', ['-r','babel-register','-r','./scripts/babelHelpers.js', testfile], {stdio: 'pipe'});    
-  
-  // sub.stdout.on('data', function (data) {
-  //   console.log('[spawn] stdout: ', data.toString())
-  //   })
   sub.stdout.pipe(exitCode()).pipe(tapSpec()).pipe(process.stderr);
-  //sub.stderr.pipe(exitCode()).pipe(tapSpec()).pipe(process.stderr);
-  sub.on('exit', function (code) {
-    console.log('child process exited with code ' + code);
-  });
+
 }
 
 function copyHtml(path) {
@@ -60,6 +53,7 @@ function main(){
     build.on('close', (code) => {
       console.log(`child process for ${task} exited with code ${code}`);
     });
+   
   })
 
 

@@ -22,7 +22,7 @@
     "babel-register": "^6.26.0",
     "browserify": "^14.3.0",
     "buffertools": "^2.1.6",
-    "lerna": "^2.10.0",
+    "lerna": "^2.10.2",
     "live-server": "1.1.0",
     "live-server-https": "0.0.2",
     "nodemon": "^1.17.3",

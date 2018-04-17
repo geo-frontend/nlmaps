@@ -169,7 +169,7 @@
 	    }
 
 	    function formatBasemapUrl(layer) {
-	        layer.url = layer.url + '/' + layer.type + '/' + layer.urlname + '/' + CONFIG.BASE_DEFAULTS.crs + '/{z}/{x}/{y}.' + layer.format;
+	        layer.url = layer.url + "/" + layer.type + "/" + layer.urlname + "/" + CONFIG.BASE_DEFAULTS.crs + "/{z}/{x}/{y}." + layer.format;
 	        return layer;
 	    }
 
@@ -743,7 +743,7 @@
 	    }
 
 	    function formatBasemapUrl(layer) {
-	        layer.url = layer.url + '/' + layer.type + '/' + layer.urlname + '/' + CONFIG.BASE_DEFAULTS.crs + '/{z}/{x}/{y}.' + layer.format;
+	        layer.url = layer.url + "/" + layer.type + "/" + layer.urlname + "/" + CONFIG.BASE_DEFAULTS.crs + "/{z}/{x}/{y}." + layer.format;
 	        return layer;
 	    }
 
@@ -1292,7 +1292,7 @@
 	    }
 
 	    function formatBasemapUrl(layer) {
-	        layer.url = layer.url + '/' + layer.type + '/' + layer.urlname + '/' + CONFIG.BASE_DEFAULTS.crs + '/{z}/{x}/{y}.' + layer.format;
+	        layer.url = layer.url + "/" + layer.type + "/" + layer.urlname + "/" + CONFIG.BASE_DEFAULTS.crs + "/{z}/{x}/{y}." + layer.format;
 	        return layer;
 	    }
 
@@ -1858,7 +1858,7 @@
 	    }
 	};
 
-	const CONFIG = {};
+	var CONFIG = {};
 
 	CONFIG.BASE_DEFAULTS = {
 	    crs: "EPSG:3857",
@@ -1895,11 +1895,11 @@
 	}
 
 	function parseBase(basemaps) {
-	    let defaults = mergeConfig(CONFIG.BASE_DEFAULTS, basemaps.defaults);
+	    var defaults = mergeConfig(CONFIG.BASE_DEFAULTS, basemaps.defaults);
 	    if (!basemaps.layers || basemaps.layers.length < 0) {
 	        err('no basemap defined, please define a basemap in the configuration');
 	    }
-	    basemaps.layers.forEach(layer => {
+	    basemaps.layers.forEach(function (layer) {
 	        if (!layer.name || CONFIG.BASEMAP_PROVIDERS[layer.name] !== undefined) {
 	            err('basemap names need to be defined and unique: ' + layer.name);
 	        }
@@ -1907,9 +1907,9 @@
 	    });
 	}
 	function parseWMS(wms) {
-	    let defaults = mergeConfig(CONFIG.WMS_DEFAULTS, wms.defaults);
+	    var defaults = mergeConfig(CONFIG.WMS_DEFAULTS, wms.defaults);
 	    if (wms.layers) {
-	        wms.layers.forEach(layer => {
+	        wms.layers.forEach(function (layer) {
 	            if (!layer.name || CONFIG.WMS_PROVIDERS[layer.name] !== undefined) {
 	                err('wms names need to be defined and unique: ' + layer.name);
 	            }
@@ -1926,16 +1926,16 @@
 	}
 
 	function formatBasemapUrl(layer) {
-	    layer.url = `${layer.url}/${layer.type}/${layer.urlname}/${CONFIG.BASE_DEFAULTS.crs}/{z}/{x}/{y}.${layer.format}`;
+	    layer.url = layer.url + "/" + layer.type + "/" + layer.urlname + "/" + CONFIG.BASE_DEFAULTS.crs + "/{z}/{x}/{y}." + layer.format;
 	    return layer;
 	}
 
 	function applyTemplate(layer) {
 	    //Check if the url is templated
-	    let start = layer.url.indexOf('{');
+	    var start = layer.url.indexOf('{');
 	    if (start > -1) {
-	        let end = layer.url.indexOf('}');
-	        let template = layer.url.slice(start + 1, end);
+	        var end = layer.url.indexOf('}');
+	        var template = layer.url.slice(start + 1, end);
 	        if (template.toLowerCase() === "workspacename") {
 	            layer.url = layer.url.slice(0, start) + layer.workSpaceName + layer.url.slice(end + 1, -1);
 	        } else {

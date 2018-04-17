@@ -146,7 +146,7 @@
 	            if (!layer.name || CONFIG.BASEMAP_PROVIDERS[layer.name] !== undefined) {
 	                err('basemap names need to be defined and unique: ' + layer.name);
 	            }
-	            CONFIG.BASEMAP_PROVIDERS[layer.name] = mergeConfig(defaults$$1, layer);
+	            CONFIG.BASEMAP_PROVIDERS[layer.name] = formatBasemapUrl(mergeConfig(defaults$$1, layer));
 	        });
 	    }
 	    function parseWMS(wms) {
@@ -167,6 +167,12 @@
 	    function parseMap(map) {
 	        CONFIG.MAP = mergeConfig({}, map);
 	    }
+
+	    function formatBasemapUrl(layer) {
+	        layer.url = layer.url + '/' + layer.type + '/' + layer.urlname + '/' + CONFIG.BASE_DEFAULTS.crs + '/{z}/{x}/{y}.' + layer.format;
+	        return layer;
+	    }
+
 	    function applyTemplate(layer) {
 	        //Check if the url is templated
 	        var start = layer.url.indexOf('{');
@@ -714,7 +720,7 @@
 	            if (!layer.name || CONFIG.BASEMAP_PROVIDERS[layer.name] !== undefined) {
 	                err('basemap names need to be defined and unique: ' + layer.name);
 	            }
-	            CONFIG.BASEMAP_PROVIDERS[layer.name] = mergeConfig(defaults$$1, layer);
+	            CONFIG.BASEMAP_PROVIDERS[layer.name] = formatBasemapUrl(mergeConfig(defaults$$1, layer));
 	        });
 	    }
 	    function parseWMS(wms) {
@@ -735,6 +741,12 @@
 	    function parseMap(map) {
 	        CONFIG.MAP = mergeConfig({}, map);
 	    }
+
+	    function formatBasemapUrl(layer) {
+	        layer.url = layer.url + '/' + layer.type + '/' + layer.urlname + '/' + CONFIG.BASE_DEFAULTS.crs + '/{z}/{x}/{y}.' + layer.format;
+	        return layer;
+	    }
+
 	    function applyTemplate(layer) {
 	        //Check if the url is templated
 	        var start = layer.url.indexOf('{');
@@ -1257,7 +1269,7 @@
 	            if (!layer.name || CONFIG.BASEMAP_PROVIDERS[layer.name] !== undefined) {
 	                err('basemap names need to be defined and unique: ' + layer.name);
 	            }
-	            CONFIG.BASEMAP_PROVIDERS[layer.name] = mergeConfig(defaults$$1, layer);
+	            CONFIG.BASEMAP_PROVIDERS[layer.name] = formatBasemapUrl(mergeConfig(defaults$$1, layer));
 	        });
 	    }
 	    function parseWMS(wms) {
@@ -1278,6 +1290,12 @@
 	    function parseMap(map) {
 	        CONFIG.MAP = mergeConfig({}, map);
 	    }
+
+	    function formatBasemapUrl(layer) {
+	        layer.url = layer.url + '/' + layer.type + '/' + layer.urlname + '/' + CONFIG.BASE_DEFAULTS.crs + '/{z}/{x}/{y}.' + layer.format;
+	        return layer;
+	    }
+
 	    function applyTemplate(layer) {
 	        //Check if the url is templated
 	        var start = layer.url.indexOf('{');
@@ -1758,6 +1776,179 @@
 	var nlmapsGooglemaps_cjs_5 = nlmapsGooglemaps_cjs.geoLocatorControl;
 	var nlmapsGooglemaps_cjs_6 = nlmapsGooglemaps_cjs.geocoderControl;
 
+	var config = {
+	    "version": 0.1,
+	    "basemaps": {
+	        "defaults": {
+	            "crs": "EPSG:3857",
+	            "attr": "Kaartgegevens &copy; <a href='https://www.kadaster.nl'>Kadaster</a> | <a href='https://www.verbeterdekaart.nl'>Verbeter de kaart</a>",
+	            "minZoom": 6,
+	            "maxZoom": 19,
+	            "type": "wmts",
+	            "format": "png",
+	            "url": "https://geodata.nationaalgeoregister.nl/tiles/service"
+	        },
+	        "layers": [{
+	            "name": "standaard",
+	            "urlname": "brtachtergrondkaart"
+	        }, {
+	            "name": "grijs",
+	            "urlname": "brtachtergrondkaartgrijs"
+	        }, {
+	            "name": "pastel",
+	            "urlname": "brtachtergrondkaartpastel"
+	        }, {
+	            "name": "luchtfoto",
+	            "urlname": "2016_ortho25",
+	            "url": "https://geodata.nationaalgeoregister.nl/luchtfoto/rgb",
+	            "format": "jpeg"
+	        }]
+	    },
+	    "wms": {
+	        "defaults": {
+	            "url": "https://geodata.nationaalgeoregister.nl/{workSpaceName}/wms?",
+	            "version": "1.1.1",
+	            "transparent": true,
+	            "format": "image/png",
+	            "minZoom": 0,
+	            "maxZoom": 24
+	        },
+	        "layers": [{
+	            "name": "gebouwen",
+	            "workSpaceName": "bag",
+	            "layerName": "pand"
+	        }, {
+	            "name": "percelen",
+	            "workSpaceName": "bkadastralekaartv3ag",
+	            "layerName": "kadastralekaart"
+	        }, {
+	            "name": "drone-no-fly-zones",
+	            "workSpaceName": "dronenoflyzones",
+	            "layerName": "luchtvaartgebieden,landingsite"
+	        }, {
+	            "name": "hoogte",
+	            "workSpaceName": "ahn2",
+	            "layerName": "ahn2_05m_int",
+	            "styleName": "ahn2:ahn2_05m_detail"
+	        }, {
+	            "name": "gemeenten",
+	            "workSpaceName": "bestuurlijkegrenzen",
+	            "layerName": "gemeenten",
+	            "styleName": "bestuurlijkegrenzen:bestuurlijkegrenzen_gemeentegrenzen"
+	        }, {
+	            "name": "provincies",
+	            "workSpaceName": "bestuurlijkegrenzen",
+	            "layerName": "provincies",
+	            "styleName": "bestuurlijkegrenzen:bestuurlijkegrenzen_provinciegrenzen"
+	        }]
+	    },
+	    "geocoder": {
+	        "suggestUrl": "https://geodata.nationaalgeoregister.nl/locatieserver/v3/suggest?",
+	        "lookupUrl": "https://geodata.nationaalgeoregister.nl/locatieserver/v3/lookup?"
+	    },
+	    "map": {
+	        "style": 'standaard',
+	        "center": {
+	            "latitude": 52.093249,
+	            "longitude": 5.111994
+	        },
+	        "zoom": 8,
+	        "attribution": true,
+	        "extent": [-180, -90, 180, 90]
+	    }
+	};
+
+	const CONFIG = {};
+
+	CONFIG.BASE_DEFAULTS = {
+	    crs: "EPSG:3857",
+	    attr: "",
+	    minZoom: 0,
+	    maxZoom: 19,
+	    type: "wmts",
+	    format: "png",
+	    url: ""
+	};
+	CONFIG.WMS_DEFAULTS = {
+	    url: "",
+	    version: "1.1.1",
+	    transparent: true,
+	    format: "image/png",
+	    minZoom: 0,
+	    maxZoom: 24
+	};
+	CONFIG.BASEMAP_PROVIDERS = {};
+	CONFIG.WMS_PROVIDERS = {};
+	CONFIG.GEOCODER = {};
+	CONFIG.MAP = {};
+
+	function err(err) {
+	    throw err;
+	}
+
+	if (config.version !== 0.1) {
+	    err('unsupported config version');
+	}
+
+	function mergeConfig(defaults, config$$1) {
+	    return Object.assign({}, defaults, config$$1);
+	}
+
+	function parseBase(basemaps) {
+	    let defaults = mergeConfig(CONFIG.BASE_DEFAULTS, basemaps.defaults);
+	    if (!basemaps.layers || basemaps.layers.length < 0) {
+	        err('no basemap defined, please define a basemap in the configuration');
+	    }
+	    basemaps.layers.forEach(layer => {
+	        if (!layer.name || CONFIG.BASEMAP_PROVIDERS[layer.name] !== undefined) {
+	            err('basemap names need to be defined and unique: ' + layer.name);
+	        }
+	        CONFIG.BASEMAP_PROVIDERS[layer.name] = formatBasemapUrl(mergeConfig(defaults, layer));
+	    });
+	}
+	function parseWMS(wms) {
+	    let defaults = mergeConfig(CONFIG.WMS_DEFAULTS, wms.defaults);
+	    if (wms.layers) {
+	        wms.layers.forEach(layer => {
+	            if (!layer.name || CONFIG.WMS_PROVIDERS[layer.name] !== undefined) {
+	                err('wms names need to be defined and unique: ' + layer.name);
+	            }
+	            CONFIG.WMS_PROVIDERS[layer.name] = applyTemplate(mergeConfig(defaults, layer));
+	        });
+	    }
+	}
+	function parseGeocoder(geocoder) {
+	    CONFIG.GEOCODER.lookup = geocoder.lookupUrl;
+	    CONFIG.GEOCODER.suggest = geocoder.suggestUrl;
+	}
+	function parseMap(map) {
+	    CONFIG.MAP = mergeConfig({}, map);
+	}
+
+	function formatBasemapUrl(layer) {
+	    layer.url = `${layer.url}/${layer.type}/${layer.urlname}/${CONFIG.BASE_DEFAULTS.crs}/{z}/{x}/{y}.${layer.format}`;
+	    return layer;
+	}
+
+	function applyTemplate(layer) {
+	    //Check if the url is templated
+	    let start = layer.url.indexOf('{');
+	    if (start > -1) {
+	        let end = layer.url.indexOf('}');
+	        let template = layer.url.slice(start + 1, end);
+	        if (template.toLowerCase() === "workspacename") {
+	            layer.url = layer.url.slice(0, start) + layer.workSpaceName + layer.url.slice(end + 1, -1);
+	        } else {
+	            err('only workspacename templates are supported for now');
+	        }
+	    }
+	    return layer;
+	}
+	parseMap(config.map);
+	parseBase(config.basemaps);
+	if (config.wms !== undefined) parseWMS(config.wms);
+	if (config.geocoder !== undefined) parseGeocoder(config.geocoder);
+
 	var emitonoff = createCommonjsModule(function (module) {
 	  var EmitOnOff = module.exports = function (thing) {
 	    if (!thing) thing = {};
@@ -2079,7 +2270,7 @@
 	nlmaps.createMap = function () {
 	  var useropts = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
 
-	  var opts = mergeOpts(mapdefaults, useropts);
+	  var opts = mergeOpts(CONFIG.MAP, useropts);
 	  try {
 	    if (nlmaps.lib == 'too many libs' || nlmaps.lib === 'too few libs') {
 	      throw { message: 'one and only one map library can be defined. Please Refer to the documentation to see which map libraries are supported.' };

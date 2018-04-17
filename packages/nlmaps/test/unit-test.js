@@ -1,4 +1,4 @@
-let test = require('../../../node_modules/tape');
+let test = require('../../../node_modules/tape-catch');
 const shell = require('shelljs');
 
 //makeMap should be default?
@@ -9,9 +9,7 @@ test('top-level nlmaps package exports makeMap, leaflet, googlemaps and openlaye
   t.equal(typeof nlmaps.leaflet , 'object', 'leaflet object exists');
   t.equal(typeof nlmaps.googlemaps, 'object', 'googlemaps object exists');
   t.equal(typeof nlmaps.openlayers , 'object', 'openlayers object exists');
-  t.equal(typeof nlmaps.geoLocate , 'function', 'geoLocate object exists');
-  
-
+  t.notEqual(typeof nlmaps.geoLocate , 'function', 'geoLocate object exists');
 });
 
 //test configParser
@@ -42,6 +40,7 @@ test('main functions from lib',function(t){
   t.equal(nlmaps.getWmsProvider('foobar').name, 'foobar', "getWmsProvider returns 'foobar'")
   t.notEqual(nlmaps.geolocator_icon,null,"there is a geolocator_icon")
   t.notEqual(nlmaps.marker_icon,null,"there is a marker_icon")
-  t.equal(nlmaps.search_icon,null,"there is a search_icon")
+  t.notEqual(nlmaps.search_icon,null,"there is a search_icon")
   
 })
+

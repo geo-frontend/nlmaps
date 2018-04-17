@@ -1,6 +1,16 @@
 let map = nlmaps.createMap({target: 'mapdiv'})
 
+let talkback;
 
-nlmaps.clickprovider(map).subscribe(singleClick);
+function myHandler(t, d) {
+  if (t === 0) {
+    talkback = d;
+  } else if (t === 1 ){
+  console.log(d);
+  }
+}
 
-nlmaps.clickprovider(map).subscribe(e => console.log(e))
+let click = nlmaps.clickprovider(map);
+click(0, myHandler)
+talkback();
+

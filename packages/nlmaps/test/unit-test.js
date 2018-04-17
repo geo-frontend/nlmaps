@@ -51,5 +51,18 @@ test('main functions from lib',function(t){
   
 })
 
+//test the click event bus
+test('clicks passed through', function(t) {
+  let L = require('leaflet-headless');
+  let nlmaps = require('../../nlmaps/build/nlmaps.cjs.js').nlmaps;
+  t.equal(typeof nlmaps.clickprovider, 'function', 'clickprovider is a function');
+  t.end();
+})
 
+//test('generating clicks', function(t){
+  //let L = require('leaflet-headless');
+  //let { singleClick } = require('../../lib/markers.js');
+  //t.equal(singleClick({lat: 52, lng: 5}), {latlng: {lat: 52, lng: 5}}, 'marker returns the same object it received');
+  //t.end();
+//});
 

@@ -38,3 +38,5 @@ function spatialEq(o, n){
   return false;
  }
 }
+
+export { singleClick };

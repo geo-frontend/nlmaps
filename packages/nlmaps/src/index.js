@@ -322,4 +322,17 @@ nlmaps.geoLocate = function(map, useropts = {}){
   addGeoLocControlToMap(nlmaps.lib, geolocator, map);
 }
 
+nlmaps.clickprovider = function(map) {
+  return function (start, sink) {
+    if (start !== 0) return;
+    map.on('click', function(e) {
+      sink(1, e)
+    });
+    const talkback = (t, d) => {
+      console.log('bye bye')
+      };
+    sink(0, talkback);
+  }
+}
+
 export {nlmaps};

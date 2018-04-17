@@ -3,13 +3,19 @@ const shell = require('shelljs');
 
 //makeMap should be default?
 test('top-level nlmaps package exports makeMap, leaflet, googlemaps and openlayers', function(t){
-  t.plan(5);
-  let nlmaps = require('../build/nlmaps.cjs.js').nlmaps;
+  t.plan(11);
+  let nlmaps = require('../build/nlmaps.cjs.js').nlmaps;  
   t.equal(typeof nlmaps.createMap, 'function','created map');
   t.equal(typeof nlmaps.leaflet , 'object', 'leaflet object exists');
+  t.equal(typeof nlmaps.leaflet.bgLayer , 'function', 'leaflet bgLayer exists');
   t.equal(typeof nlmaps.googlemaps, 'object', 'googlemaps object exists');
+  t.equal(typeof nlmaps.googlemaps.bgLayer, 'function', 'googlemaps bgLayer exists');  
   t.equal(typeof nlmaps.openlayers , 'object', 'openlayers object exists');
+  t.equal(typeof nlmaps.openlayers.bgLayer , 'function', 'openlayers bgLayer exists');
   t.equal(typeof nlmaps.geoLocate , 'function', 'geoLocate object exists');
+  t.equal(nlmaps.lib,'too few libs', 'no map libraries are loaded');
+  t.equal(nlmaps.createMap(), undefined, 'since no libraries are loaded there is no map');
+  t.throws(nlmaps.geoLocate,/geolocation is not available in your browser./,"geolocation isn't available");  
 });
 
 //test configParser
@@ -21,11 +27,12 @@ test('parse testconfig.js and create config object',function(t){
   }
   shell.cp('packages/nlmaps/test/testconfig.js', TEMPCONFDIR + '/config.js');
   let config = require('../../lib/configParser.js').CONFIG;      
-  t.equal(typeof config, 'object',"config is an object");
+  t.equal(typeof config, 'object',"config is an object");  
   t.equal(config.BASE_DEFAULTS.crs,'EPSG:3857',"default crs = EPSG:3857");
   t.equal(config.WMS_DEFAULTS.version,'1.1.1', "default WMS version is 1.1.0");
   t.equal(config.BASEMAP_PROVIDERS.standaard.url,
-    'https://geodata.nationaalgeoregister.nl/tiles/service',"basemap 'standaard' lives on 'https://geodata.nationaalgeoregister.nl/tiles/service'");
+    'https://geodata.nationaalgeoregister.nl/tiles/service/wmts/brtachtergrondkaart/EPSG:3857/{z}/{x}/{y}.png',
+    "basemap 'standaard' lives on '  https://geodata.nationaalgeoregister.nl/tiles/service/wmts/brtachtergrondkaart/EPSG:3857/{z}/{x}/{y}.png'");
   t.equal(config.WMS_PROVIDERS.foobar.url,
     'https://geodata.nationaalgeoregister.nl/bash/wms',"WMS 'foobar' lives on 'https://geodata.nationaalgeoregister.nl/bash/wms'");
   t.equal(typeof config.BASEMAP_PROVIDERS[config.MAP.style], 'object', "default background map exists in the config");
@@ -43,4 +50,6 @@ test('main functions from lib',function(t){
   t.notEqual(nlmaps.search_icon,null,"there is a search_icon")
   
 })
+
+
 

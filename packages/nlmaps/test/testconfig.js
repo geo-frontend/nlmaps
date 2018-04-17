@@ -7,7 +7,7 @@ export default {
             "minZoom": 6,
             "maxZoom": 19,
             "type": "wmts",
-            "format": "jpeg",
+            "format": "png",
             "url": "https://geodata.nationaalgeoregister.nl/tiles/service"
         },
         "layers": [

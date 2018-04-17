@@ -40,6 +40,7 @@
   "devDependencies": {
     "live-server-https": "0.0.2",
     "rollup-plugin-eslint": "^4.0.0",
+    "babel-preset-env": "^1.6.1",
     "tape": "^4.6.3"
   },
   "bugs": {

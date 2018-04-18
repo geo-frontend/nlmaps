@@ -1,3 +1,4 @@
+import transform from './featurequery.js';
 let marker = {};
 
 function singleClick(e) {

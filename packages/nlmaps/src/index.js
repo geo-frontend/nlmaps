@@ -31,6 +31,8 @@ import { bgLayer as bgGM,
 import {CONFIG} from '../../lib/configParser.js';
 import geoLocator from '../../nlmaps-geolocator/src/index.js';
 
+import featureQuery from '../../lib/featurequery.js';
+
 let nlmaps = {
   leaflet: {
     bgLayer: bgL,
@@ -334,5 +336,7 @@ nlmaps.clickprovider = function(map) {
     sink(0, talkback);
   }
 }
+
+nlmaps.featureQuery = featureQuery;
 
 export {nlmaps};

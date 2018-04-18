@@ -59,6 +59,15 @@ test('clicks passed through', function(t) {
   t.end();
 })
 
+
+//test featurequery
+test('featurequery functions', function(t){
+  let query = require ('../../nlmaps/build/nlmaps.cjs.js').nlmaps.featureQuery;
+  t.equal(typeof query, 'function', 'featurequery module exports a function');
+  t.end();
+
+})
+
 //test('generating clicks', function(t){
   //let L = require('leaflet-headless');
   //let { singleClick } = require('../../lib/markers.js');

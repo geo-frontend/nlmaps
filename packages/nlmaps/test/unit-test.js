@@ -64,6 +64,8 @@ test('clicks passed through', function(t) {
 test('featurequery functions', function(t){
   let query = require ('../../nlmaps/build/nlmaps.cjs.js').nlmaps.featureQuery;
   t.equal(typeof query, 'function', 'featurequery module exports a function');
+  let nlmaps = require('../../lib/index.js');
+  t.equal(typeof nlmaps.markersWithQueryResults, 'function', 'lib exports markersWithQueryResults and its a function');
   t.end();
 
 })

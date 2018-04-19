@@ -32,6 +32,7 @@ import {CONFIG} from '../../lib/configParser.js';
 import geoLocator from '../../nlmaps-geolocator/src/index.js';
 
 import featureQuery from '../../lib/featurequery.js';
+import markersWithQueryResults from '../../lib/index.js';
 
 let nlmaps = {
   leaflet: {

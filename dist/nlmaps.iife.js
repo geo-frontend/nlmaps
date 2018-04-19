@@ -161,8 +161,8 @@
 	        }
 	    }
 	    function parseGeocoder(geocoder) {
-	        CONFIG.GEOCODER.lookup = geocoder.lookupUrl;
-	        CONFIG.GEOCODER.suggest = geocoder.suggestUrl;
+	        CONFIG.GEOCODER.lookupUrl = geocoder.lookupUrl;
+	        CONFIG.GEOCODER.suggestUrl = geocoder.suggestUrl;
 	    }
 	    function parseMap(map) {
 	        CONFIG.MAP = mergeConfig({}, map);
@@ -744,8 +744,8 @@
 	        }
 	    }
 	    function parseGeocoder(geocoder) {
-	        CONFIG.GEOCODER.lookup = geocoder.lookupUrl;
-	        CONFIG.GEOCODER.suggest = geocoder.suggestUrl;
+	        CONFIG.GEOCODER.lookupUrl = geocoder.lookupUrl;
+	        CONFIG.GEOCODER.suggestUrl = geocoder.suggestUrl;
 	    }
 	    function parseMap(map) {
 	        CONFIG.MAP = mergeConfig({}, map);
@@ -1302,8 +1302,8 @@
 	        }
 	    }
 	    function parseGeocoder(geocoder) {
-	        CONFIG.GEOCODER.lookup = geocoder.lookupUrl;
-	        CONFIG.GEOCODER.suggest = geocoder.suggestUrl;
+	        CONFIG.GEOCODER.lookupUrl = geocoder.lookupUrl;
+	        CONFIG.GEOCODER.suggestUrl = geocoder.suggestUrl;
 	    }
 	    function parseMap(map) {
 	        CONFIG.MAP = mergeConfig({}, map);
@@ -1945,8 +1945,8 @@
 	    }
 	}
 	function parseGeocoder(geocoder) {
-	    CONFIG.GEOCODER.lookup = geocoder.lookupUrl;
-	    CONFIG.GEOCODER.suggest = geocoder.suggestUrl;
+	    CONFIG.GEOCODER.lookupUrl = geocoder.lookupUrl;
+	    CONFIG.GEOCODER.suggestUrl = geocoder.suggestUrl;
 	}
 	function parseMap(map) {
 	    CONFIG.MAP = mergeConfig({}, map);

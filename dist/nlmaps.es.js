@@ -158,8 +158,8 @@ var nlmapsLeaflet_cjs = createCommonjsModule(function (module, exports) {
         }
     }
     function parseGeocoder(geocoder) {
-        CONFIG.GEOCODER.lookup = geocoder.lookupUrl;
-        CONFIG.GEOCODER.suggest = geocoder.suggestUrl;
+        CONFIG.GEOCODER.lookupUrl = geocoder.lookupUrl;
+        CONFIG.GEOCODER.suggestUrl = geocoder.suggestUrl;
     }
     function parseMap(map) {
         CONFIG.MAP = mergeConfig({}, map);
@@ -741,8 +741,8 @@ var nlmapsOpenlayers_cjs = createCommonjsModule(function (module, exports) {
         }
     }
     function parseGeocoder(geocoder) {
-        CONFIG.GEOCODER.lookup = geocoder.lookupUrl;
-        CONFIG.GEOCODER.suggest = geocoder.suggestUrl;
+        CONFIG.GEOCODER.lookupUrl = geocoder.lookupUrl;
+        CONFIG.GEOCODER.suggestUrl = geocoder.suggestUrl;
     }
     function parseMap(map) {
         CONFIG.MAP = mergeConfig({}, map);
@@ -1299,8 +1299,8 @@ var nlmapsGooglemaps_cjs = createCommonjsModule(function (module, exports) {
         }
     }
     function parseGeocoder(geocoder) {
-        CONFIG.GEOCODER.lookup = geocoder.lookupUrl;
-        CONFIG.GEOCODER.suggest = geocoder.suggestUrl;
+        CONFIG.GEOCODER.lookupUrl = geocoder.lookupUrl;
+        CONFIG.GEOCODER.suggestUrl = geocoder.suggestUrl;
     }
     function parseMap(map) {
         CONFIG.MAP = mergeConfig({}, map);
@@ -1942,8 +1942,8 @@ function parseWMS(wms) {
     }
 }
 function parseGeocoder(geocoder) {
-    CONFIG.GEOCODER.lookup = geocoder.lookupUrl;
-    CONFIG.GEOCODER.suggest = geocoder.suggestUrl;
+    CONFIG.GEOCODER.lookupUrl = geocoder.lookupUrl;
+    CONFIG.GEOCODER.suggestUrl = geocoder.suggestUrl;
 }
 function parseMap(map) {
     CONFIG.MAP = mergeConfig({}, map);

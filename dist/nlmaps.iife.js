@@ -538,6 +538,7 @@
 	                lng = latLngObject.longitude;
 	            }
 	            return new L.marker([lat, lng], {
+	                alt: 'marker',
 	                icon: new L.icon({
 	                    iconUrl: markerUrl,
 	                    iconSize: [64, 64],

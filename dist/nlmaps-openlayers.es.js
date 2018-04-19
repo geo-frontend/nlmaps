@@ -140,15 +140,24 @@ function parseWMS(wms) {
     }
 }
 function parseGeocoder(geocoder) {
-    CONFIG.GEOCODER.lookup = geocoder.lookupUrl;
-    CONFIG.GEOCODER.suggest = geocoder.suggestUrl;
+    CONFIG.GEOCODER.lookupUrl = geocoder.lookupUrl;
+    CONFIG.GEOCODER.suggestUrl = geocoder.suggestUrl;
 }
 function parseMap(map) {
     CONFIG.MAP = mergeConfig({}, map);
 }
 
 function formatBasemapUrl(layer) {
-    layer.url = layer.url + "/" + layer.type + "/" + layer.urlname + "/" + CONFIG.BASE_DEFAULTS.crs + "/{z}/{x}/{y}." + layer.format;
+    switch (layer.type) {
+        case 'wmts':
+            layer.url = layer.url + "/" + layer.type + "/" + layer.urlname + "/" + layer.crs + "/{z}/{x}/{y}." + layer.format;
+            break;
+        case 'tms':
+            layer.url = layer.url + "/" + layer.urlname + "/{z}/{x}/{y}." + layer.format;
+            break;
+        default:
+            layer.url = layer.url + "/" + layer.type + "/" + layer.urlname + "/" + layer.crs + "/{z}/{x}/{y}." + layer.format;
+    }
     return layer;
 }
 

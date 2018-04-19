@@ -1,4 +1,4 @@
-import proj4 from '../../node_modules/proj4';
+import proj4 from 'proj4';
 function query(url) {
   const promise = new Promise((resolve, reject) => {
     fetch(url)

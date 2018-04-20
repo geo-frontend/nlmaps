@@ -32,6 +32,7 @@
     "rollup-plugin-commonjs": "^8.4.1",
     "rollup-plugin-eslint": "^3.0.0",
     "rollup-plugin-image": "^1.0.2",
+    "rollup-plugin-json": "^2.3.0",
     "rollup-plugin-node-builtins": "^2.1.2",
     "rollup-plugin-node-globals": "^1.2.0",
     "rollup-plugin-node-resolve": "^3.3.0",
@@ -45,6 +46,7 @@
   },
   "dependencies": {
     "canvas": "^1.6.10",
+    "proj4": "^2.4.4",
     "tap-spec": "^4.1.1",
     "tape-catch": "^1.0.6",
     "tape-run": "^4.0.0"

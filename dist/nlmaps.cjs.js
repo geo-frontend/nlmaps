@@ -162,15 +162,24 @@ var nlmapsLeaflet_cjs = createCommonjsModule(function (module, exports) {
         }
     }
     function parseGeocoder(geocoder) {
-        CONFIG.GEOCODER.lookup = geocoder.lookupUrl;
-        CONFIG.GEOCODER.suggest = geocoder.suggestUrl;
+        CONFIG.GEOCODER.lookupUrl = geocoder.lookupUrl;
+        CONFIG.GEOCODER.suggestUrl = geocoder.suggestUrl;
     }
     function parseMap(map) {
         CONFIG.MAP = mergeConfig({}, map);
     }
 
     function formatBasemapUrl(layer) {
-        layer.url = layer.url + "/" + layer.type + "/" + layer.urlname + "/" + CONFIG.BASE_DEFAULTS.crs + "/{z}/{x}/{y}." + layer.format;
+        switch (layer.type) {
+            case 'wmts':
+                layer.url = layer.url + "/" + layer.type + "/" + layer.urlname + "/" + layer.crs + "/{z}/{x}/{y}." + layer.format;
+                break;
+            case 'tms':
+                layer.url = layer.url + "/" + layer.urlname + "/{z}/{x}/{y}." + layer.format;
+                break;
+            default:
+                layer.url = layer.url + "/" + layer.type + "/" + layer.urlname + "/" + layer.crs + "/{z}/{x}/{y}." + layer.format;
+        }
         return layer;
     }
 
@@ -273,6 +282,7 @@ var nlmapsLeaflet_cjs = createCommonjsModule(function (module, exports) {
         input.style.boxShadow = '0 1px 5px rgba(0, 0, 0, 0.65)';
         input.style.height = '26px';
         input.style.borderRadius = '5px 5px';
+        input.setAttribute('aria-label', 'Zoek een adres');
 
         input.addEventListener('input', function (e) {
             _this.suggest(e.target.value);
@@ -530,6 +540,7 @@ var nlmapsLeaflet_cjs = createCommonjsModule(function (module, exports) {
                 lng = latLngObject.longitude;
             }
             return new L.marker([lat, lng], {
+                alt: 'marker',
                 icon: new L.icon({
                     iconUrl: markerUrl,
                     iconSize: [64, 64],
@@ -736,15 +747,24 @@ var nlmapsOpenlayers_cjs = createCommonjsModule(function (module, exports) {
         }
     }
     function parseGeocoder(geocoder) {
-        CONFIG.GEOCODER.lookup = geocoder.lookupUrl;
-        CONFIG.GEOCODER.suggest = geocoder.suggestUrl;
+        CONFIG.GEOCODER.lookupUrl = geocoder.lookupUrl;
+        CONFIG.GEOCODER.suggestUrl = geocoder.suggestUrl;
     }
     function parseMap(map) {
         CONFIG.MAP = mergeConfig({}, map);
     }
 
     function formatBasemapUrl(layer) {
-        layer.url = layer.url + "/" + layer.type + "/" + layer.urlname + "/" + CONFIG.BASE_DEFAULTS.crs + "/{z}/{x}/{y}." + layer.format;
+        switch (layer.type) {
+            case 'wmts':
+                layer.url = layer.url + "/" + layer.type + "/" + layer.urlname + "/" + layer.crs + "/{z}/{x}/{y}." + layer.format;
+                break;
+            case 'tms':
+                layer.url = layer.url + "/" + layer.urlname + "/{z}/{x}/{y}." + layer.format;
+                break;
+            default:
+                layer.url = layer.url + "/" + layer.type + "/" + layer.urlname + "/" + layer.crs + "/{z}/{x}/{y}." + layer.format;
+        }
         return layer;
     }
 
@@ -847,6 +867,7 @@ var nlmapsOpenlayers_cjs = createCommonjsModule(function (module, exports) {
         input.style.boxShadow = '0 1px 5px rgba(0, 0, 0, 0.65)';
         input.style.height = '26px';
         input.style.borderRadius = '5px 5px';
+        input.setAttribute('aria-label', 'Zoek een adres');
 
         input.addEventListener('input', function (e) {
             _this.suggest(e.target.value);
@@ -1285,15 +1306,24 @@ var nlmapsGooglemaps_cjs = createCommonjsModule(function (module, exports) {
         }
     }
     function parseGeocoder(geocoder) {
-        CONFIG.GEOCODER.lookup = geocoder.lookupUrl;
-        CONFIG.GEOCODER.suggest = geocoder.suggestUrl;
+        CONFIG.GEOCODER.lookupUrl = geocoder.lookupUrl;
+        CONFIG.GEOCODER.suggestUrl = geocoder.suggestUrl;
     }
     function parseMap(map) {
         CONFIG.MAP = mergeConfig({}, map);
     }
 
     function formatBasemapUrl(layer) {
-        layer.url = layer.url + "/" + layer.type + "/" + layer.urlname + "/" + CONFIG.BASE_DEFAULTS.crs + "/{z}/{x}/{y}." + layer.format;
+        switch (layer.type) {
+            case 'wmts':
+                layer.url = layer.url + "/" + layer.type + "/" + layer.urlname + "/" + layer.crs + "/{z}/{x}/{y}." + layer.format;
+                break;
+            case 'tms':
+                layer.url = layer.url + "/" + layer.urlname + "/{z}/{x}/{y}." + layer.format;
+                break;
+            default:
+                layer.url = layer.url + "/" + layer.type + "/" + layer.urlname + "/" + layer.crs + "/{z}/{x}/{y}." + layer.format;
+        }
         return layer;
     }
 
@@ -1396,6 +1426,7 @@ var nlmapsGooglemaps_cjs = createCommonjsModule(function (module, exports) {
         input.style.boxShadow = '0 1px 5px rgba(0, 0, 0, 0.65)';
         input.style.height = '26px';
         input.style.borderRadius = '5px 5px';
+        input.setAttribute('aria-label', 'Zoek een adres');
 
         input.addEventListener('input', function (e) {
             _this.suggest(e.target.value);
@@ -1919,15 +1950,24 @@ function parseWMS(wms) {
     }
 }
 function parseGeocoder(geocoder) {
-    CONFIG.GEOCODER.lookup = geocoder.lookupUrl;
-    CONFIG.GEOCODER.suggest = geocoder.suggestUrl;
+    CONFIG.GEOCODER.lookupUrl = geocoder.lookupUrl;
+    CONFIG.GEOCODER.suggestUrl = geocoder.suggestUrl;
 }
 function parseMap(map) {
     CONFIG.MAP = mergeConfig({}, map);
 }
 
 function formatBasemapUrl(layer) {
-    layer.url = layer.url + "/" + layer.type + "/" + layer.urlname + "/" + CONFIG.BASE_DEFAULTS.crs + "/{z}/{x}/{y}." + layer.format;
+    switch (layer.type) {
+        case 'wmts':
+            layer.url = layer.url + "/" + layer.type + "/" + layer.urlname + "/" + layer.crs + "/{z}/{x}/{y}." + layer.format;
+            break;
+        case 'tms':
+            layer.url = layer.url + "/" + layer.urlname + "/{z}/{x}/{y}." + layer.format;
+            break;
+        default:
+            layer.url = layer.url + "/" + layer.type + "/" + layer.urlname + "/" + layer.crs + "/{z}/{x}/{y}." + layer.format;
+    }
     return layer;
 }
 

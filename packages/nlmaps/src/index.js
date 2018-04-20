@@ -32,7 +32,7 @@ import {CONFIG} from '../../lib/configParser.js';
 import geoLocator from '../../nlmaps-geolocator/src/index.js';
 
 import { queryFeatures, pointToQuery }  from '../../lib/featurequery.js';
-import {singleClick } from '../../lib/markers.js';
+import {singleClick, markerStore } from '../../lib/markers.js';
 //import markersWithQueryResults from '../../lib/index.js';
 
 let nlmaps = {
@@ -287,8 +287,8 @@ nlmaps.createMap = function(useropts = {}) {
     if (typeof opts.marker === "boolean") {
       markerLocation = getMapCenter(nlmaps.lib, map);
     }
-    const markerLayer = createMarkerLayer(nlmaps.lib, map, markerLocation);
-    addLayerToMap(nlmaps.lib, markerLayer, map);
+    markerStore.marker = createMarkerLayer(nlmaps.lib, map, markerLocation);
+    addLayerToMap(nlmaps.lib, markerStore.marker, map);
   }
 
   // Overlay layer

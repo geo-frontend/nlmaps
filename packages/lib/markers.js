@@ -1,32 +1,39 @@
-let marker = {};
+let markerStore = {};
 
 
 function singleClick(map) {
   return function singleMarker(t, d) {
     if (t === 1 ) {
-      if (marker.marker) {
-        marker.marker.remove();
+      if (markerStore.marker) {
+        markerStore.marker.remove();
 //        if (spatialEq(marker.marker._latlng, d.latlng )) {
 //          return;
 //        }
       }
       let newmarker = L.marker([d.latlng.lat,d.latlng.lng]);
-      marker.marker = newmarker;
-      marker.marker.addTo(map);
+      markerStore.marker = newmarker;
+      markerStore.marker.addTo(map);
+      let div = document.createElement('div');
       let button = document.createElement('button');
+      if (d.queryResult !== null) {
+        let p = document.createElement('p');
+        p.innerText = d.queryResult._display;
+        div.append(p);
+      }
       button.innerHTML = 'remove'
         button.addEventListener('click',function(e) {
-          marker.marker.remove();
-          delete marker.marker;
+          markerStore.marker.remove();
+          delete markerStore.marker;
         })
-      marker.marker.bindPopup(button);
+      div.append(button);
+      markerStore.marker.bindPopup(div).openPopup();
     }
   }
 }
 
 function multiClick(e) {
-  if (marker.markers && marker.markers.length > 0) {
-    let hasSameLoc = marker.markers.find(el => spatialEq(el._latlng, e)) // any one has same location as new click?  
+  if (markerStore.markers && markerStore.markers.length > 0) {
+    let hasSameLoc = markerStore.markers.find(el => spatialEq(el._latlng, e)) // any one has same location as new click?  
     if (typeof hasSameLoc !== 'undefined') {
       return;
     }
@@ -43,4 +50,4 @@ function multiClick(e) {
 //}
 
 
-export { singleClick };
+export { singleClick, markerStore };

@@ -18,12 +18,12 @@ function formatQueryURL(baseUrl, xy) {
   return `${baseUrl}${xy.x},${xy.y},10`
 }
 
-function handleQueryResponse(res) {
+function handleQueryResponse(res, d) {
   let filtered = res.results.filter(x => x.hoofdadres === true);
   if (filtered.length > 0) {
-    return filtered[0];
+    return { queryResult: filtered[0], latlng: d.latlng };
   } else {
-    return null
+    return { queryResult: null, latlng: d.latlng }
   }
 }
 
@@ -35,7 +35,7 @@ const pointToQuery = url => inputSource => {
       if (t === 1) {
         let xyRD = transformCoords.forward({x: d.latlng.lng, y: d.latlng.lat});
         query(formatQueryURL(url, xyRD)).then(res => {
-          let output = handleQueryResponse(res);
+          let output = handleQueryResponse(res, d);
           outputSink(1, output);
         })
       } else {

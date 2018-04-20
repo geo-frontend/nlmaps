@@ -263,6 +263,7 @@
         input.style.boxShadow = '0 1px 5px rgba(0, 0, 0, 0.65)';
         input.style.height = '26px';
         input.style.borderRadius = '5px 5px';
+        input.setAttribute('aria-label', 'Zoek een adres');
 
         input.addEventListener('input', function (e) {
             _this.suggest(e.target.value);

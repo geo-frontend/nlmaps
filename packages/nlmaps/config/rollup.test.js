@@ -14,6 +14,7 @@ export default {
     format: 'iife',
     name: 'testing',
     file: 'build/browser-test.js',
+    extend: true
   },
   plugins: [
     commonjs(),

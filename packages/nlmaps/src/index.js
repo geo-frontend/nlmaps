@@ -31,6 +31,10 @@ import { bgLayer as bgGM,
 import {CONFIG} from '../../lib/configParser.js';
 import geoLocator from '../../nlmaps-geolocator/src/index.js';
 
+import { queryFeatures, pointToQuery }  from '../../lib/featurequery.js';
+import {singleClick, markerStore } from '../../lib/markers.js';
+//import markersWithQueryResults from '../../lib/index.js';
+
 let nlmaps = {
   leaflet: {
     bgLayer: bgL,
@@ -283,8 +287,8 @@ nlmaps.createMap = function(useropts = {}) {
     if (typeof opts.marker === "boolean") {
       markerLocation = getMapCenter(nlmaps.lib, map);
     }
-    const markerLayer = createMarkerLayer(nlmaps.lib, map, markerLocation);
-    addLayerToMap(nlmaps.lib, markerLayer, map);
+    markerStore.marker = createMarkerLayer(nlmaps.lib, map, markerLocation);
+    addLayerToMap(nlmaps.lib, markerStore.marker, map);
   }
 
   // Overlay layer
@@ -321,5 +325,21 @@ nlmaps.geoLocate = function(map, useropts = {}){
   const geolocator = geoLocator(opts);
   addGeoLocControlToMap(nlmaps.lib, geolocator, map);
 }
+
+nlmaps.clickprovider = function(map) {
+  return function (start, sink) {
+    if (start !== 0) return;
+    map.on('click', function(e) {
+      sink(1, e)
+    });
+    const talkback = (t, d) => {
+      console.log('bye bye')
+      };
+    sink(0, talkback);
+  }
+}
+
+nlmaps.queryFeatures = queryFeatures;
+nlmaps.singleClick = singleClick;
 
 export {nlmaps};

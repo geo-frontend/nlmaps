@@ -1,5 +1,5 @@
 /* eslint-disable no-console */
-let map = nlmaps.createMap({target: 'mapdiv'})
+let map = nlmaps.createMap({target: 'mapdiv', marker: true})
 
 
 function myHandler(t, d) {
@@ -17,6 +17,6 @@ let transform = nlmaps.queryFeatures();
 let transformedClicks = transform(click);
 transformedClicks(0, myHandler);
 
-click(0, singleMarker);
+transformedClicks(0, singleMarker);
 
 

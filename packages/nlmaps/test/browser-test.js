@@ -9,6 +9,7 @@ function myHandler(t, d) {
 }
 
 let click = nlmaps.clickprovider(map);
+let singleMarker = nlmaps.singleClick(map);
 click(0, myHandler);
 
 
@@ -16,5 +17,6 @@ let transform = nlmaps.queryFeatures();
 let transformedClicks = transform(click);
 transformedClicks(0, myHandler);
 
+click(0, singleMarker);
 
 

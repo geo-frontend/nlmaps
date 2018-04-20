@@ -1,3 +1,5 @@
+import { markerUrl } from './index.js';
+
 let markerStore = {};
 
 
@@ -10,23 +12,34 @@ function singleClick(map) {
 //          return;
 //        }
       }
-      let newmarker = L.marker([d.latlng.lat,d.latlng.lng]);
+      let newmarker = L.marker([d.latlng.lat,d.latlng.lng], {
+        alt: 'marker',
+        icon: new L.icon({
+          iconUrl: markerUrl,
+          iconSize: [64, 64],
+          iconAnchor: [32, 63]
+        })
+      });
       markerStore.marker = newmarker;
       markerStore.marker.addTo(map);
       let div = document.createElement('div');
       let button = document.createElement('button');
+      let p = document.createElement('p');
       if (d.queryResult !== null) {
-        let p = document.createElement('p');
         p.innerText = d.queryResult._display;
-        div.append(p);
+      } else {
+        p.innerText = 'geen zoekresultaten'
       }
-      button.innerHTML = 'remove'
+      div.append(p);
+      button.innerHTML = 'verwijder'
         button.addEventListener('click',function(e) {
           markerStore.marker.remove();
           delete markerStore.marker;
         })
       div.append(button);
-      markerStore.marker.bindPopup(div).openPopup();
+      let popup = L.popup({offset: [0,-50]})
+        .setContent(div)
+      markerStore.marker.bindPopup(popup).openPopup();
     }
   }
 }

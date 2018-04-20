@@ -12,7 +12,7 @@ let click = nlmaps.clickprovider(map);
 click(0, myHandler);
 
 
-let transform = nlmaps.featureQuery('https://api.data.amsterdam.nl/bag/nummeraanduiding/?format=json&locatie=');
+let transform = nlmaps.queryFeatures();
 let transformedClicks = transform(click);
 transformedClicks(0, myHandler);
 

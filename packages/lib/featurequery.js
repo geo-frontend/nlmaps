@@ -1,4 +1,5 @@
 import proj4 from 'proj4';
+import { CONFIG } from './configParser.js';
 function query(url) {
   const promise = new Promise((resolve, reject) => {
     fetch(url)
@@ -26,6 +27,7 @@ function handleQueryResponse(res) {
   }
 }
 
+//transforming operator
 const pointToQuery = url => inputSource => {
   return function outputSource (start, outputSink) {
     if (start !== 0 ) return;
@@ -43,10 +45,10 @@ const pointToQuery = url => inputSource => {
   }
 }
 
-const queryFeatures = (map, url) => {
-  //constructor to create a 'clickpricker' in one go.
-
+//constructor to create a 'clickpricker' in one go.
+const queryFeatures = function() {
+  return pointToQuery(CONFIG.FEATUREQUERYBASEURL);
 }
 
 
-export default pointToQuery;
+export {queryFeatures, pointToQuery};

@@ -13,17 +13,18 @@
 ## basemap object
 **defaults**: `object` default settings for base-layers:
 * **crs**: `string` epsg code to be used, eg `epsg:3857`
-* **attr**: `html-string` attribution string to be shown on the map
+* **attribution**: `html-string` attribution string to be shown on the map
 * **minZoom**: `integer` minimum zoomlevel for the base-layer
 * **maxZoom**: `integer` maximum zoomlevel for the base-layer
-* **type**: `string` type of the baselayer service. Currently only `wmts` is supported
+* **type**: `string` type of the baselayer service. Currently only `wmts` (REST) and `tms` are supported
 * **format**: `string` format of the baselayer, eg `png`, `jpeg`
 * **url**: `string` default webservice url, can be overwritten with the `url` parameter in the `layers` object
 
 **layers**: `array` layer specific settings:
 * **name**: `string` computer friendly name
 * **layerName**: `string` name of the layer in the webservice
-* **url**: `string` base url of the service, a typical wmts service `https://host/service/layername/{z}/{x}/{y}.png` would be split like this: `[url]/[layerName]/z.x.y.[format]`
+* **url**: `string` base url of the service, a typical wmts service `https://host/service/layername/crs/{z}/{x}/{y}.png` would be split like this: `[url]/[type]/[layerName]/[crs]/z.x.y.[format]` and a tms service `https://host/layername/{z}/{x}/{y}.png` like this: `[url]/[layerName]/{z}/{x}/{y}.[format]`
+* **subdomains**: `string` Subdomains of the tile service. Can be passed in the form of one string where each letter is a subdomain name: `'abcd'` needs a placholder `{s}` in the url
 
 ## wms object
 **defaults**: `object` default settings for wms-layers:

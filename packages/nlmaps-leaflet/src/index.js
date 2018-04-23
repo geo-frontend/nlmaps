@@ -10,6 +10,7 @@ L.NlmapsBgLayer = L.TileLayer.extend({
       'maxZoom':      provider.maxZoom,
       'scheme':       'xyz',
       'attribution':  provider.attribution,
+      'subdomains':   provider.subdomains?provider.subdomains:'abc',
       sa_id:          name
     });
     L.TileLayer.prototype.initialize.call(this, provider.url, opts);

@@ -2,6 +2,11 @@ import { getProvider, getWmsProvider, geolocator_icon, geocoder, markerUrl } fro
 
 function bgLayer(name='standaard') {
   const provider = getProvider(name);
+  //replace leaflet style subdomain to OL style
+  if(provider.subdomains) {
+    let sub = provider.subdomains;
+    provider.url = provider.url.replace('{s}', '{'+sub.slice(0,1)+'-'+sub.slice(-1)+'}');
+  }
   if (typeof ol === "object") {
     return new ol.layer.Tile({
       source: new ol.source.XYZ({

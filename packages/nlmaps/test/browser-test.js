@@ -1,5 +1,5 @@
 /* eslint-disable no-console */
-let map = nlmaps.createMap({target: 'mapdiv', marker: true})
+let map = nlmaps.createMap({target: 'mapdiv', marker: true, search: true})
 
 
 function myHandler(t, d) {

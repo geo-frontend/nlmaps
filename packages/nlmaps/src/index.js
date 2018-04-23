@@ -327,7 +327,7 @@ nlmaps.geoLocate = function(map, useropts = {}){
 }
 
 nlmaps.clickprovider = function(map) {
-  return function (start, sink) {
+  const clickSource = function (start, sink) {
     if (start !== 0) return;
     map.on('click', function(e) {
       sink(1, e)
@@ -336,7 +336,11 @@ nlmaps.clickprovider = function(map) {
       console.log('bye bye')
       };
     sink(0, talkback);
+  };
+  clickSource.subscribe = function (callback) {
+    clickSource(0, callback) 
   }
+  return clickSource;
 }
 
 nlmaps.queryFeatures = queryFeatures;

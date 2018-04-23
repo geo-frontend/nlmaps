@@ -46,8 +46,12 @@ const pointToQuery = url => inputSource => {
 }
 
 //constructor to create a 'clickpricker' in one go.
-const queryFeatures = function() {
-  return pointToQuery(CONFIG.FEATUREQUERYBASEURL);
+const queryFeatures = function(source) {
+  const querier =  pointToQuery(CONFIG.FEATUREQUERYBASEURL)(source);
+  querier.subscribe = function(callback) {
+    querier(0, callback)
+  }
+  return querier;
 }
 
 

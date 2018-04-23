@@ -9,7 +9,7 @@ function myHandler(t, d) {
 }
 
 let clicks = nlmaps.clickprovider(map);
-//let singleMarker = nlmaps.singleClick(map, markerCreator);
+//let singleMarker = nlmaps.singleMarker(map, markerCreator);
 
 function popupCreator(d) {
   let div = document.createElement('div');
@@ -29,7 +29,7 @@ function popupCreator(d) {
   return div;
 }
 
-let singleMarker = nlmaps.singleClick(map)
+let singleMarker = nlmaps.singleMarker(map)
 
 
 /* eslint-disable-next-line max-len */

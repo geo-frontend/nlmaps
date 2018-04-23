@@ -3,7 +3,7 @@ import { markerUrl } from './index.js';
 let markerStore = {};
 
 
-function singleClick(map, popupCreator) {
+function singleMarker(map, popupCreator) {
   function removeMarker() {
     markerStore.marker.remove();
     delete markerStore.marker;
@@ -38,7 +38,7 @@ function singleClick(map, popupCreator) {
   }
 }
 
-function multiClick(e) {
+function multiMarker(e) {
   if (markerStore.markers && markerStore.markers.length > 0) {
     let hasSameLoc = markerStore.markers.find(el => spatialEq(el._latlng, e)) // any one has same location as new click?  
     if (typeof hasSameLoc !== 'undefined') {
@@ -48,4 +48,4 @@ function multiClick(e) {
   }
 }
 
-export { singleClick, markerStore };
+export { singleMarker, markerStore };

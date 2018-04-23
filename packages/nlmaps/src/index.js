@@ -32,7 +32,7 @@ import {CONFIG} from '../../lib/configParser.js';
 import geoLocator from '../../nlmaps-geolocator/src/index.js';
 
 import { queryFeatures, pointToQuery }  from '../../lib/featurequery.js';
-import {singleClick, markerStore } from '../../lib/markers.js';
+import {singleMarker, markerStore } from '../../lib/markers.js';
 //import markersWithQueryResults from '../../lib/index.js';
 
 let nlmaps = {
@@ -344,6 +344,6 @@ nlmaps.clickprovider = function(map) {
 }
 
 nlmaps.queryFeatures = queryFeatures;
-nlmaps.singleClick = singleClick;
+nlmaps.singleMarker = singleMarker;
 
 export {nlmaps};

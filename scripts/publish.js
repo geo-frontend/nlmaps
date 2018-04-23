@@ -7,7 +7,8 @@ function main() {
   //copy updated compiled files to top-level 'dist' directory
   tasks.forEach(task => {
     console.log('copying '+ task + '...');
-    shell.cp('-u', 'packages/' + helpers.packagePath(task) + '/build/' + helpers.packagePath(task) + '*.js', 'dist/')
+    shell.cp('-u', 'packages/' + helpers.packagePath(task) + '/build/' + helpers.packagePath(task) + '*.js', 'dist/');
+    shell.cp('-ur', 'packages/' + helpers.packagePath(task) + '/build/assets', 'dist/');
   })
 }
 

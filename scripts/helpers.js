@@ -22,12 +22,27 @@ parser.addArgument(
     help: 'the packages to build as a comma-separated list: -p leaflet,openlayers,nlmaps'
   }
 );
+parser.addArgument(
+  [ '--coverage' ],
+  {
+    action: 'storeTrue',
+    defaultValue: false,
+    help: 'report coverage for unit tests'
+  }
+);
+parser.addArgument(
+  [ '-c', '--config' ],
+  {
+    help: 'specify a custom config file to build nlmaps with'
+  }
+);
 
 const args = parser.parseArgs();
 
-function determineTaskList(packages) {
+//server argument selects packages from config for which it makes sense to start live-server.
+function determineTaskList(packages, server=false) {
   if ( packages === null ) {
-    return conf.packages; 
+    return server ? conf.live_server_packages : conf.packages; 
   } else if (typeof packages === 'string'){
     return packages.split(',')
   } else {
@@ -35,8 +50,12 @@ function determineTaskList(packages) {
   }
 }
 
-function isRegisteredTask(arg) {
-  const flag = conf.packages.includes(arg);
+function isServableTask(arg) {
+  return conf.live_server_packages.includes(arg);
+}
+//server argument to check against all packages or only those for which starting live-server makes sense
+function isRegisteredTask(arg) {  
+  const flag = this.server ? conf.live_server_packages.includes(arg) : conf.packages.includes(arg);
   if (!flag) {
     console.log('WARNING: a package name (' + arg +') was provided which is not specified in scripts/conf.json. Ignoring it.')
   }
@@ -52,14 +71,18 @@ function packagePath(name){
 
 //the main function: creates a list of packages to operate on,
 //using all registered packages unless the user provides a list.
-function tasks(){
-  let tasks = determineTaskList(args.packages).filter(isRegisteredTask);
+//set server=true to use live_server_package list instead of all packages.
+function tasks(server=false){
+  let that = this;
+  that.server = server;
+  let tasks = determineTaskList(args.packages, server).filter(isRegisteredTask, that);
   return tasks;
 }
 
 module.exports = {
   packagePath: packagePath,
   isRegisteredTask: isRegisteredTask,
+  isServableTask: isServableTask,
   tasks: tasks,
   args: args
 }

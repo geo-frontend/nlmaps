@@ -8,14 +8,15 @@ import uglify from 'rollup-plugin-uglify-es';
 
 export default config => {
   return {
-    input: config.format === 'iife' ? 'src/browser.js' : 'src/index.js',
+    input: config.output.format === 'iife' ? 'src/browser.js' : 'src/index.js',
     output: {
-      format: config.format,
-      file: config.dest,
-      name: config.format === 'iife'? 'window' : 'nlmapsG',
+      format: config.output.format,
+      file: config.output.file,
+      name: config.output.format === 'iife'? 'window' : 'nlmapsG',
+      extend: config.output.format === 'iife' ? true : false,      
+      sourcemap:true
     },
-    external: config.external,
-    extend: config.format === 'iife' ? true : false,
+    external: config.external,    
     plugins: [
       commonjs(),
       resolve({
@@ -32,7 +33,12 @@ export default config => {
         ]
       }),
       babel({
-        exclude: 'node_modules/**'
+        exclude: 'node_modules/**',
+        babelrc: false,
+        presets: [['env',{modules:false}]],
+        plugins: [
+          "external-helpers"
+        ]
       }),
       replace({
         ENV: JSON.stringify(process.env.NODE_ENV || 'development'),

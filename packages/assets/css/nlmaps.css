@@ -1,0 +1,73 @@
+
+
+/*** Geolocator control ***/
+.nlmaps-geolocator-control {
+  background-color: #fff;
+  cursor: pointer;
+  box-shadow: 0 1px 5px rgba(0, 0, 0, 0.65);
+  height: 26px;
+  width: 26px;
+  border-radius: 26px 26px;
+  right: '.5em';
+  top: '.5em';
+}
+
+.nlmaps-geolocator-control img {
+  background-image: url('/assets/img/geolocator_icon.svg');
+  display: block;
+  box-sizing: border-box;
+  width: 26px;
+  height: 26px;
+  content: none;
+}
+/*myControlEl.className = 'ol-control';*/
+
+
+/*** Geocoder control ***/
+.nlmaps-geocoder-control-container {
+  width: 300px;
+  z-index: 1000000;
+  position: absolute;
+  top: 15px;
+  left: 12px;
+}
+
+#nlmaps-geocoder-control-input {
+  padding: 4px 10px;
+  width: 100%;
+  border: none;
+  background-color: rgb(255, 255, 255);
+  box-shadow: rgba(0, 0, 0, 0.65) 0px 1px 5px;
+  height: 26px;
+  border-radius: 5px;
+  outline: none;
+}
+#nlmaps-geocoder-control-results {
+  width: 300px;
+}
+#nlmaps-geocoder-control-results ul {
+  padding: 10px 10px 2px;
+  width: 100%;
+  background: rgb(255, 255, 255);
+  border-radius: 5px;
+  box-shadow: rgba(0, 0, 0, 0.65) 0px 1px 5px;
+}
+.nlmaps-geocoder-result-list {
+  padding: 10px 10px 2px 10px;
+  width: 100%;
+  background-color: #fff;
+  border-radius: 5px 5px;
+  box-shadow: 0 1px 5px rgba(0, 0, 0, 0.65);
+}
+
+.nlmaps-geocoder-result-list li {
+  cursor: pointer;
+  padding: 5px;
+  list-style-type: none;
+  margin-bottom: 5px;
+}
+
+.nlmaps-geocoder-result-list li:hover {
+  background-color: #6c62a6;
+  color: #fff;
+}

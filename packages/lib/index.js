@@ -4,17 +4,17 @@
  */
 //https://geodata.nationaalgeoregister.nl/tiles/service/wmts/
 //https://geodata.nationaalgeoregister.nl/luchtfoto/rgb/wmts/
+import { CONFIG } from './configParser';
 import { geocoder } from './geocoder.js';
-import { WMS_PROVIDERS, makeWmsProvider } from './wms.js';
-import { BASEMAP_PROVIDERS } from './basemap.js';
 import { geolocator_icon, marker_icon, search_icon, markerUrl } from './icons.js';
+
 
 /*
  * Get the named provider, or throw an exception if it doesn't exist.
  **/
 function getProvider(name) {
-  if (name in BASEMAP_PROVIDERS) {
-    var provider = BASEMAP_PROVIDERS[name];
+  if (name in CONFIG.BASEMAP_PROVIDERS) {
+    var provider = CONFIG.BASEMAP_PROVIDERS[name];
 
     // eslint-disable-next-line no-console
     if (provider.deprecated && console && console.warn) {
@@ -34,8 +34,8 @@ function getProvider(name) {
  **/
 function getWmsProvider(name, options) {
   let wmsProvider;
-  if (name in WMS_PROVIDERS) {
-    wmsProvider = WMS_PROVIDERS[name];
+  if (name in CONFIG.WMS_PROVIDERS) {
+    wmsProvider = CONFIG.WMS_PROVIDERS[name];
 
     // eslint-disable-next-line no-console
     if (wmsProvider.deprecated && console && console.warn) {
@@ -44,9 +44,10 @@ function getWmsProvider(name, options) {
     }
 
   } else {
-    wmsProvider = makeWmsProvider(name, options);
+    wmsProvider = Object.assign({},CONFIG.WMS_DEFAULTS, options);
     // eslint-disable-next-line no-console
-    console.log('NL Maps: You asked for a wms which does not exist! Available wmses: ' +  Object.keys(WMS_PROVIDERS).join(', ') +  '. Provide an options object to make your own WMS.');
+    console.log('NL Maps: You asked for a wms which does not exist! Available wmses: ' +  
+    Object.keys(CONFIG.WMS_PROVIDERS).join(', ') +  '. Provide an options object to make your own WMS.');
     
   }
   return wmsProvider;  

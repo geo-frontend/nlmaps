@@ -310,7 +310,7 @@ To develop `nlmaps`, clone the repository and then in the directory run:
 `lerna bootstrap` symlinks cross-dependencies between the subpackages into each others' `node_modules` directory so that they can `require()` or `import` each other without having to actually download from npmjs.com
 
 ### General development notes
-There are some issues when trying to call rollup from npm scripts, so there is a set of scripts in `scripts/` that should be called directly. The usage is as follows:
+There are some issues when trying to call rollup from npm scripts, so there is a set of scripts in `scripts/` that should be called directly. The usage is as follows (note that rollup needs to installed as global):
 
 * `node scripts/build` to build the source from `packages/PACKAGE/src` into `packages/PACKAGE/build` 
 * `node scripts/test` to run tests in `packages/PACKAGE/test` -- runs `unit-test.js` with Node and copies/compiles browser test js and html to build.

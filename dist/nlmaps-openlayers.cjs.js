@@ -1,1 +1,548 @@
-"use strict";function httpGetAsync(e){return new Promise((t,o)=>{var r=new XMLHttpRequest;r.onreadystatechange=function(){4==r.readyState&&200==r.status&&t(JSON.parse(r.responseText))};r.open("GET",e,!0);r.send(null)})}function wktPointToGeoJson(e){if(!e.includes("POINT"))throw TypeError("Provided WKT geometry is not a point.");const t=e.split("(")[1].split(")")[0];return{type:"Point",coordinates:[parseFloat(t.split(" ")[0]),parseFloat(t.split(" ")[1])]}}function wmsBaseUrl(e){return"https://geodata.nationaalgeoregister.nl/"+e+"/wms?"}function mapWmsProvider(e,t){const o={workSpaceName:"",layerName:"",styleName:"",url:"",minZoom:0,maxZoom:24};switch(e){case"gebouwen":o.workSpaceName="bag",o.layerName="pand",o.styleName="";break;case"percelen":o.workSpaceName="kadastralekaartv3",o.layerName="kadastralekaart",o.styleName="";break;case"drone-no-fly-zones":o.workSpaceName="dronenoflyzones",o.layerName="luchtvaartgebieden,landingsite",o.styleName="";break;case"hoogte":o.workSpaceName="ahn2",o.layerName="ahn2_05m_int",o.styleName="ahn2:ahn2_05m_detail";break;case"gemeenten":o.workSpaceName="bestuurlijkegrenzen",o.layerName="gemeenten",o.styleName="bestuurlijkegrenzen:bestuurlijkegrenzen_gemeentegrenzen";break;case"provincies":o.workSpaceName="bestuurlijkegrenzen",o.layerName="provincies",o.styleName="bestuurlijkegrenzen:bestuurlijkegrenzen_provinciegrenzen";break;default:o.url=t.url,o.layerName=t.layerName,o.styleName=t.styleName}return""===o.url&&(o.url=wmsBaseUrl(o.workSpaceName)),o}function makeWmsProvider(e,t){const o=mapWmsProvider(e,t);return{url:o.url,service:"WMS",version:"1.1.1",request:"GetMap",layers:o.layerName,styles:o.styleName,transparent:!0,format:"image/png"}}function baseUrl(e){return`https://geodata.nationaalgeoregister.nl/${"luchtfoto"===e?lufostring:brtstring}/wmts/`}function mapLayerName(e){let t;switch(e){case"standaard":t="brtachtergrondkaart";break;case"grijs":t="brtachtergrondkaartgrijs";break;case"pastel":t="brtachtergrondkaartpastel";break;case"luchtfoto":t="Actueel_ortho25";break;default:t="brtachtergrondkaart"}return t}function makeProvider(e,t,o,r){const n=baseUrl(e),a=mapLayerName(e);return{bare_url:[n,a,servicecrs].join(""),url:[n,a,servicecrs,"/{z}/{x}/{y}.",t].join(""),format:t,minZoom:o,maxZoom:r,attribution:attr,name:`${"luchtfoto"===e?"":"NLMaps "} ${e}`}}function getProvider(e){if(e in BASEMAP_PROVIDERS){var t=BASEMAP_PROVIDERS[e];return t.deprecated&&console&&console.warn&&console.warn(e+" is a deprecated style; it will be redirected to its replacement. For performance improvements, please change your reference."),t}console.error("NL Maps error: You asked for a style which does not exist! Available styles: "+Object.keys(PROVIDERS).join(", "))}function getWmsProvider(e,t){let o;return e in WMS_PROVIDERS?(o=WMS_PROVIDERS[e]).deprecated&&console&&console.warn&&console.warn(e+" is a deprecated wms; it will be redirected to its replacement. For performance improvements, please change your reference."):(o=makeWmsProvider(e,t),console.log("NL Maps: You asked for a wms which does not exist! Available wmses: "+Object.keys(WMS_PROVIDERS).join(", ")+". Provide an options object to make your own WMS.")),o}function bgLayer(){var e=getProvider(arguments.length>0&&void 0!==arguments[0]?arguments[0]:"standaard");if("object"===("undefined"==typeof ol?"undefined":_typeof(ol)))return new ol.layer.Tile({source:new ol.source.XYZ({url:e.url,attributions:[new ol.Attribution({html:e.attribution})]})});throw"openlayers is not defined"}function markerLayer(e){var t=new ol.style.Style({image:new ol.style.Icon({anchor:[32,63],anchorXUnits:"pixels",anchorYUnits:"pixels",src:markerUrl,scale:1})}),o=void 0,r=void 0;if(void 0===e){var n=getMapCenter(map);o=n.latitude,r=n.longitude}else o=e.latitude,r=e.longitude;var a=ol.proj.fromLonLat([r,o]),s=new ol.Feature({geometry:new ol.geom.Point(a),name:"marker"});s.setStyle(t);var l=new ol.source.Vector({features:[s]});return new ol.layer.Vector({source:l})}function overlayLayer(e,t){var o=getWmsProvider(e,t);if("object"===("undefined"==typeof ol?"undefined":_typeof(ol)))return new ol.layer.Tile({source:new ol.source.TileWMS({url:o.url,serverType:"geoserver",params:{LAYERS:o.layers,VERSION:o.version,STYLES:o.styles}})});throw"openlayers is not defined"}function geoLocatorControl(e,t){function o(e){var t=arguments.length>1&&void 0!==arguments[1]?arguments[1]:t,o=t.getView().getZoom(),r=new ol.View({center:ol.proj.fromLonLat([e.coords.longitude,e.coords.latitude]),zoom:o});t.setView(r)}var r=document.createElement("div");return r.id="nlmaps-geolocator-control",r.style.backgroundColor="#fff",r.style.cursor="pointer",r.style.boxShadow="0 1px 5px rgba(0, 0, 0, 0.65)",r.style.height="26px",r.style.width="26px",r.style.borderRadius="26px 26px",r.innerHTML=geolocator_icon,r.className="ol-control",r.style.right=".5em",r.style.top=".5em",r.addEventListener("click",function(){e.start()}),e.on("position",function(e){o(e,t)}),new ol.control.Control({element:r})}function zoomTo(e,t){var o=ol.proj.fromLonLat(e.coordinates);t.getView().setCenter(o),t.getView().setZoom(18)}function getMapCenter(e){var t=e.getView().getCenter(),o=ol.proj.toLonLat(t);return{longitude:o[0],latitude:o[1]}}function geocoderControl(e){var t=geocoder.createControl(zoomTo,e);t=new ol.control.Control({element:t}),e.addControl(t)}Object.defineProperty(exports,"__esModule",{value:!0});const geocoder={suggestUrl:"https://geodata.nationaalgeoregister.nl/locatieserver/v3/suggest?",lookupUrl:"https://geodata.nationaalgeoregister.nl/locatieserver/v3/lookup?"};geocoder.doSuggestRequest=function(e){return httpGetAsync(`${this.suggestUrl}q=${encodeURIComponent(e)}`)},geocoder.doLookupRequest=function(e){return httpGetAsync(`${this.lookupUrl}id=${encodeURIComponent(e)}`).then(e=>{const t=e.response.docs[0];t.centroide_ll=wktPointToGeoJson(t.centroide_ll);t.centroide_rd=wktPointToGeoJson(t.centroide_rd);return t})},geocoder.createControl=function(e,t){this.zoomTo=e,this.map=t;const o=document.createElement("div"),r=document.createElement("div"),n=document.createElement("input"),a=document.createElement("div");return o.style.width="300px",o.style.zIndex=1e6,o.style.position="absolute",o.style.top="15px",o.style.left="12px",n.id="nlmaps-geocoder-control-input",n.placeholder="Zoeken op adres...",n.style.padding="4px 10px",n.style.width="100%",n.style.border="none",n.style.backgroundColor="#fff",n.style.boxShadow="0 1px 5px rgba(0, 0, 0, 0.65)",n.style.height="26px",n.style.borderRadius="5px 5px",n.addEventListener("input",e=>{this.suggest(e.target.value)}),n.addEventListener("focus",e=>{this.suggest(e.target.value)}),a.id="nlmaps-geocoder-control-results",a.style.width="300px",o.appendChild(r),r.appendChild(n),o.appendChild(a),o},geocoder.suggest=function(e){if(e.length<4)return void this.clearSuggestResults();this.doSuggestRequest(e).then(e=>{this.showSuggestResults(e.response.docs)})},geocoder.lookup=function(e){this.doLookupRequest(e).then(e=>{this.zoomTo(e.centroide_ll,this.map);this.showLookupResult(e.weergavenaam);this.clearSuggestResults()})},geocoder.clearSuggestResults=function(){document.getElementById("nlmaps-geocoder-control-results").innerHTML=""},geocoder.showLookupResult=function(e){document.getElementById("nlmaps-geocoder-control-input").value=e},geocoder.showSuggestResults=function(e){const t=document.createElement("ul");t.style.padding="10px 10px 2px 10px",t.style.width="100%",t.style.background="#FFFFFF",t.style.borderRadius="5px 5px",t.style.boxShadow="0 1px 5px rgba(0, 0, 0, 0.65)",e.forEach(e=>{const o=document.createElement("li");o.innerHTML=e.weergavenaam;o.id=e.id;o.style.cursor="pointer";o.style.padding="5px";o.style.listStyleType="none";o.style.marginBottom="5px";o.addEventListener("click",e=>{this.lookup(e.target.id)});o.addEventListener("mouseenter",()=>{o.style.background="#6C62A6";o.style.color="#FFFFFF"});o.addEventListener("mouseleave",()=>{o.style.background="#FFFFFF";o.style.color="#333"});t.appendChild(o)}),this.clearSuggestResults(),document.getElementById("nlmaps-geocoder-control-results").appendChild(t)};const WMS_PROVIDERS={gebouwen:makeWmsProvider("gebouwen"),percelen:makeWmsProvider("percelen"),"drone-no-fly-zones":makeWmsProvider("drone-no-fly-zones"),hoogte:makeWmsProvider("hoogte"),gemeenten:makeWmsProvider("gemeenten"),provincies:makeWmsProvider("provincies")},lufostring="luchtfoto/rgb",brtstring="tiles/service",servicecrs="/EPSG:3857",attr='Kaartgegevens &copy; <a href="https://www.kadaster.nl">Kadaster</a> | <a href="https://www.verbeterdekaart.nl">Verbeter de kaart</a>',BASEMAP_PROVIDERS={standaard:makeProvider("standaard","png",6,19),pastel:makeProvider("pastel","png",6,19),grijs:makeProvider("grijs","png",6,19),luchtfoto:makeProvider("luchtfoto","jpeg",6,19)},geolocator_icon=`<?xml version="1.0" encoding="UTF-8" standalone="no"?>\n<svg xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns="http://www.w3.org/2000/svg" height="7.0556mm" width="7.0556mm" version="1.1"\nxmlns:cc="http://creativecommons.org/ns#" xmlns:dc="http://purl.org/dc/elements/1.1/" viewBox="0 0 24.999999 24.999999">\n<metadata>  <rdf:RDF>   <cc:Work rdf:about="">    <dc:format>image/svg+xml</dc:format>    <dc:type rdf:resource="http://purl.org/dc/dcmitype/StillImage"/>\n<dc:title/>   </cc:Work>  </rdf:RDF> </metadata> <g transform="translate(-151.39 -117.97)">  <g transform="translate(.39250 .85750)">\n<path style="color-rendering:auto;text-decoration-color:#000000;color:#000000;shape-rendering:auto;solid-color:#000000;text-decoration-line:none;fill:#191919;mix-blend-mode:normal;block-progression:tb;text-indent:0;image-rendering:auto;white-space:normal;text-decoration-style:solid;isolation:auto;text-transform:none" d="m163.5 123.27c-3.4931 0-6.3379 2.8448-6.3379 6.3379s2.8448 6.3398 6.3379 6.3398 6.3379-2.8467 6.3379-6.3398-2.8448-6.3379-6.3379-6.3379zm0 1.3008c2.7905 0 5.0391 2.2466 5.0391 5.0371s-2.2485 5.0391-5.0391 5.0391c-2.7905 0-5.0391-2.2485-5.0391-5.0391 0-2.7905 2.2485-5.0371 5.0391-5.0371z"/><circle cx="163.5" cy="129.61" r="1.9312" style="fill:#191919"/>\n<path style="color-rendering:auto;text-decoration-color:#000000;color:#000000;shape-rendering:auto;solid-color:#000000;text-decoration-line:none;fill:#191919;fill-rule:evenodd;mix-blend-mode:normal;block-progression:tb;text-indent:0;image-rendering:auto;white-space:normal;text-decoration-style:solid;isolation:auto;text-transform:none" d="m162.85 120.57v3.3555h1.3008v-3.3555h-1.3008z"/>   <path style="color-rendering:auto;text-decoration-color:#000000;color:#000000;shape-rendering:auto;solid-color:#000000;text-decoration-line:none;fill:#191919;fill-rule:evenodd;mix-blend-mode:normal;block-progression:tb;text-indent:0;image-rendering:auto;white-space:normal;text-decoration-style:solid;isolation:auto;text-transform:none" d="m162.85 135.3v3.3555h1.3008v-3.3555h-1.3008z"/>   <path style="color-rendering:auto;text-decoration-color:#000000;color:#000000;shape-rendering:auto;solid-color:#000000;text-decoration-line:none;fill:#191919;fill-rule:evenodd;mix-blend-mode:normal;block-progression:tb;text-indent:0;image-rendering:auto;white-space:normal;text-decoration-style:solid;isolation:auto;text-transform:none" d="m154.46 128.96v1.2988h3.3535v-1.2988h-3.3535z"/>\n<path style="color-rendering:auto;text-decoration-color:#000000;color:#000000;shape-rendering:auto;solid-color:#000000;text-decoration-line:none;fill:#191919;fill-rule:evenodd;mix-blend-mode:normal;block-progression:tb;text-indent:0;image-rendering:auto;white-space:normal;text-decoration-style:solid;isolation:auto;text-transform:none" d="m169.19 128.96v1.2988h3.3535v-1.2988h-3.3535z"/>  </g> </g></svg>`,markerUrl="https://rawgit.com/webmapper/nlmaps/master/dist/assets/rijksoverheid-marker.png";var _typeof="function"==typeof Symbol&&"symbol"==typeof Symbol.iterator?function(e){return typeof e}:function(e){return e&&"function"==typeof Symbol&&e.constructor===Symbol&&e!==Symbol.prototype?"symbol":typeof e};exports.bgLayer=bgLayer,exports.overlayLayer=overlayLayer,exports.markerLayer=markerLayer,exports.getMapCenter=getMapCenter,exports.geoLocatorControl=geoLocatorControl,exports.geocoderControl=geocoderControl;
+'use strict';
+
+Object.defineProperty(exports, '__esModule', { value: true });
+
+var config = {
+    "version": 0.1,
+    "basemaps": {
+        "defaults": {
+            "crs": "EPSG:3857",
+            "attr": "Kaartgegevens &copy; <a href='https://www.kadaster.nl'>Kadaster</a> | <a href='https://www.verbeterdekaart.nl'>Verbeter de kaart</a>",
+            "minZoom": 6,
+            "maxZoom": 19,
+            "type": "wmts",
+            "format": "png",
+            "url": "https://geodata.nationaalgeoregister.nl/tiles/service"
+        },
+        "layers": [{
+            "name": "standaard",
+            "urlname": "brtachtergrondkaart"
+        }, {
+            "name": "grijs",
+            "urlname": "brtachtergrondkaartgrijs"
+        }, {
+            "name": "pastel",
+            "urlname": "brtachtergrondkaartpastel"
+        }, {
+            "name": "luchtfoto",
+            "urlname": "2016_ortho25",
+            "url": "https://geodata.nationaalgeoregister.nl/luchtfoto/rgb",
+            "format": "jpeg"
+        }]
+    },
+    "wms": {
+        "defaults": {
+            "url": "https://geodata.nationaalgeoregister.nl/{workSpaceName}/wms?",
+            "version": "1.1.1",
+            "transparent": true,
+            "format": "image/png",
+            "minZoom": 0,
+            "maxZoom": 24
+        },
+        "layers": [{
+            "name": "gebouwen",
+            "workSpaceName": "bag",
+            "layerName": "pand"
+        }, {
+            "name": "percelen",
+            "workSpaceName": "bkadastralekaartv3ag",
+            "layerName": "kadastralekaart"
+        }, {
+            "name": "drone-no-fly-zones",
+            "workSpaceName": "dronenoflyzones",
+            "layerName": "luchtvaartgebieden,landingsite"
+        }, {
+            "name": "hoogte",
+            "workSpaceName": "ahn2",
+            "layerName": "ahn2_05m_int",
+            "styleName": "ahn2:ahn2_05m_detail"
+        }, {
+            "name": "gemeenten",
+            "workSpaceName": "bestuurlijkegrenzen",
+            "layerName": "gemeenten",
+            "styleName": "bestuurlijkegrenzen:bestuurlijkegrenzen_gemeentegrenzen"
+        }, {
+            "name": "provincies",
+            "workSpaceName": "bestuurlijkegrenzen",
+            "layerName": "provincies",
+            "styleName": "bestuurlijkegrenzen:bestuurlijkegrenzen_provinciegrenzen"
+        }]
+    },
+    "geocoder": {
+        "suggestUrl": "https://geodata.nationaalgeoregister.nl/locatieserver/v3/suggest?",
+        "lookupUrl": "https://geodata.nationaalgeoregister.nl/locatieserver/v3/lookup?"
+    },
+    "map": {
+        "style": 'standaard',
+        "center": {
+            "latitude": 52.093249,
+            "longitude": 5.111994
+        },
+        "zoom": 8,
+        "attribution": true,
+        "extent": [-180, -90, 180, 90]
+    }
+};
+
+var CONFIG = {};
+
+CONFIG.BASE_DEFAULTS = {
+    crs: "EPSG:3857",
+    attr: "",
+    minZoom: 0,
+    maxZoom: 19,
+    type: "wmts",
+    format: "png",
+    url: ""
+};
+CONFIG.WMS_DEFAULTS = {
+    url: "",
+    version: "1.1.1",
+    transparent: true,
+    format: "image/png",
+    minZoom: 0,
+    maxZoom: 24
+};
+CONFIG.BASEMAP_PROVIDERS = {};
+CONFIG.WMS_PROVIDERS = {};
+CONFIG.GEOCODER = {};
+CONFIG.MAP = {};
+
+function err(err) {
+    throw err;
+}
+
+if (config.version !== 0.1) {
+    err('unsupported config version');
+}
+
+function mergeConfig(defaults, config$$1) {
+    return Object.assign({}, defaults, config$$1);
+}
+
+function parseBase(basemaps) {
+    var defaults = mergeConfig(CONFIG.BASE_DEFAULTS, basemaps.defaults);
+    if (!basemaps.layers || basemaps.layers.length < 0) {
+        err('no basemap defined, please define a basemap in the configuration');
+    }
+    basemaps.layers.forEach(function (layer) {
+        if (!layer.name || CONFIG.BASEMAP_PROVIDERS[layer.name] !== undefined) {
+            err('basemap names need to be defined and unique: ' + layer.name);
+        }
+        CONFIG.BASEMAP_PROVIDERS[layer.name] = formatBasemapUrl(mergeConfig(defaults, layer));
+    });
+}
+function parseWMS(wms) {
+    var defaults = mergeConfig(CONFIG.WMS_DEFAULTS, wms.defaults);
+    if (wms.layers) {
+        wms.layers.forEach(function (layer) {
+            if (!layer.name || CONFIG.WMS_PROVIDERS[layer.name] !== undefined) {
+                err('wms names need to be defined and unique: ' + layer.name);
+            }
+            CONFIG.WMS_PROVIDERS[layer.name] = applyTemplate(mergeConfig(defaults, layer));
+        });
+    }
+}
+function parseGeocoder(geocoder) {
+    CONFIG.GEOCODER.lookupUrl = geocoder.lookupUrl;
+    CONFIG.GEOCODER.suggestUrl = geocoder.suggestUrl;
+}
+function parseMap(map) {
+    CONFIG.MAP = mergeConfig({}, map);
+}
+
+function formatBasemapUrl(layer) {
+    switch (layer.type) {
+        case 'wmts':
+            layer.url = layer.url + "/" + layer.type + "/" + layer.urlname + "/" + layer.crs + "/{z}/{x}/{y}." + layer.format;
+            break;
+        case 'tms':
+            layer.url = layer.url + "/" + layer.urlname + "/{z}/{x}/{y}." + layer.format;
+            break;
+        default:
+            layer.url = layer.url + "/" + layer.type + "/" + layer.urlname + "/" + layer.crs + "/{z}/{x}/{y}." + layer.format;
+    }
+    return layer;
+}
+
+function applyTemplate(layer) {
+    //Check if the url is templated
+    var start = layer.url.indexOf('{');
+    if (start > -1) {
+        var end = layer.url.indexOf('}');
+        var template = layer.url.slice(start + 1, end);
+        if (template.toLowerCase() === "workspacename") {
+            layer.url = layer.url.slice(0, start) + layer.workSpaceName + layer.url.slice(end + 1, -1);
+        } else {
+            err('only workspacename templates are supported for now');
+        }
+    }
+    return layer;
+}
+parseMap(config.map);
+parseBase(config.basemaps);
+if (config.wms !== undefined) parseWMS(config.wms);
+if (config.geocoder !== undefined) parseGeocoder(config.geocoder);
+
+var geocoder = CONFIG.GEOCODER;
+
+function httpGetAsync(url) {
+    // eslint-disable-next-line no-unused-vars
+    return new Promise(function (resolve, reject) {
+        var xmlHttp = new XMLHttpRequest();
+        xmlHttp.onreadystatechange = function () {
+            // eslint-disable-next-line eqeqeq
+            if (xmlHttp.readyState == 4 && xmlHttp.status == 200) {
+                resolve(JSON.parse(xmlHttp.responseText));
+            }
+        };
+        xmlHttp.open("GET", url, true); // true for asynchronous
+        xmlHttp.send(null);
+    });
+}
+
+function wktPointToGeoJson(wktPoint) {
+    if (!wktPoint.includes('POINT')) {
+        throw TypeError('Provided WKT geometry is not a point.');
+    }
+    var coordinateTuple = wktPoint.split('(')[1].split(')')[0];
+    var x = parseFloat(coordinateTuple.split(' ')[0]);
+    var y = parseFloat(coordinateTuple.split(' ')[1]);
+
+    return {
+        type: 'Point',
+        coordinates: [x, y]
+    };
+}
+
+/**
+ * Make a call to PDOK locatieserver v3 suggest service. This service is meant for geocoder autocomplete functionality. For
+ * additional documentation, check https://github.com/PDOK/locatieserver/wiki/API-Locatieserver.
+ * @param {string} searchTerm The term which to search for
+ */
+geocoder.doSuggestRequest = function (searchTerm) {
+    return httpGetAsync(this.suggestUrl + 'q=' + encodeURIComponent(searchTerm));
+};
+
+/**
+ * Make a call to PDOK locatieserver v3 lookup service. This service provides information about objects found through the suggest service. For additional
+ * documentation, check: https://github.com/PDOK/locatieserver/wiki/API-Locatieserver
+ * @param {string} id The id of the feature that is to be looked up.
+ */
+geocoder.doLookupRequest = function (id) {
+    return httpGetAsync(this.lookupUrl + 'id=' + encodeURIComponent(id)).then(function (lookupResult) {
+        // A lookup request should always return 1 result
+        var geocodeResult = lookupResult.response.docs[0];
+        geocodeResult.centroide_ll = wktPointToGeoJson(geocodeResult.centroide_ll);
+        geocodeResult.centroide_rd = wktPointToGeoJson(geocodeResult.centroide_rd);
+        return geocodeResult;
+    });
+};
+
+geocoder.createControl = function (zoomFunction, map) {
+    var _this = this;
+
+    this.zoomTo = zoomFunction;
+    this.map = map;
+    var container = document.createElement('div');
+    var searchDiv = document.createElement('div');
+    var input = document.createElement('input');
+    var results = document.createElement('div');
+    var controlWidth = '300px';
+
+    container.style.width = controlWidth;
+    container.style.zIndex = 1000000;
+    container.style.position = 'absolute';
+    container.style.top = '15px';
+    container.style.left = '12px';
+    input.id = 'nlmaps-geocoder-control-input';
+    input.placeholder = 'Zoeken op adres...';
+    input.style.padding = '4px 10px';
+    input.style.width = '100%';
+    input.style.border = 'none';
+    input.style.backgroundColor = '#fff';
+    input.style.boxShadow = '0 1px 5px rgba(0, 0, 0, 0.65)';
+    input.style.height = '26px';
+    input.style.borderRadius = '5px 5px';
+
+    input.addEventListener('input', function (e) {
+        _this.suggest(e.target.value);
+    });
+
+    input.addEventListener('focus', function (e) {
+        _this.suggest(e.target.value);
+    });
+    results.id = 'nlmaps-geocoder-control-results';
+    results.style.width = controlWidth;
+
+    container.appendChild(searchDiv);
+    searchDiv.appendChild(input);
+    container.appendChild(results);
+
+    return container;
+};
+
+geocoder.suggest = function (query) {
+    var _this2 = this;
+
+    if (query.length < 4) {
+        this.clearSuggestResults();
+        return;
+    }
+
+    this.doSuggestRequest(query).then(function (results) {
+        _this2.showSuggestResults(results.response.docs);
+    });
+};
+
+geocoder.lookup = function (id) {
+    var _this3 = this;
+
+    this.doLookupRequest(id).then(function (result) {
+        _this3.zoomTo(result.centroide_ll, _this3.map);
+        _this3.showLookupResult(result.weergavenaam);
+        _this3.clearSuggestResults();
+    });
+};
+
+geocoder.clearSuggestResults = function () {
+    document.getElementById('nlmaps-geocoder-control-results').innerHTML = '';
+};
+
+geocoder.showLookupResult = function (name) {
+    document.getElementById('nlmaps-geocoder-control-input').value = name;
+};
+
+geocoder.showSuggestResults = function (results) {
+    var _this4 = this;
+
+    var resultList = document.createElement('ul');
+    resultList.style.padding = '10px 10px 2px 10px';
+    resultList.style.width = '100%';
+    resultList.style.background = '#FFFFFF';
+    resultList.style.borderRadius = '5px 5px';
+    resultList.style.boxShadow = '0 1px 5px rgba(0, 0, 0, 0.65)';
+
+    results.forEach(function (result) {
+
+        var li = document.createElement('li');
+        li.innerHTML = result.weergavenaam;
+        li.id = result.id;
+        li.style.cursor = 'pointer';
+        li.style.padding = '5px';
+        li.style.listStyleType = 'none';
+        li.style.marginBottom = '5px';
+        li.addEventListener('click', function (e) {
+            _this4.lookup(e.target.id);
+        });
+
+        li.addEventListener('mouseenter', function () {
+            li.style.background = '#6C62A6';
+            li.style.color = '#FFFFFF';
+        });
+
+        li.addEventListener('mouseleave', function () {
+            li.style.background = '#FFFFFF';
+            li.style.color = '#333';
+        });
+        resultList.appendChild(li);
+    });
+    this.clearSuggestResults();
+    document.getElementById('nlmaps-geocoder-control-results').appendChild(resultList);
+};
+
+var geolocator_icon = '<?xml version="1.0" encoding="UTF-8" standalone="no"?>\n<svg xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns="http://www.w3.org/2000/svg" height="7.0556mm" width="7.0556mm" version="1.1"\nxmlns:cc="http://creativecommons.org/ns#" xmlns:dc="http://purl.org/dc/elements/1.1/" viewBox="0 0 24.999999 24.999999">\n<metadata>  <rdf:RDF>   <cc:Work rdf:about="">    <dc:format>image/svg+xml</dc:format>    <dc:type rdf:resource="http://purl.org/dc/dcmitype/StillImage"/>\n<dc:title/>   </cc:Work>  </rdf:RDF> </metadata> <g transform="translate(-151.39 -117.97)">  <g transform="translate(.39250 .85750)">\n<path style="color-rendering:auto;text-decoration-color:#000000;color:#000000;shape-rendering:auto;solid-color:#000000;text-decoration-line:none;fill:#191919;mix-blend-mode:normal;block-progression:tb;text-indent:0;image-rendering:auto;white-space:normal;text-decoration-style:solid;isolation:auto;text-transform:none" d="m163.5 123.27c-3.4931 0-6.3379 2.8448-6.3379 6.3379s2.8448 6.3398 6.3379 6.3398 6.3379-2.8467 6.3379-6.3398-2.8448-6.3379-6.3379-6.3379zm0 1.3008c2.7905 0 5.0391 2.2466 5.0391 5.0371s-2.2485 5.0391-5.0391 5.0391c-2.7905 0-5.0391-2.2485-5.0391-5.0391 0-2.7905 2.2485-5.0371 5.0391-5.0371z"/><circle cx="163.5" cy="129.61" r="1.9312" style="fill:#191919"/>\n<path style="color-rendering:auto;text-decoration-color:#000000;color:#000000;shape-rendering:auto;solid-color:#000000;text-decoration-line:none;fill:#191919;fill-rule:evenodd;mix-blend-mode:normal;block-progression:tb;text-indent:0;image-rendering:auto;white-space:normal;text-decoration-style:solid;isolation:auto;text-transform:none" d="m162.85 120.57v3.3555h1.3008v-3.3555h-1.3008z"/>   <path style="color-rendering:auto;text-decoration-color:#000000;color:#000000;shape-rendering:auto;solid-color:#000000;text-decoration-line:none;fill:#191919;fill-rule:evenodd;mix-blend-mode:normal;block-progression:tb;text-indent:0;image-rendering:auto;white-space:normal;text-decoration-style:solid;isolation:auto;text-transform:none" d="m162.85 135.3v3.3555h1.3008v-3.3555h-1.3008z"/>   <path style="color-rendering:auto;text-decoration-color:#000000;color:#000000;shape-rendering:auto;solid-color:#000000;text-decoration-line:none;fill:#191919;fill-rule:evenodd;mix-blend-mode:normal;block-progression:tb;text-indent:0;image-rendering:auto;white-space:normal;text-decoration-style:solid;isolation:auto;text-transform:none" d="m154.46 128.96v1.2988h3.3535v-1.2988h-3.3535z"/>\n<path style="color-rendering:auto;text-decoration-color:#000000;color:#000000;shape-rendering:auto;solid-color:#000000;text-decoration-line:none;fill:#191919;fill-rule:evenodd;mix-blend-mode:normal;block-progression:tb;text-indent:0;image-rendering:auto;white-space:normal;text-decoration-style:solid;isolation:auto;text-transform:none" d="m169.19 128.96v1.2988h3.3535v-1.2988h-3.3535z"/>  </g> </g></svg>';
+
+var markerUrl = 'https://rawgit.com/webmapper/nlmaps/master/dist/assets/rijksoverheid-marker.png';
+
+/*parts copied from maps.stamen.com: https://github.com/stamen/maps.stamen.com/blob/master/js/tile.stamen.js
+ * copyright (c) 2012, Stamen Design
+ * under BSD 3-Clause license: https://github.com/stamen/maps.stamen.com/blob/master/LICENSE
+ */
+
+/*
+ * Get the named provider, or throw an exception if it doesn't exist.
+ **/
+function getProvider(name) {
+  if (name in CONFIG.BASEMAP_PROVIDERS) {
+    var provider = CONFIG.BASEMAP_PROVIDERS[name];
+
+    // eslint-disable-next-line no-console
+    if (provider.deprecated && console && console.warn) {
+      // eslint-disable-next-line no-console
+      console.warn(name + " is a deprecated style; it will be redirected to its replacement. For performance improvements, please change your reference.");
+    }
+
+    return provider;
+  } else {
+    // eslint-disable-next-line no-console
+    console.error('NL Maps error: You asked for a style which does not exist! Available styles: ' + Object.keys(PROVIDERS).join(', '));
+  }
+}
+
+/*
+ * Get the named wmsProvider, or throw an exception if it doesn't exist.
+ **/
+function getWmsProvider(name, options) {
+  var wmsProvider = void 0;
+  if (name in CONFIG.WMS_PROVIDERS) {
+    wmsProvider = CONFIG.WMS_PROVIDERS[name];
+
+    // eslint-disable-next-line no-console
+    if (wmsProvider.deprecated && console && console.warn) {
+      // eslint-disable-next-line no-console
+      console.warn(name + " is a deprecated wms; it will be redirected to its replacement. For performance improvements, please change your reference.");
+    }
+  } else {
+    wmsProvider = Object.assign({}, CONFIG.WMS_DEFAULTS, options);
+    // eslint-disable-next-line no-console
+    console.log('NL Maps: You asked for a wms which does not exist! Available wmses: ' + Object.keys(CONFIG.WMS_PROVIDERS).join(', ') + '. Provide an options object to make your own WMS.');
+  }
+  return wmsProvider;
+}
+
+var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) {
+  return typeof obj;
+} : function (obj) {
+  return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj;
+};
+
+function bgLayer() {
+  var name = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 'standaard';
+
+  var provider = getProvider(name);
+  if ((typeof ol === 'undefined' ? 'undefined' : _typeof(ol)) === "object") {
+    return new ol.layer.Tile({
+      source: new ol.source.XYZ({
+        url: provider.url,
+        attributions: [new ol.Attribution({
+          html: provider.attribution
+        })]
+      })
+    });
+  } else {
+    throw 'openlayers is not defined';
+  }
+}
+function markerLayer(latLngObject) {
+  var markerStyle = new ol.style.Style({
+    image: new ol.style.Icon({
+      anchor: [32, 63],
+      anchorXUnits: 'pixels',
+      anchorYUnits: 'pixels',
+      src: markerUrl,
+      scale: 1
+    })
+  });
+  var lat = void 0;
+  var lng = void 0;
+
+  // eslint-disable-next-line eqeqeq
+  if (typeof latLngObject == 'undefined') {
+    var mapCenter = getMapCenter(map);
+    lat = mapCenter.latitude;
+    lng = mapCenter.longitude;
+  } else {
+    lat = latLngObject.latitude;
+    lng = latLngObject.longitude;
+  }
+
+  var center = ol.proj.fromLonLat([lng, lat]);
+
+  var markerFeature = new ol.Feature({
+    geometry: new ol.geom.Point(center),
+    name: 'marker'
+  });
+
+  markerFeature.setStyle(markerStyle);
+
+  var markerSource = new ol.source.Vector({
+    features: [markerFeature]
+  });
+  return new ol.layer.Vector({
+    source: markerSource
+  });
+}
+
+function overlayLayer(name, options) {
+  var wmsProvider = getWmsProvider(name, options);
+  if ((typeof ol === 'undefined' ? 'undefined' : _typeof(ol)) === "object") {
+    return new ol.layer.Tile({
+      source: new ol.source.TileWMS({
+        url: wmsProvider.url,
+        serverType: 'geoserver',
+        params: {
+          LAYERS: wmsProvider.layers,
+          VERSION: wmsProvider.version,
+          STYLES: wmsProvider.styles
+        }
+      })
+    });
+  } else {
+    throw 'openlayers is not defined';
+  }
+}
+
+function geoLocatorControl(geolocator, map) {
+  var myControlEl = document.createElement('div');
+  myControlEl.id = 'nlmaps-geolocator-control';
+  myControlEl.style.backgroundColor = '#fff';
+  myControlEl.style.cursor = 'pointer';
+  myControlEl.style.boxShadow = '0 1px 5px rgba(0, 0, 0, 0.65)';
+  myControlEl.style.height = '26px';
+  myControlEl.style.width = '26px';
+  myControlEl.style.borderRadius = '26px 26px';
+  myControlEl.innerHTML = geolocator_icon;
+  myControlEl.className = 'ol-control';
+  myControlEl.style.right = '.5em';
+  myControlEl.style.top = '.5em';
+
+  myControlEl.addEventListener('click', function () {
+    geolocator.start();
+  });
+
+  function moveMap(d) {
+    var map = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : map;
+
+    var oldZoom = map.getView().getZoom();
+    var view = new ol.View({
+      center: ol.proj.fromLonLat([d.coords.longitude, d.coords.latitude]),
+      zoom: oldZoom
+    });
+    map.setView(view);
+  }
+  geolocator.on('position', function (d) {
+    moveMap(d, map);
+  });
+  var control = new ol.control.Control({ element: myControlEl });
+  return control;
+}
+
+function zoomTo(point, map) {
+  var newCenter = ol.proj.fromLonLat(point.coordinates);
+  map.getView().setCenter(newCenter);
+  map.getView().setZoom(18);
+}
+
+function getMapCenter(map) {
+  var EPSG3857Coords = map.getView().getCenter();
+  var lngLatCoords = ol.proj.toLonLat(EPSG3857Coords);
+  return {
+    longitude: lngLatCoords[0],
+    latitude: lngLatCoords[1]
+  };
+}
+
+function geocoderControl(map) {
+  var control = geocoder.createControl(zoomTo, map);
+  control = new ol.control.Control({ element: control });
+  map.addControl(control);
+}
+
+exports.bgLayer = bgLayer;
+exports.overlayLayer = overlayLayer;
+exports.markerLayer = markerLayer;
+exports.getMapCenter = getMapCenter;
+exports.geoLocatorControl = geoLocatorControl;
+exports.geocoderControl = geocoderControl;
+//# sourceMappingURL=nlmaps-openlayers.cjs.js.map

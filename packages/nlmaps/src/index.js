@@ -28,6 +28,7 @@ import { bgLayer as bgGM,
 // import { bgLayer as bgGM,
 //          geoLocatorControl as glG } from 'nlmaps-googlemaps';
 
+import {CONFIG} from '../../lib/configParser.js';
 import geoLocator from '../../nlmaps-geolocator/src/index.js';
 
 let nlmaps = {
@@ -54,15 +55,7 @@ let nlmaps = {
   }
 };
 
-let mapdefaults = {
-  style: 'standaard',
-  center: {
-    latitude: 51.9984,
-    longitude: 4.996
-  },
-  zoom: 8,
-  attribution: true
-};
+
 
 //for future use
 const geoLocateDefaultOpts = {
@@ -155,6 +148,8 @@ function addGoogleLayer(layer, map) {
     return;
   }
 
+  let mapTypeIds = [layer.name, 'roadmap'];
+  
   if (layer.name === 'wms') {
     map.setOptions({
       mapTypeControl: true,
@@ -165,7 +160,6 @@ function addGoogleLayer(layer, map) {
     });
     return;
   }
-  let mapTypeIds = [layer.name, 'roadmap'];
 
   map.setOptions({
     mapTypeControl: true,
@@ -263,9 +257,9 @@ function mergeOpts(defaultopts, useropts){
 nlmaps.lib = testWhichLib();
 
 nlmaps.createMap = function(useropts = {}) {
-  const opts = mergeOpts(mapdefaults, useropts);
+  const opts = mergeOpts(CONFIG.MAP, useropts);
   try {
-  if (nlmaps.lib === 'too many libs' || nlmaps.lib === 'too few libs') {
+  if (nlmaps.lib == 'too many libs' || nlmaps.lib === 'too few libs') {
     throw({message:'one and only one map library can be defined. Please Refer to the documentation to see which map libraries are supported.'});
   }
 } catch (e) {
@@ -276,6 +270,7 @@ nlmaps.createMap = function(useropts = {}) {
   // Background layer
   const backgroundLayer = createBackgroundLayer(nlmaps.lib, map, opts.style);
   addLayerToMap(nlmaps.lib, backgroundLayer, map, opts.style);
+
 
   // Geocoder
   if (opts.search) {

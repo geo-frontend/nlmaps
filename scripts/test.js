@@ -3,8 +3,13 @@ const conf = require('./conf.json');
 const helpers = require('./helpers');
 const { spawn, fork} = require('child_process');
 const chokidar = require('chokidar');
+const exitCode = require('tap-exit-code');
+var tapSpec = require('tap-spec');
+//var tapRun = require('tap-set-exit');
+
 
 const tasks = helpers.tasks();
+console.log(tasks)
 
 const rollup_args = ['-c', 'config/rollup.test.js'];
 
@@ -16,8 +21,12 @@ if (helpers.args.watch) {
 
 //to be bound
 function unitTest(task, path) {
-  const testfile = 'packages/' + helpers.packagePath(task) + '/test/unit-test.js';
-  fork(testfile);
+  const testfile = 'packages/' + helpers.packagePath(task) + '/test/unit-test.js';  
+  let sub = fork( 'node_modules/tape/bin/tape', ['-r','babel-register','-r','./scripts/babelHelpers.js', testfile], {stdio: 'pipe'});    
+  sub.stdout.pipe(exitCode()).pipe(tapSpec()).pipe(process.stderr);
+  sub.on('exit', (code) => {
+    console.log(`test exited for ${task} exited with code ${code}`);
+  });
 }
 
 function copyHtml(path) {
@@ -33,8 +42,7 @@ function main(){
   //run each package's test rollup command from the package's directory
   //and capture/log output
   tasks.forEach(task => {
-    console.log(rollup_args)
-    const build = spawn('rollup', rollup_args, {cwd: 'packages/' + helpers.packagePath(task)});
+    const build = spawn('../../node_modules/rollup/bin/rollup', rollup_args, {cwd: 'packages/' + helpers.packagePath(task)});
 
     build.stdout.on('data', (data) => {
       console.log(`${data}`);
@@ -47,6 +55,7 @@ function main(){
     build.on('close', (code) => {
       console.log(`child process for ${task} exited with code ${code}`);
     });
+
   })
 
 

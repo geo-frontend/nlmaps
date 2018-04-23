@@ -1,3 +1,5 @@
+
+
 /*** Geolocator control ***/
 .nlmaps-geolocator-control {
   background-color: #fff;
@@ -22,6 +24,34 @@
 
 
 /*** Geocoder control ***/
+.nlmaps-geocoder-control-container {
+  width: 300px;
+  z-index: 1000000;
+  position: absolute;
+  top: 15px;
+  left: 12px;
+}
+
+#nlmaps-geocoder-control-input {
+  padding: 4px 10px;
+  width: 100%;
+  border: none;
+  background-color: rgb(255, 255, 255);
+  box-shadow: rgba(0, 0, 0, 0.65) 0px 1px 5px;
+  height: 26px;
+  border-radius: 5px;
+  outline: none;
+}
+#nlmaps-geocoder-control-results {
+  width: 300px;
+}
+#nlmaps-geocoder-control-results ul {
+  padding: 10px 10px 2px;
+  width: 100%;
+  background: rgb(255, 255, 255);
+  border-radius: 5px;
+  box-shadow: rgba(0, 0, 0, 0.65) 0px 1px 5px;
+}
 .nlmaps-geocoder-result-list {
   padding: 10px 10px 2px 10px;
   width: 100%;

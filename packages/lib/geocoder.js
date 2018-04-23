@@ -60,25 +60,13 @@ geocoder.createControl = function(zoomFunction, map) {
     this.zoomTo = zoomFunction;
     this.map = map;
     const container = document.createElement('div');
+    container.className = 'nlmaps-geocoder-control-container';
     const searchDiv = document.createElement('div');
     const input = document.createElement('input');
     const results = document.createElement('div');
-    const controlWidth = '300px'
-
-    container.style.width = controlWidth;
-    container.style.zIndex = 1000000;
-    container.style.position = 'absolute';
-    container.style.top = '15px';
-    container.style.left = '12px';
+    
     input.id = 'nlmaps-geocoder-control-input';
     input.placeholder = 'Zoeken op adres...'
-    input.style.padding = '4px 10px';
-    input.style.width = '100%';
-    input.style.border = 'none';
-    input.style.backgroundColor = '#fff';
-    input.style.boxShadow = '0 1px 5px rgba(0, 0, 0, 0.65)';
-    input.style.height = '26px';
-    input.style.borderRadius = '5px 5px';
 
     input.addEventListener('input', (e) => {
         this.suggest(e.target.value);
@@ -87,8 +75,7 @@ geocoder.createControl = function(zoomFunction, map) {
     input.addEventListener('focus', (e) => {
         this.suggest(e.target.value);
     });
-    results.id = 'nlmaps-geocoder-control-results';
-    results.style.width = controlWidth;
+    results.id = 'nlmaps-geocoder-control-results';    
 
     container.appendChild(searchDiv);
     searchDiv.appendChild(input);
@@ -126,34 +113,17 @@ geocoder.showLookupResult = function(name) {
 
 geocoder.showSuggestResults = function(results) {
     const resultList = document.createElement('ul');
-    resultList.style.padding = '10px 10px 2px 10px';
-    resultList.style.width = '100%';
-    resultList.style.background = '#FFFFFF';
-    resultList.style.borderRadius = '5px 5px';
-    resultList.style.boxShadow = '0 1px 5px rgba(0, 0, 0, 0.65)';
-
+    resultList.className = 'nlmaps-geocoder-result-list';
     results.forEach((result) => {
 
         const li = document.createElement('li');
         li.innerHTML = result.weergavenaam;
         li.id = result.id;
-        li.style.cursor = 'pointer';
-        li.style.padding = '5px';
-        li.style.listStyleType = 'none';
-        li.style.marginBottom = '5px';
+       
         li.addEventListener('click', (e) => {
             this.lookup(e.target.id);
         });
 
-        li.addEventListener('mouseenter', () => {
-            li.style.background = '#6C62A6';
-            li.style.color = '#FFFFFF';
-        });
-
-        li.addEventListener('mouseleave', () => {
-            li.style.background = '#FFFFFF';
-            li.style.color = '#333';
-        });
         resultList.appendChild(li);
     });
     this.clearSuggestResults();

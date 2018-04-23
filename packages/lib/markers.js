@@ -8,9 +8,6 @@ function singleClick(map) {
     if (t === 1 ) {
       if (markerStore.marker) {
         markerStore.marker.remove();
-//        if (spatialEq(marker.marker._latlng, d.latlng )) {
-//          return;
-//        }
       }
       let newmarker = L.marker([d.latlng.lat,d.latlng.lng], {
         alt: 'marker',
@@ -53,14 +50,5 @@ function multiClick(e) {
 
   }
 }
-
-//function spatialEq(o, n){
- //if (distance([o.lat, o.lng],[n.lat, n.lng], {units: 'kilometers'}) < 0.001) {
-  //return true;
- //} else {
-  //return false;
- //}
-//}
-
 
 export { singleClick, markerStore };

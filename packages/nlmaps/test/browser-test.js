@@ -1,13 +1,22 @@
-//import {bgLayer, geoLocatorControl} from '../../nlmaps-leaflet/build/nlmaps-leaflet.es.js';
+/* eslint-disable no-console */
+let map = nlmaps.createMap({target: 'mapdiv', marker: true, search: true})
 
-//let map = L.map('mapdiv').setView([52, 5], 10);
-//let layers = {
-  //standaard: bgLayer(), 
-//};
-//layers.standaard.addTo(map);
-//layers.pastel = bgLayer('pastel');
-//layers.grijs = bgLayer('grijs');
-//L.control.layers(layers).addTo(map);
-//let geo = geolocator();
-//geoLocatorControl(geo).addTo(map);
+
+function myHandler(t, d) {
+ if (t === 1 ){
+  console.log(d);
+  }
+}
+
+let click = nlmaps.clickprovider(map);
+let singleMarker = nlmaps.singleClick(map);
+click(0, myHandler);
+
+
+let transform = nlmaps.queryFeatures();
+let transformedClicks = transform(click);
+transformedClicks(0, myHandler);
+
+transformedClicks(0, singleMarker);
+
 

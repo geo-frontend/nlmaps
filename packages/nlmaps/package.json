@@ -39,6 +39,7 @@
   },
   "devDependencies": {
     "babel-preset-env": "^1.6.1",
+    "leaflet-headless": "^0.2.6",
     "live-server-https": "0.0.2",
     "rollup-plugin-eslint": "^4.0.0",
     "tape": "^4.6.3"

@@ -66,8 +66,9 @@ geocoder.createControl = function(zoomFunction, map) {
     const results = document.createElement('div');
     
     input.id = 'nlmaps-geocoder-control-input';
-    input.placeholder = 'Zoeken op adres...'
-
+    input.placeholder = 'Zoeken op adres...';
+    input.setAttribute('aria-label', 'Zoek een adres');
+    
     input.addEventListener('input', (e) => {
         this.suggest(e.target.value);
     });

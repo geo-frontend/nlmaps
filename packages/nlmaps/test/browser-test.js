@@ -1,7 +1,6 @@
 /* eslint-disable no-console */
 let map = nlmaps.createMap({target: 'mapdiv', marker: true, search: true})
 
-
 function myHandler(t, d) {
  if (t === 1 ){
    console.log('The click happened at: ')
@@ -11,9 +10,29 @@ function myHandler(t, d) {
 
 let clicks = nlmaps.clickprovider(map);
 //let singleMarker = nlmaps.singleClick(map, markerCreator);
+
+function popupCreator(d) {
+  let div = document.createElement('div');
+  let button = document.createElement('button');
+  let p = document.createElement('p');
+  if (d.queryResult !== null) {
+    p.innerText = d.queryResult._display;
+  } else {
+    p.innerText = 'geen zoekresultaten'
+  }
+  div.append(p);
+  button.innerHTML = 'verwijder'
+    button.addEventListener('click',function() {
+      this.removeMarker();
+    })
+  div.append(button);
+  return div;
+}
+
 let singleMarker = nlmaps.singleClick(map)
 
 
+/* eslint-disable-next-line max-len */
 proj4.defs("EPSG:28992","+proj=sterea +lat_0=52.15616055555555 +lon_0=5.38763888888889 +k=0.9999079 +x_0=155000 +y_0=463000 +ellps=bessel +towgs84=565.417,50.3319,465.552,-0.398957,0.343988,-1.8774,4.0725 +units=m +no_defs");
 
 const transformCoords = proj4(proj4.defs('EPSG:4326'), proj4.defs('EPSG:28992'));
@@ -34,6 +53,6 @@ let featureQuery = nlmaps.queryFeatures(clicks, requestFormatter, responseFormat
 
 featureQuery.subscribe(singleMarker)
 
-clicks.subscribe(myHandler)
+featureQuery.subscribe(myHandler)
 
 

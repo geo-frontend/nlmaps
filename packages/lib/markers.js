@@ -3,8 +3,13 @@ import { markerUrl } from './index.js';
 let markerStore = {};
 
 
-function singleClick(map) {
-  return function singleMarker(t, d) {
+function singleClick(map, popupCreator) {
+  function removeMarker() {
+    markerStore.marker.remove();
+    delete markerStore.marker;
+  }
+
+  return (t, d) => {
     if (t === 1 ) {
       if (markerStore.marker) {
         markerStore.marker.remove();
@@ -19,24 +24,16 @@ function singleClick(map) {
       });
       markerStore.marker = newmarker;
       markerStore.marker.addTo(map);
-      let div = document.createElement('div');
-      let button = document.createElement('button');
-      let p = document.createElement('p');
-      if (d.queryResult !== null) {
-        p.innerText = d.queryResult._display;
+      if (popupCreator) {
+        let div = popupCreator.call(this, d);
+        let popup = L.popup({offset: [0,-50]})
+          .setContent(div)
+        markerStore.marker.bindPopup(popup).openPopup();
       } else {
-        p.innerText = 'geen zoekresultaten'
-      }
-      div.append(p);
-      button.innerHTML = 'verwijder'
-        button.addEventListener('click',function(e) {
-          markerStore.marker.remove();
-          delete markerStore.marker;
+        markerStore.marker.on('click', function() {
+          removeMarker();
         })
-      div.append(button);
-      let popup = L.popup({offset: [0,-50]})
-        .setContent(div)
-      markerStore.marker.bindPopup(popup).openPopup();
+      }
     }
   }
 }

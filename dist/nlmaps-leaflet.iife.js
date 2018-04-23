@@ -178,6 +178,12 @@
         }
         return layer;
     }
+
+    function parseFeatureQuery(baseUrl) {
+        CONFIG.FEATUREQUERYBASEURL = baseUrl;
+    }
+
+    if (config.featureQuery !== undefined) parseFeatureQuery(config.featureQuery.baseUrl);
     parseMap(config.map);
     parseBase(config.basemaps);
     if (config.wms !== undefined) parseWMS(config.wms);

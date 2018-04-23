@@ -84,6 +84,9 @@ export default {
         "suggestUrl": "https://geodata.nationaalgeoregister.nl/locatieserver/v3/suggest?",
         "lookupUrl": "https://geodata.nationaalgeoregister.nl/locatieserver/v3/lookup?"
     },
+    "featureQuery": {
+        "baseUrl": "https://api.data.amsterdam.nl/bag/nummeraanduiding/?format=json&locatie=",
+    },
     "map": {
         "style": 'standaard',
         "center": {

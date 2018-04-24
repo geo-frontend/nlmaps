@@ -1,14 +1,13 @@
 import { markerUrl } from './index.js';
 
-let markerStore = {};
-
-
-function singleMarker(map, popupCreator) {
-  function removeMarker() {
+let markerStore = {
+  removeMarker: function () {
     markerStore.marker.remove();
     delete markerStore.marker;
   }
+};
 
+function singleMarker(map, popupCreator) {
   return (t, d) => {
     if (t === 1 ) {
       if (markerStore.marker) {
@@ -25,7 +24,7 @@ function singleMarker(map, popupCreator) {
       markerStore.marker = newmarker;
       markerStore.marker.addTo(map);
       if (popupCreator) {
-        let div = popupCreator.call(this, d);
+        let div = popupCreator.call(markerStore, d);
         let popup = L.popup({offset: [0,-50]})
           .setContent(div)
         markerStore.marker.bindPopup(popup).openPopup();

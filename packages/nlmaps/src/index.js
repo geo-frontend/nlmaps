@@ -31,9 +31,8 @@ import { bgLayer as bgGM,
 import {CONFIG} from '../../lib/configParser.js';
 import geoLocator from '../../nlmaps-geolocator/src/index.js';
 
-import { queryFeatures, pointToQuery }  from '../../lib/featurequery.js';
+import { queryFeatures }  from '../../lib/featurequery.js';
 import {singleMarker, markerStore } from '../../lib/markers.js';
-//import markersWithQueryResults from '../../lib/index.js';
 
 let nlmaps = {
   leaflet: {

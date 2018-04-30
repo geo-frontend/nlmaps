@@ -13,7 +13,7 @@
 }
 
 .nlmaps-geolocator-control img {
-  background-image: url('/assets/img/geolocator_icon.svg');
+  background-image: url('./assets/img/geolocator_icon.svg');
   display: block;
   box-sizing: border-box;
   width: 26px;
@@ -45,13 +45,7 @@
 #nlmaps-geocoder-control-results {
   width: 300px;
 }
-#nlmaps-geocoder-control-results ul {
-  padding: 10px 10px 2px;
-  width: 100%;
-  background: rgb(255, 255, 255);
-  border-radius: 5px;
-  box-shadow: rgba(0, 0, 0, 0.65) 0px 1px 5px;
-}
+
 .nlmaps-geocoder-result-list {
   padding: 10px 10px 2px 10px;
   width: 100%;

@@ -1,4 +1,4 @@
-import { markerUrl } from './index.js';
+import { getMarker } from './index.js';
 
 let markerStore = {};
 
@@ -15,7 +15,7 @@ function singleClick(map) {
       let newmarker = L.marker([d.latlng.lat,d.latlng.lng], {
         alt: 'marker',
         icon: new L.icon({
-          iconUrl: markerUrl,
+          iconUrl: getMarker().url,
           iconSize: [64, 64],
           iconAnchor: [32, 63]
         })

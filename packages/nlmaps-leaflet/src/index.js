@@ -1,4 +1,4 @@
-import { getProvider, getWmsProvider, geocoder, markerUrl } from '../../lib/index.js';
+import { getProvider, getWmsProvider, geocoder, getMarker } from '../../lib/index.js';
 
 //TODO 'standaard' vervangen door eerste layer van baselayers
 if (typeof L !== 'undefined' && typeof L === 'object') {
@@ -115,7 +115,7 @@ function markerLayer(latLngObject) {
     return new L.marker([lat, lng], {
       alt: 'marker',
       icon: new L.icon({
-        iconUrl: markerUrl,
+        iconUrl: getMarker().url,
         iconSize: [64, 64],
         iconAnchor: [32, 63]
       })

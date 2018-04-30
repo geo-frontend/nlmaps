@@ -23,6 +23,7 @@ CONFIG.BASEMAP_PROVIDERS = {};
 CONFIG.WMS_PROVIDERS = {};
 CONFIG.GEOCODER = {};
 CONFIG.MAP = {};
+CONFIG.MARKER = {};
 
 
 
@@ -104,9 +105,14 @@ function parseFeatureQuery(baseUrl) {
   CONFIG.FEATUREQUERYBASEURL = baseUrl;
 }
 
+function parseMarker(marker) {
+    CONFIG.MARKER = marker;
+}
+
 if(config.featureQuery !== undefined ) parseFeatureQuery(config.featureQuery.baseUrl);
 parseMap(config.map);
 parseBase(config.basemaps);
 if(config.wms!==undefined)parseWMS(config.wms);
 if(config.geocoder!==undefined)parseGeocoder(config.geocoder);
+if(config.marker!==undefined)parseMarker(config.marker);
 export { CONFIG };

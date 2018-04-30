@@ -1,4 +1,4 @@
-import { getProvider, getWmsProvider, geolocator_icon, geocoder, markerUrl } from '../../lib';
+import { getProvider, getWmsProvider, geocoder, getMarker } from '../../lib';
 
 function bgLayer(name='standaard') {
   const provider = getProvider(name);
@@ -25,7 +25,7 @@ function markerLayer(latLngObject) {
         anchor: [32, 63],
         anchorXUnits: 'pixels',
         anchorYUnits: 'pixels',
-        src: markerUrl,
+        src: getMarker().url,
         scale: 1
       })
     )
@@ -83,17 +83,7 @@ function overlayLayer(name, options) {
 
 function geoLocatorControl(geolocator, map){
   let myControlEl = document.createElement('div');
-  myControlEl.id = 'nlmaps-geolocator-control';
-  myControlEl.style.backgroundColor = '#fff';
-  myControlEl.style.cursor = 'pointer';
-  myControlEl.style.boxShadow = '0 1px 5px rgba(0, 0, 0, 0.65)';
-  myControlEl.style.height = '26px';
-  myControlEl.style.width = '26px';
-  myControlEl.style.borderRadius = '26px 26px';
-  myControlEl.innerHTML = geolocator_icon;
-  myControlEl.className = 'ol-control';
-  myControlEl.style.right = '.5em';
-  myControlEl.style.top = '.5em';
+  myControlEl.className = 'nlmaps-geolocator-control ol-control';
 
   myControlEl.addEventListener('click', function(){
     geolocator.start();

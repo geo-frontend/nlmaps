@@ -6,8 +6,11 @@
 //https://geodata.nationaalgeoregister.nl/luchtfoto/rgb/wmts/
 import { CONFIG } from './configParser';
 import { geocoder } from './geocoder.js';
-import { geolocator_icon, marker_icon, search_icon, markerUrl } from './icons.js';
 
+
+function getMarker() {
+  return CONFIG.MARKER;
+}
 
 /*
  * Get the named provider, or throw an exception if it doesn't exist.
@@ -55,4 +58,4 @@ function getWmsProvider(name, options) {
 
 //use named export instead of default because we might want
 //more exports from 'lib' in the future
-export {getProvider, getWmsProvider, geolocator_icon, search_icon, marker_icon, geocoder, markerUrl};
+export { getProvider, getWmsProvider, geocoder, getMarker};

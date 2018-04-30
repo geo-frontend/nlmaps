@@ -1,4 +1,4 @@
-import { getProvider, getWmsProvider, geolocator_icon, geocoder, markerUrl } from '../../lib/index.js';
+import { getProvider, getWmsProvider, geocoder, getMarker } from '../../lib/index.js';
 
 function AttributionControl(controlDiv, attrControlText) {
   if (typeof google === 'object' && typeof google.maps === 'object') {
@@ -27,8 +27,7 @@ function AttributionControl(controlDiv, attrControlText) {
 
 function geoLocatorControl (geolocator, map){
     let controlUI = document.createElement('div');
-    controlUI.id = 'nlmaps-geolocator-control';
-    controlUI.innerHTML = geolocator_icon;
+    controlUI.id = 'nlmaps-geolocator-control';    
     controlUI.style.backgroundColor = '#fff';
     controlUI.style.cursor = 'pointer';
     controlUI.style.boxShadow = '0 1px 5px rgba(0, 0, 0, 0.65)';
@@ -195,7 +194,7 @@ function markerLayer(latLngObject) {
   const marker = new google.maps.Marker({
     title: 'marker',
     position: markerLocationLatLng,
-    icon: markerUrl
+    icon: getMarker().url
   });
   return marker;
 }

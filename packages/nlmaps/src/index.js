@@ -85,10 +85,15 @@ function testWhichLib() {
 }
 
 function initMap(lib, opts){
-  let map;
+  let map, rootdiv,el;
   switch (lib) {
     case 'leaflet':
-      map = L.map(opts.target).setView([opts.center.latitude, opts.center.longitude], opts.zoom);
+      //work-around to prevent mapdragging at text selection
+      rootdiv = document.getElementById(opts.target);
+      el = L.DomUtil.create('div');
+      el.style.height='100%';
+      rootdiv.appendChild(el);
+      map = L.map(el).setView([opts.center.latitude, opts.center.longitude], opts.zoom);
       map.zoomControl.setPosition('bottomleft');
       break;
     case 'googlemaps':

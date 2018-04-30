@@ -1,4 +1,4 @@
-import { getProvider, getWmsProvider, geocoder, markerUrl } from '../../lib/index.js';
+import { getProvider, getWmsProvider, geocoder, getMarker } from '../../lib/index.js';
 
 //TODO 'standaard' vervangen door eerste layer van baselayers
 if (typeof L !== 'undefined' && typeof L === 'object') {
@@ -115,7 +115,7 @@ function markerLayer(latLngObject) {
     return new L.marker([lat, lng], {
       alt: 'marker',
       icon: new L.icon({
-        iconUrl: markerUrl,
+        iconUrl: getMarker().url,
         iconSize: [64, 64],
         iconAnchor: [32, 63]
       })
@@ -146,8 +146,7 @@ function zoomTo(point, map) {
 
 function geocoderControl(map) {
   const control = geocoder.createControl(zoomTo, map);
-  control.addEventListener('click', e => e.stopPropagation());
-  map.getContainer().appendChild(control);
+  map.getContainer().parentElement.appendChild(control);
 }
 
 function getMapCenter(map) {

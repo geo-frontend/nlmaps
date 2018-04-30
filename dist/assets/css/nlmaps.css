@@ -25,23 +25,48 @@
 
 /*** Geocoder control ***/
 .nlmaps-geocoder-control-container {
-  width: 300px;
+  width: 326px;
   z-index: 1000000;
   position: absolute;
   top: 15px;
   left: 12px;
 }
+.nlmaps-geocoder-control-search {
+  display: flex;
+  flex-flow: row;
+}
 
 #nlmaps-geocoder-control-input {
+  flex-grow: 1;
   padding: 4px 10px;
-  width: 100%;
+  
   border: none;
   background-color: rgb(255, 255, 255);
   box-shadow: rgba(0, 0, 0, 0.65) 0px 1px 5px;
   height: 26px;
-  border-radius: 5px;
+  border-radius: 5px 0px 0px 5px;
   outline: none;
 }
+.nlmaps-geocoder-control-button { 
+  width: 34px;
+  border: none;
+  background-color: rgb(255, 255, 255);
+  background-image: url('../img/search_icon.svg');
+  box-shadow: rgba(0, 0, 0, 0.65) 0px 1px 5px;
+  height: 34px;
+  border-radius: 0px 5px 5px 0px;
+  outline: none;
+  background-size: cover;
+  cursor: pointer;
+}
+.nlmaps-geocoder-control-button:hover {
+  background-color: #6c62a6;
+  color: #fff;
+}
+.nlmaps-geocoder-control-button:hover path {  
+  color: #fff;
+}
+
 #nlmaps-geocoder-control-results {
   width: 300px;
 }

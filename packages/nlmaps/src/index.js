@@ -31,9 +31,8 @@ import { bgLayer as bgGM,
 import {CONFIG} from '../../lib/configParser.js';
 import geoLocator from '../../nlmaps-geolocator/src/index.js';
 
-import { queryFeatures, pointToQuery }  from '../../lib/featurequery.js';
-import {singleClick, markerStore } from '../../lib/markers.js';
-//import markersWithQueryResults from '../../lib/index.js';
+import { queryFeatures }  from '../../lib/featurequery.js';
+import {singleMarker, markerStore } from '../../lib/markers.js';
 
 let nlmaps = {
   leaflet: {
@@ -327,7 +326,7 @@ nlmaps.geoLocate = function(map, useropts = {}){
 }
 
 nlmaps.clickprovider = function(map) {
-  return function (start, sink) {
+  const clickSource = function (start, sink) {
     if (start !== 0) return;
     map.on('click', function(e) {
       sink(1, e)
@@ -336,10 +335,14 @@ nlmaps.clickprovider = function(map) {
       console.log('bye bye')
       };
     sink(0, talkback);
+  };
+  clickSource.subscribe = function (callback) {
+    clickSource(0, callback) 
   }
+  return clickSource;
 }
 
 nlmaps.queryFeatures = queryFeatures;
-nlmaps.singleClick = singleClick;
+nlmaps.singleMarker = singleMarker;
 
 export {nlmaps};

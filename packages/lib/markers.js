@@ -1,16 +1,17 @@
 import { markerUrl } from './index.js';
 
-let markerStore = {};
+let markerStore = {
+  removeMarker: function () {
+    markerStore.marker.remove();
+    delete markerStore.marker;
+  }
+};
 
-
-function singleClick(map) {
-  return function singleMarker(t, d) {
+function singleMarker(map, popupCreator) {
+  return (t, d) => {
     if (t === 1 ) {
       if (markerStore.marker) {
         markerStore.marker.remove();
-//        if (spatialEq(marker.marker._latlng, d.latlng )) {
-//          return;
-//        }
       }
       let newmarker = L.marker([d.latlng.lat,d.latlng.lng], {
         alt: 'marker',
@@ -22,29 +23,21 @@ function singleClick(map) {
       });
       markerStore.marker = newmarker;
       markerStore.marker.addTo(map);
-      let div = document.createElement('div');
-      let button = document.createElement('button');
-      let p = document.createElement('p');
-      if (d.queryResult !== null) {
-        p.innerText = d.queryResult._display;
+      if (popupCreator) {
+        let div = popupCreator.call(markerStore, d);
+        let popup = L.popup({offset: [0,-50]})
+          .setContent(div)
+        markerStore.marker.bindPopup(popup).openPopup();
       } else {
-        p.innerText = 'geen zoekresultaten'
-      }
-      div.append(p);
-      button.innerHTML = 'verwijder'
-        button.addEventListener('click',function(e) {
-          markerStore.marker.remove();
-          delete markerStore.marker;
+        markerStore.marker.on('click', function() {
+          removeMarker();
         })
-      div.append(button);
-      let popup = L.popup({offset: [0,-50]})
-        .setContent(div)
-      markerStore.marker.bindPopup(popup).openPopup();
+      }
     }
   }
 }
 
-function multiClick(e) {
+function multiMarker(e) {
   if (markerStore.markers && markerStore.markers.length > 0) {
     let hasSameLoc = markerStore.markers.find(el => spatialEq(el._latlng, e)) // any one has same location as new click?  
     if (typeof hasSameLoc !== 'undefined') {
@@ -54,13 +47,4 @@ function multiClick(e) {
   }
 }
 
-//function spatialEq(o, n){
- //if (distance([o.lat, o.lng],[n.lat, n.lng], {units: 'kilometers'}) < 0.001) {
-  //return true;
- //} else {
-  //return false;
- //}
-//}
-
-
-export { singleClick, markerStore };
+export { singleMarker, markerStore };

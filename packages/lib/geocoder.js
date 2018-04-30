@@ -86,7 +86,7 @@ geocoder.createControl = function(zoomFunction, map) {
 }
 
 geocoder.suggest = function(query) {
-    if (query.length < 4) {
+    if (query.length < 3) {
         this.clearSuggestResults();
         return;
     }

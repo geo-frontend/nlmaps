@@ -60,14 +60,15 @@ geocoder.createControl = function(zoomFunction, map) {
     this.map = map;
     const container = document.createElement('div');
     container.className = 'nlmaps-geocoder-control-container';
-    const searchDiv = document.createElement('div');
+    const searchDiv = document.createElement('form');
     const input = document.createElement('input');
+    const button = document.createElement('button');
     const results = document.createElement('div');
-    
+    searchDiv.className = 'nlmaps-geocoder-control-search';
     container.addEventListener('click', e => e.stopPropagation());
     container.addEventListener('dblclick', e => e.stopPropagation());
     input.id = 'nlmaps-geocoder-control-input';
-    input.placeholder = 'Zoeken op adres...';
+    input.placeholder = 'Zoomen naar adres...';
     input.setAttribute('aria-label', 'Zoomen naar adres');
     input.setAttribute('type','text');
     input.setAttribute('autocapitalize','off');
@@ -82,10 +83,21 @@ geocoder.createControl = function(zoomFunction, map) {
     input.addEventListener('focus', (e) => {
         this.suggest(e.target.value);
     });
+    button.setAttribute('type','submit');
+    searchDiv.addEventListener('submit',(e)=>{   
+        e.preventDefault();
+        if(this.results.length>0) {
+            this.lookup(this.results[0])
+        }
+    })
+    button.setAttribute('aria-label', 'Zoomen naar adres');
+    button.className = 'nlmaps-geocoder-control-button';
+
     results.id = 'nlmaps-geocoder-control-results';    
 
     container.appendChild(searchDiv);
     searchDiv.appendChild(input);
+    searchDiv.appendChild(button);
     container.appendChild(results);
 
     return container;
@@ -98,6 +110,7 @@ geocoder.suggest = function(query) {
     }
 
     this.doSuggestRequest(query).then((results) => {
+        this.results = results.response.docs.map(r=>r.id)        
         this.showSuggestResults(results.response.docs);
     });
 }
@@ -111,6 +124,7 @@ geocoder.lookup = function (id) {
 }
 
 geocoder.clearSuggestResults = function() {
+    
     document.getElementById('nlmaps-geocoder-control-results').innerHTML = '';
 }
 

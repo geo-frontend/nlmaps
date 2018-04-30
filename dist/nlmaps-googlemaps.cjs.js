@@ -107,6 +107,7 @@ CONFIG.BASEMAP_PROVIDERS = {};
 CONFIG.WMS_PROVIDERS = {};
 CONFIG.GEOCODER = {};
 CONFIG.MAP = {};
+CONFIG.MARKER = {};
 
 function err(err) {
     throw err;
@@ -184,11 +185,16 @@ function parseFeatureQuery(baseUrl) {
     CONFIG.FEATUREQUERYBASEURL = baseUrl;
 }
 
+function parseMarker(marker) {
+    CONFIG.MARKER = marker;
+}
+
 if (config.featureQuery !== undefined) parseFeatureQuery(config.featureQuery.baseUrl);
 parseMap(config.map);
 parseBase(config.basemaps);
 if (config.wms !== undefined) parseWMS(config.wms);
 if (config.geocoder !== undefined) parseGeocoder(config.geocoder);
+if (config.marker !== undefined) parseMarker(config.marker);
 
 var geocoder = CONFIG.GEOCODER;
 
@@ -251,26 +257,25 @@ geocoder.createControl = function (zoomFunction, map) {
     this.zoomTo = zoomFunction;
     this.map = map;
     var container = document.createElement('div');
+    container.className = 'nlmaps-geocoder-control-container';
     var searchDiv = document.createElement('div');
     var input = document.createElement('input');
     var results = document.createElement('div');
-    var controlWidth = '300px';
 
-    container.style.width = controlWidth;
-    container.style.zIndex = 1000000;
-    container.style.position = 'absolute';
-    container.style.top = '15px';
-    container.style.left = '12px';
+    container.addEventListener('click', function (e) {
+        return e.stopPropagation();
+    });
+    container.addEventListener('dblclick', function (e) {
+        return e.stopPropagation();
+    });
     input.id = 'nlmaps-geocoder-control-input';
     input.placeholder = 'Zoeken op adres...';
-    input.style.padding = '4px 10px';
-    input.style.width = '100%';
-    input.style.border = 'none';
-    input.style.backgroundColor = '#fff';
-    input.style.boxShadow = '0 1px 5px rgba(0, 0, 0, 0.65)';
-    input.style.height = '26px';
-    input.style.borderRadius = '5px 5px';
-    input.setAttribute('aria-label', 'Zoek een adres');
+    input.setAttribute('aria-label', 'Zoomen naar adres');
+    input.setAttribute('type', 'text');
+    input.setAttribute('autocapitalize', 'off');
+    input.setAttribute('autocomplete', 'off');
+    input.setAttribute('autocorrect', 'off');
+    input.setAttribute('spellcheck', 'false');
 
     input.addEventListener('input', function (e) {
         _this.suggest(e.target.value);
@@ -280,7 +285,6 @@ geocoder.createControl = function (zoomFunction, map) {
         _this.suggest(e.target.value);
     });
     results.id = 'nlmaps-geocoder-control-results';
-    results.style.width = controlWidth;
 
     container.appendChild(searchDiv);
     searchDiv.appendChild(input);
@@ -292,7 +296,7 @@ geocoder.createControl = function (zoomFunction, map) {
 geocoder.suggest = function (query) {
     var _this2 = this;
 
-    if (query.length < 4) {
+    if (query.length < 3) {
         this.clearSuggestResults();
         return;
     }
@@ -324,48 +328,31 @@ geocoder.showSuggestResults = function (results) {
     var _this4 = this;
 
     var resultList = document.createElement('ul');
-    resultList.style.padding = '10px 10px 2px 10px';
-    resultList.style.width = '100%';
-    resultList.style.background = '#FFFFFF';
-    resultList.style.borderRadius = '5px 5px';
-    resultList.style.boxShadow = '0 1px 5px rgba(0, 0, 0, 0.65)';
-
+    resultList.className = 'nlmaps-geocoder-result-list';
     results.forEach(function (result) {
 
         var li = document.createElement('li');
         li.innerHTML = result.weergavenaam;
         li.id = result.id;
-        li.style.cursor = 'pointer';
-        li.style.padding = '5px';
-        li.style.listStyleType = 'none';
-        li.style.marginBottom = '5px';
+
         li.addEventListener('click', function (e) {
             _this4.lookup(e.target.id);
         });
 
-        li.addEventListener('mouseenter', function () {
-            li.style.background = '#6C62A6';
-            li.style.color = '#FFFFFF';
-        });
-
-        li.addEventListener('mouseleave', function () {
-            li.style.background = '#FFFFFF';
-            li.style.color = '#333';
-        });
         resultList.appendChild(li);
     });
     this.clearSuggestResults();
     document.getElementById('nlmaps-geocoder-control-results').appendChild(resultList);
 };
 
-var geolocator_icon = '<?xml version="1.0" encoding="UTF-8" standalone="no"?>\n<svg xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns="http://www.w3.org/2000/svg" height="7.0556mm" width="7.0556mm" version="1.1"\nxmlns:cc="http://creativecommons.org/ns#" xmlns:dc="http://purl.org/dc/elements/1.1/" viewBox="0 0 24.999999 24.999999">\n<metadata>  <rdf:RDF>   <cc:Work rdf:about="">    <dc:format>image/svg+xml</dc:format>    <dc:type rdf:resource="http://purl.org/dc/dcmitype/StillImage"/>\n<dc:title/>   </cc:Work>  </rdf:RDF> </metadata> <g transform="translate(-151.39 -117.97)">  <g transform="translate(.39250 .85750)">\n<path style="color-rendering:auto;text-decoration-color:#000000;color:#000000;shape-rendering:auto;solid-color:#000000;text-decoration-line:none;fill:#191919;mix-blend-mode:normal;block-progression:tb;text-indent:0;image-rendering:auto;white-space:normal;text-decoration-style:solid;isolation:auto;text-transform:none" d="m163.5 123.27c-3.4931 0-6.3379 2.8448-6.3379 6.3379s2.8448 6.3398 6.3379 6.3398 6.3379-2.8467 6.3379-6.3398-2.8448-6.3379-6.3379-6.3379zm0 1.3008c2.7905 0 5.0391 2.2466 5.0391 5.0371s-2.2485 5.0391-5.0391 5.0391c-2.7905 0-5.0391-2.2485-5.0391-5.0391 0-2.7905 2.2485-5.0371 5.0391-5.0371z"/><circle cx="163.5" cy="129.61" r="1.9312" style="fill:#191919"/>\n<path style="color-rendering:auto;text-decoration-color:#000000;color:#000000;shape-rendering:auto;solid-color:#000000;text-decoration-line:none;fill:#191919;fill-rule:evenodd;mix-blend-mode:normal;block-progression:tb;text-indent:0;image-rendering:auto;white-space:normal;text-decoration-style:solid;isolation:auto;text-transform:none" d="m162.85 120.57v3.3555h1.3008v-3.3555h-1.3008z"/>   <path style="color-rendering:auto;text-decoration-color:#000000;color:#000000;shape-rendering:auto;solid-color:#000000;text-decoration-line:none;fill:#191919;fill-rule:evenodd;mix-blend-mode:normal;block-progression:tb;text-indent:0;image-rendering:auto;white-space:normal;text-decoration-style:solid;isolation:auto;text-transform:none" d="m162.85 135.3v3.3555h1.3008v-3.3555h-1.3008z"/>   <path style="color-rendering:auto;text-decoration-color:#000000;color:#000000;shape-rendering:auto;solid-color:#000000;text-decoration-line:none;fill:#191919;fill-rule:evenodd;mix-blend-mode:normal;block-progression:tb;text-indent:0;image-rendering:auto;white-space:normal;text-decoration-style:solid;isolation:auto;text-transform:none" d="m154.46 128.96v1.2988h3.3535v-1.2988h-3.3535z"/>\n<path style="color-rendering:auto;text-decoration-color:#000000;color:#000000;shape-rendering:auto;solid-color:#000000;text-decoration-line:none;fill:#191919;fill-rule:evenodd;mix-blend-mode:normal;block-progression:tb;text-indent:0;image-rendering:auto;white-space:normal;text-decoration-style:solid;isolation:auto;text-transform:none" d="m169.19 128.96v1.2988h3.3535v-1.2988h-3.3535z"/>  </g> </g></svg>';
-
-var markerUrl = 'https://rawgit.com/webmapper/nlmaps/master/dist/assets/rijksoverheid-marker.png';
-
 /*parts copied from maps.stamen.com: https://github.com/stamen/maps.stamen.com/blob/master/js/tile.stamen.js
  * copyright (c) 2012, Stamen Design
  * under BSD 3-Clause license: https://github.com/stamen/maps.stamen.com/blob/master/LICENSE
  */
+
+function getMarker() {
+  return CONFIG.MARKER;
+}
 
 /*
  * Get the named provider, or throw an exception if it doesn't exist.
@@ -442,7 +429,6 @@ function AttributionControl(controlDiv, attrControlText) {
 function geoLocatorControl(geolocator, map) {
   var controlUI = document.createElement('div');
   controlUI.id = 'nlmaps-geolocator-control';
-  controlUI.innerHTML = geolocator_icon;
   controlUI.style.backgroundColor = '#fff';
   controlUI.style.cursor = 'pointer';
   controlUI.style.boxShadow = '0 1px 5px rgba(0, 0, 0, 0.65)';
@@ -618,7 +604,7 @@ function markerLayer(latLngObject) {
   var marker = new google.maps.Marker({
     title: 'marker',
     position: markerLocationLatLng,
-    icon: markerUrl
+    icon: getMarker().url
   });
   return marker;
 }

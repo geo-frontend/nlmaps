@@ -179,6 +179,12 @@ function applyTemplate(layer) {
     }
     return layer;
 }
+
+function parseFeatureQuery(baseUrl) {
+    CONFIG.FEATUREQUERYBASEURL = baseUrl;
+}
+
+if (config.featureQuery !== undefined) parseFeatureQuery(config.featureQuery.baseUrl);
 parseMap(config.map);
 parseBase(config.basemaps);
 if (config.wms !== undefined) parseWMS(config.wms);
@@ -555,6 +561,9 @@ function zoomTo(point, map) {
 
 function geocoderControl(map) {
   var control = geocoder.createControl(zoomTo, map);
+  control.addEventListener('click', function (e) {
+    return e.stopPropagation();
+  });
   map.getContainer().appendChild(control);
 }
 

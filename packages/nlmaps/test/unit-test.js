@@ -64,12 +64,25 @@ test('clicks passed through', function(t) {
 test('featurequery functions', function(t){
   let query = require ('../../nlmaps/build/nlmaps.cjs.js').nlmaps.queryFeatures;
   t.equal(typeof query, 'function', 'featurequery module exports a function');
-  let nlmaps = require('../../lib/index.js');
-  t.equal(typeof nlmaps.markersWithQueryResults, 'function', 'lib exports markersWithQueryResults and its a function');
   t.end();
 
 })
 
+//test marker library
+test('marker functions', function(t){
+  let nlmaps = require('../../nlmaps/build/nlmaps.cjs.js').nlmaps;
+  t.equal(typeof nlmaps.singleMarker, 'function', 'nlmaps contains singleMarker function');
+  let markers = require('../../lib/markers.js');
+  t.equal(typeof markers.markerStore, 'object', 'markers exports markerStore object');
+  t.equal(typeof markers.markerStore.removeMarker, 'function', 'markerStore has removeMarker method');
+  markers.markerStore.marker = 'dummy marker';
+  t.equal(markers.markerStore.marker, 'dummy marker', 'markerStore.marker can be set');
+  t.throws(markers.markerStore.removeMarker, /markerStore.marker.remove is not a function/, 'removeMarker cannot remove the marker  because it isnt a real L.marker');
+  t.end();
+
+})
+
+//todo: when headless browser framework is set up
 //test('generating clicks', function(t){
   //let L = require('leaflet-headless');
   //let { singleClick } = require('../../lib/markers.js');

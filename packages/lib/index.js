@@ -56,10 +56,6 @@ function getWmsProvider(name, options) {
   return wmsProvider;  
 }
 
-//use featurequery and markers in a chain to create a subscribable marker stream
-function markersWithQueryResults() {
-
-}
 //use named export instead of default because we might want
 //more exports from 'lib' in the future
-export { markersWithQueryResults, getProvider, getWmsProvider, geocoder, getMarker};
+export { getProvider, getWmsProvider, geocoder, getMarker};

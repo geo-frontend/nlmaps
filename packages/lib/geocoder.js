@@ -55,7 +55,6 @@ geocoder.doLookupRequest = function(id) {
     });
 }
 
-
 geocoder.createControl = function(zoomFunction, map) {
     this.zoomTo = zoomFunction;
     this.map = map;
@@ -65,10 +64,17 @@ geocoder.createControl = function(zoomFunction, map) {
     const input = document.createElement('input');
     const results = document.createElement('div');
     
+    container.addEventListener('click', e => e.stopPropagation());
+    container.addEventListener('dblclick', e => e.stopPropagation());
     input.id = 'nlmaps-geocoder-control-input';
     input.placeholder = 'Zoeken op adres...';
-    input.setAttribute('aria-label', 'Zoek een adres');
-    
+    input.setAttribute('aria-label', 'Zoomen naar adres');
+    input.setAttribute('type','text');
+    input.setAttribute('autocapitalize','off');
+    input.setAttribute('autocomplete','off');
+    input.setAttribute('autocorrect','off');
+    input.setAttribute('spellcheck','false');
+
     input.addEventListener('input', (e) => {
         this.suggest(e.target.value);
     });

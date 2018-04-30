@@ -63,6 +63,9 @@
   background-color: #6c62a6;
   color: #fff;
 }
+.nlmaps-geocoder-control-button:hover path {  
+  color: #fff;
+}
 
 #nlmaps-geocoder-control-results {
   width: 300px;

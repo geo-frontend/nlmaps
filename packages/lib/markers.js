@@ -1,4 +1,4 @@
-import { getMarker } from './index.js';
+import { getMarker, mapPointerStyle } from './index.js';
 
 let markerStore = {
   removeMarker: function () {
@@ -6,11 +6,6 @@ let markerStore = {
     delete markerStore.marker;
   }
 };
-
-function mapPointerStyle(map){
-  let classList = map._container.classList;
-  classList.add('nlmaps-marker-cursor');
-}
 
 function singleMarker(map, popupCreator) {
   mapPointerStyle(map);

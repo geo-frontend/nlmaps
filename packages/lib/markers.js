@@ -7,7 +7,13 @@ let markerStore = {
   }
 };
 
+function mapPointerStyle(map){
+  let classList = map._container.classList;
+  classList.add('nlmaps-marker-cursor');
+}
+
 function singleMarker(map, popupCreator) {
+  mapPointerStyle(map);
   return (t, d) => {
     if (t === 1 ) {
       if (markerStore.marker) {

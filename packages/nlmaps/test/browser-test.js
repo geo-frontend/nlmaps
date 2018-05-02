@@ -38,7 +38,7 @@ const transformCoords = proj4(proj4.defs('EPSG:4326'), proj4.defs('EPSG:28992'))
 
 function requestFormatter(baseUrl, xy) {
   let xyRD = transformCoords.forward(xy);
-  return `${baseUrl}${xyRD.x},${xyRD.y},10`
+  return `${baseUrl}${xyRD.x},${xyRD.y},50`
 }
 
 function responseFormatter(res) {

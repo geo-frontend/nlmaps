@@ -56,6 +56,11 @@ function getWmsProvider(name, options) {
   return wmsProvider;  
 }
 
+function mapPointerStyle(map){
+  let classList = map._container.classList;
+  classList.add('nlmaps-marker-cursor');
+}
+
 //use named export instead of default because we might want
 //more exports from 'lib' in the future
-export { getProvider, getWmsProvider, geocoder, getMarker};
+export { getProvider, getWmsProvider, geocoder, getMarker, mapPointerStyle};

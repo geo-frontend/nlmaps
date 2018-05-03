@@ -201,6 +201,108 @@ Returns a `geolocator` control.
     const control = geoLocatorControl(geolocator);
     control.addTo(map);
 
+### `nlmaps.clickProvider(map)`
+
+**only Leaflet**
+
+creates an event provider for clicks on the map, which can be subscribed to with a listener function or used as input to `nlmaps.queryFeatures`.
+
+The click events returned are original [Leaflet click events](http://leafletjs.com/reference-1.3.0.html#map-click)
+
+
+Arguments:
+
+* map _object map_ (**required**). The map for which to emit click events.
+
+returns an object with a `subscribe` function which takes as an argument the callback that should handle the events. `clickProvider` follows the [callbag spec](https://github.com/callbag/callbag) so this callback should have the signature `callback(type, data)` and should expect `type` to be `1`.
+
+**Example (Leaflet)**
+
+    const clicks = nlmaps.clickProvider(map);
+    function myHandler(type, data) {
+      if (type === 1){
+        console.log(data)
+      }
+    }
+    clicks.subscribe(myHandler)
+
+The returned object is itself a `callbag` so it can be used with other `callbags`, as is done with `nlmaps.queryFeatures`.
+
+### `nlmaps.queryFeatures(clickProvider, baseUrl, requestFormatter, responseFormatter)`
+
+creates an interface to query an HTTP API with coordinates from clicks on the map.
+
+Arguments:
+
+* clickProvider _object_ (**required**). an `nlmaps.clickProvider`.
+* baseUrl _string_ (**required**). the base url for the API to be queried.
+* requestFormatter _function(baseUrl, xy) => formattedUrl string_ (**required**). A function which receives the base url and an xy object of the format `{x: longitude, y: latitude}` and must return the url with which to query the external API
+* responseFormatter _function(response) => anything_ (**required**). A function which receives the API response and can be used to handle the response before passing it on.
+
+Returns an object with a `subscribe` method which can be used to handle the response. This method takes as an argument a function of signature `callback(type, data)` and should expect `type` to be `1`. The `data` argument will be an object of signature:
+
+    {
+        latlng: {
+          lat: <latitude>,
+          lng: <longitude>
+        },
+        queryResult: <queryResult> from reponseFormatter
+    }
+
+**Example**
+
+    const clicks = nlmaps.clickProvider(map);
+    
+    function requestFormatter(baseUrl, xy) {
+      return `${baseUrl}${xy.x},${xy.y}?radius=50`
+    }
+    
+    function responseFormatter(res) {
+      let filtered = res.results.filter(x => x.hoofdadres === true);
+      return filtered.length > 0 ? filtered[0] : null;
+    }
+    
+    let featureQuery = nlmaps.queryFeatures(clicks, requestFormatter, responseFormatter)
+    featureQuery.subscribe(myHandler)
+
+### `nlmaps.singleMarker(map, popupCreator)`
+
+**Leaflet only**
+
+places a marker on the map. Meant to be used in combination with `nlmaps.clickProvider`. The default behaviour is to move the marker on every click, and remove the marker when it is clicked. An optional `popupCreator` function can be passed to specify how to create a popup on the marker.
+
+Arguments:
+
+* map _object map_ (**required**). The map on which the marker should be placed.
+* popuCreator _function(data) => htmlElement_ (**optional**). A function which receives data and creates a popup based on it. The function should return an html element to be used by Leaflet to create the popup.
+
+returns an function which can be used to subscribe to `nlmaps.clickProvider`.
+
+Example with default functionality:
+
+    const clicks = nlmaps.clickProvider(map);
+    const singleMarker = nlmaps.singleMarker(map);
+    clicks.subscribe(singleMarker);
+
+Example with a custom popupCreator. Note that this function is bound to an object with a `removeMarker` method, allowing you to remove the parent marker from interaction on the popup.
+
+
+    function popupCreator(d) {
+      let div = document.createElement('div');
+      let button = document.createElement('button');
+      let p = document.createElement('p');
+      p.innerText = d.responseText;
+      div.append(p);
+      button.innerHTML = 'remove';
+      button.addEventListener('click', this.removeMarker)
+      div.append(button);
+      return div;
+    }
+    const clicks = nlmaps.clickProvider(map);
+    const singleMarker = nlmaps.singleMarker(map, popupCreator);
+    clicks.subscribe(singleMarker);
+    
+
 ## Advanced usage
 
 If you're already using a mapping library in your project, you can use the library-specific `bgLayer()`, `overlayLayer()`, and `markerLayer()` functions. All you'll need to do first is create a map and set the view. This is what the `createMap()` function does under the hood, with some default values.

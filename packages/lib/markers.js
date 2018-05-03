@@ -1,4 +1,4 @@
-import { getMarker } from './index.js';
+import { getMarker, mapPointerStyle } from './index.js';
 
 let markerStore = {
   removeMarker: function () {
@@ -8,6 +8,7 @@ let markerStore = {
 };
 
 function singleMarker(map, popupCreator) {
+  mapPointerStyle(map);
   return (t, d) => {
     if (t === 1 ) {
       if (markerStore.marker) {
@@ -30,7 +31,7 @@ function singleMarker(map, popupCreator) {
         markerStore.marker.bindPopup(popup).openPopup();
       } else {
         markerStore.marker.on('click', function() {
-          removeMarker();
+          markerStore.removeMarker();
         })
       }
     }

@@ -26,7 +26,7 @@ function popupCreator(d) {
   div.append(button);
   return div;
 }
-let clicks = nlmaps.clickprovider(map);
+let clicks = nlmaps.clickProvider(map);
 
 
 
@@ -38,7 +38,7 @@ const transformCoords = proj4(proj4.defs('EPSG:4326'), proj4.defs('EPSG:28992'))
 
 function requestFormatter(baseUrl, xy) {
   let xyRD = transformCoords.forward(xy);
-  return `${baseUrl}${xyRD.x},${xyRD.y},10`
+  return `${baseUrl}${xyRD.x},${xyRD.y},50`
 }
 
 function responseFormatter(res) {
@@ -48,7 +48,7 @@ function responseFormatter(res) {
 
 
 let singleMarker =  nlmaps.singleMarker(map, popupCreator)
-let featureQuery = nlmaps.queryFeatures(clicks, requestFormatter, responseFormatter);
+let featureQuery = nlmaps.queryFeatures(clicks, "https://api.data.amsterdam.nl/bag/nummeraanduiding/?format=json&locatie=", requestFormatter, responseFormatter);
 featureQuery.subscribe(singleMarker)
 
 featureQuery.subscribe(myHandler)

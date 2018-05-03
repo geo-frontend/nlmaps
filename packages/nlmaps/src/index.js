@@ -31,6 +31,7 @@ import { bgLayer as bgGM,
 import {CONFIG} from '../../lib/configParser.js';
 import geoLocator from '../../nlmaps-geolocator/src/index.js';
 
+import { mapPointerStyle } from '../../lib/index.js';
 import { queryFeatures }  from '../../lib/featurequery.js';
 import {singleMarker, markerStore } from '../../lib/markers.js';
 
@@ -330,7 +331,8 @@ nlmaps.geoLocate = function(map, useropts = {}){
   addGeoLocControlToMap(nlmaps.lib, geolocator, map);
 }
 
-nlmaps.clickprovider = function(map) {
+nlmaps.clickProvider = function(map) {
+  mapPointerStyle(map);
   const clickSource = function (start, sink) {
     if (start !== 0) return;
     map.on('click', function(e) {

@@ -55,7 +55,7 @@ test('main functions from lib',function(t){
 test('clicks passed through', function(t) {
   let L = require('leaflet-headless');
   let nlmaps = require('../../nlmaps/build/nlmaps.cjs.js').nlmaps;
-  t.equal(typeof nlmaps.clickprovider, 'function', 'clickprovider is a function');
+  t.equal(typeof nlmaps.clickProvider, 'function', 'clickProvider is a function');
   t.end();
 })
 

@@ -31,7 +31,7 @@ function singleMarker(map, popupCreator) {
         markerStore.marker.bindPopup(popup).openPopup();
       } else {
         markerStore.marker.on('click', function() {
-          removeMarker();
+          markerStore.removeMarker();
         })
       }
     }

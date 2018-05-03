@@ -331,7 +331,7 @@ nlmaps.geoLocate = function(map, useropts = {}){
   addGeoLocControlToMap(nlmaps.lib, geolocator, map);
 }
 
-nlmaps.clickprovider = function(map) {
+nlmaps.clickProvider = function(map) {
   mapPointerStyle(map);
   const clickSource = function (start, sink) {
     if (start !== 0) return;

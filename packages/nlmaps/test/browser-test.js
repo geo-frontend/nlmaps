@@ -26,7 +26,7 @@ function popupCreator(d) {
   div.append(button);
   return div;
 }
-let clicks = nlmaps.clickprovider(map);
+let clicks = nlmaps.clickProvider(map);
 
 
 

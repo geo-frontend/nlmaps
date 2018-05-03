@@ -24,7 +24,8 @@
 	        "basemaps": {
 	            "defaults": {
 	                "crs": "EPSG:3857",
-	                "attr": "Kaartgegevens &copy; <a href='https://www.kadaster.nl'>Kadaster</a> | <a href='https://www.verbeterdekaart.nl'>Verbeter de kaart</a>",
+	                "attribution": "Kaartgegevens &copy; <a href='https://www.kadaster.nl'>Kadaster</a> | \
+            <a href='https://www.verbeterdekaart.nl'>Verbeter de kaart</a>",
 	                "minZoom": 6,
 	                "maxZoom": 19,
 	                "type": "wmts",
@@ -447,6 +448,7 @@
 	                    'maxZoom': provider.maxZoom,
 	                    'scheme': 'xyz',
 	                    'attribution': provider.attribution,
+	                    'subdomains': provider.subdomains ? provider.subdomains : 'abc',
 	                    sa_id: name
 	                });
 	                L.TileLayer.prototype.initialize.call(this, provider.url, opts);
@@ -620,7 +622,8 @@
 	        "basemaps": {
 	            "defaults": {
 	                "crs": "EPSG:3857",
-	                "attr": "Kaartgegevens &copy; <a href='https://www.kadaster.nl'>Kadaster</a> | <a href='https://www.verbeterdekaart.nl'>Verbeter de kaart</a>",
+	                "attribution": "Kaartgegevens &copy; <a href='https://www.kadaster.nl'>Kadaster</a> | \
+            <a href='https://www.verbeterdekaart.nl'>Verbeter de kaart</a>",
 	                "minZoom": 6,
 	                "maxZoom": 19,
 	                "type": "wmts",
@@ -1034,6 +1037,11 @@
 	        var name = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 'standaard';
 
 	        var provider = getProvider(name);
+	        //replace leaflet style subdomain to OL style
+	        if (provider.subdomains) {
+	            var sub = provider.subdomains;
+	            provider.url = provider.url.replace('{s}', '{' + sub.slice(0, 1) + '-' + sub.slice(-1) + '}');
+	        }
 	        if ((typeof ol === 'undefined' ? 'undefined' : _typeof$$1(ol)) === "object") {
 	            return new ol.layer.Tile({
 	                source: new ol.source.XYZ({
@@ -1178,7 +1186,8 @@
 	        "basemaps": {
 	            "defaults": {
 	                "crs": "EPSG:3857",
-	                "attr": "Kaartgegevens &copy; <a href='https://www.kadaster.nl'>Kadaster</a> | <a href='https://www.verbeterdekaart.nl'>Verbeter de kaart</a>",
+	                "attribution": "Kaartgegevens &copy; <a href='https://www.kadaster.nl'>Kadaster</a> | \
+            <a href='https://www.verbeterdekaart.nl'>Verbeter de kaart</a>",
 	                "minZoom": 6,
 	                "maxZoom": 19,
 	                "type": "wmts",
@@ -1830,7 +1839,8 @@
 	    "basemaps": {
 	        "defaults": {
 	            "crs": "EPSG:3857",
-	            "attr": "Kaartgegevens &copy; <a href='https://www.kadaster.nl'>Kadaster</a> | <a href='https://www.verbeterdekaart.nl'>Verbeter de kaart</a>",
+	            "attribution": "Kaartgegevens &copy; <a href='https://www.kadaster.nl'>Kadaster</a> | \
+            <a href='https://www.verbeterdekaart.nl'>Verbeter de kaart</a>",
 	            "minZoom": 6,
 	            "maxZoom": 19,
 	            "type": "wmts",
@@ -2140,56 +2150,6 @@
 	  }
 	}
 
-	function query(url) {
-	  var promise = new Promise(function (resolve, reject) {
-	    fetch(url).then(function (res) {
-	      return resolve(res.json());
-	    }).catch(function (err) {
-	      return reject(err);
-	    });
-	  });
-	  return promise;
-	}
-
-	//transforming operator
-	//returns an object with original latlng and queryResult:
-	// {
-	//   queryResult: {},
-	//   latlng: d.latlng
-	// }
-	// user-supplied responseFormatter is used to create queryResult.
-	var pointToQuery = function pointToQuery(url, requestFormatter, responseFormatter) {
-	  return function (inputSource) {
-	    return function outputSource(start, outputSink) {
-	      if (start !== 0) return;
-	      inputSource(0, function (t, d) {
-	        if (t === 1) {
-	          var queryUrl = requestFormatter(url, { x: d.latlng.lng, y: d.latlng.lat });
-	          query(queryUrl).then(function (res) {
-	            var output = {
-	              queryResult: responseFormatter(res),
-	              latlng: d.latlng
-	            };
-	            outputSink(1, output);
-	          });
-	        } else {
-	          outputSink(t, d);
-	        }
-	      });
-	    };
-	  };
-	};
-
-	//constructor to create a 'clickpricker' in one go.
-	var queryFeatures = function queryFeatures(source, requestFormatter, responseFormatter) {
-	  var URL = CONFIG.FEATUREQUERYBASEURL;
-	  var querier = pointToQuery(URL, requestFormatter, responseFormatter)(source);
-	  querier.subscribe = function (callback) {
-	    querier(0, callback);
-	  };
-	  return querier;
-	};
-
 	var geocoder = CONFIG.GEOCODER;
 
 	function httpGetAsync(url) {
@@ -2364,6 +2324,60 @@
 	  return CONFIG.MARKER;
 	}
 
+	function mapPointerStyle(map) {
+	  var classList = map._container.classList;
+	  classList.add('nlmaps-marker-cursor');
+	}
+
+	function query(url) {
+	  var promise = new Promise(function (resolve, reject) {
+	    fetch(url).then(function (res) {
+	      return resolve(res.json());
+	    }).catch(function (err) {
+	      return reject(err);
+	    });
+	  });
+	  return promise;
+	}
+
+	//transforming operator
+	//returns an object with original latlng and queryResult:
+	// {
+	//   queryResult: {},
+	//   latlng: d.latlng
+	// }
+	// user-supplied responseFormatter is used to create queryResult.
+	var pointToQuery = function pointToQuery(url, requestFormatter, responseFormatter) {
+	  return function (inputSource) {
+	    return function outputSource(start, outputSink) {
+	      if (start !== 0) return;
+	      inputSource(0, function (t, d) {
+	        if (t === 1) {
+	          var queryUrl = requestFormatter(url, { x: d.latlng.lng, y: d.latlng.lat });
+	          query(queryUrl).then(function (res) {
+	            var output = {
+	              queryResult: responseFormatter(res),
+	              latlng: d.latlng
+	            };
+	            outputSink(1, output);
+	          });
+	        } else {
+	          outputSink(t, d);
+	        }
+	      });
+	    };
+	  };
+	};
+
+	//constructor to create a 'clickpricker' in one go.
+	var queryFeatures = function queryFeatures(source, baseUrl, requestFormatter, responseFormatter) {
+	  var querier = pointToQuery(baseUrl, requestFormatter, responseFormatter)(source);
+	  querier.subscribe = function (callback) {
+	    querier(0, callback);
+	  };
+	  return querier;
+	};
+
 	var markerStore = {
 	  removeMarker: function removeMarker() {
 	    markerStore.marker.remove();
@@ -2372,6 +2386,7 @@
 	};
 
 	function singleMarker(map, popupCreator) {
+	  mapPointerStyle(map);
 	  return function (t, d) {
 	    if (t === 1) {
 	      if (markerStore.marker) {
@@ -2393,7 +2408,7 @@
 	        markerStore.marker.bindPopup(popup).openPopup();
 	      } else {
 	        markerStore.marker.on('click', function () {
-	          removeMarker();
+	          markerStore.removeMarker();
 	        });
 	      }
 	    }
@@ -2673,7 +2688,8 @@
 	  addGeoLocControlToMap(nlmaps.lib, geolocator, map);
 	};
 
-	nlmaps.clickprovider = function (map) {
+	nlmaps.clickProvider = function (map) {
+	  mapPointerStyle(map);
 	  var clickSource = function clickSource(start, sink) {
 	    if (start !== 0) return;
 	    map.on('click', function (e) {

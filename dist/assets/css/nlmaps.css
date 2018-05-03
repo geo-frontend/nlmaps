@@ -90,3 +90,7 @@
   background-color: #6c62a6;
   color: #fff;
 }
+
+.leaflet-grab.nlmaps-marker-cursor {
+  cursor: pointer
+}

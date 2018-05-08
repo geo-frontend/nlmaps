@@ -58,13 +58,13 @@ geocoder.doLookupRequest = function(id) {
 geocoder.createControl = function(zoomFunction, map) {
     this.zoomTo = zoomFunction;
     this.map = map;
-    const container = document.createElement('div');
-    container.className = 'nlmaps-geocoder-control-container';
+    const container = document.createElement('div');    
+    parseClasses(container,CONFIG.CLASSNAMES.geocoderContainer);    
     const searchDiv = document.createElement('form');
     const input = document.createElement('input');
     const button = document.createElement('button');
     const results = document.createElement('div');
-    searchDiv.className = 'nlmaps-geocoder-control-search';
+    parseClasses(searchDiv,CONFIG.CLASSNAMES.geocoderSearch);    
     container.addEventListener('click', e => e.stopPropagation());
     container.addEventListener('dblclick', e => e.stopPropagation());
     input.id = 'nlmaps-geocoder-control-input';
@@ -91,10 +91,11 @@ geocoder.createControl = function(zoomFunction, map) {
         }
     })
     button.setAttribute('aria-label', 'Zoomen naar adres');
-    button.className = 'nlmaps-geocoder-control-button';
-
-    results.id = 'nlmaps-geocoder-control-results';    
-
+    parseClasses(button,CONFIG.CLASSNAMES.geocoderButton);
+    
+    results.id = 'nlmaps-geocoder-control-results';
+    parseClasses(results,CONFIG.CLASSNAMES.geocoderResultList);
+    results.classList.add('nlmaps-hidden');
     container.appendChild(searchDiv);
     searchDiv.appendChild(input);
     searchDiv.appendChild(button);
@@ -124,32 +125,41 @@ geocoder.lookup = function (id) {
 }
 
 geocoder.clearSuggestResults = function() {
-    
     document.getElementById('nlmaps-geocoder-control-results').innerHTML = '';
+    document.getElementById('nlmaps-geocoder-control-results').classList.add('nlmaps-hidden');
+
 }
 
 geocoder.showLookupResult = function(name) {
     document.getElementById('nlmaps-geocoder-control-input').value = name;
 }
 
+function parseClasses(el,classes) {
+    classes.forEach(classname => {
+        el.classList.add(classname);
+    });
+}
+
 geocoder.showSuggestResults = function(results) {
     this.clearSuggestResults();
     if (results.length > 0) {
         const resultList = document.createElement('ul');
-        resultList.className = 'nlmaps-geocoder-result-list';
         results.forEach((result) => {
 
             const li = document.createElement('li');
-            li.innerHTML = result.weergavenaam;
-            li.id = result.id;
-        
-            li.addEventListener('click', (e) => {
+            const a = document.createElement('a');
+            a.innerHTML = result.weergavenaam;
+            a.id = result.id;
+            parseClasses(a,CONFIG.CLASSNAMES.geocoderResultItem);            
+            a.setAttribute('href','#');
+            a.addEventListener('click', (e) => {
+                e.preventDefault();
                 this.lookup(e.target.id);
             });
-
+            li.appendChild(a);
             resultList.appendChild(li);
         });
-
+        document.getElementById('nlmaps-geocoder-control-results').classList.remove('nlmaps-hidden');
         document.getElementById('nlmaps-geocoder-control-results').appendChild(resultList);
     }
    

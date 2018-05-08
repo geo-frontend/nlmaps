@@ -89,5 +89,12 @@ export default {
         "zoom": 8,
         "attribution": true,
         "extent": [-180,-90,180,90]
+    },
+    "classnames": {
+        'geocoderContainer': ['embed-search'], //nlmaps-geocoder-control-container
+        'geocoderSearch': ['invoer'], // nlmaps-geocoder-control-search
+        'geocoderButton': ['primary','action','embed-search__button'], //nlmaps-geocoder-control-button
+        'geocoderResultList': ['embed-search__auto-suggest'], //nlmaps-geocoder-result-list 
+        'geocoderResultItem' : ['embed-search__auto-suggest__item'] //nlmaps-geocoder-result-item
     }
 }

@@ -99,6 +99,18 @@
 	            "zoom": 8,
 	            "attribution": true,
 	            "extent": [-180, -90, 180, 90]
+	        },
+	        "marker": {
+	            "url": "./assets/img/marker_icon.svg",
+	            "iconSize": [64, 64],
+	            "iconAnchor": [63, 32]
+	        },
+	        "classnames": {
+	            'geocoderContainer': ['embed-search'], //nlmaps-geocoder-control-container
+	            'geocoderSearch': ['invoer'], // nlmaps-geocoder-control-search
+	            'geocoderButton': ['primary', 'action', 'embed-search__button'], //nlmaps-geocoder-control-button
+	            'geocoderResultList': ['embed-search__auto-suggest'], //nlmaps-geocoder-result-list 
+	            'geocoderResultItem': ['embed-search__auto-suggest__item'] //nlmaps-geocoder-result-item
 	        }
 	    };
 
@@ -124,8 +136,17 @@
 	    CONFIG.BASEMAP_PROVIDERS = {};
 	    CONFIG.WMS_PROVIDERS = {};
 	    CONFIG.GEOCODER = {};
-	    CONFIG.MAP = {};
+	    CONFIG.MAP = {
+	        "zoomposition": "bottomleft"
+	    };
 	    CONFIG.MARKER = {};
+	    CONFIG.CLASSNAMES = {
+	        'geocoderContainer': ['nlmaps-geocoder-control-container'],
+	        'geocoderSearch': ['nlmaps-geocoder-control-search'],
+	        'geocoderButton': ['nlmaps-geocoder-control-button'],
+	        'geocoderResultList': ['nlmaps-geocoder-result-list'],
+	        'geocoderResultItem': ['nlmaps-geocoder-result-item']
+	    };
 
 	    function err(err) {
 	        throw err;
@@ -203,6 +224,10 @@
 	        CONFIG.FEATUREQUERYBASEURL = baseUrl;
 	    }
 
+	    function parseClasses(classes) {
+	        CONFIG.CLASSNAMES = mergeConfig(CONFIG.CLASSNAMES, classes);
+	    }
+
 	    function parseMarker(marker) {
 	        CONFIG.MARKER = marker;
 	    }
@@ -213,6 +238,7 @@
 	    if (config.wms !== undefined) parseWMS(config.wms);
 	    if (config.geocoder !== undefined) parseGeocoder(config.geocoder);
 	    if (config.marker !== undefined) parseMarker(config.marker);
+	    if (config.classnames !== undefined) parseClasses(config.classnames);
 
 	    var geocoder = CONFIG.GEOCODER;
 
@@ -275,12 +301,12 @@
 	        this.zoomTo = zoomFunction;
 	        this.map = map;
 	        var container = document.createElement('div');
-	        container.className = 'nlmaps-geocoder-control-container';
+	        parseClasses$1(container, CONFIG.CLASSNAMES.geocoderContainer);
 	        var searchDiv = document.createElement('form');
 	        var input = document.createElement('input');
 	        var button = document.createElement('button');
 	        var results = document.createElement('div');
-	        searchDiv.className = 'nlmaps-geocoder-control-search';
+	        parseClasses$1(searchDiv, CONFIG.CLASSNAMES.geocoderSearch);
 	        container.addEventListener('click', function (e) {
 	            return e.stopPropagation();
 	        });
@@ -311,10 +337,11 @@
 	            }
 	        });
 	        button.setAttribute('aria-label', 'Zoomen naar adres');
-	        button.className = 'nlmaps-geocoder-control-button';
+	        parseClasses$1(button, CONFIG.CLASSNAMES.geocoderButton);
 
 	        results.id = 'nlmaps-geocoder-control-results';
-
+	        parseClasses$1(results, CONFIG.CLASSNAMES.geocoderResultList);
+	        results.classList.add('nlmaps-hidden');
 	        container.appendChild(searchDiv);
 	        searchDiv.appendChild(input);
 	        searchDiv.appendChild(button);
@@ -350,13 +377,19 @@
 	    };
 
 	    geocoder.clearSuggestResults = function () {
-
 	        document.getElementById('nlmaps-geocoder-control-results').innerHTML = '';
+	        document.getElementById('nlmaps-geocoder-control-results').classList.add('nlmaps-hidden');
 	    };
 
 	    geocoder.showLookupResult = function (name) {
 	        document.getElementById('nlmaps-geocoder-control-input').value = name;
 	    };
+
+	    function parseClasses$1(el, classes) {
+	        classes.forEach(function (classname) {
+	            el.classList.add(classname);
+	        });
+	    }
 
 	    geocoder.showSuggestResults = function (results) {
 	        var _this4 = this;
@@ -364,20 +397,22 @@
 	        this.clearSuggestResults();
 	        if (results.length > 0) {
 	            var resultList = document.createElement('ul');
-	            resultList.className = 'nlmaps-geocoder-result-list';
 	            results.forEach(function (result) {
 
 	                var li = document.createElement('li');
-	                li.innerHTML = result.weergavenaam;
-	                li.id = result.id;
-
-	                li.addEventListener('click', function (e) {
+	                var a = document.createElement('a');
+	                a.innerHTML = result.weergavenaam;
+	                a.id = result.id;
+	                parseClasses$1(a, CONFIG.CLASSNAMES.geocoderResultItem);
+	                a.setAttribute('href', '#');
+	                a.addEventListener('click', function (e) {
+	                    e.preventDefault();
 	                    _this4.lookup(e.target.id);
 	                });
-
+	                li.appendChild(a);
 	                resultList.appendChild(li);
 	            });
-
+	            document.getElementById('nlmaps-geocoder-control-results').classList.remove('nlmaps-hidden');
 	            document.getElementById('nlmaps-geocoder-control-results').appendChild(resultList);
 	        }
 	    };
@@ -558,8 +593,8 @@
 	                alt: 'marker',
 	                icon: new L.icon({
 	                    iconUrl: getMarker().url,
-	                    iconSize: [64, 64],
-	                    iconAnchor: [32, 63]
+	                    iconSize: getMarker().iconSize,
+	                    iconAnchor: getMarker().iconAnchor
 	                })
 	            });
 	        }
@@ -700,6 +735,18 @@
 	            "zoom": 8,
 	            "attribution": true,
 	            "extent": [-180, -90, 180, 90]
+	        },
+	        "marker": {
+	            "url": "./assets/img/marker_icon.svg",
+	            "iconSize": [64, 64],
+	            "iconAnchor": [63, 32]
+	        },
+	        "classnames": {
+	            'geocoderContainer': ['embed-search'], //nlmaps-geocoder-control-container
+	            'geocoderSearch': ['invoer'], // nlmaps-geocoder-control-search
+	            'geocoderButton': ['primary', 'action', 'embed-search__button'], //nlmaps-geocoder-control-button
+	            'geocoderResultList': ['embed-search__auto-suggest'], //nlmaps-geocoder-result-list 
+	            'geocoderResultItem': ['embed-search__auto-suggest__item'] //nlmaps-geocoder-result-item
 	        }
 	    };
 
@@ -725,8 +772,17 @@
 	    CONFIG.BASEMAP_PROVIDERS = {};
 	    CONFIG.WMS_PROVIDERS = {};
 	    CONFIG.GEOCODER = {};
-	    CONFIG.MAP = {};
+	    CONFIG.MAP = {
+	        "zoomposition": "bottomleft"
+	    };
 	    CONFIG.MARKER = {};
+	    CONFIG.CLASSNAMES = {
+	        'geocoderContainer': ['nlmaps-geocoder-control-container'],
+	        'geocoderSearch': ['nlmaps-geocoder-control-search'],
+	        'geocoderButton': ['nlmaps-geocoder-control-button'],
+	        'geocoderResultList': ['nlmaps-geocoder-result-list'],
+	        'geocoderResultItem': ['nlmaps-geocoder-result-item']
+	    };
 
 	    function err(err) {
 	        throw err;
@@ -804,6 +860,10 @@
 	        CONFIG.FEATUREQUERYBASEURL = baseUrl;
 	    }
 
+	    function parseClasses(classes) {
+	        CONFIG.CLASSNAMES = mergeConfig(CONFIG.CLASSNAMES, classes);
+	    }
+
 	    function parseMarker(marker) {
 	        CONFIG.MARKER = marker;
 	    }
@@ -814,6 +874,7 @@
 	    if (config.wms !== undefined) parseWMS(config.wms);
 	    if (config.geocoder !== undefined) parseGeocoder(config.geocoder);
 	    if (config.marker !== undefined) parseMarker(config.marker);
+	    if (config.classnames !== undefined) parseClasses(config.classnames);
 
 	    var geocoder = CONFIG.GEOCODER;
 
@@ -876,12 +937,12 @@
 	        this.zoomTo = zoomFunction;
 	        this.map = map;
 	        var container = document.createElement('div');
-	        container.className = 'nlmaps-geocoder-control-container';
+	        parseClasses$1(container, CONFIG.CLASSNAMES.geocoderContainer);
 	        var searchDiv = document.createElement('form');
 	        var input = document.createElement('input');
 	        var button = document.createElement('button');
 	        var results = document.createElement('div');
-	        searchDiv.className = 'nlmaps-geocoder-control-search';
+	        parseClasses$1(searchDiv, CONFIG.CLASSNAMES.geocoderSearch);
 	        container.addEventListener('click', function (e) {
 	            return e.stopPropagation();
 	        });
@@ -912,10 +973,11 @@
 	            }
 	        });
 	        button.setAttribute('aria-label', 'Zoomen naar adres');
-	        button.className = 'nlmaps-geocoder-control-button';
+	        parseClasses$1(button, CONFIG.CLASSNAMES.geocoderButton);
 
 	        results.id = 'nlmaps-geocoder-control-results';
-
+	        parseClasses$1(results, CONFIG.CLASSNAMES.geocoderResultList);
+	        results.classList.add('nlmaps-hidden');
 	        container.appendChild(searchDiv);
 	        searchDiv.appendChild(input);
 	        searchDiv.appendChild(button);
@@ -951,13 +1013,19 @@
 	    };
 
 	    geocoder.clearSuggestResults = function () {
-
 	        document.getElementById('nlmaps-geocoder-control-results').innerHTML = '';
+	        document.getElementById('nlmaps-geocoder-control-results').classList.add('nlmaps-hidden');
 	    };
 
 	    geocoder.showLookupResult = function (name) {
 	        document.getElementById('nlmaps-geocoder-control-input').value = name;
 	    };
+
+	    function parseClasses$1(el, classes) {
+	        classes.forEach(function (classname) {
+	            el.classList.add(classname);
+	        });
+	    }
 
 	    geocoder.showSuggestResults = function (results) {
 	        var _this4 = this;
@@ -965,20 +1033,22 @@
 	        this.clearSuggestResults();
 	        if (results.length > 0) {
 	            var resultList = document.createElement('ul');
-	            resultList.className = 'nlmaps-geocoder-result-list';
 	            results.forEach(function (result) {
 
 	                var li = document.createElement('li');
-	                li.innerHTML = result.weergavenaam;
-	                li.id = result.id;
-
-	                li.addEventListener('click', function (e) {
+	                var a = document.createElement('a');
+	                a.innerHTML = result.weergavenaam;
+	                a.id = result.id;
+	                parseClasses$1(a, CONFIG.CLASSNAMES.geocoderResultItem);
+	                a.setAttribute('href', '#');
+	                a.addEventListener('click', function (e) {
+	                    e.preventDefault();
 	                    _this4.lookup(e.target.id);
 	                });
-
+	                li.appendChild(a);
 	                resultList.appendChild(li);
 	            });
-
+	            document.getElementById('nlmaps-geocoder-control-results').classList.remove('nlmaps-hidden');
 	            document.getElementById('nlmaps-geocoder-control-results').appendChild(resultList);
 	        }
 	    };
@@ -1267,6 +1337,18 @@
 	            "zoom": 8,
 	            "attribution": true,
 	            "extent": [-180, -90, 180, 90]
+	        },
+	        "marker": {
+	            "url": "./assets/img/marker_icon.svg",
+	            "iconSize": [64, 64],
+	            "iconAnchor": [63, 32]
+	        },
+	        "classnames": {
+	            'geocoderContainer': ['embed-search'], //nlmaps-geocoder-control-container
+	            'geocoderSearch': ['invoer'], // nlmaps-geocoder-control-search
+	            'geocoderButton': ['primary', 'action', 'embed-search__button'], //nlmaps-geocoder-control-button
+	            'geocoderResultList': ['embed-search__auto-suggest'], //nlmaps-geocoder-result-list 
+	            'geocoderResultItem': ['embed-search__auto-suggest__item'] //nlmaps-geocoder-result-item
 	        }
 	    };
 
@@ -1292,8 +1374,17 @@
 	    CONFIG.BASEMAP_PROVIDERS = {};
 	    CONFIG.WMS_PROVIDERS = {};
 	    CONFIG.GEOCODER = {};
-	    CONFIG.MAP = {};
+	    CONFIG.MAP = {
+	        "zoomposition": "bottomleft"
+	    };
 	    CONFIG.MARKER = {};
+	    CONFIG.CLASSNAMES = {
+	        'geocoderContainer': ['nlmaps-geocoder-control-container'],
+	        'geocoderSearch': ['nlmaps-geocoder-control-search'],
+	        'geocoderButton': ['nlmaps-geocoder-control-button'],
+	        'geocoderResultList': ['nlmaps-geocoder-result-list'],
+	        'geocoderResultItem': ['nlmaps-geocoder-result-item']
+	    };
 
 	    function err(err) {
 	        throw err;
@@ -1371,6 +1462,10 @@
 	        CONFIG.FEATUREQUERYBASEURL = baseUrl;
 	    }
 
+	    function parseClasses(classes) {
+	        CONFIG.CLASSNAMES = mergeConfig(CONFIG.CLASSNAMES, classes);
+	    }
+
 	    function parseMarker(marker) {
 	        CONFIG.MARKER = marker;
 	    }
@@ -1381,6 +1476,7 @@
 	    if (config.wms !== undefined) parseWMS(config.wms);
 	    if (config.geocoder !== undefined) parseGeocoder(config.geocoder);
 	    if (config.marker !== undefined) parseMarker(config.marker);
+	    if (config.classnames !== undefined) parseClasses(config.classnames);
 
 	    var geocoder = CONFIG.GEOCODER;
 
@@ -1443,12 +1539,12 @@
 	        this.zoomTo = zoomFunction;
 	        this.map = map;
 	        var container = document.createElement('div');
-	        container.className = 'nlmaps-geocoder-control-container';
+	        parseClasses$1(container, CONFIG.CLASSNAMES.geocoderContainer);
 	        var searchDiv = document.createElement('form');
 	        var input = document.createElement('input');
 	        var button = document.createElement('button');
 	        var results = document.createElement('div');
-	        searchDiv.className = 'nlmaps-geocoder-control-search';
+	        parseClasses$1(searchDiv, CONFIG.CLASSNAMES.geocoderSearch);
 	        container.addEventListener('click', function (e) {
 	            return e.stopPropagation();
 	        });
@@ -1479,10 +1575,11 @@
 	            }
 	        });
 	        button.setAttribute('aria-label', 'Zoomen naar adres');
-	        button.className = 'nlmaps-geocoder-control-button';
+	        parseClasses$1(button, CONFIG.CLASSNAMES.geocoderButton);
 
 	        results.id = 'nlmaps-geocoder-control-results';
-
+	        parseClasses$1(results, CONFIG.CLASSNAMES.geocoderResultList);
+	        results.classList.add('nlmaps-hidden');
 	        container.appendChild(searchDiv);
 	        searchDiv.appendChild(input);
 	        searchDiv.appendChild(button);
@@ -1518,13 +1615,19 @@
 	    };
 
 	    geocoder.clearSuggestResults = function () {
-
 	        document.getElementById('nlmaps-geocoder-control-results').innerHTML = '';
+	        document.getElementById('nlmaps-geocoder-control-results').classList.add('nlmaps-hidden');
 	    };
 
 	    geocoder.showLookupResult = function (name) {
 	        document.getElementById('nlmaps-geocoder-control-input').value = name;
 	    };
+
+	    function parseClasses$1(el, classes) {
+	        classes.forEach(function (classname) {
+	            el.classList.add(classname);
+	        });
+	    }
 
 	    geocoder.showSuggestResults = function (results) {
 	        var _this4 = this;
@@ -1532,20 +1635,22 @@
 	        this.clearSuggestResults();
 	        if (results.length > 0) {
 	            var resultList = document.createElement('ul');
-	            resultList.className = 'nlmaps-geocoder-result-list';
 	            results.forEach(function (result) {
 
 	                var li = document.createElement('li');
-	                li.innerHTML = result.weergavenaam;
-	                li.id = result.id;
-
-	                li.addEventListener('click', function (e) {
+	                var a = document.createElement('a');
+	                a.innerHTML = result.weergavenaam;
+	                a.id = result.id;
+	                parseClasses$1(a, CONFIG.CLASSNAMES.geocoderResultItem);
+	                a.setAttribute('href', '#');
+	                a.addEventListener('click', function (e) {
+	                    e.preventDefault();
 	                    _this4.lookup(e.target.id);
 	                });
-
+	                li.appendChild(a);
 	                resultList.appendChild(li);
 	            });
-
+	            document.getElementById('nlmaps-geocoder-control-results').classList.remove('nlmaps-hidden');
 	            document.getElementById('nlmaps-geocoder-control-results').appendChild(resultList);
 	        }
 	    };
@@ -1923,6 +2028,18 @@
 	        "zoom": 8,
 	        "attribution": true,
 	        "extent": [-180, -90, 180, 90]
+	    },
+	    "marker": {
+	        "url": "./assets/img/marker_icon.svg",
+	        "iconSize": [64, 64],
+	        "iconAnchor": [63, 32]
+	    },
+	    "classnames": {
+	        'geocoderContainer': ['embed-search'], //nlmaps-geocoder-control-container
+	        'geocoderSearch': ['invoer'], // nlmaps-geocoder-control-search
+	        'geocoderButton': ['primary', 'action', 'embed-search__button'], //nlmaps-geocoder-control-button
+	        'geocoderResultList': ['embed-search__auto-suggest'], //nlmaps-geocoder-result-list 
+	        'geocoderResultItem': ['embed-search__auto-suggest__item'] //nlmaps-geocoder-result-item
 	    }
 	};
 
@@ -1948,8 +2065,17 @@
 	CONFIG.BASEMAP_PROVIDERS = {};
 	CONFIG.WMS_PROVIDERS = {};
 	CONFIG.GEOCODER = {};
-	CONFIG.MAP = {};
+	CONFIG.MAP = {
+	    "zoomposition": "bottomleft"
+	};
 	CONFIG.MARKER = {};
+	CONFIG.CLASSNAMES = {
+	    'geocoderContainer': ['nlmaps-geocoder-control-container'],
+	    'geocoderSearch': ['nlmaps-geocoder-control-search'],
+	    'geocoderButton': ['nlmaps-geocoder-control-button'],
+	    'geocoderResultList': ['nlmaps-geocoder-result-list'],
+	    'geocoderResultItem': ['nlmaps-geocoder-result-item']
+	};
 
 	function err(err) {
 	    throw err;
@@ -2027,6 +2153,10 @@
 	    CONFIG.FEATUREQUERYBASEURL = baseUrl;
 	}
 
+	function parseClasses(classes) {
+	    CONFIG.CLASSNAMES = mergeConfig(CONFIG.CLASSNAMES, classes);
+	}
+
 	function parseMarker(marker) {
 	    CONFIG.MARKER = marker;
 	}
@@ -2037,6 +2167,7 @@
 	if (config.wms !== undefined) parseWMS(config.wms);
 	if (config.geocoder !== undefined) parseGeocoder(config.geocoder);
 	if (config.marker !== undefined) parseMarker(config.marker);
+	if (config.classnames !== undefined) parseClasses(config.classnames);
 
 	var emitonoff = createCommonjsModule(function (module) {
 	  var EmitOnOff = module.exports = function (thing) {
@@ -2220,12 +2351,12 @@
 	    this.zoomTo = zoomFunction;
 	    this.map = map;
 	    var container = document.createElement('div');
-	    container.className = 'nlmaps-geocoder-control-container';
+	    parseClasses$1(container, CONFIG.CLASSNAMES.geocoderContainer);
 	    var searchDiv = document.createElement('form');
 	    var input = document.createElement('input');
 	    var button = document.createElement('button');
 	    var results = document.createElement('div');
-	    searchDiv.className = 'nlmaps-geocoder-control-search';
+	    parseClasses$1(searchDiv, CONFIG.CLASSNAMES.geocoderSearch);
 	    container.addEventListener('click', function (e) {
 	        return e.stopPropagation();
 	    });
@@ -2256,10 +2387,11 @@
 	        }
 	    });
 	    button.setAttribute('aria-label', 'Zoomen naar adres');
-	    button.className = 'nlmaps-geocoder-control-button';
+	    parseClasses$1(button, CONFIG.CLASSNAMES.geocoderButton);
 
 	    results.id = 'nlmaps-geocoder-control-results';
-
+	    parseClasses$1(results, CONFIG.CLASSNAMES.geocoderResultList);
+	    results.classList.add('nlmaps-hidden');
 	    container.appendChild(searchDiv);
 	    searchDiv.appendChild(input);
 	    searchDiv.appendChild(button);
@@ -2295,13 +2427,19 @@
 	};
 
 	geocoder.clearSuggestResults = function () {
-
 	    document.getElementById('nlmaps-geocoder-control-results').innerHTML = '';
+	    document.getElementById('nlmaps-geocoder-control-results').classList.add('nlmaps-hidden');
 	};
 
 	geocoder.showLookupResult = function (name) {
 	    document.getElementById('nlmaps-geocoder-control-input').value = name;
 	};
+
+	function parseClasses$1(el, classes) {
+	    classes.forEach(function (classname) {
+	        el.classList.add(classname);
+	    });
+	}
 
 	geocoder.showSuggestResults = function (results) {
 	    var _this4 = this;
@@ -2309,20 +2447,22 @@
 	    this.clearSuggestResults();
 	    if (results.length > 0) {
 	        var resultList = document.createElement('ul');
-	        resultList.className = 'nlmaps-geocoder-result-list';
 	        results.forEach(function (result) {
 
 	            var li = document.createElement('li');
-	            li.innerHTML = result.weergavenaam;
-	            li.id = result.id;
-
-	            li.addEventListener('click', function (e) {
+	            var a = document.createElement('a');
+	            a.innerHTML = result.weergavenaam;
+	            a.id = result.id;
+	            parseClasses$1(a, CONFIG.CLASSNAMES.geocoderResultItem);
+	            a.setAttribute('href', '#');
+	            a.addEventListener('click', function (e) {
+	                e.preventDefault();
 	                _this4.lookup(e.target.id);
 	            });
-
+	            li.appendChild(a);
 	            resultList.appendChild(li);
 	        });
-
+	        document.getElementById('nlmaps-geocoder-control-results').classList.remove('nlmaps-hidden');
 	        document.getElementById('nlmaps-geocoder-control-results').appendChild(resultList);
 	    }
 	};
@@ -2408,8 +2548,8 @@
 	        alt: 'marker',
 	        icon: new L.icon({
 	          iconUrl: getMarker().url,
-	          iconSize: [64, 64],
-	          iconAnchor: [32, 63]
+	          iconSize: getMarker().iconSize,
+	          iconAnchor: getMarker().iconAnchor
 	        })
 	      });
 	      markerStore.marker = newmarker;
@@ -2477,16 +2617,21 @@
 	function initMap(lib, opts) {
 	  var map = void 0,
 	      rootdiv = void 0,
-	      el = void 0;
+	      el = void 0,
+	      options = void 0;
 	  switch (lib) {
 	    case 'leaflet':
 	      //work-around to prevent mapdragging at text selection
 	      rootdiv = document.getElementById(opts.target);
+	      options = {};
+	      if (!opts.attribution) {
+	        options.attributionControl = false;
+	      }
 	      el = L.DomUtil.create('div');
 	      el.style.height = '100%';
 	      rootdiv.appendChild(el);
-	      map = L.map(el).setView([opts.center.latitude, opts.center.longitude], opts.zoom);
-	      map.zoomControl.setPosition('bottomleft');
+	      map = L.map(el, options).setView([opts.center.latitude, opts.center.longitude], opts.zoom);
+	      map.zoomControl.setPosition(CONFIG.MAP.zoomposition);
 	      break;
 	    case 'googlemaps':
 	      map = new google.maps.Map(document.getElementById(opts.target), {

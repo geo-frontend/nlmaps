@@ -1,6 +1,6 @@
 {
   "name": "nlmaps",
-  "version": "2.3.14",
+  "version": "2.3.16",
   "engines": {
     "node": ">=6.0.0 <=6.11"
   },
@@ -33,7 +33,7 @@
   "license": "MIT",
   "dependencies": {
     "nlmaps-googlemaps": "^2.3.12",
-    "nlmaps-leaflet": "^2.3.14",
+    "nlmaps-leaflet": "^2.3.16",
     "nlmaps-openlayers": "^2.3.14",
     "rollup-plugin-uglify-es": "0.0.1"
   },

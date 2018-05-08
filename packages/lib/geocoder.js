@@ -133,22 +133,28 @@ geocoder.showLookupResult = function(name) {
 }
 
 geocoder.showSuggestResults = function(results) {
-    const resultList = document.createElement('ul');
-    resultList.className = 'nlmaps-geocoder-result-list';
-    results.forEach((result) => {
+    this.clearSuggestResults();
+    if (results.length > 0) {
+        const resultList = document.createElement('ul');
+        resultList.className = 'nlmaps-geocoder-result-list';
+        results.forEach((result) => {
 
-        const li = document.createElement('li');
-        li.innerHTML = result.weergavenaam;
-        li.id = result.id;
-       
-        li.addEventListener('click', (e) => {
-            this.lookup(e.target.id);
+            const li = document.createElement('li');
+            li.innerHTML = result.weergavenaam;
+            li.id = result.id;
+        
+            li.addEventListener('click', (e) => {
+                this.lookup(e.target.id);
+            });
+
+            resultList.appendChild(li);
         });
 
-        resultList.appendChild(li);
-    });
-    this.clearSuggestResults();
-    document.getElementById('nlmaps-geocoder-control-results').appendChild(resultList);
+        document.getElementById('nlmaps-geocoder-control-results').appendChild(resultList);
+    }
+   
+   
+
 }
 
 export { geocoder };

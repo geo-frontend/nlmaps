@@ -3,7 +3,8 @@ var config = {
     "basemaps": {
         "defaults": {
             "crs": "EPSG:3857",
-            "attr": "Kaartgegevens &copy; <a href='https://www.kadaster.nl'>Kadaster</a> | <a href='https://www.verbeterdekaart.nl'>Verbeter de kaart</a>",
+            "attribution": "Kaartgegevens &copy; <a href='https://www.kadaster.nl'>Kadaster</a> | \
+            <a href='https://www.verbeterdekaart.nl'>Verbeter de kaart</a>",
             "minZoom": 6,
             "maxZoom": 19,
             "type": "wmts",
@@ -417,6 +418,11 @@ function bgLayer() {
   var name = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 'standaard';
 
   var provider = getProvider(name);
+  //replace leaflet style subdomain to OL style
+  if (provider.subdomains) {
+    var sub = provider.subdomains;
+    provider.url = provider.url.replace('{s}', '{' + sub.slice(0, 1) + '-' + sub.slice(-1) + '}');
+  }
   if ((typeof ol === 'undefined' ? 'undefined' : _typeof(ol)) === "object") {
     return new ol.layer.Tile({
       source: new ol.source.XYZ({

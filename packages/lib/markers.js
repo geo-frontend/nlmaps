@@ -18,8 +18,8 @@ function singleMarker(map, popupCreator) {
         alt: 'marker',
         icon: new L.icon({
           iconUrl: getMarker().url,
-          iconSize: [64, 64],
-          iconAnchor: [32, 63]
+          iconSize: getMarker().iconSize,
+          iconAnchor: getMarker().iconAnchor
         })
       });
       markerStore.marker = newmarker;

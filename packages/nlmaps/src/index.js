@@ -86,16 +86,20 @@ function testWhichLib() {
 }
 
 function initMap(lib, opts){
-  let map, rootdiv,el;
+  let map, rootdiv,el, options;
   switch (lib) {
     case 'leaflet':
       //work-around to prevent mapdragging at text selection
       rootdiv = document.getElementById(opts.target);
+      options = {};
+      if(!opts.attribution) {
+        options.attributionControl = false;
+      }
       el = L.DomUtil.create('div');
       el.style.height='100%';
       rootdiv.appendChild(el);
-      map = L.map(el).setView([opts.center.latitude, opts.center.longitude], opts.zoom);
-      map.zoomControl.setPosition('bottomleft');
+      map = L.map(el,options).setView([opts.center.latitude, opts.center.longitude], opts.zoom);
+      map.zoomControl.setPosition(CONFIG.MAP.zoomposition);
       break;
     case 'googlemaps':
       map = new google.maps.Map(document.getElementById(opts.target), {

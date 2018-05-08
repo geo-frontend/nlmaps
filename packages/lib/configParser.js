@@ -22,9 +22,17 @@ CONFIG.WMS_DEFAULTS = {
 CONFIG.BASEMAP_PROVIDERS = {};
 CONFIG.WMS_PROVIDERS = {};
 CONFIG.GEOCODER = {};
-CONFIG.MAP = {};
+CONFIG.MAP = {
+    "zoomposition": "bottomleft"
+};
 CONFIG.MARKER = {};
-
+CONFIG.CLASSNAMES = {
+    'geocoderContainer': ['nlmaps-geocoder-control-container'], 
+    'geocoderSearch': ['nlmaps-geocoder-control-search'],  
+    'geocoderButton': ['nlmaps-geocoder-control-button'],
+    'geocoderResultList': ['nlmaps-geocoder-result-list'],
+    'geocoderResultItem' : ['nlmaps-geocoder-result-item']
+}
 
 
 function err(err) {
@@ -105,6 +113,10 @@ function parseFeatureQuery(baseUrl) {
   CONFIG.FEATUREQUERYBASEURL = baseUrl;
 }
 
+function parseClasses(classes) {
+    CONFIG.CLASSNAMES = mergeConfig(CONFIG.CLASSNAMES,classes);
+}
+
 function parseMarker(marker) {
     CONFIG.MARKER = marker;
 }
@@ -115,4 +127,5 @@ parseBase(config.basemaps);
 if(config.wms!==undefined)parseWMS(config.wms);
 if(config.geocoder!==undefined)parseGeocoder(config.geocoder);
 if(config.marker!==undefined)parseMarker(config.marker);
+if(config.classnames!==undefined)parseClasses(config.classnames);
 export { CONFIG };

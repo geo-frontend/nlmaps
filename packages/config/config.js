@@ -90,6 +90,11 @@ export default {
         "attribution": true,
         "extent": [-180,-90,180,90]
     },
+    "marker": {
+      "url": "./assets/img/marker_icon.svg",
+      "iconSize": [64, 64],
+      "iconAnchor": [63, 32]
+    },
     "classnames": {
         'geocoderContainer': ['embed-search'], //nlmaps-geocoder-control-container
         'geocoderSearch': ['invoer'], // nlmaps-geocoder-control-search

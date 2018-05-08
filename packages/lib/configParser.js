@@ -22,7 +22,9 @@ CONFIG.WMS_DEFAULTS = {
 CONFIG.BASEMAP_PROVIDERS = {};
 CONFIG.WMS_PROVIDERS = {};
 CONFIG.GEOCODER = {};
-CONFIG.MAP = {};
+CONFIG.MAP = {
+    "zoomposition": "bottomleft"
+};
 CONFIG.MARKER = {};
 CONFIG.CLASSNAMES = {
     'geocoderContainer': ['nlmaps-geocoder-control-container'], 

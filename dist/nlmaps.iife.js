@@ -361,22 +361,25 @@
 	    geocoder.showSuggestResults = function (results) {
 	        var _this4 = this;
 
-	        var resultList = document.createElement('ul');
-	        resultList.className = 'nlmaps-geocoder-result-list';
-	        results.forEach(function (result) {
+	        this.clearSuggestResults();
+	        if (results.length > 0) {
+	            var resultList = document.createElement('ul');
+	            resultList.className = 'nlmaps-geocoder-result-list';
+	            results.forEach(function (result) {
 
-	            var li = document.createElement('li');
-	            li.innerHTML = result.weergavenaam;
-	            li.id = result.id;
+	                var li = document.createElement('li');
+	                li.innerHTML = result.weergavenaam;
+	                li.id = result.id;
 
-	            li.addEventListener('click', function (e) {
-	                _this4.lookup(e.target.id);
+	                li.addEventListener('click', function (e) {
+	                    _this4.lookup(e.target.id);
+	                });
+
+	                resultList.appendChild(li);
 	            });
 
-	            resultList.appendChild(li);
-	        });
-	        this.clearSuggestResults();
-	        document.getElementById('nlmaps-geocoder-control-results').appendChild(resultList);
+	            document.getElementById('nlmaps-geocoder-control-results').appendChild(resultList);
+	        }
 	    };
 
 	    /*parts copied from maps.stamen.com: https://github.com/stamen/maps.stamen.com/blob/master/js/tile.stamen.js
@@ -959,22 +962,25 @@
 	    geocoder.showSuggestResults = function (results) {
 	        var _this4 = this;
 
-	        var resultList = document.createElement('ul');
-	        resultList.className = 'nlmaps-geocoder-result-list';
-	        results.forEach(function (result) {
+	        this.clearSuggestResults();
+	        if (results.length > 0) {
+	            var resultList = document.createElement('ul');
+	            resultList.className = 'nlmaps-geocoder-result-list';
+	            results.forEach(function (result) {
 
-	            var li = document.createElement('li');
-	            li.innerHTML = result.weergavenaam;
-	            li.id = result.id;
+	                var li = document.createElement('li');
+	                li.innerHTML = result.weergavenaam;
+	                li.id = result.id;
 
-	            li.addEventListener('click', function (e) {
-	                _this4.lookup(e.target.id);
+	                li.addEventListener('click', function (e) {
+	                    _this4.lookup(e.target.id);
+	                });
+
+	                resultList.appendChild(li);
 	            });
 
-	            resultList.appendChild(li);
-	        });
-	        this.clearSuggestResults();
-	        document.getElementById('nlmaps-geocoder-control-results').appendChild(resultList);
+	            document.getElementById('nlmaps-geocoder-control-results').appendChild(resultList);
+	        }
 	    };
 
 	    /*parts copied from maps.stamen.com: https://github.com/stamen/maps.stamen.com/blob/master/js/tile.stamen.js
@@ -1523,22 +1529,25 @@
 	    geocoder.showSuggestResults = function (results) {
 	        var _this4 = this;
 
-	        var resultList = document.createElement('ul');
-	        resultList.className = 'nlmaps-geocoder-result-list';
-	        results.forEach(function (result) {
+	        this.clearSuggestResults();
+	        if (results.length > 0) {
+	            var resultList = document.createElement('ul');
+	            resultList.className = 'nlmaps-geocoder-result-list';
+	            results.forEach(function (result) {
 
-	            var li = document.createElement('li');
-	            li.innerHTML = result.weergavenaam;
-	            li.id = result.id;
+	                var li = document.createElement('li');
+	                li.innerHTML = result.weergavenaam;
+	                li.id = result.id;
 
-	            li.addEventListener('click', function (e) {
-	                _this4.lookup(e.target.id);
+	                li.addEventListener('click', function (e) {
+	                    _this4.lookup(e.target.id);
+	                });
+
+	                resultList.appendChild(li);
 	            });
 
-	            resultList.appendChild(li);
-	        });
-	        this.clearSuggestResults();
-	        document.getElementById('nlmaps-geocoder-control-results').appendChild(resultList);
+	            document.getElementById('nlmaps-geocoder-control-results').appendChild(resultList);
+	        }
 	    };
 
 	    /*parts copied from maps.stamen.com: https://github.com/stamen/maps.stamen.com/blob/master/js/tile.stamen.js
@@ -2297,22 +2306,25 @@
 	geocoder.showSuggestResults = function (results) {
 	    var _this4 = this;
 
-	    var resultList = document.createElement('ul');
-	    resultList.className = 'nlmaps-geocoder-result-list';
-	    results.forEach(function (result) {
+	    this.clearSuggestResults();
+	    if (results.length > 0) {
+	        var resultList = document.createElement('ul');
+	        resultList.className = 'nlmaps-geocoder-result-list';
+	        results.forEach(function (result) {
 
-	        var li = document.createElement('li');
-	        li.innerHTML = result.weergavenaam;
-	        li.id = result.id;
+	            var li = document.createElement('li');
+	            li.innerHTML = result.weergavenaam;
+	            li.id = result.id;
 
-	        li.addEventListener('click', function (e) {
-	            _this4.lookup(e.target.id);
+	            li.addEventListener('click', function (e) {
+	                _this4.lookup(e.target.id);
+	            });
+
+	            resultList.appendChild(li);
 	        });
 
-	        resultList.appendChild(li);
-	    });
-	    this.clearSuggestResults();
-	    document.getElementById('nlmaps-geocoder-control-results').appendChild(resultList);
+	        document.getElementById('nlmaps-geocoder-control-results').appendChild(resultList);
+	    }
 	};
 
 	/*parts copied from maps.stamen.com: https://github.com/stamen/maps.stamen.com/blob/master/js/tile.stamen.js

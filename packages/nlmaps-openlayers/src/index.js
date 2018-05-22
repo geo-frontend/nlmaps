@@ -73,9 +73,9 @@ function overlayLayer(name, options) {
         url: wmsProvider.url,
         serverType: 'geoserver',
         params: {
-          LAYERS: wmsProvider.layers,
+          LAYERS: wmsProvider.layerName,
           VERSION: wmsProvider.version,
-          STYLES: wmsProvider.styles
+          STYLES: wmsProvider.styleName
         }
       })
     })

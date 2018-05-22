@@ -1,5 +1,5 @@
 export default {
-    "version": 0.1,    
+    "version": 0.2,
     "basemaps": {
         "defaults": {
             "crs": "EPSG:3857",
@@ -14,18 +14,18 @@ export default {
         "layers": [
             {
                 "name": "standaard",
-                "urlname": "brtachtergrondkaart"                
+                "layerName": "brtachtergrondkaart"
             },
             {
                 "name": "grijs",
-                "urlname": "brtachtergrondkaartgrijs"
+                "layerName": "brtachtergrondkaartgrijs"
             },
             {
                 "name": "pastel",
-                "urlname": "brtachtergrondkaartpastel"
+                "layerName": "brtachtergrondkaartpastel"
             },{
                 "name": "luchtfoto",
-                "urlname": "2016_ortho25",
+                "layerName": "2016_ortho25",
                 "url": "https://geodata.nationaalgeoregister.nl/luchtfoto/rgb",
                 "format": "jpeg"
             }
@@ -33,7 +33,7 @@ export default {
     },
     "wms": {
         "defaults": {
-            "url": "https://geodata.nationaalgeoregister.nl/{workSpaceName}/wms?",            
+            "url": "https://geodata.nationaalgeoregister.nl/{workSpaceName}/wms?",
             "version": "1.1.1",
             "transparent": true,
             "format": "image/png",
@@ -96,10 +96,10 @@ export default {
       "iconAnchor": [63, 32]
     },
     "classnames": {
-        'geocoderContainer': ['embed-search'], //nlmaps-geocoder-control-container
-        'geocoderSearch': ['invoer'], // nlmaps-geocoder-control-search
-        'geocoderButton': ['primary','action','embed-search__button'], //nlmaps-geocoder-control-button
-        'geocoderResultList': ['embed-search__auto-suggest'], //nlmaps-geocoder-result-list 
-        'geocoderResultItem' : ['embed-search__auto-suggest__item'] //nlmaps-geocoder-result-item
+        'geocoderContainer': ['nlmaps-geocoder-control-container'],
+        'geocoderSearch': ['nlmaps-geocoder-control-search'],
+        'geocoderButton': ['nlmaps-geocoder-control-button'],
+        'geocoderResultList': ['nlmaps-geocoder-result-list'],
+        'geocoderResultItem' : ['nlmaps-geocoder-result-item']
     }
 }

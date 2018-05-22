@@ -12,12 +12,13 @@ CONFIG.BASE_DEFAULTS =  {
     url: ""
 };
 CONFIG.WMS_DEFAULTS = {
-    url: "",            
+    url: "",
     version: "1.1.1",
     transparent: true,
     format: "image/png",
     minZoom: 0,
-    maxZoom: 24
+    maxZoom: 24,
+    styleName: ""
 }
 CONFIG.BASEMAP_PROVIDERS = {};
 CONFIG.WMS_PROVIDERS = {};
@@ -27,8 +28,8 @@ CONFIG.MAP = {
 };
 CONFIG.MARKER = {};
 CONFIG.CLASSNAMES = {
-    'geocoderContainer': ['nlmaps-geocoder-control-container'], 
-    'geocoderSearch': ['nlmaps-geocoder-control-search'],  
+    'geocoderContainer': ['nlmaps-geocoder-control-container'],
+    'geocoderSearch': ['nlmaps-geocoder-control-search'],
     'geocoderButton': ['nlmaps-geocoder-control-button'],
     'geocoderResultList': ['nlmaps-geocoder-result-list'],
     'geocoderResultItem' : ['nlmaps-geocoder-result-item']
@@ -39,9 +40,9 @@ function err(err) {
     throw(err);
 }
 
-if(config.version !== 0.1 ) {    
+if(config.version !== 0.2 ) {
     err('unsupported config version');
-} 
+}
 
 function mergeConfig(defaults,config) {
     return Object.assign({},defaults,config);
@@ -61,7 +62,7 @@ function parseBase(basemaps) {
 }
 function parseWMS(wms) {
     let defaults = mergeConfig(CONFIG.WMS_DEFAULTS,wms.defaults);
-    if(wms.layers) {       
+    if(wms.layers) {
         wms.layers.forEach(layer=>{
             if(!layer.name||CONFIG.WMS_PROVIDERS[layer.name]!==undefined) {
                 err('wms names need to be defined and unique: '+layer.name)
@@ -81,14 +82,14 @@ function parseMap(map) {
 function formatBasemapUrl(layer) {
     switch(layer.type){
         case 'wmts':
-            layer.url = `${layer.url}/${layer.type}/${layer.urlname}/${layer.crs}/{z}/{x}/{y}.${layer.format}`;
+            layer.url = `${layer.url}/${layer.type}/${layer.layerName}/${layer.crs}/{z}/{x}/{y}.${layer.format}`;
         break;
         case 'tms':
-            layer.url = `${layer.url}/${layer.urlname}/{z}/{x}/{y}.${layer.format}`;
+            layer.url = `${layer.url}/${layer.layerName}/{z}/{x}/{y}.${layer.format}`;
         break;
         default:
-            layer.url = `${layer.url}/${layer.type}/${layer.urlname}/${layer.crs}/{z}/{x}/{y}.${layer.format}`;
-    }  
+            layer.url = `${layer.url}/${layer.type}/${layer.layerName}/${layer.crs}/{z}/{x}/{y}.${layer.format}`;
+    }
   return layer;
 
 }

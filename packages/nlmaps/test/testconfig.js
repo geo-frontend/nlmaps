@@ -1,5 +1,5 @@
 export default {
-    "version": 0.1,    
+    "version": 0.2,
     "basemaps": {
         "defaults": {
             "crs": "EPSG:3857",
@@ -13,18 +13,18 @@ export default {
         "layers": [
             {
                 "name": "standaard",
-                "urlname": "brtachtergrondkaart"                
+                "layerName": "brtachtergrondkaart"
             },
             {
                 "name": "grijs",
-                "urlname": "brtachtergrondkaartgrijs"
+                "layerName": "brtachtergrondkaartgrijs"
             },
             {
                 "name": "pastel",
-                "urlname": "brtachtergrondkaartpastel"
+                "layerName": "brtachtergrondkaartpastel"
             },{
                 "name": "luchtfoto",
-                "urlname": "2016_ortho25",
+                "layerName": "2016_ortho25",
                 "url": "https://geodata.nationaalgeoregister.nl/luchtfoto/rgb",
                 "format": "jpeg"
             }
@@ -32,7 +32,7 @@ export default {
     },
     "wms": {
         "defaults": {
-            "url": "https://geodata.nationaalgeoregister.nl/{workSpaceName}/wms?",            
+            "url": "https://geodata.nationaalgeoregister.nl/{workSpaceName}/wms?",
             "version": "1.1.1",
             "transparent": true,
             "format": "image/png",

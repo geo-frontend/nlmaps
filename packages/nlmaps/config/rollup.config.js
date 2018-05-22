@@ -19,7 +19,7 @@ export default config => {
       sourcemap:true
     },
     external: config.external,
-    
+
     plugins: [
       commonjs(),
       resolve({
@@ -43,7 +43,7 @@ export default config => {
         babelrc: false,
         presets: [['env',{modules:false}]],
         plugins: [
-          "external-helpers"
+          "external-helpers","transform-object-assign"
         ]
       }),
       replace({

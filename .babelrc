@@ -3,6 +3,6 @@
         "env"
     ],
    "plugins": [
-      "external-helpers","transform-runtime"
+      "external-helpers","transform-runtime","transform-object-assign"
     ]
 }

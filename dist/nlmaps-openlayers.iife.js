@@ -2,7 +2,7 @@
     'use strict';
 
     var config = {
-        "version": 0.1,
+        "version": 0.2,
         "basemaps": {
             "defaults": {
                 "crs": "EPSG:3857",
@@ -16,16 +16,16 @@
             },
             "layers": [{
                 "name": "standaard",
-                "urlname": "brtachtergrondkaart"
+                "layerName": "brtachtergrondkaart"
             }, {
                 "name": "grijs",
-                "urlname": "brtachtergrondkaartgrijs"
+                "layerName": "brtachtergrondkaartgrijs"
             }, {
                 "name": "pastel",
-                "urlname": "brtachtergrondkaartpastel"
+                "layerName": "brtachtergrondkaartpastel"
             }, {
                 "name": "luchtfoto",
-                "urlname": "2016_ortho25",
+                "layerName": "2016_ortho25",
                 "url": "https://geodata.nationaalgeoregister.nl/luchtfoto/rgb",
                 "format": "jpeg"
             }]
@@ -88,11 +88,11 @@
             "iconAnchor": [63, 32]
         },
         "classnames": {
-            'geocoderContainer': ['embed-search'], //nlmaps-geocoder-control-container
-            'geocoderSearch': ['invoer'], // nlmaps-geocoder-control-search
-            'geocoderButton': ['primary', 'action', 'embed-search__button'], //nlmaps-geocoder-control-button
-            'geocoderResultList': ['embed-search__auto-suggest'], //nlmaps-geocoder-result-list 
-            'geocoderResultItem': ['embed-search__auto-suggest__item'] //nlmaps-geocoder-result-item
+            'geocoderContainer': ['nlmaps-geocoder-control-container'],
+            'geocoderSearch': ['nlmaps-geocoder-control-search'],
+            'geocoderButton': ['nlmaps-geocoder-control-button'],
+            'geocoderResultList': ['nlmaps-geocoder-result-list'],
+            'geocoderResultItem': ['nlmaps-geocoder-result-item']
         }
     };
 
@@ -113,7 +113,8 @@
         transparent: true,
         format: "image/png",
         minZoom: 0,
-        maxZoom: 24
+        maxZoom: 24,
+        styleName: ""
     };
     CONFIG.BASEMAP_PROVIDERS = {};
     CONFIG.WMS_PROVIDERS = {};
@@ -134,7 +135,7 @@
         throw err;
     }
 
-    if (config.version !== 0.1) {
+    if (config.version !== 0.2) {
         err('unsupported config version');
     }
 
@@ -176,13 +177,13 @@
     function formatBasemapUrl(layer) {
         switch (layer.type) {
             case 'wmts':
-                layer.url = layer.url + "/" + layer.type + "/" + layer.urlname + "/" + layer.crs + "/{z}/{x}/{y}." + layer.format;
+                layer.url = layer.url + "/" + layer.type + "/" + layer.layerName + "/" + layer.crs + "/{z}/{x}/{y}." + layer.format;
                 break;
             case 'tms':
-                layer.url = layer.url + "/" + layer.urlname + "/{z}/{x}/{y}." + layer.format;
+                layer.url = layer.url + "/" + layer.layerName + "/{z}/{x}/{y}." + layer.format;
                 break;
             default:
-                layer.url = layer.url + "/" + layer.type + "/" + layer.urlname + "/" + layer.crs + "/{z}/{x}/{y}." + layer.format;
+                layer.url = layer.url + "/" + layer.type + "/" + layer.layerName + "/" + layer.crs + "/{z}/{x}/{y}." + layer.format;
         }
         return layer;
     }

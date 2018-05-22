@@ -1,5 +1,5 @@
 var config = {
-    "version": 0.1,
+    "version": 0.2,
     "basemaps": {
         "defaults": {
             "crs": "EPSG:3857",
@@ -13,16 +13,16 @@ var config = {
         },
         "layers": [{
             "name": "standaard",
-            "urlname": "brtachtergrondkaart"
+            "layerName": "brtachtergrondkaart"
         }, {
             "name": "grijs",
-            "urlname": "brtachtergrondkaartgrijs"
+            "layerName": "brtachtergrondkaartgrijs"
         }, {
             "name": "pastel",
-            "urlname": "brtachtergrondkaartpastel"
+            "layerName": "brtachtergrondkaartpastel"
         }, {
             "name": "luchtfoto",
-            "urlname": "2016_ortho25",
+            "layerName": "2016_ortho25",
             "url": "https://geodata.nationaalgeoregister.nl/luchtfoto/rgb",
             "format": "jpeg"
         }]
@@ -85,11 +85,11 @@ var config = {
         "iconAnchor": [63, 32]
     },
     "classnames": {
-        'geocoderContainer': ['embed-search'], //nlmaps-geocoder-control-container
-        'geocoderSearch': ['invoer'], // nlmaps-geocoder-control-search
-        'geocoderButton': ['primary', 'action', 'embed-search__button'], //nlmaps-geocoder-control-button
-        'geocoderResultList': ['embed-search__auto-suggest'], //nlmaps-geocoder-result-list 
-        'geocoderResultItem': ['embed-search__auto-suggest__item'] //nlmaps-geocoder-result-item
+        'geocoderContainer': ['nlmaps-geocoder-control-container'],
+        'geocoderSearch': ['nlmaps-geocoder-control-search'],
+        'geocoderButton': ['nlmaps-geocoder-control-button'],
+        'geocoderResultList': ['nlmaps-geocoder-result-list'],
+        'geocoderResultItem': ['nlmaps-geocoder-result-item']
     }
 };
 
@@ -110,7 +110,8 @@ CONFIG.WMS_DEFAULTS = {
     transparent: true,
     format: "image/png",
     minZoom: 0,
-    maxZoom: 24
+    maxZoom: 24,
+    styleName: ""
 };
 CONFIG.BASEMAP_PROVIDERS = {};
 CONFIG.WMS_PROVIDERS = {};
@@ -131,7 +132,7 @@ function err(err) {
     throw err;
 }
 
-if (config.version !== 0.1) {
+if (config.version !== 0.2) {
     err('unsupported config version');
 }
 
@@ -173,13 +174,13 @@ function parseMap(map) {
 function formatBasemapUrl(layer) {
     switch (layer.type) {
         case 'wmts':
-            layer.url = layer.url + "/" + layer.type + "/" + layer.urlname + "/" + layer.crs + "/{z}/{x}/{y}." + layer.format;
+            layer.url = layer.url + "/" + layer.type + "/" + layer.layerName + "/" + layer.crs + "/{z}/{x}/{y}." + layer.format;
             break;
         case 'tms':
-            layer.url = layer.url + "/" + layer.urlname + "/{z}/{x}/{y}." + layer.format;
+            layer.url = layer.url + "/" + layer.layerName + "/{z}/{x}/{y}." + layer.format;
             break;
         default:
-            layer.url = layer.url + "/" + layer.type + "/" + layer.urlname + "/" + layer.crs + "/{z}/{x}/{y}." + layer.format;
+            layer.url = layer.url + "/" + layer.type + "/" + layer.layerName + "/" + layer.crs + "/{z}/{x}/{y}." + layer.format;
     }
     return layer;
 }
@@ -488,10 +489,10 @@ if (typeof L !== 'undefined' && (typeof L === 'undefined' ? 'undefined' : _typeo
       var url = wmsProvider.url;
       delete wmsProvider.url;
       var wmsParams = L.Util.extend({}, options, {
-        layers: wmsProvider.layers,
+        layers: wmsProvider.layerName,
         maxZoom: 24,
         minZoom: 1,
-        styles: wmsProvider.styles,
+        styles: wmsProvider.styleName,
         version: wmsProvider.version,
         transparent: wmsProvider.transparent,
         format: wmsProvider.format

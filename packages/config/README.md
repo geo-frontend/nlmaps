@@ -1,6 +1,6 @@
 # nlmaps configuration
 
-**version**:  `float` version of the configuration format, currently `0.1`
+**version**:  `float` version of the configuration format, currently `0.2`
 
 **basemaps**: `object` default settings for basemaps & extra parameters for each base-layers
 
@@ -9,6 +9,8 @@
 **geocoder**: `object` urls for the goecoder services
 
 **map**: `object` default settings for the map
+
+**classnames**: `object` classnames for various UI elments
 
 ## basemap object
 **defaults**: `object` default settings for base-layers:
@@ -28,7 +30,7 @@
 
 ## wms object
 **defaults**: `object` default settings for wms-layers:
-* **url**: `string` default webservice url, supports templating, currently only `{workSpaceName}`. Can be overwritten with the `url` parameter in the `layers` object 
+* **url**: `string` default webservice url, supports templating, currently only `{workSpaceName}`. Can be overwritten with the `url` parameter in the `layers` object
 * **version**: `string` WMS version eg `1.1.0`
 * **transparent**: `boolean` WMS parameter whether or not to request transparency
 * **format**: `string` WMS-style image format eg. `image/png`
@@ -56,10 +58,19 @@ url
 * **attribution**: `boolean` show attribution
 * **extent**: `array` 4 floats defining the maximum extent of the map `[minX,minY,maxX,maxY]`
 
+
+## Classnames object
+A collection of arrays with classnames to be added to interface elements. This can be used to change the classnames to fit an organisation's design system. Nlmaps comes with a CSS stylesheet and the default classnames are the ones the CSS expects.
+* **geocoderContainer** `array` used for the geocoder container. default: `nlmaps-geocoder-control-container`
+* **geocoderSearch** `array` used for the search element. default: `nlmaps-geocoder-control-search`
+* **geocoderButton** `array` used for the search button. default `nlmaps-geocoder-control-button`
+* **geocoderResultList** `array` used for the result list. default `nlmaps-geocoder-result-list`
+* **geocoderResultItem** `array` used for a single result item in the list. default `nlmaps-geocoder-result-item`
+
 ## Example
 ```
  {
-    "version": 0.1,    
+    "version": 0.1,
     "basemaps": {
         "defaults": {
             "crs": "EPSG:3857",
@@ -73,10 +84,10 @@ url
         "layers": [
             {
                 "name": "standaard",
-                "urlname": "brtachtergrondkaart"                
+                "layerName": "brtachtergrondkaart"
             },{
                 "name": "luchtfoto",
-                "urlname": "2016_ortho25",
+                "layerName": "2016_ortho25",
                 "url": "https://geodata.nationaalgeoregister.nl/luchtfoto/rgb",
                 "format": "jpeg"
             }
@@ -84,7 +95,7 @@ url
     },
     "wms": {
         "defaults": {
-            "url": "https://geodata.nationaalgeoregister.nl/{workSpaceName}/wms?",            
+            "url": "https://geodata.nationaalgeoregister.nl/{workSpaceName}/wms?",
             "version": "1.1.1",
             "transparent": true,
             "format": "image/png",
@@ -118,6 +129,13 @@ url
         "zoom": 8,
         "attribution": true,
         "extent": [-180,-90,180,90]
+    },
+    "classnames": {
+        'geocoderContainer': ['nlmaps-geocoder-control-container'],
+        'geocoderSearch': ['nlmaps-geocoder-control-search'],
+        'geocoderButton': ['nlmaps-geocoder-control-button'],
+        'geocoderResultList': ['nlmaps-geocoder-result-list'],
+        'geocoderResultItem' : ['nlmaps-geocoder-result-item']
     }
 }
 ```

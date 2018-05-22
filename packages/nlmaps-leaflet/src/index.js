@@ -30,10 +30,10 @@ L.NlmapsOverlayLayer = L.TileLayer.WMS.extend({
     const url = wmsProvider.url;
     delete wmsProvider.url;
     const wmsParams = L.Util.extend({}, options, {
-      layers: wmsProvider.layers,
+      layers: wmsProvider.layerName,
       maxZoom: 24,
       minZoom: 1,
-      styles: wmsProvider.styles,
+      styles: wmsProvider.styleName,
       version: wmsProvider.version,
       transparent: wmsProvider.transparent,
       format: wmsProvider.format

@@ -1,4 +1,6 @@
-
+.nlmaps-hidden {
+  display:none;
+}
 
 /*** Geolocator control ***/
 .nlmaps-geolocator-control {
@@ -36,7 +38,7 @@
   flex-flow: row;
 }
 
-#nlmaps-geocoder-control-input {
+.nlmaps-geocoder-control-container input[type="text"]{
   flex-grow: 1;
   padding: 4px 10px;
   
@@ -67,13 +69,10 @@
   color: #fff;
 }
 
-#nlmaps-geocoder-control-results {
-  width: 300px;
-}
 
 .nlmaps-geocoder-result-list {
   padding: 10px 10px 2px 10px;
-  width: 100%;
+  width:300px;
   background-color: #fff;
   border-radius: 5px 5px;
   box-shadow: 0 1px 5px rgba(0, 0, 0, 0.65);

@@ -35,6 +35,8 @@
     "tape": "^4.6.3"
   },
   "dependencies": {
+    "ajv": "^6.5.0",
+    "fast-deep-equal": "^2.0.1",
     "rollup-plugin-uglify-es": "0.0.1"
   }
 }

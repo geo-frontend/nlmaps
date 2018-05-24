@@ -26,6 +26,7 @@
   },
   "homepage": "https://github.com:kadaster/nlmaps#README",
   "devDependencies": {
+    "babel-plugin-transform-object-assign": "^6.22.0",
     "babel-preset-env": "^1.6.1",
     "rollup-plugin-eslint": "^4.0.0",
     "rollup-plugin-node-builtins": "^2.1.2",

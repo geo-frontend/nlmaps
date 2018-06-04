@@ -4,21 +4,21 @@ import { bgLayer as bgL,
          markerLayer as markerL,
          getMapCenter as centerL,
          geocoderControl as geocoderL,
-         geoLocatorControl as glL } from '../../nlmaps-leaflet/build/nlmaps-leaflet.cjs.js';
+         geoLocatorControl as glL } from '../../nlmaps-leaflet';
 
 import { bgLayer as bgOL,
          overlayLayer as overlayOL,
          markerLayer as markerOL,
          getMapCenter as centerOL,
          geocoderControl as geocoderOL,
-         geoLocatorControl as glO } from '../../nlmaps-openlayers/build/nlmaps-openlayers.cjs.js';
+         geoLocatorControl as glO } from '../../nlmaps-openlayers';
 
 import { bgLayer as bgGM,
          overlayLayer as overlayGM,
          markerLayer as markerGM,
          getMapCenter as centerGM,
          geocoderControl as geocoderGM,
-         geoLocatorControl as glG } from '../../nlmaps-googlemaps/build/nlmaps-googlemaps.cjs.js';
+         geoLocatorControl as glG } from '../../nlmaps-googlemaps';
 
 // import { bgLayer as bgL, geoLocatorControl as glL } from 'nlmaps-leaflet';
 

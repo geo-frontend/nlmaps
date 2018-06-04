@@ -3,7 +3,7 @@
   "version": "2.3.16",
   "description": "",
   "main": "build/nlmaps-leaflet.cjs.js",
-  "module": "build/nlmaps-leaflet.es.js",
+  "module": "src/index.js",
   "scripts": {
     "test": "node test/test.js",
     "build": "rollup -c config/rollup.cjs.js && rollup -c config/rollup.es.js && rollup -c config/rollup.iife.js && cp build/nlmaps-leaflet.iife.js ../../dist/",

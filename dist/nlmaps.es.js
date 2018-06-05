@@ -12,12 +12,26 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
   return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj;
 };
 
+var _extends = Object.assign || function (target) {
+  for (var i = 1; i < arguments.length; i++) {
+    var source = arguments[i];
+
+    for (var key in source) {
+      if (Object.prototype.hasOwnProperty.call(source, key)) {
+        target[key] = source[key];
+      }
+    }
+  }
+
+  return target;
+};
+
 var nlmapsLeaflet_cjs = createCommonjsModule(function (module, exports) {
 
     Object.defineProperty(exports, '__esModule', { value: true });
 
     var config = {
-        "version": 0.1,
+        "version": 0.2,
         "basemaps": {
             "defaults": {
                 "crs": "EPSG:3857",
@@ -31,16 +45,16 @@ var nlmapsLeaflet_cjs = createCommonjsModule(function (module, exports) {
             },
             "layers": [{
                 "name": "standaard",
-                "urlname": "brtachtergrondkaart"
+                "layerName": "brtachtergrondkaart"
             }, {
                 "name": "grijs",
-                "urlname": "brtachtergrondkaartgrijs"
+                "layerName": "brtachtergrondkaartgrijs"
             }, {
                 "name": "pastel",
-                "urlname": "brtachtergrondkaartpastel"
+                "layerName": "brtachtergrondkaartpastel"
             }, {
                 "name": "luchtfoto",
-                "urlname": "2016_ortho25",
+                "layerName": "2016_ortho25",
                 "url": "https://geodata.nationaalgeoregister.nl/luchtfoto/rgb",
                 "format": "jpeg"
             }]
@@ -103,11 +117,11 @@ var nlmapsLeaflet_cjs = createCommonjsModule(function (module, exports) {
             "iconAnchor": [63, 32]
         },
         "classnames": {
-            'geocoderContainer': ['embed-search'], //nlmaps-geocoder-control-container
-            'geocoderSearch': ['invoer'], // nlmaps-geocoder-control-search
-            'geocoderButton': ['primary', 'action', 'embed-search__button'], //nlmaps-geocoder-control-button
-            'geocoderResultList': ['embed-search__auto-suggest'], //nlmaps-geocoder-result-list 
-            'geocoderResultItem': ['embed-search__auto-suggest__item'] //nlmaps-geocoder-result-item
+            'geocoderContainer': ['nlmaps-geocoder-control-container'],
+            'geocoderSearch': ['nlmaps-geocoder-control-search'],
+            'geocoderButton': ['nlmaps-geocoder-control-button'],
+            'geocoderResultList': ['nlmaps-geocoder-result-list'],
+            'geocoderResultItem': ['nlmaps-geocoder-result-item']
         }
     };
 
@@ -128,7 +142,8 @@ var nlmapsLeaflet_cjs = createCommonjsModule(function (module, exports) {
         transparent: true,
         format: "image/png",
         minZoom: 0,
-        maxZoom: 24
+        maxZoom: 24,
+        styleName: ""
     };
     CONFIG.BASEMAP_PROVIDERS = {};
     CONFIG.WMS_PROVIDERS = {};
@@ -149,12 +164,12 @@ var nlmapsLeaflet_cjs = createCommonjsModule(function (module, exports) {
         throw err;
     }
 
-    if (config.version !== 0.1) {
+    if (config.version !== 0.2) {
         err('unsupported config version');
     }
 
     function mergeConfig(defaults$$1, config$$1) {
-        return Object.assign({}, defaults$$1, config$$1);
+        return _extends({}, defaults$$1, config$$1);
     }
 
     function parseBase(basemaps) {
@@ -191,13 +206,13 @@ var nlmapsLeaflet_cjs = createCommonjsModule(function (module, exports) {
     function formatBasemapUrl(layer) {
         switch (layer.type) {
             case 'wmts':
-                layer.url = layer.url + "/" + layer.type + "/" + layer.urlname + "/" + layer.crs + "/{z}/{x}/{y}." + layer.format;
+                layer.url = layer.url + "/" + layer.type + "/" + layer.layerName + "/" + layer.crs + "/{z}/{x}/{y}." + layer.format;
                 break;
             case 'tms':
-                layer.url = layer.url + "/" + layer.urlname + "/{z}/{x}/{y}." + layer.format;
+                layer.url = layer.url + "/" + layer.layerName + "/{z}/{x}/{y}." + layer.format;
                 break;
             default:
-                layer.url = layer.url + "/" + layer.type + "/" + layer.urlname + "/" + layer.crs + "/{z}/{x}/{y}." + layer.format;
+                layer.url = layer.url + "/" + layer.type + "/" + layer.layerName + "/" + layer.crs + "/{z}/{x}/{y}." + layer.format;
         }
         return layer;
     }
@@ -457,7 +472,7 @@ var nlmapsLeaflet_cjs = createCommonjsModule(function (module, exports) {
                 console.warn(name + " is a deprecated wms; it will be redirected to its replacement. For performance improvements, please change your reference.");
             }
         } else {
-            wmsProvider = Object.assign({}, CONFIG.WMS_DEFAULTS, options);
+            wmsProvider = _extends({}, CONFIG.WMS_DEFAULTS, options);
             // eslint-disable-next-line no-console
             console.log('NL Maps: You asked for a wms which does not exist! Available wmses: ' + Object.keys(CONFIG.WMS_PROVIDERS).join(', ') + '. Provide an options object to make your own WMS.');
         }
@@ -506,10 +521,10 @@ var nlmapsLeaflet_cjs = createCommonjsModule(function (module, exports) {
                 var url = wmsProvider.url;
                 delete wmsProvider.url;
                 var wmsParams = L.Util.extend({}, options, {
-                    layers: wmsProvider.layers,
+                    layers: wmsProvider.layerName,
                     maxZoom: 24,
                     minZoom: 1,
-                    styles: wmsProvider.styles,
+                    styles: wmsProvider.styleName,
                     version: wmsProvider.version,
                     transparent: wmsProvider.transparent,
                     format: wmsProvider.format
@@ -653,7 +668,7 @@ var nlmapsOpenlayers_cjs = createCommonjsModule(function (module, exports) {
     Object.defineProperty(exports, '__esModule', { value: true });
 
     var config = {
-        "version": 0.1,
+        "version": 0.2,
         "basemaps": {
             "defaults": {
                 "crs": "EPSG:3857",
@@ -667,16 +682,16 @@ var nlmapsOpenlayers_cjs = createCommonjsModule(function (module, exports) {
             },
             "layers": [{
                 "name": "standaard",
-                "urlname": "brtachtergrondkaart"
+                "layerName": "brtachtergrondkaart"
             }, {
                 "name": "grijs",
-                "urlname": "brtachtergrondkaartgrijs"
+                "layerName": "brtachtergrondkaartgrijs"
             }, {
                 "name": "pastel",
-                "urlname": "brtachtergrondkaartpastel"
+                "layerName": "brtachtergrondkaartpastel"
             }, {
                 "name": "luchtfoto",
-                "urlname": "2016_ortho25",
+                "layerName": "2016_ortho25",
                 "url": "https://geodata.nationaalgeoregister.nl/luchtfoto/rgb",
                 "format": "jpeg"
             }]
@@ -739,11 +754,11 @@ var nlmapsOpenlayers_cjs = createCommonjsModule(function (module, exports) {
             "iconAnchor": [63, 32]
         },
         "classnames": {
-            'geocoderContainer': ['embed-search'], //nlmaps-geocoder-control-container
-            'geocoderSearch': ['invoer'], // nlmaps-geocoder-control-search
-            'geocoderButton': ['primary', 'action', 'embed-search__button'], //nlmaps-geocoder-control-button
-            'geocoderResultList': ['embed-search__auto-suggest'], //nlmaps-geocoder-result-list 
-            'geocoderResultItem': ['embed-search__auto-suggest__item'] //nlmaps-geocoder-result-item
+            'geocoderContainer': ['nlmaps-geocoder-control-container'],
+            'geocoderSearch': ['nlmaps-geocoder-control-search'],
+            'geocoderButton': ['nlmaps-geocoder-control-button'],
+            'geocoderResultList': ['nlmaps-geocoder-result-list'],
+            'geocoderResultItem': ['nlmaps-geocoder-result-item']
         }
     };
 
@@ -764,7 +779,8 @@ var nlmapsOpenlayers_cjs = createCommonjsModule(function (module, exports) {
         transparent: true,
         format: "image/png",
         minZoom: 0,
-        maxZoom: 24
+        maxZoom: 24,
+        styleName: ""
     };
     CONFIG.BASEMAP_PROVIDERS = {};
     CONFIG.WMS_PROVIDERS = {};
@@ -785,12 +801,12 @@ var nlmapsOpenlayers_cjs = createCommonjsModule(function (module, exports) {
         throw err;
     }
 
-    if (config.version !== 0.1) {
+    if (config.version !== 0.2) {
         err('unsupported config version');
     }
 
     function mergeConfig(defaults$$1, config$$1) {
-        return Object.assign({}, defaults$$1, config$$1);
+        return _extends({}, defaults$$1, config$$1);
     }
 
     function parseBase(basemaps) {
@@ -827,13 +843,13 @@ var nlmapsOpenlayers_cjs = createCommonjsModule(function (module, exports) {
     function formatBasemapUrl(layer) {
         switch (layer.type) {
             case 'wmts':
-                layer.url = layer.url + "/" + layer.type + "/" + layer.urlname + "/" + layer.crs + "/{z}/{x}/{y}." + layer.format;
+                layer.url = layer.url + "/" + layer.type + "/" + layer.layerName + "/" + layer.crs + "/{z}/{x}/{y}." + layer.format;
                 break;
             case 'tms':
-                layer.url = layer.url + "/" + layer.urlname + "/{z}/{x}/{y}." + layer.format;
+                layer.url = layer.url + "/" + layer.layerName + "/{z}/{x}/{y}." + layer.format;
                 break;
             default:
-                layer.url = layer.url + "/" + layer.type + "/" + layer.urlname + "/" + layer.crs + "/{z}/{x}/{y}." + layer.format;
+                layer.url = layer.url + "/" + layer.type + "/" + layer.layerName + "/" + layer.crs + "/{z}/{x}/{y}." + layer.format;
         }
         return layer;
     }
@@ -1093,7 +1109,7 @@ var nlmapsOpenlayers_cjs = createCommonjsModule(function (module, exports) {
                 console.warn(name + " is a deprecated wms; it will be redirected to its replacement. For performance improvements, please change your reference.");
             }
         } else {
-            wmsProvider = Object.assign({}, CONFIG.WMS_DEFAULTS, options);
+            wmsProvider = _extends({}, CONFIG.WMS_DEFAULTS, options);
             // eslint-disable-next-line no-console
             console.log('NL Maps: You asked for a wms which does not exist! Available wmses: ' + Object.keys(CONFIG.WMS_PROVIDERS).join(', ') + '. Provide an options object to make your own WMS.');
         }
@@ -1176,9 +1192,9 @@ var nlmapsOpenlayers_cjs = createCommonjsModule(function (module, exports) {
                     url: wmsProvider.url,
                     serverType: 'geoserver',
                     params: {
-                        LAYERS: wmsProvider.layers,
+                        LAYERS: wmsProvider.layerName,
                         VERSION: wmsProvider.version,
-                        STYLES: wmsProvider.styles
+                        STYLES: wmsProvider.styleName
                     }
                 })
             });
@@ -1255,7 +1271,7 @@ var nlmapsGooglemaps_cjs = createCommonjsModule(function (module, exports) {
     Object.defineProperty(exports, '__esModule', { value: true });
 
     var config = {
-        "version": 0.1,
+        "version": 0.2,
         "basemaps": {
             "defaults": {
                 "crs": "EPSG:3857",
@@ -1269,16 +1285,16 @@ var nlmapsGooglemaps_cjs = createCommonjsModule(function (module, exports) {
             },
             "layers": [{
                 "name": "standaard",
-                "urlname": "brtachtergrondkaart"
+                "layerName": "brtachtergrondkaart"
             }, {
                 "name": "grijs",
-                "urlname": "brtachtergrondkaartgrijs"
+                "layerName": "brtachtergrondkaartgrijs"
             }, {
                 "name": "pastel",
-                "urlname": "brtachtergrondkaartpastel"
+                "layerName": "brtachtergrondkaartpastel"
             }, {
                 "name": "luchtfoto",
-                "urlname": "2016_ortho25",
+                "layerName": "2016_ortho25",
                 "url": "https://geodata.nationaalgeoregister.nl/luchtfoto/rgb",
                 "format": "jpeg"
             }]
@@ -1341,11 +1357,11 @@ var nlmapsGooglemaps_cjs = createCommonjsModule(function (module, exports) {
             "iconAnchor": [63, 32]
         },
         "classnames": {
-            'geocoderContainer': ['embed-search'], //nlmaps-geocoder-control-container
-            'geocoderSearch': ['invoer'], // nlmaps-geocoder-control-search
-            'geocoderButton': ['primary', 'action', 'embed-search__button'], //nlmaps-geocoder-control-button
-            'geocoderResultList': ['embed-search__auto-suggest'], //nlmaps-geocoder-result-list 
-            'geocoderResultItem': ['embed-search__auto-suggest__item'] //nlmaps-geocoder-result-item
+            'geocoderContainer': ['nlmaps-geocoder-control-container'],
+            'geocoderSearch': ['nlmaps-geocoder-control-search'],
+            'geocoderButton': ['nlmaps-geocoder-control-button'],
+            'geocoderResultList': ['nlmaps-geocoder-result-list'],
+            'geocoderResultItem': ['nlmaps-geocoder-result-item']
         }
     };
 
@@ -1366,7 +1382,8 @@ var nlmapsGooglemaps_cjs = createCommonjsModule(function (module, exports) {
         transparent: true,
         format: "image/png",
         minZoom: 0,
-        maxZoom: 24
+        maxZoom: 24,
+        styleName: ""
     };
     CONFIG.BASEMAP_PROVIDERS = {};
     CONFIG.WMS_PROVIDERS = {};
@@ -1387,12 +1404,12 @@ var nlmapsGooglemaps_cjs = createCommonjsModule(function (module, exports) {
         throw err;
     }
 
-    if (config.version !== 0.1) {
+    if (config.version !== 0.2) {
         err('unsupported config version');
     }
 
     function mergeConfig(defaults$$1, config$$1) {
-        return Object.assign({}, defaults$$1, config$$1);
+        return _extends({}, defaults$$1, config$$1);
     }
 
     function parseBase(basemaps) {
@@ -1429,13 +1446,13 @@ var nlmapsGooglemaps_cjs = createCommonjsModule(function (module, exports) {
     function formatBasemapUrl(layer) {
         switch (layer.type) {
             case 'wmts':
-                layer.url = layer.url + "/" + layer.type + "/" + layer.urlname + "/" + layer.crs + "/{z}/{x}/{y}." + layer.format;
+                layer.url = layer.url + "/" + layer.type + "/" + layer.layerName + "/" + layer.crs + "/{z}/{x}/{y}." + layer.format;
                 break;
             case 'tms':
-                layer.url = layer.url + "/" + layer.urlname + "/{z}/{x}/{y}." + layer.format;
+                layer.url = layer.url + "/" + layer.layerName + "/{z}/{x}/{y}." + layer.format;
                 break;
             default:
-                layer.url = layer.url + "/" + layer.type + "/" + layer.urlname + "/" + layer.crs + "/{z}/{x}/{y}." + layer.format;
+                layer.url = layer.url + "/" + layer.type + "/" + layer.layerName + "/" + layer.crs + "/{z}/{x}/{y}." + layer.format;
         }
         return layer;
     }
@@ -1695,7 +1712,7 @@ var nlmapsGooglemaps_cjs = createCommonjsModule(function (module, exports) {
                 console.warn(name + " is a deprecated wms; it will be redirected to its replacement. For performance improvements, please change your reference.");
             }
         } else {
-            wmsProvider = Object.assign({}, CONFIG.WMS_DEFAULTS, options);
+            wmsProvider = _extends({}, CONFIG.WMS_DEFAULTS, options);
             // eslint-disable-next-line no-console
             console.log('NL Maps: You asked for a wms which does not exist! Available wmses: ' + Object.keys(CONFIG.WMS_PROVIDERS).join(', ') + '. Provide an options object to make your own WMS.');
         }
@@ -1946,7 +1963,7 @@ var nlmapsGooglemaps_cjs_5 = nlmapsGooglemaps_cjs.geoLocatorControl;
 var nlmapsGooglemaps_cjs_6 = nlmapsGooglemaps_cjs.geocoderControl;
 
 var config = {
-    "version": 0.1,
+    "version": 0.2,
     "basemaps": {
         "defaults": {
             "crs": "EPSG:3857",
@@ -1960,16 +1977,16 @@ var config = {
         },
         "layers": [{
             "name": "standaard",
-            "urlname": "brtachtergrondkaart"
+            "layerName": "brtachtergrondkaart"
         }, {
             "name": "grijs",
-            "urlname": "brtachtergrondkaartgrijs"
+            "layerName": "brtachtergrondkaartgrijs"
         }, {
             "name": "pastel",
-            "urlname": "brtachtergrondkaartpastel"
+            "layerName": "brtachtergrondkaartpastel"
         }, {
             "name": "luchtfoto",
-            "urlname": "2016_ortho25",
+            "layerName": "2016_ortho25",
             "url": "https://geodata.nationaalgeoregister.nl/luchtfoto/rgb",
             "format": "jpeg"
         }]
@@ -2032,11 +2049,11 @@ var config = {
         "iconAnchor": [63, 32]
     },
     "classnames": {
-        'geocoderContainer': ['embed-search'], //nlmaps-geocoder-control-container
-        'geocoderSearch': ['invoer'], // nlmaps-geocoder-control-search
-        'geocoderButton': ['primary', 'action', 'embed-search__button'], //nlmaps-geocoder-control-button
-        'geocoderResultList': ['embed-search__auto-suggest'], //nlmaps-geocoder-result-list 
-        'geocoderResultItem': ['embed-search__auto-suggest__item'] //nlmaps-geocoder-result-item
+        'geocoderContainer': ['nlmaps-geocoder-control-container'],
+        'geocoderSearch': ['nlmaps-geocoder-control-search'],
+        'geocoderButton': ['nlmaps-geocoder-control-button'],
+        'geocoderResultList': ['nlmaps-geocoder-result-list'],
+        'geocoderResultItem': ['nlmaps-geocoder-result-item']
     }
 };
 
@@ -2057,7 +2074,8 @@ CONFIG.WMS_DEFAULTS = {
     transparent: true,
     format: "image/png",
     minZoom: 0,
-    maxZoom: 24
+    maxZoom: 24,
+    styleName: ""
 };
 CONFIG.BASEMAP_PROVIDERS = {};
 CONFIG.WMS_PROVIDERS = {};
@@ -2078,16 +2096,16 @@ function err(err) {
     throw err;
 }
 
-if (config.version !== 0.1) {
+if (config.version !== 0.2) {
     err('unsupported config version');
 }
 
-function mergeConfig(defaults, config$$1) {
-    return Object.assign({}, defaults, config$$1);
+function mergeConfig(defaults$$1, config$$1) {
+    return _extends({}, defaults$$1, config$$1);
 }
 
 function parseBase(basemaps) {
-    var defaults = mergeConfig(CONFIG.BASE_DEFAULTS, basemaps.defaults);
+    var defaults$$1 = mergeConfig(CONFIG.BASE_DEFAULTS, basemaps.defaults);
     if (!basemaps.layers || basemaps.layers.length < 0) {
         err('no basemap defined, please define a basemap in the configuration');
     }
@@ -2095,17 +2113,17 @@ function parseBase(basemaps) {
         if (!layer.name || CONFIG.BASEMAP_PROVIDERS[layer.name] !== undefined) {
             err('basemap names need to be defined and unique: ' + layer.name);
         }
-        CONFIG.BASEMAP_PROVIDERS[layer.name] = formatBasemapUrl(mergeConfig(defaults, layer));
+        CONFIG.BASEMAP_PROVIDERS[layer.name] = formatBasemapUrl(mergeConfig(defaults$$1, layer));
     });
 }
 function parseWMS(wms) {
-    var defaults = mergeConfig(CONFIG.WMS_DEFAULTS, wms.defaults);
+    var defaults$$1 = mergeConfig(CONFIG.WMS_DEFAULTS, wms.defaults);
     if (wms.layers) {
         wms.layers.forEach(function (layer) {
             if (!layer.name || CONFIG.WMS_PROVIDERS[layer.name] !== undefined) {
                 err('wms names need to be defined and unique: ' + layer.name);
             }
-            CONFIG.WMS_PROVIDERS[layer.name] = applyTemplate(mergeConfig(defaults, layer));
+            CONFIG.WMS_PROVIDERS[layer.name] = applyTemplate(mergeConfig(defaults$$1, layer));
         });
     }
 }
@@ -2120,13 +2138,13 @@ function parseMap(map) {
 function formatBasemapUrl(layer) {
     switch (layer.type) {
         case 'wmts':
-            layer.url = layer.url + "/" + layer.type + "/" + layer.urlname + "/" + layer.crs + "/{z}/{x}/{y}." + layer.format;
+            layer.url = layer.url + "/" + layer.type + "/" + layer.layerName + "/" + layer.crs + "/{z}/{x}/{y}." + layer.format;
             break;
         case 'tms':
-            layer.url = layer.url + "/" + layer.urlname + "/{z}/{x}/{y}." + layer.format;
+            layer.url = layer.url + "/" + layer.layerName + "/{z}/{x}/{y}." + layer.format;
             break;
         default:
-            layer.url = layer.url + "/" + layer.type + "/" + layer.urlname + "/" + layer.crs + "/{z}/{x}/{y}." + layer.format;
+            layer.url = layer.url + "/" + layer.type + "/" + layer.layerName + "/" + layer.crs + "/{z}/{x}/{y}." + layer.format;
     }
     return layer;
 }
@@ -2250,7 +2268,7 @@ function positionErrorHandler(error) {
 }
 
 var GeoLocator = function GeoLocator(opts) {
-  var state = Object.assign({}, geoLocateDefaultOpts, opts);
+  var state = _extends({}, geoLocateDefaultOpts, opts);
 
   return {
     start: function start() {
@@ -2768,7 +2786,7 @@ function getMapCenter$$1(lib, map) {
 }
 
 function mergeOpts(defaultopts, useropts) {
-  return Object.assign({}, defaultopts, useropts);
+  return _extends({}, defaultopts, useropts);
 }
 
 nlmaps.lib = testWhichLib();

@@ -155,7 +155,7 @@ function zoomTo(point, map) {
 
 function geocoderControl(map) {
   const control = geocoder.createControl(zoomTo, map);
-  map.getContainer().parentElement.appendChild(control);
+  map.getContainer().parentElement.prepend(control);
 }
 
 function getMapCenter(map) {

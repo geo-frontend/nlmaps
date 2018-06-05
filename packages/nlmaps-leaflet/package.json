@@ -26,6 +26,7 @@
   },
   "homepage": "https://github.com:kadaster/nlmaps#README",
   "devDependencies": {
+    "babel-plugin-transform-object-assign": "^6.22.0",
     "babel-preset-env": "^1.6.1",
     "leaflet": "^1.0.3",
     "leaflet-headless": "^0.2.6",

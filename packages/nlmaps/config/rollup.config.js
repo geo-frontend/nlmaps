@@ -31,7 +31,8 @@ export default config => {
       eslint({
         exclude: [
           '../../../node_modules/**',
-          'node_modules/**'
+          'node_modules/**',
+          '../node_modules/**'
         ],
         include: [
           '../../lib/**'

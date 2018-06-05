@@ -81,7 +81,8 @@ var config = {
         },
         "zoom": 8,
         "attribution": true,
-        "extent": [-180, -90, 180, 90]
+        "extent": [-180, -90, 180, 90],
+        "zoomposition": "topright"
     },
     "marker": {
         "url": "./assets/img/marker_icon.svg",
@@ -172,7 +173,7 @@ function parseGeocoder(geocoder) {
     CONFIG.GEOCODER.suggestUrl = geocoder.suggestUrl;
 }
 function parseMap(map) {
-    CONFIG.MAP = mergeConfig({}, map);
+    CONFIG.MAP = mergeConfig(CONFIG.MAP, map);
 }
 
 function formatBasemapUrl(layer) {
@@ -217,7 +218,7 @@ function parseMarker(marker) {
 }
 
 if (config.featureQuery !== undefined) parseFeatureQuery(config.featureQuery.baseUrl);
-parseMap(config.map);
+if (config.map !== undefined) parseMap(config.map);
 parseBase(config.basemaps);
 if (config.wms !== undefined) parseWMS(config.wms);
 if (config.geocoder !== undefined) parseGeocoder(config.geocoder);
@@ -410,6 +411,10 @@ function getMarker() {
   return CONFIG.MARKER;
 }
 
+function getExtent() {
+  return CONFIG.MAP.extent;
+}
+
 /*
  * Get the named provider, or throw an exception if it doesn't exist.
  **/
@@ -456,6 +461,14 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 } : function (obj) {
   return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj;
 };
+
+function extentLeafletFormat() {
+  var extent = getExtent();
+  var lowerLeft = L.latLng(extent[0], extent[1]);
+  var upperRight = L.latLng(extent[2], extent[3]);
+  var bounds = L.latLngBounds(lowerLeft, upperRight);
+  return bounds;
+}
 
 //TODO 'standaard' vervangen door eerste layer van baselayers
 if (typeof L !== 'undefined' && (typeof L === 'undefined' ? 'undefined' : _typeof(L)) === 'object') {
@@ -621,6 +634,7 @@ function getMapCenter(map) {
 exports.bgLayer = bgLayer;
 exports.overlayLayer = overlayLayer;
 exports.markerLayer = markerLayer;
+exports.extentLeafletFormat = extentLeafletFormat;
 exports.getMapCenter = getMapCenter;
 exports.geoLocatorControl = geoLocatorControl;
 exports.geocoderControl = geocoderControl;

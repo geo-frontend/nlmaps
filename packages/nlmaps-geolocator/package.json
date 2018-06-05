@@ -3,7 +3,7 @@
   "version": "2.3.10",
   "description": "",
   "main": "build/nlmaps-geolocator.cjs.js",
-  "module": "src/index.js",
+  "module": "build/nlmaps-geolocator.es.js",
   "scripts": {
     "test": "node test/test.js",
     "build": "rollup -c config/rollup.cjs.js && rollup -c config/rollup.es.js && rollup -c config/rollup.iife.js && cp build/nlmaps-geolocator.iife.js ../../dist/",
@@ -26,6 +26,7 @@
   },
   "homepage": "https://github.com:kadaster/nlmaps#README",
   "devDependencies": {
+    "babel-plugin-transform-object-assign": "^6.22.0",
     "babel-preset-env": "^1.6.1",
     "rollup-plugin-eslint": "^4.0.0",
     "rollup-plugin-node-builtins": "^2.1.2",

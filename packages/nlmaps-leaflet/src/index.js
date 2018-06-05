@@ -1,4 +1,12 @@
-import { getProvider, getWmsProvider, geocoder, getMarker } from '../../lib/index.js';
+import { getProvider, getWmsProvider, geocoder, getMarker, getExtent } from '../../lib/index.js';
+
+function extentLeafletFormat() {
+  let extent = getExtent();
+  let lowerLeft = L.latLng(extent[0], extent[1])
+  let upperRight = L.latLng(extent[2], extent[3])
+  let bounds = L.latLngBounds(lowerLeft, upperRight);
+  return bounds;
+}
 
 //TODO 'standaard' vervangen door eerste layer van baselayers
 if (typeof L !== 'undefined' && typeof L === 'object') {
@@ -11,7 +19,7 @@ L.NlmapsBgLayer = L.TileLayer.extend({
       'scheme':       'xyz',
       'attribution':  provider.attribution,
       'subdomains':   provider.subdomains?provider.subdomains:'abc',
-      sa_id:          name
+       sa_id:          name
     });
     L.TileLayer.prototype.initialize.call(this, provider.url, opts);
   }
@@ -170,4 +178,4 @@ function getMapCenter(map) {
 // standaard.addTo(map);
 // overlay.addTo(map);
 
-export { bgLayer, overlayLayer, markerLayer, getMapCenter, geoLocatorControl, geocoderControl};
+export { bgLayer, overlayLayer, markerLayer, extentLeafletFormat, getMapCenter, geoLocatorControl, geocoderControl};

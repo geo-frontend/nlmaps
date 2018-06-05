@@ -3,7 +3,7 @@
   "version": "2.3.17",
   "description": "",
   "main": "build/nlmaps-leaflet.cjs.js",
-  "module": "src/index.js",
+  "module": "build/nlmaps-leaflet.es.js",
   "scripts": {
     "test": "node test/test.js",
     "build": "rollup -c config/rollup.cjs.js && rollup -c config/rollup.es.js && rollup -c config/rollup.iife.js && cp build/nlmaps-leaflet.iife.js ../../dist/",
@@ -26,6 +26,7 @@
   },
   "homepage": "https://github.com:kadaster/nlmaps#README",
   "devDependencies": {
+    "babel-plugin-transform-object-assign": "^6.22.0",
     "babel-preset-env": "^1.6.1",
     "leaflet": "^1.0.3",
     "leaflet-headless": "^0.2.6",

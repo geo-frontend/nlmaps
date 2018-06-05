@@ -12,6 +12,10 @@ function getMarker() {
   return CONFIG.MARKER;
 }
 
+function getExtent() {
+  return CONFIG.MAP.extent;
+}
+
 /*
  * Get the named provider, or throw an exception if it doesn't exist.
  **/
@@ -63,4 +67,4 @@ function mapPointerStyle(map){
 
 //use named export instead of default because we might want
 //more exports from 'lib' in the future
-export { getProvider, getWmsProvider, geocoder, getMarker, mapPointerStyle};
+export { getProvider, getWmsProvider, geocoder, getMarker, getExtent, mapPointerStyle};

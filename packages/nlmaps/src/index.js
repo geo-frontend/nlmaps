@@ -4,6 +4,7 @@ import { bgLayer as bgL,
          markerLayer as markerL,
          getMapCenter as centerL,
          geocoderControl as geocoderL,
+         extentLeafletFormat,
          geoLocatorControl as glL } from '../../nlmaps-leaflet';
 
 import { bgLayer as bgOL,
@@ -11,14 +12,14 @@ import { bgLayer as bgOL,
          markerLayer as markerOL,
          getMapCenter as centerOL,
          geocoderControl as geocoderOL,
-         geoLocatorControl as glO } from '../../nlmaps-openlayers';
+         geoLocatorControl as glO } from '../../nlmaps-openlayers/build/nlmaps-openlayers.cjs.js';
 
 import { bgLayer as bgGM,
          overlayLayer as overlayGM,
          markerLayer as markerGM,
          getMapCenter as centerGM,
          geocoderControl as geocoderGM,
-         geoLocatorControl as glG } from '../../nlmaps-googlemaps';
+         geoLocatorControl as glG } from '../../nlmaps-googlemaps/build/nlmaps-googlemaps.cjs.js';
 
 // import { bgLayer as bgL, geoLocatorControl as glL } from 'nlmaps-leaflet';
 
@@ -98,6 +99,7 @@ function initMap(lib, opts){
       el = L.DomUtil.create('div');
       el.style.height='100%';
       rootdiv.appendChild(el);
+      options.maxBounds = extentLeafletFormat();
       map = L.map(el,options).setView([opts.center.latitude, opts.center.longitude], opts.zoom);
       map.zoomControl.setPosition(CONFIG.MAP.zoomposition);
       break;

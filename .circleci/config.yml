@@ -70,7 +70,7 @@ jobs:
       - run: git pull --no-edit
           
       - run: git checkout develop
-      - run: git merge master          
+      - run: git merge master --no-edit         
       - run: git checkout -b temp          
     
       - run: head package.json

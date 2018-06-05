@@ -6,6 +6,8 @@ import { bgLayer as bgL,
          geocoderControl as geocoderL,
          geoLocatorControl as glL } from '../../nlmaps-leaflet/build/nlmaps-leaflet.cjs.js';
 
+import { extentLeafletFormat } from '../../nlmaps-leaflet/build/nlmaps-leaflet.cjs.js';
+
 import { bgLayer as bgOL,
          overlayLayer as overlayOL,
          markerLayer as markerOL,
@@ -98,6 +100,7 @@ function initMap(lib, opts){
       el = L.DomUtil.create('div');
       el.style.height='100%';
       rootdiv.appendChild(el);
+      options.maxBounds = extentLeafletFormat();
       map = L.map(el,options).setView([opts.center.latitude, opts.center.longitude], opts.zoom);
       map.zoomControl.setPosition(CONFIG.MAP.zoomposition);
       break;

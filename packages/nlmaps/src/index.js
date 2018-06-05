@@ -92,6 +92,9 @@ function initMap(lib, opts){
     case 'leaflet':
       //work-around to prevent mapdragging at text selection
       rootdiv = document.getElementById(opts.target);
+      rootdiv.style.position='relative';
+      rootdiv.style.padding='0px';
+      rootdiv.style.margin='0px';
       options = {};
       if(!opts.attribution) {
         options.attributionControl = false;
@@ -113,7 +116,7 @@ function initMap(lib, opts){
         },
         fullscreenControl: false
       });
-      
+
       break;
     case 'openlayers':
       map = new ol.Map({
@@ -121,7 +124,7 @@ function initMap(lib, opts){
           center: ol.proj.fromLonLat([opts.center.longitude, opts.center.latitude]),
           zoom: opts.zoom
         }),
-        target: opts.target
+        target: el
       });
       map.getTargetElement().getElementsByClassName('ol-zoom')[0].style.cssText = "left: 5px !important; bottom: 5px !important"
       map.getTargetElement().getElementsByClassName('ol-zoom')[0].classList.remove('ol-zoom');
@@ -164,7 +167,7 @@ function addGoogleLayer(layer, map) {
   }
 
   let mapTypeIds = [layer.name, 'roadmap'];
-  
+
   if (layer.name === 'wms') {
     map.setOptions({
       mapTypeControl: true,
@@ -350,7 +353,7 @@ nlmaps.clickProvider = function(map) {
     sink(0, talkback);
   };
   clickSource.subscribe = function (callback) {
-    clickSource(0, callback) 
+    clickSource(0, callback)
   }
   return clickSource;
 }

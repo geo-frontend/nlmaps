@@ -1,4 +1,3 @@
-import "babel-polyfill";
 import {CONFIG} from './configParser';
 const geocoder = CONFIG.GEOCODER;
 

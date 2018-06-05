@@ -58,13 +58,13 @@ geocoder.doLookupRequest = function(id) {
 geocoder.createControl = function(zoomFunction, map) {
     this.zoomTo = zoomFunction;
     this.map = map;
-    const container = document.createElement('div');    
-    parseClasses(container,CONFIG.CLASSNAMES.geocoderContainer);    
+    const container = document.createElement('div');
+    parseClasses(container,CONFIG.CLASSNAMES.geocoderContainer);
     const searchDiv = document.createElement('form');
     const input = document.createElement('input');
     const button = document.createElement('button');
     const results = document.createElement('div');
-    parseClasses(searchDiv,CONFIG.CLASSNAMES.geocoderSearch);    
+    parseClasses(searchDiv,CONFIG.CLASSNAMES.geocoderSearch);
     container.addEventListener('click', e => e.stopPropagation());
     container.addEventListener('dblclick', e => e.stopPropagation());
     input.id = 'nlmaps-geocoder-control-input';
@@ -84,7 +84,7 @@ geocoder.createControl = function(zoomFunction, map) {
         this.suggest(e.target.value);
     });
     button.setAttribute('type','submit');
-    searchDiv.addEventListener('submit',(e)=>{   
+    searchDiv.addEventListener('submit',(e)=>{
         e.preventDefault();
         if(this.results.length>0) {
             this.lookup(this.results[0])
@@ -92,7 +92,7 @@ geocoder.createControl = function(zoomFunction, map) {
     })
     button.setAttribute('aria-label', 'Zoomen naar adres');
     parseClasses(button,CONFIG.CLASSNAMES.geocoderButton);
-    
+
     results.id = 'nlmaps-geocoder-control-results';
     parseClasses(results,CONFIG.CLASSNAMES.geocoderResultList);
     results.classList.add('nlmaps-hidden');
@@ -111,7 +111,7 @@ geocoder.suggest = function(query) {
     }
 
     this.doSuggestRequest(query).then((results) => {
-        this.results = results.response.docs.map(r=>r.id)        
+        this.results = results.response.docs.map(r=>r.id)
         this.showSuggestResults(results.response.docs);
     });
 }
@@ -150,7 +150,7 @@ geocoder.showSuggestResults = function(results) {
             const a = document.createElement('a');
             a.innerHTML = result.weergavenaam;
             a.id = result.id;
-            parseClasses(a,CONFIG.CLASSNAMES.geocoderResultItem);            
+            parseClasses(a,CONFIG.CLASSNAMES.geocoderResultItem);
             a.setAttribute('href','#');
             a.addEventListener('click', (e) => {
                 e.preventDefault();
@@ -162,8 +162,8 @@ geocoder.showSuggestResults = function(results) {
         document.getElementById('nlmaps-geocoder-control-results').classList.remove('nlmaps-hidden');
         document.getElementById('nlmaps-geocoder-control-results').appendChild(resultList);
     }
-   
-   
+
+
 
 }
 

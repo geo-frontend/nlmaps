@@ -46,6 +46,7 @@
     "tape": "^4.9.0"
   },
   "dependencies": {
+    "babel-polyfill": "^6.26.0",
     "canvas": "^1.6.10",
     "proj4": "^2.4.4",
     "tap-spec": "^4.1.1",

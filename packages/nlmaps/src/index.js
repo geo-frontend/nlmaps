@@ -1,4 +1,4 @@
-
+import 'babel-polyfill';
 import { bgLayer as bgL,
          overlayLayer as overlayL,
          markerLayer as markerL,
@@ -113,7 +113,7 @@ function initMap(lib, opts){
         },
         fullscreenControl: false
       });
-      
+
       break;
     case 'openlayers':
       map = new ol.Map({
@@ -164,7 +164,7 @@ function addGoogleLayer(layer, map) {
   }
 
   let mapTypeIds = [layer.name, 'roadmap'];
-  
+
   if (layer.name === 'wms') {
     map.setOptions({
       mapTypeControl: true,
@@ -350,7 +350,7 @@ nlmaps.clickProvider = function(map) {
     sink(0, talkback);
   };
   clickSource.subscribe = function (callback) {
-    clickSource(0, callback) 
+    clickSource(0, callback)
   }
   return clickSource;
 }

@@ -25,13 +25,16 @@ export default config => {
         main: true,
         browser: true
       }),
-      eslint({        
+      eslint({
        // include: [
        //   '../lib/**'
        // ],
         exclude: [
           '../lib/**',
-          'node_modules/**'
+          'node_modules/**',
+          '../../../node_modules/**',
+          '../../node_modules/**'
+
         ],
         throwOnError: true
       }),

@@ -4,9 +4,8 @@ import { bgLayer as bgL,
          markerLayer as markerL,
          getMapCenter as centerL,
          geocoderControl as geocoderL,
+         extentLeafletFormat,
          geoLocatorControl as glL } from '../../nlmaps-leaflet';
-
-import { extentLeafletFormat } from '../../nlmaps-leaflet/build/nlmaps-leaflet.cjs.js';
 
 import { bgLayer as bgOL,
          overlayLayer as overlayOL,

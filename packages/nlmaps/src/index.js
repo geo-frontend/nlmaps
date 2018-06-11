@@ -104,6 +104,9 @@ function initMap(lib, opts){
       rootdiv.appendChild(el);
       options.maxBounds = extentLeafletFormat();
       map = L.map(el,options).setView([opts.center.latitude, opts.center.longitude], opts.zoom);
+      if (opts.attribution) {
+        map.attributionControl.setPrefix(false);
+      }
       map.zoomControl.setPosition(CONFIG.MAP.zoomposition);
       break;
     case 'googlemaps':

@@ -3,7 +3,7 @@
   "version": "2.3.17",
   "description": "",
   "main": "build/nlmaps-googlemaps.cjs.js",
-  "module": "build/nlmaps-googlemaps.es.js",
+  "module": "src/index.js",
   "scripts": {
     "test": "node test/test.js",
     "build": "rollup -c config/rollup.cjs.js && rollup -c config/rollup.es.js &&  rollup -c config/rollup.iife.js && cp build/nlmaps-googlemaps.iife.js ../../dist/",

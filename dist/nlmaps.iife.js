@@ -6993,227 +6993,226 @@
 	 */
 
 	function getMarker() {
-	    return CONFIG.MARKER;
+	  return CONFIG.MARKER;
 	}
 
 	function getExtent() {
-	    return CONFIG.MAP.extent;
+	  return CONFIG.MAP.extent;
 	}
 
 	/*
 	 * Get the named provider, or throw an exception if it doesn't exist.
 	 **/
 	function getProvider(name) {
-	    if (name in CONFIG.BASEMAP_PROVIDERS) {
-	        var provider = CONFIG.BASEMAP_PROVIDERS[name];
+	  if (name in CONFIG.BASEMAP_PROVIDERS) {
+	    var provider = CONFIG.BASEMAP_PROVIDERS[name];
 
-	        // eslint-disable-next-line no-console
-	        if (provider.deprecated && console && console.warn) {
-	            // eslint-disable-next-line no-console
-	            console.warn(name + " is a deprecated style; it will be redirected to its replacement. For performance improvements, please change your reference.");
-	        }
-
-	        return provider;
-	    } else {
-	        // eslint-disable-next-line no-console
-	        console.error('NL Maps error: You asked for a style which does not exist! Available styles: ' + Object.keys(PROVIDERS).join(', '));
+	    // eslint-disable-next-line no-console
+	    if (provider.deprecated && console && console.warn) {
+	      // eslint-disable-next-line no-console
+	      console.warn(name + " is a deprecated style; it will be redirected to its replacement. For performance improvements, please change your reference.");
 	    }
+
+	    return provider;
+	  } else {
+	    // eslint-disable-next-line no-console
+	    console.error('NL Maps error: You asked for a style which does not exist! Available styles: ' + Object.keys(PROVIDERS).join(', '));
+	  }
 	}
 
 	/*
 	 * Get the named wmsProvider, or throw an exception if it doesn't exist.
 	 **/
 	function getWmsProvider(name, options) {
-	    var wmsProvider = void 0;
-	    if (name in CONFIG.WMS_PROVIDERS) {
-	        wmsProvider = CONFIG.WMS_PROVIDERS[name];
+	  var wmsProvider = void 0;
+	  if (name in CONFIG.WMS_PROVIDERS) {
+	    wmsProvider = CONFIG.WMS_PROVIDERS[name];
 
-	        // eslint-disable-next-line no-console
-	        if (wmsProvider.deprecated && console && console.warn) {
-	            // eslint-disable-next-line no-console
-	            console.warn(name + " is a deprecated wms; it will be redirected to its replacement. For performance improvements, please change your reference.");
-	        }
-	    } else {
-	        wmsProvider = _extends({}, CONFIG.WMS_DEFAULTS, options);
-	        // eslint-disable-next-line no-console
-	        console.log('NL Maps: You asked for a wms which does not exist! Available wmses: ' + Object.keys(CONFIG.WMS_PROVIDERS).join(', ') + '. Provide an options object to make your own WMS.');
+	    // eslint-disable-next-line no-console
+	    if (wmsProvider.deprecated && console && console.warn) {
+	      // eslint-disable-next-line no-console
+	      console.warn(name + " is a deprecated wms; it will be redirected to its replacement. For performance improvements, please change your reference.");
 	    }
-	    return wmsProvider;
+	  } else {
+	    wmsProvider = _extends({}, CONFIG.WMS_DEFAULTS, options);
+	    // eslint-disable-next-line no-console
+	    console.log('NL Maps: You asked for a wms which does not exist! Available wmses: ' + Object.keys(CONFIG.WMS_PROVIDERS).join(', ') + '. Provide an options object to make your own WMS.');
+	  }
+	  return wmsProvider;
 	}
 
-	var _typeof$1 = typeof Symbol === "function" && _typeof(Symbol.iterator) === "symbol" ? function (obj) {
-	    return typeof obj === "undefined" ? "undefined" : _typeof(obj);
-	} : function (obj) {
-	    return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj === "undefined" ? "undefined" : _typeof(obj);
-	};
+	function mapPointerStyle(map) {
+	  var classList = map._container.classList;
+	  classList.add('nlmaps-marker-cursor');
+	}
 
 	function extentLeafletFormat() {
-	    var extent = getExtent();
-	    var lowerLeft = L.latLng(extent[0], extent[1]);
-	    var upperRight = L.latLng(extent[2], extent[3]);
-	    var bounds = L.latLngBounds(lowerLeft, upperRight);
-	    return bounds;
+	  var extent = getExtent();
+	  var lowerLeft = L.latLng(extent[0], extent[1]);
+	  var upperRight = L.latLng(extent[2], extent[3]);
+	  var bounds = L.latLngBounds(lowerLeft, upperRight);
+	  return bounds;
 	}
 
 	//TODO 'standaard' vervangen door eerste layer van baselayers
-	if (typeof L !== 'undefined' && (typeof L === 'undefined' ? 'undefined' : _typeof$1(L)) === 'object') {
-	    L.NlmapsBgLayer = L.TileLayer.extend({
-	        initialize: function initialize() {
-	            var name = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 'standaard';
-	            var options = arguments[1];
+	if (typeof L !== 'undefined' && (typeof L === 'undefined' ? 'undefined' : _typeof(L)) === 'object') {
+	  L.NlmapsBgLayer = L.TileLayer.extend({
+	    initialize: function initialize() {
+	      var name = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 'standaard';
+	      var options = arguments[1];
 
-	            var provider = getProvider(name);
-	            var opts = L.Util.extend({}, options, {
-	                'minZoom': provider.minZoom,
-	                'maxZoom': provider.maxZoom,
-	                'scheme': 'xyz',
-	                'attribution': provider.attribution,
-	                'subdomains': provider.subdomains ? provider.subdomains : 'abc',
-	                sa_id: name
-	            });
-	            L.TileLayer.prototype.initialize.call(this, provider.url, opts);
+	      var provider = getProvider(name);
+	      var opts = L.Util.extend({}, options, {
+	        'minZoom': provider.minZoom,
+	        'maxZoom': provider.maxZoom,
+	        'scheme': 'xyz',
+	        'attribution': provider.attribution,
+	        'subdomains': provider.subdomains ? provider.subdomains : 'abc',
+	        sa_id: name
+	      });
+	      L.TileLayer.prototype.initialize.call(this, provider.url, opts);
+	    }
+	  });
+
+	  /*
+	   * Factory function for consistency with Leaflet conventions
+	   **/
+	  L.nlmapsBgLayer = function (options, source) {
+	    return new L.NlmapsBgLayer(options, source);
+	  };
+
+	  L.NlmapsOverlayLayer = L.TileLayer.WMS.extend({
+	    initialize: function initialize() {
+	      var name = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : '';
+	      var options = arguments[1];
+
+	      var wmsProvider = getWmsProvider(name, options);
+	      var url = wmsProvider.url;
+	      delete wmsProvider.url;
+	      var wmsParams = L.Util.extend({}, options, {
+	        layers: wmsProvider.layerName,
+	        maxZoom: 24,
+	        minZoom: 1,
+	        styles: wmsProvider.styleName,
+	        version: wmsProvider.version,
+	        transparent: wmsProvider.transparent,
+	        format: wmsProvider.format
+	      });
+	      L.TileLayer.WMS.prototype.initialize.call(this, url, wmsParams);
+	    }
+	  });
+
+	  /*
+	   * Factory function for consistency with Leaflet conventions
+	   **/
+	  L.nlmapsOverlayLayer = function (options, source) {
+	    return new L.NlmapsOverlayLayer(options, source);
+	  };
+
+	  L.Control.GeoLocatorControl = L.Control.extend({
+	    options: {
+	      position: 'topright'
+	    },
+	    initialize: function initialize(options) {
+	      // set default options if nothing is set (merge one step deep)
+	      for (var i in options) {
+	        if (_typeof(this.options[i]) === 'object') {
+	          L.extend(this.options[i], options[i]);
+	        } else {
+	          this.options[i] = options[i];
 	        }
-	    });
+	      }
+	    },
 
-	    /*
-	     * Factory function for consistency with Leaflet conventions
-	     **/
-	    L.nlmapsBgLayer = function (options, source) {
-	        return new L.NlmapsBgLayer(options, source);
-	    };
+	    onAdd: function onAdd(map) {
+	      var div = L.DomUtil.create('div');
+	      div.id = 'nlmaps-geolocator-control';
+	      div.className = 'nlmaps-geolocator-control';
+	      var img = document.createElement('img');
+	      div.append(img);
+	      if (this.options.geolocator.isStarted()) {
+	        L.DomUtil.addClass(div, 'started');
+	      }
+	      function moveMap(position) {
+	        map.panTo([position.coords.latitude, position.coords.longitude]);
+	      }
+	      L.DomEvent.on(div, 'click', function () {
+	        this.options.geolocator.start();
+	        L.DomUtil.addClass(div, 'started');
+	      }, this);
+	      this.options.geolocator.on('position', function (d) {
+	        L.DomUtil.removeClass(div, 'started');
+	        L.DomUtil.addClass(div, 'has-position');
+	        moveMap(d);
+	      });
+	      return div;
+	    },
+	    onRemove: function onRemove(map) {
+	      return map;
+	    }
+	  });
 
-	    L.NlmapsOverlayLayer = L.TileLayer.WMS.extend({
-	        initialize: function initialize() {
-	            var name = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : '';
-	            var options = arguments[1];
-
-	            var wmsProvider = getWmsProvider(name, options);
-	            var url = wmsProvider.url;
-	            delete wmsProvider.url;
-	            var wmsParams = L.Util.extend({}, options, {
-	                layers: wmsProvider.layerName,
-	                maxZoom: 24,
-	                minZoom: 1,
-	                styles: wmsProvider.styleName,
-	                version: wmsProvider.version,
-	                transparent: wmsProvider.transparent,
-	                format: wmsProvider.format
-	            });
-	            L.TileLayer.WMS.prototype.initialize.call(this, url, wmsParams);
-	        }
-	    });
-
-	    /*
-	     * Factory function for consistency with Leaflet conventions
-	     **/
-	    L.nlmapsOverlayLayer = function (options, source) {
-	        return new L.NlmapsOverlayLayer(options, source);
-	    };
-
-	    L.Control.GeoLocatorControl = L.Control.extend({
-	        options: {
-	            position: 'topright'
-	        },
-	        initialize: function initialize(options) {
-	            // set default options if nothing is set (merge one step deep)
-	            for (var i in options) {
-	                if (_typeof$1(this.options[i]) === 'object') {
-	                    L.extend(this.options[i], options[i]);
-	                } else {
-	                    this.options[i] = options[i];
-	                }
-	            }
-	        },
-
-	        onAdd: function onAdd(map) {
-	            var div = L.DomUtil.create('div');
-	            div.id = 'nlmaps-geolocator-control';
-	            div.className = 'nlmaps-geolocator-control';
-	            var img = document.createElement('img');
-	            div.append(img);
-	            if (this.options.geolocator.isStarted()) {
-	                L.DomUtil.addClass(div, 'started');
-	            }
-	            function moveMap(position) {
-	                map.panTo([position.coords.latitude, position.coords.longitude]);
-	            }
-	            L.DomEvent.on(div, 'click', function () {
-	                this.options.geolocator.start();
-	                L.DomUtil.addClass(div, 'started');
-	            }, this);
-	            this.options.geolocator.on('position', function (d) {
-	                L.DomUtil.removeClass(div, 'started');
-	                L.DomUtil.addClass(div, 'has-position');
-	                moveMap(d);
-	            });
-	            return div;
-	        },
-	        onRemove: function onRemove(map) {
-	            return map;
-	        }
-	    });
-
-	    L.geoLocatorControl = function (geolocator) {
-	        return new L.Control.GeoLocatorControl({ geolocator: geolocator });
-	    };
+	  L.geoLocatorControl = function (geolocator) {
+	    return new L.Control.GeoLocatorControl({ geolocator: geolocator });
+	  };
 	}
 	function markerLayer(latLngObject) {
-	    if (typeof L !== 'undefined' && (typeof L === 'undefined' ? 'undefined' : _typeof$1(L)) === 'object') {
-	        var lat = void 0;
-	        var lng = void 0;
-	        // LatLngObject should always be defined when it is called from the main package.
-	        // eslint-disable-next-line eqeqeq
-	        if (typeof latLngObject == 'undefined') {
-	            var center = getMapCenter(map);
-	            lat = center.latitude;
-	            lng = center.longitude;
-	        } else {
-	            lat = latLngObject.latitude;
-	            lng = latLngObject.longitude;
-	        }
-	        return new L.marker([lat, lng], {
-	            alt: 'marker',
-	            icon: new L.icon({
-	                iconUrl: getMarker().url,
-	                iconSize: getMarker().iconSize,
-	                iconAnchor: getMarker().iconAnchor
-	            })
-	        });
+	  if (typeof L !== 'undefined' && (typeof L === 'undefined' ? 'undefined' : _typeof(L)) === 'object') {
+	    var lat = void 0;
+	    var lng = void 0;
+	    // LatLngObject should always be defined when it is called from the main package.
+	    // eslint-disable-next-line eqeqeq
+	    if (typeof latLngObject == 'undefined') {
+	      var center = getMapCenter(map);
+	      lat = center.latitude;
+	      lng = center.longitude;
+	    } else {
+	      lat = latLngObject.latitude;
+	      lng = latLngObject.longitude;
 	    }
+	    return new L.marker([lat, lng], {
+	      alt: 'marker',
+	      icon: new L.icon({
+	        iconUrl: getMarker().url,
+	        iconSize: getMarker().iconSize,
+	        iconAnchor: getMarker().iconAnchor
+	      })
+	    });
+	  }
 	}
 
 	function bgLayer(name) {
-	    if (typeof L !== 'undefined' && (typeof L === 'undefined' ? 'undefined' : _typeof$1(L)) === 'object') {
-	        return L.nlmapsBgLayer(name);
-	    }
+	  if (typeof L !== 'undefined' && (typeof L === 'undefined' ? 'undefined' : _typeof(L)) === 'object') {
+	    return L.nlmapsBgLayer(name);
+	  }
 	}
 
 	function overlayLayer(name, options) {
-	    if (typeof L !== 'undefined' && (typeof L === 'undefined' ? 'undefined' : _typeof$1(L)) === 'object') {
-	        return L.nlmapsOverlayLayer(name, options);
-	    }
+	  if (typeof L !== 'undefined' && (typeof L === 'undefined' ? 'undefined' : _typeof(L)) === 'object') {
+	    return L.nlmapsOverlayLayer(name, options);
+	  }
 	}
 
 	function geoLocatorControl(geolocator) {
-	    if (typeof L !== 'undefined' && (typeof L === 'undefined' ? 'undefined' : _typeof$1(L)) === 'object') {
-	        return L.geoLocatorControl(geolocator);
-	    }
+	  if (typeof L !== 'undefined' && (typeof L === 'undefined' ? 'undefined' : _typeof(L)) === 'object') {
+	    return L.geoLocatorControl(geolocator);
+	  }
 	}
 	function zoomTo(point, map) {
-	    map.fitBounds(L.geoJSON(point).getBounds(), { maxZoom: 18 });
+	  map.fitBounds(L.geoJSON(point).getBounds(), { maxZoom: 18 });
 	}
 
 	function geocoderControl(map) {
-	    var control = geocoder.createControl(zoomTo, map);
-	    map.getContainer().parentElement.prepend(control);
+	  var control = geocoder.createControl(zoomTo, map);
+	  map.getContainer().parentElement.prepend(control);
 	}
 
 	function getMapCenter(map) {
-	    var latLngObject = map.getCenter();
-	    return {
-	        latitude: latLngObject.lat,
-	        longitude: latLngObject.lng
-	    };
+	  var latLngObject = map.getCenter();
+	  return {
+	    latitude: latLngObject.lat,
+	    longitude: latLngObject.lng
+	  };
 	}
 
 	var nlmapsOpenlayers_cjs = createCommonjsModule(function (module, exports) {
@@ -8517,229 +8516,6 @@
 	var nlmapsGooglemaps_cjs_5 = nlmapsGooglemaps_cjs.geoLocatorControl;
 	var nlmapsGooglemaps_cjs_6 = nlmapsGooglemaps_cjs.geocoderControl;
 
-	var config$1 = {
-	    "version": 0.2,
-	    "basemaps": {
-	        "defaults": {
-	            "crs": "EPSG:3857",
-	            "attribution": "Kaartgegevens &copy; <a href='https://www.kadaster.nl'>Kadaster</a> | \
-            <a href='https://www.verbeterdekaart.nl'>Verbeter de kaart</a>",
-	            "minZoom": 6,
-	            "maxZoom": 19,
-	            "type": "wmts",
-	            "format": "png",
-	            "url": "https://geodata.nationaalgeoregister.nl/tiles/service"
-	        },
-	        "layers": [{
-	            "name": "standaard",
-	            "layerName": "brtachtergrondkaart"
-	        }, {
-	            "name": "grijs",
-	            "layerName": "brtachtergrondkaartgrijs"
-	        }, {
-	            "name": "pastel",
-	            "layerName": "brtachtergrondkaartpastel"
-	        }, {
-	            "name": "luchtfoto",
-	            "layerName": "2016_ortho25",
-	            "url": "https://geodata.nationaalgeoregister.nl/luchtfoto/rgb",
-	            "format": "jpeg"
-	        }]
-	    },
-	    "wms": {
-	        "defaults": {
-	            "url": "https://geodata.nationaalgeoregister.nl/{workSpaceName}/wms?",
-	            "version": "1.1.1",
-	            "transparent": true,
-	            "format": "image/png",
-	            "minZoom": 0,
-	            "maxZoom": 24
-	        },
-	        "layers": [{
-	            "name": "gebouwen",
-	            "workSpaceName": "bag",
-	            "layerName": "pand"
-	        }, {
-	            "name": "percelen",
-	            "workSpaceName": "bkadastralekaartv3ag",
-	            "layerName": "kadastralekaart"
-	        }, {
-	            "name": "drone-no-fly-zones",
-	            "workSpaceName": "dronenoflyzones",
-	            "layerName": "luchtvaartgebieden,landingsite"
-	        }, {
-	            "name": "hoogte",
-	            "workSpaceName": "ahn2",
-	            "layerName": "ahn2_05m_int",
-	            "styleName": "ahn2:ahn2_05m_detail"
-	        }, {
-	            "name": "gemeenten",
-	            "workSpaceName": "bestuurlijkegrenzen",
-	            "layerName": "gemeenten",
-	            "styleName": "bestuurlijkegrenzen:bestuurlijkegrenzen_gemeentegrenzen"
-	        }, {
-	            "name": "provincies",
-	            "workSpaceName": "bestuurlijkegrenzen",
-	            "layerName": "provincies",
-	            "styleName": "bestuurlijkegrenzen:bestuurlijkegrenzen_provinciegrenzen"
-	        }]
-	    },
-	    "geocoder": {
-	        "suggestUrl": "https://geodata.nationaalgeoregister.nl/locatieserver/v3/suggest?",
-	        "lookupUrl": "https://geodata.nationaalgeoregister.nl/locatieserver/v3/lookup?"
-	    },
-	    "map": {
-	        "style": 'standaard',
-	        "center": {
-	            "latitude": 52.093249,
-	            "longitude": 5.111994
-	        },
-	        "zoom": 8,
-	        "attribution": true,
-	        "extent": [-180, -90, 180, 90],
-	        "zoomposition": "topright"
-	    },
-	    "marker": {
-	        "url": "./assets/img/marker_icon.svg",
-	        "iconSize": [64, 64],
-	        "iconAnchor": [63, 32]
-	    },
-	    "classnames": {
-	        'geocoderContainer': ['nlmaps-geocoder-control-container'],
-	        'geocoderSearch': ['nlmaps-geocoder-control-search'],
-	        'geocoderButton': ['nlmaps-geocoder-control-button'],
-	        'geocoderResultList': ['nlmaps-geocoder-result-list'],
-	        'geocoderResultItem': ['nlmaps-geocoder-result-item']
-	    }
-	};
-
-	var CONFIG$1 = {};
-
-	CONFIG$1.BASE_DEFAULTS = {
-	    crs: "EPSG:3857",
-	    attr: "",
-	    minZoom: 0,
-	    maxZoom: 19,
-	    type: "wmts",
-	    format: "png",
-	    url: ""
-	};
-	CONFIG$1.WMS_DEFAULTS = {
-	    url: "",
-	    version: "1.1.1",
-	    transparent: true,
-	    format: "image/png",
-	    minZoom: 0,
-	    maxZoom: 24,
-	    styleName: ""
-	};
-	CONFIG$1.BASEMAP_PROVIDERS = {};
-	CONFIG$1.WMS_PROVIDERS = {};
-	CONFIG$1.GEOCODER = {};
-	CONFIG$1.MAP = {
-	    "zoomposition": "bottomleft"
-	};
-	CONFIG$1.MARKER = {};
-	CONFIG$1.CLASSNAMES = {
-	    'geocoderContainer': ['nlmaps-geocoder-control-container'],
-	    'geocoderSearch': ['nlmaps-geocoder-control-search'],
-	    'geocoderButton': ['nlmaps-geocoder-control-button'],
-	    'geocoderResultList': ['nlmaps-geocoder-result-list'],
-	    'geocoderResultItem': ['nlmaps-geocoder-result-item']
-	};
-
-	function err$1(err) {
-	    throw err;
-	}
-
-	if (config$1.version !== 0.2) {
-	    err$1('unsupported config version');
-	}
-
-	function mergeConfig$1(defaults$$1, config) {
-	    return _extends({}, defaults$$1, config);
-	}
-
-	function parseBase$1(basemaps) {
-	    var defaults$$1 = mergeConfig$1(CONFIG$1.BASE_DEFAULTS, basemaps.defaults);
-	    if (!basemaps.layers || basemaps.layers.length < 0) {
-	        err$1('no basemap defined, please define a basemap in the configuration');
-	    }
-	    basemaps.layers.forEach(function (layer) {
-	        if (!layer.name || CONFIG$1.BASEMAP_PROVIDERS[layer.name] !== undefined) {
-	            err$1('basemap names need to be defined and unique: ' + layer.name);
-	        }
-	        CONFIG$1.BASEMAP_PROVIDERS[layer.name] = formatBasemapUrl$1(mergeConfig$1(defaults$$1, layer));
-	    });
-	}
-	function parseWMS$1(wms) {
-	    var defaults$$1 = mergeConfig$1(CONFIG$1.WMS_DEFAULTS, wms.defaults);
-	    if (wms.layers) {
-	        wms.layers.forEach(function (layer) {
-	            if (!layer.name || CONFIG$1.WMS_PROVIDERS[layer.name] !== undefined) {
-	                err$1('wms names need to be defined and unique: ' + layer.name);
-	            }
-	            CONFIG$1.WMS_PROVIDERS[layer.name] = applyTemplate$1(mergeConfig$1(defaults$$1, layer));
-	        });
-	    }
-	}
-	function parseGeocoder$1(geocoder) {
-	    CONFIG$1.GEOCODER.lookupUrl = geocoder.lookupUrl;
-	    CONFIG$1.GEOCODER.suggestUrl = geocoder.suggestUrl;
-	}
-	function parseMap$1(map) {
-	    CONFIG$1.MAP = mergeConfig$1(CONFIG$1.MAP, map);
-	}
-
-	function formatBasemapUrl$1(layer) {
-	    switch (layer.type) {
-	        case 'wmts':
-	            layer.url = layer.url + "/" + layer.type + "/" + layer.layerName + "/" + layer.crs + "/{z}/{x}/{y}." + layer.format;
-	            break;
-	        case 'tms':
-	            layer.url = layer.url + "/" + layer.layerName + "/{z}/{x}/{y}." + layer.format;
-	            break;
-	        default:
-	            layer.url = layer.url + "/" + layer.type + "/" + layer.layerName + "/" + layer.crs + "/{z}/{x}/{y}." + layer.format;
-	    }
-	    return layer;
-	}
-
-	function applyTemplate$1(layer) {
-	    //Check if the url is templated
-	    var start = layer.url.indexOf('{');
-	    if (start > -1) {
-	        var end = layer.url.indexOf('}');
-	        var template = layer.url.slice(start + 1, end);
-	        if (template.toLowerCase() === "workspacename") {
-	            layer.url = layer.url.slice(0, start) + layer.workSpaceName + layer.url.slice(end + 1, -1);
-	        } else {
-	            err$1('only workspacename templates are supported for now');
-	        }
-	    }
-	    return layer;
-	}
-
-	function parseFeatureQuery$1(baseUrl) {
-	    CONFIG$1.FEATUREQUERYBASEURL = baseUrl;
-	}
-
-	function parseClasses$2(classes) {
-	    CONFIG$1.CLASSNAMES = mergeConfig$1(CONFIG$1.CLASSNAMES, classes);
-	}
-
-	function parseMarker$1(marker) {
-	    CONFIG$1.MARKER = marker;
-	}
-
-	if (config$1.featureQuery !== undefined) parseFeatureQuery$1(config$1.featureQuery.baseUrl);
-	if (config$1.map !== undefined) parseMap$1(config$1.map);
-	parseBase$1(config$1.basemaps);
-	if (config$1.wms !== undefined) parseWMS$1(config$1.wms);
-	if (config$1.geocoder !== undefined) parseGeocoder$1(config$1.geocoder);
-	if (config$1.marker !== undefined) parseMarker$1(config$1.marker);
-	if (config$1.classnames !== undefined) parseClasses$2(config$1.classnames);
-
 	var emitonoff = createCommonjsModule(function (module) {
 	  var EmitOnOff = module.exports = function (thing) {
 	    if (!thing) thing = {};
@@ -8861,197 +8637,6 @@
 	  }
 	}
 
-	var geocoder$1 = CONFIG$1.GEOCODER;
-
-	function httpGetAsync$1(url) {
-	    // eslint-disable-next-line no-unused-vars
-	    return new Promise(function (resolve, reject) {
-	        var xmlHttp = new XMLHttpRequest();
-	        xmlHttp.onreadystatechange = function () {
-	            // eslint-disable-next-line eqeqeq
-	            if (xmlHttp.readyState == 4 && xmlHttp.status == 200) {
-	                resolve(JSON.parse(xmlHttp.responseText));
-	            }
-	        };
-	        xmlHttp.open("GET", url, true); // true for asynchronous
-	        xmlHttp.send(null);
-	    });
-	}
-
-	function wktPointToGeoJson$1(wktPoint) {
-	    if (!wktPoint.includes('POINT')) {
-	        throw TypeError('Provided WKT geometry is not a point.');
-	    }
-	    var coordinateTuple = wktPoint.split('(')[1].split(')')[0];
-	    var x = parseFloat(coordinateTuple.split(' ')[0]);
-	    var y = parseFloat(coordinateTuple.split(' ')[1]);
-
-	    return {
-	        type: 'Point',
-	        coordinates: [x, y]
-	    };
-	}
-
-	/**
-	 * Make a call to PDOK locatieserver v3 suggest service. This service is meant for geocoder autocomplete functionality. For
-	 * additional documentation, check https://github.com/PDOK/locatieserver/wiki/API-Locatieserver.
-	 * @param {string} searchTerm The term which to search for
-	 */
-	geocoder$1.doSuggestRequest = function (searchTerm) {
-	    return httpGetAsync$1(this.suggestUrl + 'q=' + encodeURIComponent(searchTerm));
-	};
-
-	/**
-	 * Make a call to PDOK locatieserver v3 lookup service. This service provides information about objects found through the suggest service. For additional
-	 * documentation, check: https://github.com/PDOK/locatieserver/wiki/API-Locatieserver
-	 * @param {string} id The id of the feature that is to be looked up.
-	 */
-	geocoder$1.doLookupRequest = function (id) {
-	    return httpGetAsync$1(this.lookupUrl + 'id=' + encodeURIComponent(id)).then(function (lookupResult) {
-	        // A lookup request should always return 1 result
-	        var geocodeResult = lookupResult.response.docs[0];
-	        geocodeResult.centroide_ll = wktPointToGeoJson$1(geocodeResult.centroide_ll);
-	        geocodeResult.centroide_rd = wktPointToGeoJson$1(geocodeResult.centroide_rd);
-	        return geocodeResult;
-	    });
-	};
-
-	geocoder$1.createControl = function (zoomFunction, map) {
-	    var _this = this;
-
-	    this.zoomTo = zoomFunction;
-	    this.map = map;
-	    var container = document.createElement('div');
-	    parseClasses$3(container, CONFIG$1.CLASSNAMES.geocoderContainer);
-	    var searchDiv = document.createElement('form');
-	    var input = document.createElement('input');
-	    var button = document.createElement('button');
-	    var results = document.createElement('div');
-	    parseClasses$3(searchDiv, CONFIG$1.CLASSNAMES.geocoderSearch);
-	    container.addEventListener('click', function (e) {
-	        return e.stopPropagation();
-	    });
-	    container.addEventListener('dblclick', function (e) {
-	        return e.stopPropagation();
-	    });
-	    input.id = 'nlmaps-geocoder-control-input';
-	    input.placeholder = 'Zoomen naar adres...';
-	    input.setAttribute('aria-label', 'Zoomen naar adres');
-	    input.setAttribute('type', 'text');
-	    input.setAttribute('autocapitalize', 'off');
-	    input.setAttribute('autocomplete', 'off');
-	    input.setAttribute('autocorrect', 'off');
-	    input.setAttribute('spellcheck', 'false');
-
-	    input.addEventListener('input', function (e) {
-	        _this.suggest(e.target.value);
-	    });
-
-	    input.addEventListener('focus', function (e) {
-	        _this.suggest(e.target.value);
-	    });
-	    button.setAttribute('type', 'submit');
-	    searchDiv.addEventListener('submit', function (e) {
-	        e.preventDefault();
-	        if (_this.results.length > 0) {
-	            _this.lookup(_this.results[0]);
-	        }
-	    });
-	    button.setAttribute('aria-label', 'Zoomen naar adres');
-	    parseClasses$3(button, CONFIG$1.CLASSNAMES.geocoderButton);
-
-	    results.id = 'nlmaps-geocoder-control-results';
-	    parseClasses$3(results, CONFIG$1.CLASSNAMES.geocoderResultList);
-	    results.classList.add('nlmaps-hidden');
-	    container.appendChild(searchDiv);
-	    searchDiv.appendChild(input);
-	    searchDiv.appendChild(button);
-	    container.appendChild(results);
-
-	    return container;
-	};
-
-	geocoder$1.suggest = function (query) {
-	    var _this2 = this;
-
-	    if (query.length < 3) {
-	        this.clearSuggestResults();
-	        return;
-	    }
-
-	    this.doSuggestRequest(query).then(function (results) {
-	        _this2.results = results.response.docs.map(function (r) {
-	            return r.id;
-	        });
-	        _this2.showSuggestResults(results.response.docs);
-	    });
-	};
-
-	geocoder$1.lookup = function (id) {
-	    var _this3 = this;
-
-	    this.doLookupRequest(id).then(function (result) {
-	        _this3.zoomTo(result.centroide_ll, _this3.map);
-	        _this3.showLookupResult(result.weergavenaam);
-	        _this3.clearSuggestResults();
-	    });
-	};
-
-	geocoder$1.clearSuggestResults = function () {
-	    document.getElementById('nlmaps-geocoder-control-results').innerHTML = '';
-	    document.getElementById('nlmaps-geocoder-control-results').classList.add('nlmaps-hidden');
-	};
-
-	geocoder$1.showLookupResult = function (name) {
-	    document.getElementById('nlmaps-geocoder-control-input').value = name;
-	};
-
-	function parseClasses$3(el, classes) {
-	    classes.forEach(function (classname) {
-	        el.classList.add(classname);
-	    });
-	}
-
-	geocoder$1.showSuggestResults = function (results) {
-	    var _this4 = this;
-
-	    this.clearSuggestResults();
-	    if (results.length > 0) {
-	        var resultList = document.createElement('ul');
-	        results.forEach(function (result) {
-
-	            var li = document.createElement('li');
-	            var a = document.createElement('a');
-	            a.innerHTML = result.weergavenaam;
-	            a.id = result.id;
-	            parseClasses$3(a, CONFIG$1.CLASSNAMES.geocoderResultItem);
-	            a.setAttribute('href', '#');
-	            a.addEventListener('click', function (e) {
-	                e.preventDefault();
-	                _this4.lookup(e.target.id);
-	            });
-	            li.appendChild(a);
-	            resultList.appendChild(li);
-	        });
-	        document.getElementById('nlmaps-geocoder-control-results').classList.remove('nlmaps-hidden');
-	        document.getElementById('nlmaps-geocoder-control-results').appendChild(resultList);
-	    }
-	};
-
-	/*parts copied from maps.stamen.com: https://github.com/stamen/maps.stamen.com/blob/master/js/tile.stamen.js
-	 * copyright (c) 2012, Stamen Design
-	 * under BSD 3-Clause license: https://github.com/stamen/maps.stamen.com/blob/master/LICENSE
-	 */
-
-	function getMarker$1() {
-	  return CONFIG$1.MARKER;
-	}
-
-	function mapPointerStyle(map) {
-	  var classList = map._container.classList;
-	  classList.add('nlmaps-marker-cursor');
-	}
-
 	function query(url) {
 	  var promise = new Promise(function (resolve, reject) {
 	    fetch(url).then(function (res) {
@@ -9118,9 +8703,9 @@
 	      var newmarker = L.marker([d.latlng.lat, d.latlng.lng], {
 	        alt: 'marker',
 	        icon: new L.icon({
-	          iconUrl: getMarker$1().url,
-	          iconSize: getMarker$1().iconSize,
-	          iconAnchor: getMarker$1().iconAnchor
+	          iconUrl: getMarker().url,
+	          iconSize: getMarker().iconSize,
+	          iconAnchor: getMarker().iconAnchor
 	        })
 	      });
 	      markerStore.marker = newmarker;
@@ -9206,7 +8791,10 @@
 	      rootdiv.appendChild(el);
 	      options.maxBounds = extentLeafletFormat();
 	      map = L.map(el, options).setView([opts.center.latitude, opts.center.longitude], opts.zoom);
-	      map.zoomControl.setPosition(CONFIG$1.MAP.zoomposition);
+	      if (opts.attribution) {
+	        map.attributionControl.setPrefix(false);
+	      }
+	      map.zoomControl.setPosition(CONFIG.MAP.zoomposition);
 	      break;
 	    case 'googlemaps':
 	      map = new google.maps.Map(document.getElementById(opts.target), {
@@ -9354,7 +8942,7 @@
 	nlmaps.createMap = function () {
 	  var useropts = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
 
-	  var opts = mergeOpts(CONFIG$1.MAP, useropts);
+	  var opts = mergeOpts(CONFIG.MAP, useropts);
 	  try {
 	    if (nlmaps.lib == 'too many libs' || nlmaps.lib === 'too few libs') {
 	      throw { message: 'one and only one map library can be defined. Please Refer to the documentation to see which map libraries are supported.' };

@@ -1,6 +1,6 @@
 {
   "name": "nlmaps-geolocator",
-  "version": "2.3.18",
+  "version": "2.3.23",
   "description": "",
   "main": "build/nlmaps-geolocator.cjs.js",
   "module": "build/nlmaps-geolocator.es.js",

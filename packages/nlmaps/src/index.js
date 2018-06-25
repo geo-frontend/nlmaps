@@ -351,7 +351,6 @@ nlmaps.clickProvider = function(map) {
       sink(1, e)
     });
     const talkback = (t, d) => {
-      console.log('bye bye')
       };
     sink(0, talkback);
   };

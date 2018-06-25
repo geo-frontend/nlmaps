@@ -80,7 +80,8 @@
             },
             "zoom": 8,
             "attribution": true,
-            "extent": [-180, -90, 180, 90]
+            "extent": [-180, -90, 180, 90],
+            "zoomposition": "topright"
         },
         "marker": {
             "url": "./assets/img/marker_icon.svg",
@@ -171,7 +172,7 @@
         CONFIG.GEOCODER.suggestUrl = geocoder.suggestUrl;
     }
     function parseMap(map) {
-        CONFIG.MAP = mergeConfig({}, map);
+        CONFIG.MAP = mergeConfig(CONFIG.MAP, map);
     }
 
     function formatBasemapUrl(layer) {
@@ -216,7 +217,7 @@
     }
 
     if (config.featureQuery !== undefined) parseFeatureQuery(config.featureQuery.baseUrl);
-    parseMap(config.map);
+    if (config.map !== undefined) parseMap(config.map);
     parseBase(config.basemaps);
     if (config.wms !== undefined) parseWMS(config.wms);
     if (config.geocoder !== undefined) parseGeocoder(config.geocoder);

@@ -8058,9 +8058,7 @@ nlmaps.clickProvider = function (map) {
     map.on('click', function (e) {
       sink(1, e);
     });
-    var talkback = function talkback(t, d) {
-      console.log('bye bye');
-    };
+    var talkback = function talkback(t, d) {};
     sink(0, talkback);
   };
   clickSource.subscribe = function (callback) {

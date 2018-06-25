@@ -75,9 +75,6 @@ test('marker functions', function(t){
   let markers = require('../../lib/markers.js');
   t.equal(typeof markers.markerStore, 'object', 'markers exports markerStore object');
   t.equal(typeof markers.markerStore.removeMarker, 'function', 'markerStore has removeMarker method');
-  markers.markerStore.marker = 'dummy marker';
-  t.equal(markers.markerStore.marker, 'dummy marker', 'markerStore.marker can be set');
-  t.throws(markers.markerStore.removeMarker, /markerStore.marker.remove is not a function/, 'removeMarker cannot remove the marker  because it isnt a real L.marker');
   t.end();
 
 })

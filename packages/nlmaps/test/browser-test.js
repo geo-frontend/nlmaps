@@ -8,7 +8,7 @@ function myHandler(t, d) {
   }
 }
 
-function popupCreator(d) {
+function popupCreator(d,marker) {
   let div = document.createElement('div');
   let button = document.createElement('button');
   let p = document.createElement('p');
@@ -20,7 +20,7 @@ function popupCreator(d) {
   div.append(p);
   button.innerHTML = 'verwijder';
   function removeMarker () {
-    this.removeMarker()
+    this.removeMarker(marker)
   }
   button.addEventListener('click', removeMarker.bind(this))
   div.append(button);
@@ -47,7 +47,7 @@ function responseFormatter(res) {
 }
 
 
-let singleMarker =  nlmaps.singleMarker(map, popupCreator)
+let singleMarker =  nlmaps.multiMarker(map, popupCreator)
 /* eslint-disable-next-line max-len */
 let featureQuery = nlmaps.queryFeatures(clicks, "https://api.data.amsterdam.nl/bag/nummeraanduiding/?format=json&locatie=", requestFormatter, responseFormatter);
 featureQuery.subscribe(singleMarker)

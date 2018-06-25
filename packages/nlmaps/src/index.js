@@ -35,7 +35,7 @@ import geoLocator from '../../nlmaps-geolocator/src/index.js';
 
 import { mapPointerStyle } from '../../lib/index.js';
 import { queryFeatures }  from '../../lib/featurequery.js';
-import {singleMarker, markerStore } from '../../lib/markers.js';
+import {singleMarker, multiMarker, markerStore } from '../../lib/markers.js';
 
 let nlmaps = {
   leaflet: {
@@ -307,8 +307,10 @@ nlmaps.createMap = function(useropts = {}) {
     if (typeof opts.marker === "boolean") {
       markerLocation = getMapCenter(nlmaps.lib, map);
     }
-    markerStore.marker = createMarkerLayer(nlmaps.lib, map, markerLocation);
-    addLayerToMap(nlmaps.lib, markerStore.marker, map);
+    let marker = createMarkerLayer(nlmaps.lib, map, markerLocation);
+
+    markerStore.addMarker(marker, true);
+    addLayerToMap(nlmaps.lib, marker, map);
   }
 
   // Overlay layer
@@ -373,6 +375,7 @@ nlmaps.clickProvider = function(map) {
 
 nlmaps.queryFeatures = queryFeatures;
 nlmaps.singleMarker = singleMarker;
+nlmaps.multiMarker = multiMarker;
 
 
 export {nlmaps};

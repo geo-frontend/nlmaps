@@ -18,6 +18,27 @@ let markerStore = {
   }
 };
 
+function createAndAddMarker(map, d, popupCreator) {
+    let newmarker = L.marker([d.latlng.lat,d.latlng.lng], {
+        alt: 'marker',
+        icon: new L.icon({
+            iconUrl: getMarker().url,
+            iconSize: getMarker().iconSize,
+            iconAnchor: getMarker().iconAnchor
+        })
+    });
+    newmarker.addTo(map);
+    if (popupCreator) {
+        let div = popupCreator.call(markerStore, d, newmarker);
+        let popup = L.popup({offset: [0,-50]})
+            .setContent(div)
+        newmarker.bindPopup(popup).openPopup();
+        markerStore.addMarker(newmarker);
+    } else {
+        markerStore.addMarker(newmarker, true);
+    }
+}
+
 function singleMarker(map, popupCreator) {
   mapPointerStyle(map);
   return (t, d) => {
@@ -25,22 +46,7 @@ function singleMarker(map, popupCreator) {
       if (markerStore.markers[0]) {
         markerStore.removeMarker(markerStore.markers[0]);
       }
-      let newmarker = L.marker([d.latlng.lat,d.latlng.lng], {
-        alt: 'marker',
-        icon: new L.icon({
-          iconUrl: getMarker().url,
-          iconSize: getMarker().iconSize,
-          iconAnchor: getMarker().iconAnchor
-        })
-      });
-      markerStore.addMarker(newmarker);
-      newmarker.addTo(map);
-      if (popupCreator) {
-        let div = popupCreator.call(markerStore, d, newmarker);
-        let popup = L.popup({offset: [0,-50]})
-          .setContent(div)
-        newmarker.bindPopup(popup).openPopup();
-      }
+      createAndAddMarker(map, d, popupCreator);
     }
   }
 }
@@ -49,27 +55,7 @@ function multiMarker(map, popupCreator) {
   mapPointerStyle(map);
   return (t, d) => {
     if (t === 1 ) {
-      let newmarker = L.marker([d.latlng.lat,d.latlng.lng], {
-        alt: 'marker',
-        icon: new L.icon({
-          iconUrl: getMarker().url,
-          iconSize: getMarker().iconSize,
-          iconAnchor: getMarker().iconAnchor
-        })
-      });
-      markerStore.addMarker(newmarker);
-      newmarker.addTo(map);
-      if (popupCreator) {
-        let div = popupCreator.call(markerStore, d, newmarker);
-        let popup = L.popup({offset: [0,-50]})
-          .setContent(div)
-        newmarker.bindPopup(popup).openPopup();
-      } else {
-        newmarker.on('click', function() {
-          markerStore.removeMarker(newmarker);
-        })
-      }
-      
+      createAndAddMarker(map, d, popupCreator);
     }
   }
 

@@ -1,4 +1,5 @@
 import 'babel-polyfill';
+import emitonoff from 'emitonoff';
 import { bgLayer as bgL,
          overlayLayer as overlayL,
          markerLayer as markerL,
@@ -60,6 +61,8 @@ let nlmaps = {
   }
 };
 
+//set nlmaps up as event bus
+emitonoff(nlmaps);
 
 
 //for future use
@@ -313,6 +316,12 @@ nlmaps.createMap = function(useropts = {}) {
     const overlayLayer = createOverlayLayer(nlmaps.lib, map, opts.overlay);
     addLayerToMap(nlmaps.lib, overlayLayer, map);
   }
+  //add click event passing through L click event
+  if ( map !== undefined ) {
+    map.on('click', function(e) {
+      nlmaps.emit('mapclick', e);
+    })
+  }
   return map;
 };
 
@@ -343,6 +352,7 @@ nlmaps.geoLocate = function(map, useropts = {}){
   addGeoLocControlToMap(nlmaps.lib, geolocator, map);
 }
 
+
 nlmaps.clickProvider = function(map) {
   mapPointerStyle(map);
   const clickSource = function (start, sink) {
@@ -360,7 +370,9 @@ nlmaps.clickProvider = function(map) {
   return clickSource;
 }
 
+
 nlmaps.queryFeatures = queryFeatures;
 nlmaps.singleMarker = singleMarker;
+
 
 export {nlmaps};

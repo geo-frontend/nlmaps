@@ -48,6 +48,7 @@ function responseFormatter(res) {
 
 
 let singleMarker =  nlmaps.singleMarker(map, popupCreator)
+/* eslint-disable-next-line max-len */
 let featureQuery = nlmaps.queryFeatures(clicks, "https://api.data.amsterdam.nl/bag/nummeraanduiding/?format=json&locatie=", requestFormatter, responseFormatter);
 featureQuery.subscribe(singleMarker)
 

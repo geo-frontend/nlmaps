@@ -41,7 +41,7 @@
 .nlmaps-geocoder-control-container input[type="text"]{
   flex-grow: 1;
   padding: 4px 10px;
-  
+
   border: none;
   background-color: rgb(255, 255, 255);
   box-shadow: rgba(0, 0, 0, 0.65) 0px 1px 5px;
@@ -49,7 +49,7 @@
   border-radius: 5px 0px 0px 5px;
   outline: none;
 }
-.nlmaps-geocoder-control-button { 
+.nlmaps-geocoder-control-button {
   width: 34px;
   border: none;
   background-color: rgb(255, 255, 255);
@@ -65,7 +65,7 @@
   background-color: #6c62a6;
   color: #fff;
 }
-.nlmaps-geocoder-control-button:hover path {  
+.nlmaps-geocoder-control-button:hover path {
   color: #fff;
 }
 
@@ -76,6 +76,10 @@
   background-color: #fff;
   border-radius: 5px 5px;
   box-shadow: 0 1px 5px rgba(0, 0, 0, 0.65);
+}
+
+.nlmaps-geocoder-result-selected {
+  font-weight: bold;
 }
 
 .nlmaps-geocoder-result-list li {

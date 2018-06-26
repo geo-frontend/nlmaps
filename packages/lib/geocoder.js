@@ -1,4 +1,5 @@
 import {CONFIG} from './configParser';
+
 const geocoder = CONFIG.GEOCODER;
 
 function httpGetAsync(url) {
@@ -97,13 +98,16 @@ geocoder.createControl = function(zoomFunction, map) {
                 }
                 this.showLookupResult(results[this.selectedResult]);
             }
+            if(e.code === 'Escape') {
+
+                this.clearSuggestResults(true);
+            }
         }
     })
     input.addEventListener('input', (e) => {
 
         this.suggest(e.target.value);
     });
-
     input.addEventListener('focus', (e) => {
         this.suggest(e.target.value);
     });
@@ -111,7 +115,7 @@ geocoder.createControl = function(zoomFunction, map) {
     searchDiv.addEventListener('submit',(e)=>{
         e.preventDefault();
         if(this.resultList.length>0) {
-            this.lookup(this.resultList[this.selectedResult].id)
+            this.lookup(this.resultList[this.selectedResult<0?0:this.selectedResult].id);
         }
     })
     button.setAttribute('aria-label', 'Zoomen naar adres');
@@ -148,8 +152,9 @@ geocoder.lookup = function (id) {
     });
 }
 
-geocoder.clearSuggestResults = function() {
+geocoder.clearSuggestResults = function(input) {
     this.selectedResult = -1;
+    if(input)document.getElementById('nlmaps-geocoder-control-input').value = '';
     document.getElementById('nlmaps-geocoder-control-results').innerHTML = '';
     document.getElementById('nlmaps-geocoder-control-results').classList.add('nlmaps-hidden');
 
@@ -158,7 +163,8 @@ geocoder.clearSuggestResults = function() {
 geocoder.showLookupResult = function(result) {
     let resultNodes = document.getElementsByClassName(CONFIG.CLASSNAMES.geocoderResultItem)
     Array.prototype.map.call(resultNodes,i=>i.classList.remove(CONFIG.CLASSNAMES.geocoderResultSelected));
-    document.getElementById(result.id).classList.add(CONFIG.CLASSNAMES.geocoderResultSelected);
+    let resultNode = document.getElementById(result.id);
+    if(resultNode)resultNode.classList.add(CONFIG.CLASSNAMES.geocoderResultSelected);
     document.getElementById('nlmaps-geocoder-control-input').value = result.weergavenaam;
 }
 

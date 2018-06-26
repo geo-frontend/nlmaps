@@ -345,7 +345,7 @@ function addGeoLocControlToMap(lib, geolocator, map){
 }
 
 function addGeocoderControlToMap(lib, map){
-  nlmaps[lib].geocoderControl(map);
+  nlmaps[lib].geocoderControl(map, nlmaps);
 }
 
 nlmaps.geoLocate = function(map, useropts = {}){

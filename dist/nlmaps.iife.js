@@ -7305,7 +7305,7 @@
 	  map.fitBounds(L.geoJSON(point).getBounds(), { maxZoom: 18 });
 	}
 
-	function geocoderControl(map) {
+	function geocoderControl(map, nlmaps) {
 	  var control = geocoder.createControl(zoomTo, map, nlmaps);
 	  map.getContainer().parentElement.prepend(control);
 	}
@@ -8182,7 +8182,7 @@
 	}
 
 	function addGeocoderControlToMap(lib, map) {
-	  nlmaps$1[lib].geocoderControl(map);
+	  nlmaps$1[lib].geocoderControl(map, nlmaps$1);
 	}
 
 	nlmaps$1.geoLocate = function (map) {

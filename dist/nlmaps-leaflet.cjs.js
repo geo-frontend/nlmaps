@@ -653,7 +653,7 @@ function zoomTo(point, map) {
   map.fitBounds(L.geoJSON(point).getBounds(), { maxZoom: 18 });
 }
 
-function geocoderControl(map) {
+function geocoderControl(map, nlmaps) {
   var control = geocoder.createControl(zoomTo, map, nlmaps);
   map.getContainer().parentElement.prepend(control);
 }

@@ -1,4 +1,5 @@
 import 'babel-polyfill';
+import emitonoff from 'emitonoff';
 import { bgLayer as bgL,
          overlayLayer as overlayL,
          markerLayer as markerL,
@@ -34,7 +35,7 @@ import geoLocator from '../../nlmaps-geolocator/src/index.js';
 
 import { mapPointerStyle } from '../../lib/index.js';
 import { queryFeatures }  from '../../lib/featurequery.js';
-import {singleMarker, markerStore } from '../../lib/markers.js';
+import {singleMarker, multiMarker, markerStore } from '../../lib/markers.js';
 
 let nlmaps = {
   leaflet: {
@@ -60,6 +61,8 @@ let nlmaps = {
   }
 };
 
+//set nlmaps up as event bus
+emitonoff(nlmaps);
 
 
 //for future use
@@ -304,14 +307,22 @@ nlmaps.createMap = function(useropts = {}) {
     if (typeof opts.marker === "boolean") {
       markerLocation = getMapCenter(nlmaps.lib, map);
     }
-    markerStore.marker = createMarkerLayer(nlmaps.lib, map, markerLocation);
-    addLayerToMap(nlmaps.lib, markerStore.marker, map);
+    let marker = createMarkerLayer(nlmaps.lib, map, markerLocation);
+
+    markerStore.addMarker(marker, true);
+    addLayerToMap(nlmaps.lib, marker, map);
   }
 
   // Overlay layer
   if (opts.overlay && opts.overlay !== 'false') {
     const overlayLayer = createOverlayLayer(nlmaps.lib, map, opts.overlay);
     addLayerToMap(nlmaps.lib, overlayLayer, map);
+  }
+  //add click event passing through L click event
+  if ( map !== undefined ) {
+    map.on('click', function(e) {
+      nlmaps.emit('mapclick', e);
+    })
   }
   return map;
 };
@@ -343,6 +354,7 @@ nlmaps.geoLocate = function(map, useropts = {}){
   addGeoLocControlToMap(nlmaps.lib, geolocator, map);
 }
 
+
 nlmaps.clickProvider = function(map) {
   mapPointerStyle(map);
   const clickSource = function (start, sink) {
@@ -360,7 +372,10 @@ nlmaps.clickProvider = function(map) {
   return clickSource;
 }
 
+
 nlmaps.queryFeatures = queryFeatures;
 nlmaps.singleMarker = singleMarker;
+nlmaps.multiMarker = multiMarker;
+
 
 export {nlmaps};

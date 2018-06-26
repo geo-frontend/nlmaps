@@ -61,6 +61,7 @@ geocoder.doLookupRequest = function(id) {
 geocoder.createControl = function(zoomFunction, map) {
     this.zoomTo = zoomFunction;
     this.map = map;
+    this.nlmaps = nlmaps;
     const container = document.createElement('div');
     const searchDiv = document.createElement('form');
     const input = document.createElement('input');
@@ -147,7 +148,8 @@ geocoder.suggest = function(query) {
 geocoder.lookup = function (id) {
     this.doLookupRequest(id).then((result) => {
         this.zoomTo(result.centroide_ll, this.map);
-        this.showLookupResult(result);
+        this.nlmaps.emit('search-select', result.centroide_ll);
+        this.showLookupResult(result.weergavenaam);
         this.clearSuggestResults();
     });
 }

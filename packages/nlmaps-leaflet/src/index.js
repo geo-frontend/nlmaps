@@ -154,7 +154,7 @@ function zoomTo(point, map) {
 }
 
 function geocoderControl(map) {
-  const control = geocoder.createControl(zoomTo, map);
+  const control = geocoder.createControl(zoomTo, map, nlmaps);
   map.getContainer().parentElement.prepend(control);
 }
 

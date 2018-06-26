@@ -101,6 +101,7 @@ export default {
         'geocoderSearch': ['nlmaps-geocoder-control-search'],
         'geocoderButton': ['nlmaps-geocoder-control-button'],
         'geocoderResultList': ['nlmaps-geocoder-result-list'],
-        'geocoderResultItem' : ['nlmaps-geocoder-result-item']
+        'geocoderResultItem' : ['nlmaps-geocoder-result-item'],
+        'geocoderResultSelected' : ['nlmaps-geocoder-result-selected']
     }
 }

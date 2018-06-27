@@ -58,7 +58,7 @@ geocoder.doLookupRequest = function(id) {
     });
 }
 
-geocoder.createControl = function(zoomFunction, map) {
+geocoder.createControl = function(zoomFunction, map, nlmaps) {
     this.zoomTo = zoomFunction;
     this.map = map;
     this.nlmaps = nlmaps;

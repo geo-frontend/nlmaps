@@ -6936,7 +6936,7 @@
 	    });
 	};
 
-	geocoder.createControl = function (zoomFunction, map) {
+	geocoder.createControl = function (zoomFunction, map, nlmaps) {
 	    var _this = this;
 
 	    this.zoomTo = zoomFunction;
@@ -7897,7 +7897,7 @@
 	  };
 	}
 
-	var nlmaps$1 = {
+	var nlmaps = {
 	  leaflet: {
 	    bgLayer: bgLayer,
 	    overlayLayer: overlayLayer,
@@ -7922,7 +7922,7 @@
 	};
 
 	//set nlmaps up as event bus
-	emitonoff(nlmaps$1);
+	emitonoff(nlmaps);
 
 	//for future use
 	var geoLocateDefaultOpts$1 = {};
@@ -8050,13 +8050,13 @@
 	  var bgLayer$$1 = void 0;
 	  switch (lib) {
 	    case 'leaflet':
-	      bgLayer$$1 = nlmaps$1.leaflet.bgLayer(name);
+	      bgLayer$$1 = nlmaps.leaflet.bgLayer(name);
 	      break;
 	    case 'googlemaps':
-	      bgLayer$$1 = nlmaps$1.googlemaps.bgLayer(map, name);
+	      bgLayer$$1 = nlmaps.googlemaps.bgLayer(map, name);
 	      break;
 	    case 'openlayers':
-	      bgLayer$$1 = nlmaps$1.openlayers.bgLayer(name);
+	      bgLayer$$1 = nlmaps.openlayers.bgLayer(name);
 	      break;
 	  }
 	  return bgLayer$$1;
@@ -8066,13 +8066,13 @@
 	  var overlayLayer$$1 = void 0;
 	  switch (lib) {
 	    case 'leaflet':
-	      overlayLayer$$1 = nlmaps$1.leaflet.overlayLayer(name);
+	      overlayLayer$$1 = nlmaps.leaflet.overlayLayer(name);
 	      break;
 	    case 'googlemaps':
-	      overlayLayer$$1 = nlmaps$1.googlemaps.overlayLayer(map, name);
+	      overlayLayer$$1 = nlmaps.googlemaps.overlayLayer(map, name);
 	      break;
 	    case 'openlayers':
-	      overlayLayer$$1 = nlmaps$1.openlayers.overlayLayer(name);
+	      overlayLayer$$1 = nlmaps.openlayers.overlayLayer(name);
 	      break;
 	  }
 	  return overlayLayer$$1;
@@ -8082,13 +8082,13 @@
 	  var markerLayer$$1 = void 0;
 	  switch (lib) {
 	    case 'leaflet':
-	      markerLayer$$1 = nlmaps$1.leaflet.markerLayer(latLngObject);
+	      markerLayer$$1 = nlmaps.leaflet.markerLayer(latLngObject);
 	      break;
 	    case 'googlemaps':
-	      markerLayer$$1 = nlmaps$1.googlemaps.markerLayer(latLngObject);
+	      markerLayer$$1 = nlmaps.googlemaps.markerLayer(latLngObject);
 	      break;
 	    case 'openlayers':
-	      markerLayer$$1 = nlmaps$1.openlayers.markerLayer(latLngObject);
+	      markerLayer$$1 = nlmaps.openlayers.markerLayer(latLngObject);
 	      break;
 	  }
 	  return markerLayer$$1;
@@ -8114,51 +8114,51 @@
 	  return _extends({}, defaultopts, useropts);
 	}
 
-	nlmaps$1.lib = testWhichLib();
+	nlmaps.lib = testWhichLib();
 
-	nlmaps$1.createMap = function () {
+	nlmaps.createMap = function () {
 	  var useropts = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
 
 	  var opts = mergeOpts(CONFIG.MAP, useropts);
 	  try {
-	    if (nlmaps$1.lib == 'too many libs' || nlmaps$1.lib === 'too few libs') {
+	    if (nlmaps.lib == 'too many libs' || nlmaps.lib === 'too few libs') {
 	      throw { message: 'one and only one map library can be defined. Please Refer to the documentation to see which map libraries are supported.' };
 	    }
 	  } catch (e) {
 	    // eslint-disable-next-line no-console
 	    console.error(e.message);
 	  }
-	  var map = initMap(nlmaps$1.lib, opts);
+	  var map = initMap(nlmaps.lib, opts);
 	  // Background layer
-	  var backgroundLayer = createBackgroundLayer(nlmaps$1.lib, map, opts.style);
-	  addLayerToMap(nlmaps$1.lib, backgroundLayer, map, opts.style);
+	  var backgroundLayer = createBackgroundLayer(nlmaps.lib, map, opts.style);
+	  addLayerToMap(nlmaps.lib, backgroundLayer, map, opts.style);
 
 	  // Geocoder
 	  if (opts.search) {
-	    addGeocoderControlToMap(nlmaps$1.lib, map);
+	    addGeocoderControlToMap(nlmaps.lib, map);
 	  }
 
 	  // Marker layer
 	  if (opts.marker) {
 	    var markerLocation = opts.marker;
 	    if (typeof opts.marker === "boolean") {
-	      markerLocation = getMapCenter$3(nlmaps$1.lib, map);
+	      markerLocation = getMapCenter$3(nlmaps.lib, map);
 	    }
-	    var marker = createMarkerLayer(nlmaps$1.lib, map, markerLocation);
+	    var marker = createMarkerLayer(nlmaps.lib, map, markerLocation);
 
 	    markerStore.addMarker(marker, true);
-	    addLayerToMap(nlmaps$1.lib, marker, map);
+	    addLayerToMap(nlmaps.lib, marker, map);
 	  }
 
 	  // Overlay layer
 	  if (opts.overlay && opts.overlay !== 'false') {
-	    var overlayLayer$$1 = createOverlayLayer(nlmaps$1.lib, map, opts.overlay);
-	    addLayerToMap(nlmaps$1.lib, overlayLayer$$1, map);
+	    var overlayLayer$$1 = createOverlayLayer(nlmaps.lib, map, opts.overlay);
+	    addLayerToMap(nlmaps.lib, overlayLayer$$1, map);
 	  }
 	  //add click event passing through L click event
 	  if (map !== undefined) {
 	    map.on('click', function (e) {
-	      nlmaps$1.emit('mapclick', e);
+	      nlmaps.emit('mapclick', e);
 	    });
 	  }
 	  return map;
@@ -8168,32 +8168,32 @@
 	  var control = void 0;
 	  switch (lib) {
 	    case 'leaflet':
-	      nlmaps$1[lib].geoLocatorControl(geolocator).addTo(map);
+	      nlmaps[lib].geoLocatorControl(geolocator).addTo(map);
 	      break;
 	    case 'googlemaps':
-	      control = nlmaps$1[lib].geoLocatorControl(geolocator, map);
+	      control = nlmaps[lib].geoLocatorControl(geolocator, map);
 	      map.controls[google.maps.ControlPosition.TOP_RIGHT].push(control);
 	      break;
 	    case 'openlayers':
-	      control = nlmaps$1[lib].geoLocatorControl(geolocator, map);
+	      control = nlmaps[lib].geoLocatorControl(geolocator, map);
 	      map.addControl(control);
 	      break;
 	  }
 	}
 
 	function addGeocoderControlToMap(lib, map) {
-	  nlmaps$1[lib].geocoderControl(map, nlmaps$1);
+	  nlmaps[lib].geocoderControl(map, nlmaps);
 	}
 
-	nlmaps$1.geoLocate = function (map) {
+	nlmaps.geoLocate = function (map) {
 	  var useropts = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
 
 	  var opts = mergeOpts(geoLocateDefaultOpts$1, useropts);
 	  var geolocator = geoLocator(opts);
-	  addGeoLocControlToMap(nlmaps$1.lib, geolocator, map);
+	  addGeoLocControlToMap(nlmaps.lib, geolocator, map);
 	};
 
-	nlmaps$1.clickProvider = function (map) {
+	nlmaps.clickProvider = function (map) {
 	  mapPointerStyle(map);
 	  var clickSource = function clickSource(start, sink) {
 	    if (start !== 0) return;
@@ -8209,11 +8209,11 @@
 	  return clickSource;
 	};
 
-	nlmaps$1.queryFeatures = queryFeatures;
-	nlmaps$1.singleMarker = singleMarker;
-	nlmaps$1.multiMarker = multiMarker;
+	nlmaps.queryFeatures = queryFeatures;
+	nlmaps.singleMarker = singleMarker;
+	nlmaps.multiMarker = multiMarker;
 
-	exports.nlmaps = nlmaps$1;
+	exports.nlmaps = nlmaps;
 
 }((this.window = this.window || {})));
 //# sourceMappingURL=nlmaps.iife.js.map

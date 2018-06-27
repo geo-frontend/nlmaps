@@ -279,7 +279,7 @@ geocoder.doLookupRequest = function (id) {
     });
 };
 
-geocoder.createControl = function (zoomFunction, map) {
+geocoder.createControl = function (zoomFunction, map, nlmaps) {
     var _this = this;
 
     this.zoomTo = zoomFunction;

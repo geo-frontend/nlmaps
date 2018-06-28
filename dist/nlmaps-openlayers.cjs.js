@@ -283,11 +283,12 @@ geocoder.doLookupRequest = function (id) {
     });
 };
 
-geocoder.createControl = function (zoomFunction, map) {
+geocoder.createControl = function (zoomFunction, map, nlmaps) {
     var _this = this;
 
     this.zoomTo = zoomFunction;
     this.map = map;
+    this.nlmaps = nlmaps;
     var container = document.createElement('div');
     var searchDiv = document.createElement('form');
     var input = document.createElement('input');
@@ -381,6 +382,7 @@ geocoder.lookup = function (id) {
 
     this.doLookupRequest(id).then(function (result) {
         _this3.zoomTo(result.centroide_ll, _this3.map);
+        _this3.nlmaps.emit('search-select', result.centroide_ll);
         _this3.showLookupResult(result);
         _this3.clearSuggestResults();
     });

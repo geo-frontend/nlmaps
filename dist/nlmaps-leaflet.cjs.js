@@ -283,11 +283,12 @@ geocoder.doLookupRequest = function (id) {
     });
 };
 
-geocoder.createControl = function (zoomFunction, map) {
+geocoder.createControl = function (zoomFunction, map, nlmaps) {
     var _this = this;
 
     this.zoomTo = zoomFunction;
     this.map = map;
+    this.nlmaps = nlmaps;
     var container = document.createElement('div');
     var searchDiv = document.createElement('form');
     var input = document.createElement('input');
@@ -316,13 +317,13 @@ geocoder.createControl = function (zoomFunction, map) {
     input.addEventListener('keydown', function (e) {
         var results = _this.resultList;
         if (_this.resultList.length > 0) {
-            if (e.code === 'ArrowDown') {
+            if (e.code === 'ArrowDown' || e.keyCode === 40) {
                 if (_this.selectedResult < _this.resultList.length - 1) {
                     _this.selectedResult++;
                 }
                 _this.showLookupResult(results[_this.selectedResult]);
             }
-            if (e.code === 'ArrowUp') {
+            if (e.code === 'ArrowUp' || e.keyCode === 38) {
                 if (_this.selectedResult > 0) {
                     _this.selectedResult--;
                 }
@@ -381,6 +382,7 @@ geocoder.lookup = function (id) {
 
     this.doLookupRequest(id).then(function (result) {
         _this3.zoomTo(result.centroide_ll, _this3.map);
+        _this3.nlmaps.emit('search-select', result.centroide_ll);
         _this3.showLookupResult(result);
         _this3.clearSuggestResults();
     });
@@ -651,8 +653,8 @@ function zoomTo(point, map) {
   map.fitBounds(L.geoJSON(point).getBounds(), { maxZoom: 18 });
 }
 
-function geocoderControl(map) {
-  var control = geocoder.createControl(zoomTo, map);
+function geocoderControl(map, nlmaps) {
+  var control = geocoder.createControl(zoomTo, map, nlmaps);
   map.getContainer().parentElement.prepend(control);
 }
 

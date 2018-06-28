@@ -1,4 +1,3 @@
-import 'babel-polyfill';
 import emitonoff from 'emitonoff';
 import { bgLayer as bgL,
          overlayLayer as overlayL,

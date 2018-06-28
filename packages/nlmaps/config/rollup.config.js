@@ -22,7 +22,7 @@ export default config => {
     external: config.external,
 
     plugins: [
-      (!process.env.STANDALONE && polyfill('src/index.js', ['babel-polyfill'])),
+      (process.env.STANDALONE === undefined && polyfill('src/index.js', ['babel-polyfill'])),
       commonjs(),
       resolve({
         jsnext: true,

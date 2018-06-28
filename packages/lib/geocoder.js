@@ -86,14 +86,14 @@ geocoder.createControl = function(zoomFunction, map, nlmaps) {
     input.addEventListener('keydown',(e)=>{
         let results = this.resultList;
         if(this.resultList.length > 0) {
-            if(e.code === 'ArrowDown') {
+            if(e.code === 'ArrowDown' || e.keyCode === 40) {
                 if(this.selectedResult<this.resultList.length-1) {
                     this.selectedResult++;
                 }
                 this.showLookupResult(results[this.selectedResult]);
 
             }
-            if(e.code === 'ArrowUp') {
+            if(e.code === 'ArrowUp' || e.keyCode === 38) {
                 if(this.selectedResult > 0) {
                     this.selectedResult--;
                 }

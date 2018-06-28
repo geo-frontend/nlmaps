@@ -6,6 +6,7 @@ import commonjs from '../../../node_modules/rollup-plugin-commonjs/dist/rollup-p
 import replace from '../../../node_modules/rollup-plugin-replace/dist/rollup-plugin-replace.es.js';
 import json from '../../../node_modules/rollup-plugin-json/dist/rollup-plugin-json.es.js';
 import uglify from 'rollup-plugin-uglify-es';
+const polyfill = require('../../../node_modules/rollup-plugin-polyfill/index.js');
 
 
 export default config => {
@@ -21,6 +22,7 @@ export default config => {
     external: config.external,
 
     plugins: [
+      (!process.env.STANDALONE && polyfill('src/index.js', 'babel-polyfill')),
       commonjs(),
       resolve({
         jsnext: true,

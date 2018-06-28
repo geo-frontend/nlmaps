@@ -149,7 +149,7 @@ geocoder.lookup = function (id) {
     this.doLookupRequest(id).then((result) => {
         this.zoomTo(result.centroide_ll, this.map);
         this.nlmaps.emit('search-select', result.centroide_ll);
-        this.showLookupResult(result.weergavenaam);
+        this.showLookupResult(result);
         this.clearSuggestResults();
     });
 }

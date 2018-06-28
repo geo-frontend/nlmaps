@@ -7307,7 +7307,7 @@
 
 	function geocoderControl(map, nlmaps) {
 	  var control = geocoder.createControl(zoomTo, map, nlmaps);
-	  map.getContainer().parentElement.prepend(control);
+	  map.getContainer().parentElement.insertBefore(control, map.getContainer().parentElement[0]);
 	}
 
 	function getMapCenter(map) {

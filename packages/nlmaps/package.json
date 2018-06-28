@@ -1,6 +1,6 @@
 {
   "name": "nlmaps",
-  "version": "2.3.25",
+  "version": "2.3.29",
   "engines": {
     "node": ">=6.0.0 <=6.11"
   },
@@ -34,7 +34,7 @@
   "dependencies": {
     "emitonoff": "^0.1.1",
     "nlmaps-googlemaps": "^2.3.24",
-    "nlmaps-leaflet": "^2.3.23",
+    "nlmaps-leaflet": "^2.3.29",
     "nlmaps-openlayers": "^2.3.24",
     "rollup-plugin-uglify-es": "0.0.1"
   },

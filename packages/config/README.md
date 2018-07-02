@@ -66,6 +66,7 @@ A collection of arrays with classnames to be added to interface elements. This c
 * **geocoderButton** `array` used for the search button. default `nlmaps-geocoder-control-button`
 * **geocoderResultList** `array` used for the result list. default `nlmaps-geocoder-result-list`
 * **geocoderResultItem** `array` used for a single result item in the list. default `nlmaps-geocoder-result-item`
+* **geocoderResultSelected** `array` used for the selected result item in the list. default `nlmaps-geocoder-result-selected`
 
 ## Example
 ```
@@ -135,7 +136,9 @@ A collection of arrays with classnames to be added to interface elements. This c
         'geocoderSearch': ['nlmaps-geocoder-control-search'],
         'geocoderButton': ['nlmaps-geocoder-control-button'],
         'geocoderResultList': ['nlmaps-geocoder-result-list'],
-        'geocoderResultItem' : ['nlmaps-geocoder-result-item']
+        'geocoderResultItem' : ['nlmaps-geocoder-result-item'],
+        'geocoderResultSelected' : ['nlmaps-geocoder-result-selected']
+        
     }
 }
 ```

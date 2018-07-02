@@ -6,6 +6,7 @@
 * [Usage example](#usage-example)
 * [Getting set up](#getting-set-up)
 * [API documentation](#api-documentation)
+* [Events](#events)
 * [Advanced usage](#advanced-usage)
 * [Raw tile URLs](#raw-tile-urls)
 * [Developing](#developing)
@@ -302,6 +303,16 @@ Example with a custom popupCreator. Note that this function is bound to an objec
     const singleMarker = nlmaps.singleMarker(map, popupCreator);
     clicks.subscribe(singleMarker);
     
+## Events
+
+the `nlmaps` object produces the following events:
+
+* `mapclick` when the map is clicked. Returns the click event from the underlying map library.
+* `search-select` when the user selects a search result. Returns the lat/lon location of the result and the 'weergavenaam' of the result.
+
+You can subscribe a listener function to these events as follows:
+
+    nlmaps.on('event-name', listener)
 
 ## Advanced usage
 

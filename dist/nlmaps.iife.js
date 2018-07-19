@@ -7856,7 +7856,7 @@
 	  }
 	};
 
-	function createAndAddMarker(map, d, popupCreator) {
+	function createAndAddMarker(map, d, popupCreator, unclickable) {
 	  var newmarker = L.marker([d.latlng.lat, d.latlng.lng], {
 	    alt: 'marker',
 	    icon: new L.icon({
@@ -7870,6 +7870,8 @@
 	    var div = popupCreator.call(markerStore, d, newmarker);
 	    var popup = L.popup({ offset: [0, -50] }).setContent(div);
 	    newmarker.bindPopup(popup).openPopup();
+	    markerStore.addMarker(newmarker);
+	  } else if (unclickable) {
 	    markerStore.addMarker(newmarker);
 	  } else {
 	    markerStore.addMarker(newmarker, true);

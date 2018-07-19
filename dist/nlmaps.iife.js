@@ -6583,6 +6583,78 @@
 	  [][key] && define$1(Array, key, Function.call.bind([][key]));
 	});
 
+	var emitonoff = createCommonjsModule(function (module) {
+	var EmitOnOff = module.exports = function(thing){
+	  if (!thing) thing = {};
+
+	  thing._subs = [];
+	  thing._paused = false;
+	  thing._pending = [];
+
+	  /**
+	   * Sub of pubsub
+	   * @param  {String}   name name of event
+	   * @param  {Function} cb   your callback
+	   */
+	  thing.on = function(name, cb){
+	    thing._subs[name] = thing._subs[name] || [];
+	    thing._subs[name].push(cb);
+	  };
+
+	  /**
+	   * remove sub of pubsub
+	   * @param  {String}   name name of event
+	   * @param  {Function} cb   your callback
+	   */
+	  thing.off = function(name, cb){
+	    if (!thing._subs[name]) return;
+	    for (var i in thing._subs[name]){
+	      if (thing._subs[name][i] === cb){
+	        thing._subs[name].splice(i);
+	        break;
+	      }
+	    }
+	  };
+
+	  /**
+	   * Pub of pubsub
+	   * @param  {String}   name name of event
+	   * @param  {Mixed}    data the data to publish
+	   */
+	  thing.emit = function(name){
+	    if (!thing._subs[name]) return;
+
+	    var args = Array.prototype.slice.call(arguments, 1);
+
+	    if (thing._paused) {
+	      thing._pending[name] = thing._pending[name] || [];
+	      thing._pending[name].push(args);
+	      return
+	    }
+
+	    for (var i in thing._subs[name]){
+	      thing._subs[name][i].apply(thing, args);
+	    }
+	  };
+
+	  thing.pause = function() {
+	    thing._paused = true;
+	  };
+
+	  thing.resume = function() {
+	    thing._paused = false;
+
+	    for (var name in thing._pending) {
+	      for (var i = 0; i < thing._pending[name].length; i++) {
+	        thing.emit(name, thing._pending[name][i]);
+	      }
+	    }
+	  };
+
+	  return thing;
+	};
+	});
+
 	var config = {
 	    "version": 0.2,
 	    "basemaps": {
@@ -6864,11 +6936,12 @@
 	    });
 	};
 
-	geocoder.createControl = function (zoomFunction, map) {
+	geocoder.createControl = function (zoomFunction, map, nlmaps) {
 	    var _this = this;
 
 	    this.zoomTo = zoomFunction;
 	    this.map = map;
+	    this.nlmaps = nlmaps;
 	    var container = document.createElement('div');
 	    var searchDiv = document.createElement('form');
 	    var input = document.createElement('input');
@@ -6897,13 +6970,13 @@
 	    input.addEventListener('keydown', function (e) {
 	        var results = _this.resultList;
 	        if (_this.resultList.length > 0) {
-	            if (e.code === 'ArrowDown') {
+	            if (e.code === 'ArrowDown' || e.keyCode === 40) {
 	                if (_this.selectedResult < _this.resultList.length - 1) {
 	                    _this.selectedResult++;
 	                }
 	                _this.showLookupResult(results[_this.selectedResult]);
 	            }
-	            if (e.code === 'ArrowUp') {
+	            if (e.code === 'ArrowUp' || e.keyCode === 38) {
 	                if (_this.selectedResult > 0) {
 	                    _this.selectedResult--;
 	                }
@@ -6962,6 +7035,7 @@
 
 	    this.doLookupRequest(id).then(function (result) {
 	        _this3.zoomTo(result.centroide_ll, _this3.map);
+	        _this3.nlmaps.emit('search-select', { location: result.weergavenaam, latlng: result.centroide_ll });
 	        _this3.showLookupResult(result);
 	        _this3.clearSuggestResults();
 	    });
@@ -7231,9 +7305,9 @@
 	  map.fitBounds(L.geoJSON(point).getBounds(), { maxZoom: 18 });
 	}
 
-	function geocoderControl(map) {
-	  var control = geocoder.createControl(zoomTo, map);
-	  map.getContainer().parentElement.prepend(control);
+	function geocoderControl(map, nlmaps) {
+	  var control = geocoder.createControl(zoomTo, map, nlmaps);
+	  map.getContainer().parentElement.insertBefore(control, map.getContainer().parentElement[0]);
 	}
 
 	function getMapCenter(map) {
@@ -7591,7 +7665,7 @@
 	  map.getDiv().appendChild(control);
 	}
 
-	var emitonoff = createCommonjsModule(function (module) {
+	var emitonoff$1 = createCommonjsModule(function (module) {
 	  var EmitOnOff = module.exports = function (thing) {
 	    if (!thing) thing = {};
 
@@ -7701,7 +7775,7 @@
 	function geoLocator(opts) {
 	  var navigator = typeof window !== 'undefined' ? window.navigator || {} : {};
 	  if (typeof navigator !== 'undefined' && 'geolocation' in navigator) {
-	    var geolocator = emitonoff(GeoLocator(opts));
+	    var geolocator = emitonoff$1(GeoLocator(opts));
 	    geolocator.on('position', function () {
 	      this.stop();
 	    });
@@ -7762,38 +7836,65 @@
 	};
 
 	var markerStore = {
-	  removeMarker: function removeMarker() {
-	    markerStore.marker.remove();
-	    delete markerStore.marker;
+	  markers: [],
+	  removeMarker: function removeMarker(marker) {
+	    var idx = markerStore.markers.findIndex(function (x) {
+	      return x === marker;
+	    });
+	    markerStore.markers[idx].remove();
+	    markerStore.markers.splice(idx, 1);
+	  },
+	  addMarker: function addMarker(marker) {
+	    var remove = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : false;
+
+	    markerStore.markers.push(marker);
+	    if (remove) {
+	      marker.on('click', function () {
+	        markerStore.removeMarker(marker);
+	      });
+	    }
 	  }
 	};
+
+	function createAndAddMarker(map, d, popupCreator, unclickable) {
+	  var newmarker = L.marker([d.latlng.lat, d.latlng.lng], {
+	    alt: 'marker',
+	    icon: new L.icon({
+	      iconUrl: getMarker().url,
+	      iconSize: getMarker().iconSize,
+	      iconAnchor: getMarker().iconAnchor
+	    })
+	  });
+	  newmarker.addTo(map);
+	  if (popupCreator) {
+	    var div = popupCreator.call(markerStore, d, newmarker);
+	    var popup = L.popup({ offset: [0, -50] }).setContent(div);
+	    newmarker.bindPopup(popup).openPopup();
+	    markerStore.addMarker(newmarker);
+	  } else if (unclickable) {
+	    markerStore.addMarker(newmarker);
+	  } else {
+	    markerStore.addMarker(newmarker, true);
+	  }
+	}
 
 	function singleMarker(map, popupCreator) {
 	  mapPointerStyle(map);
 	  return function (t, d) {
 	    if (t === 1) {
-	      if (markerStore.marker) {
-	        markerStore.marker.remove();
+	      if (markerStore.markers[0]) {
+	        markerStore.removeMarker(markerStore.markers[0]);
 	      }
-	      var newmarker = L.marker([d.latlng.lat, d.latlng.lng], {
-	        alt: 'marker',
-	        icon: new L.icon({
-	          iconUrl: getMarker().url,
-	          iconSize: getMarker().iconSize,
-	          iconAnchor: getMarker().iconAnchor
-	        })
-	      });
-	      markerStore.marker = newmarker;
-	      markerStore.marker.addTo(map);
-	      if (popupCreator) {
-	        var div = popupCreator.call(markerStore, d);
-	        var popup = L.popup({ offset: [0, -50] }).setContent(div);
-	        markerStore.marker.bindPopup(popup).openPopup();
-	      } else {
-	        markerStore.marker.on('click', function () {
-	          markerStore.removeMarker();
-	        });
-	      }
+	      createAndAddMarker(map, d, popupCreator);
+	    }
+	  };
+	}
+
+	function multiMarker(map, popupCreator) {
+	  mapPointerStyle(map);
+	  return function (t, d) {
+	    if (t === 1) {
+	      createAndAddMarker(map, d, popupCreator);
 	    }
 	  };
 	}
@@ -7821,6 +7922,9 @@
 	    geocoderControl: geocoderControl$2
 	  }
 	};
+
+	//set nlmaps up as event bus
+	emitonoff(nlmaps);
 
 	//for future use
 	var geoLocateDefaultOpts$1 = {};
@@ -8042,14 +8146,22 @@
 	    if (typeof opts.marker === "boolean") {
 	      markerLocation = getMapCenter$3(nlmaps.lib, map);
 	    }
-	    markerStore.marker = createMarkerLayer(nlmaps.lib, map, markerLocation);
-	    addLayerToMap(nlmaps.lib, markerStore.marker, map);
+	    var marker = createMarkerLayer(nlmaps.lib, map, markerLocation);
+
+	    markerStore.addMarker(marker, true);
+	    addLayerToMap(nlmaps.lib, marker, map);
 	  }
 
 	  // Overlay layer
 	  if (opts.overlay && opts.overlay !== 'false') {
 	    var overlayLayer$$1 = createOverlayLayer(nlmaps.lib, map, opts.overlay);
 	    addLayerToMap(nlmaps.lib, overlayLayer$$1, map);
+	  }
+	  //add click event passing through L click event
+	  if (map !== undefined) {
+	    map.on('click', function (e) {
+	      nlmaps.emit('mapclick', e);
+	    });
 	  }
 	  return map;
 	};
@@ -8072,7 +8184,7 @@
 	}
 
 	function addGeocoderControlToMap(lib, map) {
-	  nlmaps[lib].geocoderControl(map);
+	  nlmaps[lib].geocoderControl(map, nlmaps);
 	}
 
 	nlmaps.geoLocate = function (map) {
@@ -8101,6 +8213,7 @@
 
 	nlmaps.queryFeatures = queryFeatures;
 	nlmaps.singleMarker = singleMarker;
+	nlmaps.multiMarker = multiMarker;
 
 	exports.nlmaps = nlmaps;
 

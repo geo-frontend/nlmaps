@@ -18,7 +18,7 @@ let markerStore = {
   }
 };
 
-function createAndAddMarker(map, d, popupCreator) {
+function createAndAddMarker(map, d, popupCreator, unclickable) {
     let newmarker = L.marker([d.latlng.lat,d.latlng.lng], {
         alt: 'marker',
         icon: new L.icon({
@@ -34,8 +34,10 @@ function createAndAddMarker(map, d, popupCreator) {
             .setContent(div)
         newmarker.bindPopup(popup).openPopup();
         markerStore.addMarker(newmarker);
+    } else if (unclickable) {
+      markerStore.addMarker(newmarker);
     } else {
-        markerStore.addMarker(newmarker, true);
+      markerStore.addMarker(newmarker, true);
     }
 }
 

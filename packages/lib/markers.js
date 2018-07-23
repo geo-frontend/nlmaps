@@ -40,24 +40,24 @@ function createAndAddMarker(map, d, popupCreator, unclickable) {
       markerStore.addMarker(newmarker, true);
     }
 }
-
-function singleMarker(map, popupCreator) {
+//TODO: discuss the various function parameters
+function singleMarker(map, popupCreator, unclickable) {
   mapPointerStyle(map);
-  return (t, d) => {
+  return (t, d, p, u) => {
     if (t === 1 ) {
       if (markerStore.markers[0]) {
         markerStore.removeMarker(markerStore.markers[0]);
       }
-      createAndAddMarker(map, d, popupCreator);
+      createAndAddMarker(map, d, popupCreator, u);
     }
   }
 }
 
-function multiMarker(map, popupCreator) {
+function multiMarker(map, popupCreator, unclickable) {
   mapPointerStyle(map);
   return (t, d) => {
     if (t === 1 ) {
-      createAndAddMarker(map, d, popupCreator);
+      createAndAddMarker(map, d, popupCreator, unclickable);
     }
   }
 

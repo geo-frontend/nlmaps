@@ -148,7 +148,7 @@ geocoder.suggest = function(query) {
 geocoder.lookup = function (id) {
     this.doLookupRequest(id).then((result) => {
         this.zoomTo(result.centroide_ll, this.map);
-        this.nlmaps.emit('search-select', {location: result.weergavenaam, latlng: result.centroide_ll});
+        this.nlmaps.emit('search-select', {location: result.weergavenaam, latlng: result.centroide_ll, resultObject: result});
         this.showLookupResult(result);
         this.clearSuggestResults();
     });

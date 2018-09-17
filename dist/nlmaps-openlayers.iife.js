@@ -381,7 +381,7 @@
 
         this.doLookupRequest(id).then(function (result) {
             _this3.zoomTo(result.centroide_ll, _this3.map);
-            _this3.nlmaps.emit('search-select', { location: result.weergavenaam, latlng: result.centroide_ll });
+            _this3.nlmaps.emit('search-select', { location: result.weergavenaam, latlng: result.centroide_ll, resultObject: result });
             _this3.showLookupResult(result);
             _this3.clearSuggestResults();
         });

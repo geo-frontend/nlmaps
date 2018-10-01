@@ -2,6 +2,7 @@ const geoLocateDefaultOpts = {
   follow: false
 }
 
+/* eslint-disable-next-line no-unused-vars */
 import emitonoff from 'emitonoff';
 
 function positionHandler(position) {

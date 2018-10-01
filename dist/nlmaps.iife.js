@@ -7739,8 +7739,9 @@
 
 	var geoLocateDefaultOpts = {
 	  follow: false
-	};
 
+	  /* eslint-disable-next-line no-unused-vars */
+	};
 	function positionHandler(position) {
 	  this.emit('position', position);
 	}

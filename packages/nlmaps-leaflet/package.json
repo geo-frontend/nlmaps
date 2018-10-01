@@ -1,6 +1,6 @@
 {
   "name": "nlmaps-leaflet",
-  "version": "2.3.33",
+  "version": "2.3.43",
   "description": "",
   "main": "build/nlmaps-leaflet.cjs.js",
   "module": "src/index.js",

@@ -9,10 +9,12 @@ import builtins from 'rollup-plugin-node-builtins';
 import globals from 'rollup-plugin-node-globals';
 
 export default {
-  entry: 'test/browser-test.js',
-  format: 'iife',
-  moduleName: 'browserTest',
-  dest: 'build/browser-test.js',
+  input: 'test/browser-test.js',
+  output: {
+    format: 'iife',
+    name: 'browserTest',
+    file: 'build/browser-test.js',
+  },
   plugins: [
     commonjs(),
     globals(),

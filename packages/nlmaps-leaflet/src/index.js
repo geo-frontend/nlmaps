@@ -1,5 +1,14 @@
-import { getProvider, getWmsProvider, geolocator_icon, geocoder, markerUrl } from '../../lib/index.js';
+import { getProvider, getWmsProvider, geocoder, getMarker, getExtent } from '../../lib/index.js';
 
+function extentLeafletFormat() {
+  let extent = getExtent();
+  let lowerLeft = L.latLng(extent[0], extent[1])
+  let upperRight = L.latLng(extent[2], extent[3])
+  let bounds = L.latLngBounds(lowerLeft, upperRight);
+  return bounds;
+}
+
+//TODO 'standaard' vervangen door eerste layer van baselayers
 if (typeof L !== 'undefined' && typeof L === 'object') {
 L.NlmapsBgLayer = L.TileLayer.extend({
   initialize: function(name='standaard', options) {
@@ -9,7 +18,8 @@ L.NlmapsBgLayer = L.TileLayer.extend({
       'maxZoom':      provider.maxZoom,
       'scheme':       'xyz',
       'attribution':  provider.attribution,
-      sa_id:          name
+      'subdomains':   provider.subdomains?provider.subdomains:'abc',
+       sa_id:          name
     });
     L.TileLayer.prototype.initialize.call(this, provider.url, opts);
   }
@@ -28,10 +38,10 @@ L.NlmapsOverlayLayer = L.TileLayer.WMS.extend({
     const url = wmsProvider.url;
     delete wmsProvider.url;
     const wmsParams = L.Util.extend({}, options, {
-      layers: wmsProvider.layers,
+      layers: wmsProvider.layerName,
       maxZoom: 24,
       minZoom: 1,
-      styles: wmsProvider.styles,
+      styles: wmsProvider.styleName,
       version: wmsProvider.version,
       transparent: wmsProvider.transparent,
       format: wmsProvider.format
@@ -65,13 +75,9 @@ L.Control.GeoLocatorControl = L.Control.extend({
   onAdd: function(map){
     let div = L.DomUtil.create('div');
     div.id = 'nlmaps-geolocator-control';
-    div.style.backgroundColor = '#fff';
-    div.style.cursor = 'pointer';
-    div.style.boxShadow = '0 1px 5px rgba(0, 0, 0, 0.65)';
-    div.style.height = '26px';
-    div.style.width = '26px';
-    div.style.borderRadius = '26px 26px';
-    div.innerHTML = geolocator_icon;
+    div.className='nlmaps-geolocator-control';
+    let img = document.createElement('img');
+    div.append(img);
     if (this.options.geolocator.isStarted()){
       L.DomUtil.addClass(div, 'started')
     }
@@ -116,10 +122,11 @@ function markerLayer(latLngObject) {
       lng = latLngObject.longitude;
     }
     return new L.marker([lat, lng], {
+      alt: 'marker',
       icon: new L.icon({
-        iconUrl: markerUrl,
-        iconSize: [64, 64],
-        iconAnchor: [32, 63]
+        iconUrl: getMarker().url,
+        iconSize: getMarker().iconSize,
+        iconAnchor: getMarker().iconAnchor
       })
     });
   }
@@ -138,7 +145,7 @@ function overlayLayer(name, options) {
 }
 
 function geoLocatorControl(geolocator) {
-  if (typeof L !== 'undefined' && typeof L == 'object') {
+  if (typeof L !== 'undefined' && typeof L === 'object') {
     return L.geoLocatorControl(geolocator);
   }
 }
@@ -146,9 +153,9 @@ function zoomTo(point, map) {
   map.fitBounds(L.geoJSON(point).getBounds(), {maxZoom: 18});
 }
 
-function geocoderControl(map) {
-  const control = geocoder.createControl(zoomTo, map);
-  map.getContainer().appendChild(control);
+function geocoderControl(map, nlmaps) {
+  const control = geocoder.createControl(zoomTo, map, nlmaps);
+  map.getContainer().parentElement.insertBefore(control,map.getContainer().parentElement[0])
 }
 
 function getMapCenter(map) {
@@ -171,4 +178,4 @@ function getMapCenter(map) {
 // standaard.addTo(map);
 // overlay.addTo(map);
 
-export { bgLayer, overlayLayer, markerLayer, getMapCenter, geoLocatorControl, geocoderControl};
+export { bgLayer, overlayLayer, markerLayer, extentLeafletFormat, getMapCenter, geoLocatorControl, geocoderControl};

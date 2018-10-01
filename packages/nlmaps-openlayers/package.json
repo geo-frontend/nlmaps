@@ -1,9 +1,9 @@
 {
   "name": "nlmaps-openlayers",
-  "version": "2.1.1",
+  "version": "2.3.43",
   "description": "",
   "main": "build/nlmaps-openlayers.cjs.js",
-  "module": "build/nlmaps-openlayers.es.js",
+  "module": "src/index.js",
   "scripts": {
     "test": "node test/test.js",
     "build": "rollup -c config/rollup.cjs.js && rollup -c config/rollup.es.js && rollup -c config/rollup.iife.js && cp build/nlmaps-openlayers.iife.js ../../dist/",
@@ -26,14 +26,16 @@
   },
   "homepage": "https://github.com:kadaster/nlmaps#README",
   "devDependencies": {
-    "openlayers": "^4.6.4",
-    "rollup-plugin-eslint": "^4.0.0",
+    "babel-plugin-transform-object-assign": "^6.22.0",
+    "rollup-plugin-eslint": "^5.0.0",
     "rollup-plugin-image": "^1.0.2",
     "rollup-plugin-node-builtins": "^2.1.2",
     "rollup-plugin-node-globals": "^1.1.0",
     "tape": "^4.6.3"
   },
   "dependencies": {
+    "ajv": "^6.5.0",
+    "fast-deep-equal": "^2.0.1",
     "rollup-plugin-uglify-es": "0.0.1"
   }
 }

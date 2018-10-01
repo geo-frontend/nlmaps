@@ -6,6 +6,7 @@
 * [Usage example](#usage-example)
 * [Getting set up](#getting-set-up)
 * [API documentation](#api-documentation)
+* [Events](#events)
 * [Advanced usage](#advanced-usage)
 * [Raw tile URLs](#raw-tile-urls)
 * [Developing](#developing)
@@ -201,6 +202,118 @@ Returns a `geolocator` control.
     const control = geoLocatorControl(geolocator);
     control.addTo(map);
 
+### `nlmaps.clickProvider(map)`
+
+**only Leaflet**
+
+creates an event provider for clicks on the map, which can be subscribed to with a listener function or used as input to `nlmaps.queryFeatures`.
+
+The click events returned are original [Leaflet click events](http://leafletjs.com/reference-1.3.0.html#map-click)
+
+
+Arguments:
+
+* map _object map_ (**required**). The map for which to emit click events.
+
+returns an object with a `subscribe` function which takes as an argument the callback that should handle the events. `clickProvider` follows the [callbag spec](https://github.com/callbag/callbag) so this callback should have the signature `callback(type, data)` and should expect `type` to be `1`.
+
+**Example (Leaflet)**
+
+    const clicks = nlmaps.clickProvider(map);
+    function myHandler(type, data) {
+      if (type === 1){
+        console.log(data)
+      }
+    }
+    clicks.subscribe(myHandler)
+
+The returned object is itself a `callbag` so it can be used with other `callbags`, as is done with `nlmaps.queryFeatures`.
+
+### `nlmaps.queryFeatures(clickProvider, baseUrl, requestFormatter, responseFormatter)`
+
+creates an interface to query an HTTP API with coordinates from clicks on the map.
+
+Arguments:
+
+* clickProvider _object_ (**required**). an `nlmaps.clickProvider`.
+* baseUrl _string_ (**required**). the base url for the API to be queried.
+* requestFormatter _function(baseUrl, xy) => formattedUrl string_ (**required**). A function which receives the base url and an xy object of the format `{x: longitude, y: latitude}` and must return the url with which to query the external API
+* responseFormatter _function(response) => anything_ (**required**). A function which receives the API response and can be used to handle the response before passing it on.
+
+Returns an object with a `subscribe` method which can be used to handle the response. This method takes as an argument a function of signature `callback(type, data)` and should expect `type` to be `1`. The `data` argument will be an object of signature:
+
+    {
+        latlng: {
+          lat: <latitude>,
+          lng: <longitude>
+        },
+        queryResult: <queryResult> from reponseFormatter
+    }
+
+**Example**
+
+    const clicks = nlmaps.clickProvider(map);
+    
+    function requestFormatter(baseUrl, xy) {
+      return `${baseUrl}${xy.x},${xy.y}?radius=50`
+    }
+    
+    function responseFormatter(res) {
+      let filtered = res.results.filter(x => x.hoofdadres === true);
+      return filtered.length > 0 ? filtered[0] : null;
+    }
+    
+    let featureQuery = nlmaps.queryFeatures(clicks, requestFormatter, responseFormatter)
+    featureQuery.subscribe(myHandler)
+
+### `nlmaps.singleMarker(map, popupCreator)`
+
+**Leaflet only**
+
+places a marker on the map. Meant to be used in combination with `nlmaps.clickProvider`. The default behaviour is to move the marker on every click, and remove the marker when it is clicked. An optional `popupCreator` function can be passed to specify how to create a popup on the marker.
+
+Arguments:
+
+* map _object map_ (**required**). The map on which the marker should be placed.
+* popuCreator _function(data) => htmlElement_ (**optional**). A function which receives data and creates a popup based on it. The function should return an html element to be used by Leaflet to create the popup.
+
+returns an function which can be used to subscribe to `nlmaps.clickProvider`.
+
+Example with default functionality:
+
+    const clicks = nlmaps.clickProvider(map);
+    const singleMarker = nlmaps.singleMarker(map);
+    clicks.subscribe(singleMarker);
+
+Example with a custom popupCreator. Note that this function is bound to an object with a `removeMarker` method, allowing you to remove the parent marker from interaction on the popup.
+
+
+    function popupCreator(d) {
+      let div = document.createElement('div');
+      let button = document.createElement('button');
+      let p = document.createElement('p');
+      p.innerText = d.responseText;
+      div.append(p);
+      button.innerHTML = 'remove';
+      button.addEventListener('click', this.removeMarker)
+      div.append(button);
+      return div;
+    }
+    const clicks = nlmaps.clickProvider(map);
+    const singleMarker = nlmaps.singleMarker(map, popupCreator);
+    clicks.subscribe(singleMarker);
+    
+## Events
+
+the `nlmaps` object produces the following events:
+
+* `mapclick` when the map is clicked. Returns the click event from the underlying map library.
+* `search-select` when the user selects a search result. Returns the lat/lon location of the result and the 'weergavenaam' of the result.
+
+You can subscribe a listener function to these events as follows:
+
+    nlmaps.on('event-name', listener)
+
 ## Advanced usage
 
 If you're already using a mapping library in your project, you can use the library-specific `bgLayer()`, `overlayLayer()`, and `markerLayer()` functions. All you'll need to do first is create a map and set the view. This is what the `createMap()` function does under the hood, with some default values.
@@ -310,7 +423,7 @@ To develop `nlmaps`, clone the repository and then in the directory run:
 `lerna bootstrap` symlinks cross-dependencies between the subpackages into each others' `node_modules` directory so that they can `require()` or `import` each other without having to actually download from npmjs.com
 
 ### General development notes
-There are some issues when trying to call rollup from npm scripts, so there is a set of scripts in `scripts/` that should be called directly. The usage is as follows:
+There are some issues when trying to call rollup from npm scripts, so there is a set of scripts in `scripts/` that should be called directly. The usage is as follows (note that rollup needs to installed as global):
 
 * `node scripts/build` to build the source from `packages/PACKAGE/src` into `packages/PACKAGE/build` 
 * `node scripts/test` to run tests in `packages/PACKAGE/test` -- runs `unit-test.js` with Node and copies/compiles browser test js and html to build.

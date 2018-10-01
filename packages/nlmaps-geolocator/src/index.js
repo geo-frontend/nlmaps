@@ -2,6 +2,7 @@ const geoLocateDefaultOpts = {
   follow: false
 }
 
+/* eslint-disable-next-line no-unused-vars */
 import emitonoff from 'emitonoff';
 
 function positionHandler(position) {
@@ -38,7 +39,8 @@ const GeoLocator = function (opts) {
 };
 
 function geoLocator(opts){
-  if ('geolocation' in navigator) {
+  let navigator = typeof window !== 'undefined' ? window.navigator || {}: {};
+  if (typeof navigator !== 'undefined' && 'geolocation' in navigator) {
     let geolocator = emitonoff(GeoLocator(opts));
     geolocator.on('position', function() {
       this.stop();

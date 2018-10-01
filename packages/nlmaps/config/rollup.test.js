@@ -7,12 +7,16 @@ import replace from '../../../node_modules/rollup-plugin-replace/dist/rollup-plu
 import uglify from 'rollup-plugin-uglify';
 import builtins from 'rollup-plugin-node-builtins';
 import globals from 'rollup-plugin-node-globals';
+import babelrc from 'babelrc-rollup';
 
 export default {
-  entry: 'test/browser-test.js',
-  format: 'iife',
-  moduleName: 'testing',
-  dest: 'build/browser-test.js',
+  input: 'test/browser-test.js',
+  output: { 
+    format: 'iife',
+    name: 'testing',
+    file: 'build/browser-test.js',
+    extend: true,
+  },
   plugins: [
     commonjs(),
     globals(),
@@ -27,9 +31,7 @@ export default {
         '../../../node_modules/**'
       ]
     }),
-    babel({
-      exclude: 'node_modules/**',
-    }),
+    babel(babelrc()),
     replace({
       ENV: JSON.stringify(process.env.NODE_ENV || 'development'),
       'process.browser': JSON.stringify(!!process.env.BROWSER)

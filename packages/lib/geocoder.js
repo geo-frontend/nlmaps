@@ -1,7 +1,6 @@
-const geocoder = {
-    suggestUrl: 'https://geodata.nationaalgeoregister.nl/locatieserver/v3/suggest?',
-    lookupUrl: 'https://geodata.nationaalgeoregister.nl/locatieserver/v3/lookup?'
-};
+import {CONFIG} from './configParser';
+
+const geocoder = CONFIG.GEOCODER;
 
 function httpGetAsync(url) {
     // eslint-disable-next-line no-unused-vars
@@ -33,6 +32,8 @@ function wktPointToGeoJson(wktPoint) {
 
 }
 
+geocoder.resultList = [];
+geocoder.selectedResult = -1;
 /**
  * Make a call to PDOK locatieserver v3 suggest service. This service is meant for geocoder autocomplete functionality. For
  * additional documentation, check https://github.com/PDOK/locatieserver/wiki/API-Locatieserver.
@@ -57,109 +58,149 @@ geocoder.doLookupRequest = function(id) {
     });
 }
 
-
-geocoder.createControl = function(zoomFunction, map) {
+geocoder.createControl = function(zoomFunction, map, nlmaps) {
     this.zoomTo = zoomFunction;
     this.map = map;
+    this.nlmaps = nlmaps;
     const container = document.createElement('div');
-    const searchDiv = document.createElement('div');
+    const searchDiv = document.createElement('form');
     const input = document.createElement('input');
+    const button = document.createElement('button');
     const results = document.createElement('div');
-    const controlWidth = '300px'
 
-    container.style.width = controlWidth;
-    container.style.zIndex = 1000000;
-    container.style.position = 'absolute';
-    container.style.top = '15px';
-    container.style.left = '12px';
+    parseClasses(container,CONFIG.CLASSNAMES.geocoderContainer);
+    parseClasses(searchDiv,CONFIG.CLASSNAMES.geocoderSearch);
+    container.addEventListener('click', e => e.stopPropagation());
+    container.addEventListener('dblclick', e => e.stopPropagation());
+
     input.id = 'nlmaps-geocoder-control-input';
-    input.placeholder = 'Zoeken op adres...'
-    input.style.padding = '4px 10px';
-    input.style.width = '100%';
-    input.style.border = 'none';
-    input.style.backgroundColor = '#fff';
-    input.style.boxShadow = '0 1px 5px rgba(0, 0, 0, 0.65)';
-    input.style.height = '26px';
-    input.style.borderRadius = '5px 5px';
+    input.placeholder = 'Zoomen naar adres...';
 
+    input.setAttribute('aria-label', 'Zoomen naar adres');
+    input.setAttribute('type','text');
+    input.setAttribute('autocapitalize','off');
+    input.setAttribute('autocomplete','off');
+    input.setAttribute('autocorrect','off');
+    input.setAttribute('spellcheck','false');
+
+    input.addEventListener('keydown',(e)=>{
+        let results = this.resultList;
+        if(this.resultList.length > 0) {
+            if(e.code === 'ArrowDown' || e.keyCode === 40) {
+                if(this.selectedResult<this.resultList.length-1) {
+                    this.selectedResult++;
+                }
+                this.showLookupResult(results[this.selectedResult]);
+
+            }
+            if(e.code === 'ArrowUp' || e.keyCode === 38) {
+                if(this.selectedResult > 0) {
+                    this.selectedResult--;
+                }
+                this.showLookupResult(results[this.selectedResult]);
+            }
+            if(e.code === 'Escape') {
+
+                this.clearSuggestResults(true);
+            }
+        }
+    })
     input.addEventListener('input', (e) => {
+
         this.suggest(e.target.value);
     });
-
     input.addEventListener('focus', (e) => {
         this.suggest(e.target.value);
     });
-    results.id = 'nlmaps-geocoder-control-results';
-    results.style.width = controlWidth;
+    button.setAttribute('type','submit');
+    searchDiv.addEventListener('submit',(e)=>{
+        e.preventDefault();
+        if(this.resultList.length>0) {
+            this.lookup(this.resultList[this.selectedResult<0?0:this.selectedResult].id);
+        }
+    })
+    button.setAttribute('aria-label', 'Zoomen naar adres');
+    parseClasses(button,CONFIG.CLASSNAMES.geocoderButton);
 
+    results.id = 'nlmaps-geocoder-control-results';
+    parseClasses(results,CONFIG.CLASSNAMES.geocoderResultList);
+    results.classList.add('nlmaps-hidden');
     container.appendChild(searchDiv);
     searchDiv.appendChild(input);
+    searchDiv.appendChild(button);
     container.appendChild(results);
 
     return container;
 }
 
 geocoder.suggest = function(query) {
-    if (query.length < 4) {
+    if (query.length < 3) {
         this.clearSuggestResults();
         return;
     }
 
     this.doSuggestRequest(query).then((results) => {
-        this.showSuggestResults(results.response.docs);
+        this.resultList = results.response.docs;
+        this.showSuggestResults(this.resultList);
     });
 }
 
 geocoder.lookup = function (id) {
     this.doLookupRequest(id).then((result) => {
         this.zoomTo(result.centroide_ll, this.map);
-        this.showLookupResult(result.weergavenaam);
+        this.nlmaps.emit('search-select', {location: result.weergavenaam, latlng: result.centroide_ll, resultObject: result});
+        this.showLookupResult(result);
         this.clearSuggestResults();
     });
 }
 
-geocoder.clearSuggestResults = function() {
+geocoder.clearSuggestResults = function(input) {
+    this.selectedResult = -1;
+    if(input)document.getElementById('nlmaps-geocoder-control-input').value = '';
     document.getElementById('nlmaps-geocoder-control-results').innerHTML = '';
+    document.getElementById('nlmaps-geocoder-control-results').classList.add('nlmaps-hidden');
+
 }
 
-geocoder.showLookupResult = function(name) {
-    document.getElementById('nlmaps-geocoder-control-input').value = name;
+geocoder.showLookupResult = function(result) {
+    let resultNodes = document.getElementsByClassName(CONFIG.CLASSNAMES.geocoderResultItem)
+    Array.prototype.map.call(resultNodes,i=>i.classList.remove(CONFIG.CLASSNAMES.geocoderResultSelected));
+    let resultNode = document.getElementById(result.id);
+    if(resultNode)resultNode.classList.add(CONFIG.CLASSNAMES.geocoderResultSelected);
+    document.getElementById('nlmaps-geocoder-control-input').value = result.weergavenaam;
+}
+
+function parseClasses(el,classes) {
+    classes.forEach(classname => {
+        el.classList.add(classname);
+    });
 }
 
 geocoder.showSuggestResults = function(results) {
-    const resultList = document.createElement('ul');
-    resultList.style.padding = '10px 10px 2px 10px';
-    resultList.style.width = '100%';
-    resultList.style.background = '#FFFFFF';
-    resultList.style.borderRadius = '5px 5px';
-    resultList.style.boxShadow = '0 1px 5px rgba(0, 0, 0, 0.65)';
-
-    results.forEach((result) => {
-
-        const li = document.createElement('li');
-        li.innerHTML = result.weergavenaam;
-        li.id = result.id;
-        li.style.cursor = 'pointer';
-        li.style.padding = '5px';
-        li.style.listStyleType = 'none';
-        li.style.marginBottom = '5px';
-        li.addEventListener('click', (e) => {
-            this.lookup(e.target.id);
-        });
-
-        li.addEventListener('mouseenter', () => {
-            li.style.background = '#6C62A6';
-            li.style.color = '#FFFFFF';
-        });
-
-        li.addEventListener('mouseleave', () => {
-            li.style.background = '#FFFFFF';
-            li.style.color = '#333';
-        });
-        resultList.appendChild(li);
-    });
     this.clearSuggestResults();
-    document.getElementById('nlmaps-geocoder-control-results').appendChild(resultList);
+    if (results.length > 0) {
+        const resultList = document.createElement('ul');
+        results.forEach((result) => {
+
+            const li = document.createElement('li');
+            const a = document.createElement('a');
+            a.innerHTML = result.weergavenaam;
+            a.id = result.id;
+            parseClasses(a,CONFIG.CLASSNAMES.geocoderResultItem);
+            a.setAttribute('href','#');
+            a.addEventListener('click', (e) => {
+                e.preventDefault();
+                this.lookup(e.target.id);
+            });
+            li.appendChild(a);
+            resultList.appendChild(li);
+        });
+        document.getElementById('nlmaps-geocoder-control-results').classList.remove('nlmaps-hidden');
+        document.getElementById('nlmaps-geocoder-control-results').appendChild(resultList);
+    }
+
+
+
 }
 
 export { geocoder };

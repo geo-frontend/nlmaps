@@ -1,6 +1,12 @@
-let test = require('../../../node_modules/tap').test;
+let test = require('../../../node_modules/tape-catch');
 
-let URL = 'http://tiles.energielabelatlas.nl/v2/osm/{z}/{x}/{y}.png';
-let ATTR = 'Kaartgegevens &copy; <a href="cbs.nl">CBS</a>, <a href="kadaster.nl">Kadaster</a>, <a href="openstreetmap.org">OpenStreetMap contributors</a>';
-
-console.log('no nodejs tests specified for openlayers')
+test('OpenLayers subpackage functions are defined', function(t) {
+  t.plan(6);
+  let nlmapsOL = require('../build/nlmaps-openlayers.cjs.js');
+  t.equal(typeof nlmapsOL.bgLayer , 'function');
+  t.equal(typeof nlmapsOL.overlayLayer , 'function');
+  t.equal(typeof nlmapsOL.markerLayer , 'function');
+  t.equal(typeof nlmapsOL.getMapCenter , 'function');
+  t.equal(typeof nlmapsOL.geoLocatorControl , 'function');
+  t.equal(typeof nlmapsOL.geocoderControl , 'function');
+});

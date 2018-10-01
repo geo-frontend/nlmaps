@@ -1,9 +1,9 @@
 {
   "name": "nlmaps-geolocator",
-  "version": "1.0.2",
+  "version": "2.3.43",
   "description": "",
   "main": "build/nlmaps-geolocator.cjs.js",
-  "module": "build/nlmaps-geolocator.es.js",
+  "module": "src/index.js",
   "scripts": {
     "test": "node test/test.js",
     "build": "rollup -c config/rollup.cjs.js && rollup -c config/rollup.es.js && rollup -c config/rollup.iife.js && cp build/nlmaps-geolocator.iife.js ../../dist/",
@@ -26,6 +26,8 @@
   },
   "homepage": "https://github.com:kadaster/nlmaps#README",
   "devDependencies": {
+    "babel-plugin-transform-object-assign": "^6.22.0",
+    "babel-preset-env": "^1.7.0",
     "rollup-plugin-eslint": "^4.0.0",
     "rollup-plugin-node-builtins": "^2.1.2",
     "rollup-plugin-node-globals": "^1.1.0",

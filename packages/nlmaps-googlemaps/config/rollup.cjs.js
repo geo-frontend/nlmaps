@@ -1,7 +1,9 @@
 import config from './rollup.config';
 
 export default config({
-  format: 'cjs',
-  dest: 'build/nlmaps-googlemaps.cjs.js',
+  output: {
+    format: 'cjs',
+    file: 'build/nlmaps-googlemaps.cjs.js',
+  },
   browser: false
 })

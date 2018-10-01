@@ -1,24 +1,25 @@
-
+import emitonoff from 'emitonoff';
 import { bgLayer as bgL,
          overlayLayer as overlayL,
          markerLayer as markerL,
          getMapCenter as centerL,
          geocoderControl as geocoderL,
-         geoLocatorControl as glL } from '../../nlmaps-leaflet/build/nlmaps-leaflet.cjs.js';
+         extentLeafletFormat,
+         geoLocatorControl as glL } from '../../nlmaps-leaflet';
 
 import { bgLayer as bgOL,
          overlayLayer as overlayOL,
          markerLayer as markerOL,
          getMapCenter as centerOL,
          geocoderControl as geocoderOL,
-         geoLocatorControl as glO } from '../../nlmaps-openlayers/build/nlmaps-openlayers.cjs.js';
+         geoLocatorControl as glO } from '../../nlmaps-openlayers';
 
 import { bgLayer as bgGM,
          overlayLayer as overlayGM,
          markerLayer as markerGM,
          getMapCenter as centerGM,
          geocoderControl as geocoderGM,
-         geoLocatorControl as glG } from '../../nlmaps-googlemaps/build/nlmaps-googlemaps.cjs.js';
+         geoLocatorControl as glG } from '../../nlmaps-googlemaps';
 
 // import { bgLayer as bgL, geoLocatorControl as glL } from 'nlmaps-leaflet';
 
@@ -28,7 +29,12 @@ import { bgLayer as bgGM,
 // import { bgLayer as bgGM,
 //          geoLocatorControl as glG } from 'nlmaps-googlemaps';
 
+import {CONFIG} from '../../lib/configParser.js';
 import geoLocator from '../../nlmaps-geolocator/src/index.js';
+
+import { mapPointerStyle } from '../../lib/index.js';
+import { queryFeatures }  from '../../lib/featurequery.js';
+import {singleMarker, multiMarker, markerStore } from '../../lib/markers.js';
 
 let nlmaps = {
   leaflet: {
@@ -54,15 +60,9 @@ let nlmaps = {
   }
 };
 
-let mapdefaults = {
-  style: 'standaard',
-  center: {
-    latitude: 51.9984,
-    longitude: 4.996
-  },
-  zoom: 8,
-  attribution: true
-};
+//set nlmaps up as event bus
+emitonoff(nlmaps);
+
 
 //for future use
 const geoLocateDefaultOpts = {
@@ -89,11 +89,27 @@ function testWhichLib() {
 }
 
 function initMap(lib, opts){
-  let map;
+  let map, rootdiv,el, options;
   switch (lib) {
     case 'leaflet':
-      map = L.map(opts.target).setView([opts.center.latitude, opts.center.longitude], opts.zoom);
-      map.zoomControl.setPosition('bottomleft');
+      //work-around to prevent mapdragging at text selection
+      rootdiv = document.getElementById(opts.target);
+      rootdiv.style.position='relative';
+      rootdiv.style.padding='0px';
+      rootdiv.style.margin='0px';
+      options = {};
+      if(!opts.attribution) {
+        options.attributionControl = false;
+      }
+      el = L.DomUtil.create('div');
+      el.style.height='100%';
+      rootdiv.appendChild(el);
+      options.maxBounds = extentLeafletFormat();
+      map = L.map(el,options).setView([opts.center.latitude, opts.center.longitude], opts.zoom);
+      if (opts.attribution) {
+        map.attributionControl.setPrefix(false);
+      }
+      map.zoomControl.setPosition(CONFIG.MAP.zoomposition);
       break;
     case 'googlemaps':
       map = new google.maps.Map(document.getElementById(opts.target), {
@@ -105,7 +121,7 @@ function initMap(lib, opts){
         },
         fullscreenControl: false
       });
-      
+
       break;
     case 'openlayers':
       map = new ol.Map({
@@ -113,7 +129,7 @@ function initMap(lib, opts){
           center: ol.proj.fromLonLat([opts.center.longitude, opts.center.latitude]),
           zoom: opts.zoom
         }),
-        target: opts.target
+        target: el
       });
       map.getTargetElement().getElementsByClassName('ol-zoom')[0].style.cssText = "left: 5px !important; bottom: 5px !important"
       map.getTargetElement().getElementsByClassName('ol-zoom')[0].classList.remove('ol-zoom');
@@ -155,6 +171,8 @@ function addGoogleLayer(layer, map) {
     return;
   }
 
+  let mapTypeIds = [layer.name, 'roadmap'];
+
   if (layer.name === 'wms') {
     map.setOptions({
       mapTypeControl: true,
@@ -165,7 +183,6 @@ function addGoogleLayer(layer, map) {
     });
     return;
   }
-  let mapTypeIds = [layer.name, 'roadmap'];
 
   map.setOptions({
     mapTypeControl: true,
@@ -263,9 +280,9 @@ function mergeOpts(defaultopts, useropts){
 nlmaps.lib = testWhichLib();
 
 nlmaps.createMap = function(useropts = {}) {
-  const opts = mergeOpts(mapdefaults, useropts);
+  const opts = mergeOpts(CONFIG.MAP, useropts);
   try {
-  if (nlmaps.lib === 'too many libs' || nlmaps.lib === 'too few libs') {
+  if (nlmaps.lib == 'too many libs' || nlmaps.lib === 'too few libs') {
     throw({message:'one and only one map library can be defined. Please Refer to the documentation to see which map libraries are supported.'});
   }
 } catch (e) {
@@ -276,6 +293,7 @@ nlmaps.createMap = function(useropts = {}) {
   // Background layer
   const backgroundLayer = createBackgroundLayer(nlmaps.lib, map, opts.style);
   addLayerToMap(nlmaps.lib, backgroundLayer, map, opts.style);
+
 
   // Geocoder
   if (opts.search) {
@@ -288,14 +306,22 @@ nlmaps.createMap = function(useropts = {}) {
     if (typeof opts.marker === "boolean") {
       markerLocation = getMapCenter(nlmaps.lib, map);
     }
-    const markerLayer = createMarkerLayer(nlmaps.lib, map, markerLocation);
-    addLayerToMap(nlmaps.lib, markerLayer, map);
+    let marker = createMarkerLayer(nlmaps.lib, map, markerLocation);
+
+    markerStore.addMarker(marker, true);
+    addLayerToMap(nlmaps.lib, marker, map);
   }
 
   // Overlay layer
   if (opts.overlay && opts.overlay !== 'false') {
     const overlayLayer = createOverlayLayer(nlmaps.lib, map, opts.overlay);
     addLayerToMap(nlmaps.lib, overlayLayer, map);
+  }
+  //add click event passing through L click event
+  if ( map !== undefined ) {
+    map.on('click', function(e) {
+      nlmaps.emit('mapclick', e);
+    })
   }
   return map;
 };
@@ -318,7 +344,7 @@ function addGeoLocControlToMap(lib, geolocator, map){
 }
 
 function addGeocoderControlToMap(lib, map){
-  nlmaps[lib].geocoderControl(map);
+  nlmaps[lib].geocoderControl(map, nlmaps);
 }
 
 nlmaps.geoLocate = function(map, useropts = {}){
@@ -326,5 +352,29 @@ nlmaps.geoLocate = function(map, useropts = {}){
   const geolocator = geoLocator(opts);
   addGeoLocControlToMap(nlmaps.lib, geolocator, map);
 }
+
+
+nlmaps.clickProvider = function(map) {
+  mapPointerStyle(map);
+  const clickSource = function (start, sink) {
+    if (start !== 0) return;
+    map.on('click', function(e) {
+      sink(1, e)
+    });
+    const talkback = (t, d) => {
+      };
+    sink(0, talkback);
+  };
+  clickSource.subscribe = function (callback) {
+    clickSource(0, callback)
+  }
+  return clickSource;
+}
+
+
+nlmaps.queryFeatures = queryFeatures;
+nlmaps.singleMarker = singleMarker;
+nlmaps.multiMarker = multiMarker;
+
 
 export {nlmaps};

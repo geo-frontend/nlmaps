@@ -1,0 +1,168 @@
+# Javascript Node CircleCI 2.0 configuration file
+
+defaults: &defaults
+  working_directory: ~/repo
+  docker:
+    - image: circleci/node:8.11
+
+
+jobs:
+  build_and_test:
+    <<: *defaults
+    steps:
+      - checkout
+      
+      # Download and cache dependencies
+      - restore_cache:
+          keys:
+          - v1-dependencies-{{ checksum "package.json" }}
+          # fallback to using the latest cache if no exact match is found
+          - v1-dependencies-
+
+      # install the necessary packages
+      - run: yarn install
+
+      #run lerna bootstrap to install all subpackages
+      - run: npm run bootstrap
+
+      - save_cache:
+          paths:
+            - node_modules
+          key: v1-dependencies-{{ checksum "package.json" }}
+        
+      # build nlmaps subpackages
+      - run: NODE_ENV=production node scripts/build -p leaflet,openlayers,googlemaps,geolocator
+
+      # build nlmaps
+      - run: NODE_ENV=producion node scripts/build -p nlmaps
+
+      # run tests
+      - run: node scripts/test
+
+      # copy builds to dist
+      - run: node scripts/publish
+      
+      # create a persistent workspace directory to store build
+      - run: mkdir -p workspace
+      
+      # copy the build directory
+      - run: cp -r dist workspace/      
+
+      # persist the workspace
+      - persist_to_workspace:
+          root: workspace
+          paths:
+            - dist            
+
+  tag_release:
+    <<: *defaults
+    steps:
+      - checkout
+
+      - run: head package.json
+
+      - run: |          
+          git config --global user.email "github@minst.net"
+          git config --global user.name "CircleCI"   
+          git config --global push.default simple
+          git checkout master
+
+      - run: git pull --no-edit
+          
+      - run: git checkout develop
+      - run: git merge master --no-edit         
+      - run: git checkout -b temp          
+    
+      - run: head package.json
+      
+      # use the read/write ssh key
+      - add_ssh_keys:
+          fingerprints:
+            - "aa:c3:f1:fe:8b:79:cb:f3:79:d7:1d:77:fd:79:f9:2b"
+      # use the previous build
+      - attach_workspace:          
+          at: ~/repo/workspace
+
+      # install the necessary packages
+      - run: yarn install
+
+      # get the latest build
+      - run: |
+          rm -r dist
+          mv workspace/dist .
+
+      # clean up after ourselves
+      - run: |
+          rmdir workspace          
+      
+      # bump the version in the root package.json
+      - run: |
+          VERSION=$(npm --no-git-tag-version version patch)
+          MSG="Tagged version "   
+          GITCOMMIT=$MSG$VERSION
+          echo "export VERSION=$VERSION" >> env_file
+          echo "export GITCOMMIT='$GITCOMMIT'" >> env_file
+        
+      # bump the version number in all the sub-package.json, using lerna
+      - run: |
+          npm run lernapublish
+          cat packages/nlmaps/package.json
+
+      # remove misc files, add&commit changes
+      # merge with master
+      # clean up and tag
+      - run: |
+          source env_file          
+          rm env_file
+          rm yarn.lock                    
+          git add .          
+          git commit -m "$GITCOMMIT"
+          git checkout master
+          git merge temp
+          git branch -d temp
+          git tag -a $VERSION -m "$GITCOMMIT"
+
+      # push everything
+      - run: |
+          git push
+          git push --tags      
+
+  tagged_deploy:
+    docker:
+      - image: circleci/node:8.11
+
+    working_directory: ~/repo
+
+    steps:
+      - checkout
+      - run: echo "//registry.npmjs.org/:_authToken=$NPM_TOKEN" >> ~/.npmrc
+      - run: cat ~/.npmrc
+      - run: npm publish
+
+workflows:
+  version: 2
+  build_branches:
+    jobs:
+      - build_and_test:
+          filters:            
+            branches:
+              ignore:
+                - develop
+  build_and_tag:
+    jobs:
+      - build_and_test:
+          filters:            
+            branches:
+              only:
+                - develop
+      - tag_release:
+          requires:
+            - build_and_test
+  deploy:
+    jobs:
+      - tagged_deploy:
+          filters:
+            branches:
+              ignore: /.*/
+            tags:
+              only: /v[0-9]+(\.[0-9]+)*/

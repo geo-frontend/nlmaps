@@ -74,6 +74,7 @@ function parseWMS(wms) {
 function parseGeocoder(geocoder) {
     CONFIG.GEOCODER.lookupUrl = geocoder.lookupUrl;
     CONFIG.GEOCODER.suggestUrl = geocoder.suggestUrl;
+    CONFIG.GEOCODER.placeholder = geocoder.placeholder;
 }
 function parseMap(map) {
     CONFIG.MAP = mergeConfig(CONFIG.MAP,map);

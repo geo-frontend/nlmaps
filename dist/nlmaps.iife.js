@@ -6724,7 +6724,8 @@
 	    },
 	    "geocoder": {
 	        "suggestUrl": "https://geodata.nationaalgeoregister.nl/locatieserver/v3/suggest?",
-	        "lookupUrl": "https://geodata.nationaalgeoregister.nl/locatieserver/v3/lookup?"
+	        "lookupUrl": "https://geodata.nationaalgeoregister.nl/locatieserver/v3/lookup?",
+	        "placeholder": "Zoomen naar adres ..."
 	    },
 	    "map": {
 	        "style": 'standaard',
@@ -6825,6 +6826,7 @@
 	function parseGeocoder(geocoder) {
 	    CONFIG.GEOCODER.lookupUrl = geocoder.lookupUrl;
 	    CONFIG.GEOCODER.suggestUrl = geocoder.suggestUrl;
+	    CONFIG.GEOCODER.placeholder = geocoder.placeholder;
 	}
 	function parseMap(map) {
 	    CONFIG.MAP = mergeConfig(CONFIG.MAP, map);
@@ -6958,9 +6960,9 @@
 	    });
 
 	    input.id = 'nlmaps-geocoder-control-input';
-	    input.placeholder = 'Zoomen naar adres...';
+	    input.placeholder = geocoder.placeholder;
 
-	    input.setAttribute('aria-label', 'Zoomen naar adres');
+	    input.setAttribute('aria-label', geocoder.placeholder);
 	    input.setAttribute('type', 'text');
 	    input.setAttribute('autocapitalize', 'off');
 	    input.setAttribute('autocomplete', 'off');
@@ -7002,7 +7004,7 @@
 	            _this.lookup(_this.resultList[_this.selectedResult < 0 ? 0 : _this.selectedResult].id);
 	        }
 	    });
-	    button.setAttribute('aria-label', 'Zoomen naar adres');
+	    button.setAttribute('aria-label', geocoder.placeholder);
 	    parseClasses$1(button, CONFIG.CLASSNAMES.geocoderButton);
 
 	    results.id = 'nlmaps-geocoder-control-results';

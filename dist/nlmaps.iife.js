@@ -7147,8 +7147,10 @@
 	}
 
 	function mapPointerStyle(map) {
-	  var classList = map._container.classList;
-	  classList.add('nlmaps-marker-cursor');
+	  if (map.hasOwnProperty('_container')) {
+	    var classList = map._container.classList;
+	    classList.add('nlmaps-marker-cursor');
+	  }
 	}
 
 	function extentLeafletFormat() {
@@ -7441,8 +7443,8 @@
 	  };
 	}
 
-	function geocoderControl$1(map) {
-	  var control = geocoder.createControl(zoomTo$1, map);
+	function geocoderControl$1(map, nlmaps) {
+	  var control = geocoder.createControl(zoomTo$1, map, nlmaps);
 	  control = new ol.control.Control({ element: control });
 	  map.addControl(control);
 	}
@@ -7662,8 +7664,8 @@
 	  };
 	}
 
-	function geocoderControl$2(map) {
-	  var control = geocoder.createControl(zoomTo$2, map);
+	function geocoderControl$2(map, nlmaps) {
+	  var control = geocoder.createControl(zoomTo$2, map, nlmaps);
 	  map.getDiv().appendChild(control);
 	}
 
@@ -7838,9 +7840,7 @@
 	  return querier;
 	};
 
-	var markerStore = {
-	  markers: [],
-	  removeMarker: function removeMarker(marker) {
+	var markerStore = { markers: [], removeMarker: function removeMarker(marker) {
 	    var idx = markerStore.markers.findIndex(function (x) {
 	      return x === marker;
 	    });
@@ -7851,10 +7851,12 @@
 	    var remove = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : false;
 
 	    markerStore.markers.push(marker);
-	    if (remove) {
-	      marker.on('click', function () {
-	        markerStore.removeMarker(marker);
-	      });
+	    if (marker.hasOwnProperty('on')) {
+	      if (remove) {
+	        marker.on('click', function () {
+	          markerStore.removeMarker(marker);
+	        });
+	      }
 	    }
 	  }
 	};
@@ -7882,8 +7884,7 @@
 	}
 	//TODO: discuss the various function parameters
 	function singleMarker(map, popupCreator, unclickable) {
-	  mapPointerStyle(map);
-	  return function (t, d, p, u) {
+	  mapPointerStyle(map);return function (t, d, p, u) {
 	    if (t === 1) {
 	      if (markerStore.markers[0]) {
 	        markerStore.removeMarker(markerStore.markers[0]);
@@ -7996,7 +7997,7 @@
 	          center: ol.proj.fromLonLat([opts.center.longitude, opts.center.latitude]),
 	          zoom: opts.zoom
 	        }),
-	        target: el
+	        target: opts.target
 	      });
 	      map.getTargetElement().getElementsByClassName('ol-zoom')[0].style.cssText = "left: 5px !important; bottom: 5px !important";
 	      map.getTargetElement().getElementsByClassName('ol-zoom')[0].classList.remove('ol-zoom');
@@ -8162,9 +8163,11 @@
 	  }
 	  //add click event passing through L click event
 	  if (map !== undefined) {
-	    map.on('click', function (e) {
-	      nlmaps.emit('mapclick', e);
-	    });
+	    if (nlmaps.lib === 'leaflet') {
+	      map.on('click', function (e) {
+	        nlmaps.emit('mapclick', e);
+	      });
+	    }
 	  }
 	  return map;
 	};
@@ -8199,19 +8202,21 @@
 	};
 
 	nlmaps.clickProvider = function (map) {
-	  mapPointerStyle(map);
-	  var clickSource = function clickSource(start, sink) {
-	    if (start !== 0) return;
-	    map.on('click', function (e) {
-	      sink(1, e);
-	    });
-	    var talkback = function talkback(t, d) {};
-	    sink(0, talkback);
-	  };
-	  clickSource.subscribe = function (callback) {
-	    clickSource(0, callback);
-	  };
-	  return clickSource;
+	  if (nlmaps.lib === 'leaflet') {
+	    mapPointerStyle(map);
+	    var clickSource = function clickSource(start, sink) {
+	      if (start !== 0) return;
+	      map.on('click', function (e) {
+	        sink(1, e);
+	      });
+	      var talkback = function talkback(t, d) {};
+	      sink(0, talkback);
+	    };
+	    clickSource.subscribe = function (callback) {
+	      clickSource(0, callback);
+	    };
+	    return clickSource;
+	  }
 	};
 
 	nlmaps.queryFeatures = queryFeatures;

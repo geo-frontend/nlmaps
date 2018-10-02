@@ -1,19 +1,16 @@
-import { getMarker, mapPointerStyle } from './index.js';
-
-
-let markerStore = {
-  markers: [],
-  removeMarker: function (marker) {
+import { getMarker, mapPointerStyle } from './index.js'; let markerStore = { markers: [], removeMarker: function (marker) {
     let idx = markerStore.markers.findIndex(x => x === marker)
     markerStore.markers[idx].remove();
     markerStore.markers.splice(idx, 1);
   },
   addMarker: function(marker, remove=false) {
     markerStore.markers.push(marker);
-    if (remove) {
+    if (marker.hasOwnProperty('on')) {
+      if (remove) {
         marker.on('click', function() {
-         markerStore.removeMarker(marker);
+          markerStore.removeMarker(marker);
         })
+      }
     }
   }
 };
@@ -42,8 +39,7 @@ function createAndAddMarker(map, d, popupCreator, unclickable) {
 }
 //TODO: discuss the various function parameters
 function singleMarker(map, popupCreator, unclickable) {
-  mapPointerStyle(map);
-  return (t, d, p, u) => {
+  mapPointerStyle(map); return (t, d, p, u) => {
     if (t === 1 ) {
       if (markerStore.markers[0]) {
         markerStore.removeMarker(markerStore.markers[0]);

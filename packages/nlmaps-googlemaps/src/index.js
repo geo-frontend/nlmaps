@@ -206,8 +206,8 @@ function getMapCenter(map) {
   };
 }
 
-function geocoderControl(map) {
-  const control = geocoder.createControl(zoomTo, map);
+function geocoderControl(map, nlmaps) {
+  const control = geocoder.createControl(zoomTo, map, nlmaps);
   map.getDiv().appendChild(control);
 }
 

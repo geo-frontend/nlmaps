@@ -61,8 +61,10 @@ function getWmsProvider(name, options) {
 }
 
 function mapPointerStyle(map){
+  if (map.hasOwnProperty('_container')) {
   let classList = map._container.classList;
   classList.add('nlmaps-marker-cursor');
+  }
 }
 
 //use named export instead of default because we might want

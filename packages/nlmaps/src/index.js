@@ -129,7 +129,7 @@ function initMap(lib, opts){
           center: ol.proj.fromLonLat([opts.center.longitude, opts.center.latitude]),
           zoom: opts.zoom
         }),
-        target: el
+        target: opts.target
       });
       map.getTargetElement().getElementsByClassName('ol-zoom')[0].style.cssText = "left: 5px !important; bottom: 5px !important"
       map.getTargetElement().getElementsByClassName('ol-zoom')[0].classList.remove('ol-zoom');
@@ -319,9 +319,11 @@ nlmaps.createMap = function(useropts = {}) {
   }
   //add click event passing through L click event
   if ( map !== undefined ) {
-    map.on('click', function(e) {
-      nlmaps.emit('mapclick', e);
-    })
+    if (nlmaps.lib === 'leaflet') {
+      map.on('click', function(e) {
+        nlmaps.emit('mapclick', e);
+      })
+    }
   }
   return map;
 };
@@ -355,20 +357,22 @@ nlmaps.geoLocate = function(map, useropts = {}){
 
 
 nlmaps.clickProvider = function(map) {
-  mapPointerStyle(map);
-  const clickSource = function (start, sink) {
-    if (start !== 0) return;
-    map.on('click', function(e) {
-      sink(1, e)
-    });
-    const talkback = (t, d) => {
+  if (nlmaps.lib === 'leaflet') {
+    mapPointerStyle(map);
+    const clickSource = function (start, sink) {
+      if (start !== 0) return;
+      map.on('click', function(e) {
+        sink(1, e)
+      });
+      const talkback = (t, d) => {
       };
-    sink(0, talkback);
-  };
-  clickSource.subscribe = function (callback) {
-    clickSource(0, callback)
+      sink(0, talkback);
+    };
+    clickSource.subscribe = function (callback) {
+      clickSource(0, callback)
+    }
+    return clickSource;
   }
-  return clickSource;
 }
 
 

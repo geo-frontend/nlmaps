@@ -122,8 +122,8 @@ function getMapCenter(map) {
   };
 }
 
-function geocoderControl(map) {
-  let control = geocoder.createControl(zoomTo, map);
+function geocoderControl(map, nlmaps) {
+  let control = geocoder.createControl(zoomTo, map, nlmaps);
   control = new ol.control.Control({element: control});
   map.addControl(control);
 }

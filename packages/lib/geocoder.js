@@ -74,9 +74,9 @@ geocoder.createControl = function(zoomFunction, map, nlmaps) {
     container.addEventListener('dblclick', e => e.stopPropagation());
 
     input.id = 'nlmaps-geocoder-control-input';
-    input.placeholder = 'Zoomen naar adres...';
+    input.placeholder = geocoder.placeholder;
 
-    input.setAttribute('aria-label', 'Zoomen naar adres');
+    input.setAttribute('aria-label', geocoder.placeholder);
     input.setAttribute('type','text');
     input.setAttribute('autocapitalize','off');
     input.setAttribute('autocomplete','off');
@@ -119,7 +119,7 @@ geocoder.createControl = function(zoomFunction, map, nlmaps) {
             this.lookup(this.resultList[this.selectedResult<0?0:this.selectedResult].id);
         }
     })
-    button.setAttribute('aria-label', 'Zoomen naar adres');
+    button.setAttribute('aria-label', geocoder.placeholder);
     parseClasses(button,CONFIG.CLASSNAMES.geocoderButton);
 
     results.id = 'nlmaps-geocoder-control-results';

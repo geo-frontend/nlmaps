@@ -78,7 +78,8 @@ export default {
     },
     "geocoder": {
         "suggestUrl": "https://geodata.nationaalgeoregister.nl/locatieserver/v3/suggest?",
-        "lookupUrl": "https://geodata.nationaalgeoregister.nl/locatieserver/v3/lookup?"
+        "lookupUrl": "https://geodata.nationaalgeoregister.nl/locatieserver/v3/lookup?",
+        "placeholder": "Zoomen naar adres ..."
     },
     "map": {
         "style": 'standaard',

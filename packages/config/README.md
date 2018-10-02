@@ -6,7 +6,7 @@
 
 **wms**: `object` default settings for wms servers & extra parameters for each wms-layers
 
-**geocoder**: `object` urls for the goecoder services
+**geocoder**: `object` urls for the goecoder services and placeholder text for the search input
 
 **map**: `object` default settings for the map
 

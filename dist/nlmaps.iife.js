@@ -7550,7 +7550,7 @@
 
 	function getWmsTiledOptions(wmsProvider) {
 	  return {
-	    baseUrl: wmsProvider.url,
+	    baseUrl: wmsProvider.url.indexOf('?') < 0 ? wmsProvider.url + '?' : wmsProvider.url,
 	    layers: wmsProvider.layerName,
 	    styles: wmsProvider.styleName,
 	    format: wmsProvider.format,

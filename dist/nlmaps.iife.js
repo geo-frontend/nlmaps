@@ -7533,7 +7533,11 @@
 	function makeGoogleLayerOpts(provider) {
 	  return {
 	    getTileUrl: function getTileUrl(coord, zoom) {
-	      var url = provider.bare_url + '/' + zoom + '/' + coord.x + '/' + coord.y + '.png';
+	      var url = provider.url;
+	      var properties = { z: zoom, x: coord.x, y: coord.y };
+	      for (var i in properties) {
+	        url = url.replace("{" + i + "}", properties[i]);
+	      }
 	      return url;
 	    },
 	    tileSize: new google.maps.Size(256, 256),

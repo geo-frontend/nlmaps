@@ -33,7 +33,7 @@ var _descriptors = !_fails(function () {
 });
 
 var _core = createCommonjsModule(function (module) {
-  var core = module.exports = { version: '2.5.3' };
+  var core = module.exports = { version: '2.5.6' };
   if (typeof __e == 'number') __e = core; // eslint-disable-line no-undef
 });
 var _core_1 = _core.version;
@@ -292,11 +292,20 @@ var _meta_3 = _meta.fastKey;
 var _meta_4 = _meta.getWeak;
 var _meta_5 = _meta.onFreeze;
 
-var SHARED = '__core-js_shared__';
-var store = _global[SHARED] || (_global[SHARED] = {});
-var _shared = function _shared(key) {
-  return store[key] || (store[key] = {});
-};
+var _library = false;
+
+var _shared = createCommonjsModule(function (module) {
+  var SHARED = '__core-js_shared__';
+  var store = _global[SHARED] || (_global[SHARED] = {});
+
+  (module.exports = function (key, value) {
+    return store[key] || (store[key] = value !== undefined ? value : {});
+  })('versions', []).push({
+    version: _core.version,
+    mode: _library ? 'pure' : 'global',
+    copyright: '© 2018 Denis Pushkarev (zloirock.ru)'
+  });
+});
 
 var _wks = createCommonjsModule(function (module) {
   var store = _shared('wks');
@@ -324,8 +333,6 @@ var f$1 = _wks;
 var _wksExt = {
 	f: f$1
 };
-
-var _library = false;
 
 var defineProperty$1 = _objectDp.f;
 var _wksDefine = function _wksDefine(name) {
@@ -1781,7 +1788,7 @@ var _iterDefine = function _iterDefine(Base, NAME, Constructor, next, DEFAULT, I
   var VALUES_BUG = false;
   var proto = Base.prototype;
   var $native = proto[ITERATOR] || proto[FF_ITERATOR] || DEFAULT && proto[DEFAULT];
-  var $default = !BUGGY && $native || getMethod(DEFAULT);
+  var $default = $native || getMethod(DEFAULT);
   var $entries = DEFAULT ? !DEF_VALUES ? $default : getMethod('entries') : undefined;
   var $anyNative = NAME == 'Array' ? proto.entries || $native : $native;
   var methods, key, IteratorPrototype;
@@ -1792,7 +1799,7 @@ var _iterDefine = function _iterDefine(Base, NAME, Constructor, next, DEFAULT, I
       // Set @@toStringTag to native iterators
       _setToStringTag(IteratorPrototype, TAG, true);
       // fix for some old engines
-      if (!_library && !_has(IteratorPrototype, ITERATOR)) _hide(IteratorPrototype, ITERATOR, returnThis);
+      if (!_library && typeof IteratorPrototype[ITERATOR] != 'function') _hide(IteratorPrototype, ITERATOR, returnThis);
     }
   }
   // fix Array#{values, @@iterator}.name in V8 / FF
@@ -2955,7 +2962,8 @@ var _microtask = function _microtask() {
     };
     // environments with maybe non-completely correct, but existent Promise
   } else if (Promise$1 && Promise$1.resolve) {
-    var promise = Promise$1.resolve();
+    // Promise.resolve without an argument throws an error in LG WebOS 2
+    var promise = Promise$1.resolve(undefined);
     notify = function notify() {
       promise.then(flush);
     };
@@ -3012,6 +3020,10 @@ var _perform = function _perform(exec) {
   }
 };
 
+var navigator$1 = _global.navigator;
+
+var _userAgent = navigator$1 && navigator$1.userAgent || '';
+
 var _promiseResolve = function _promiseResolve(C, x) {
   _anObject(C);
   if (_isObject(x) && x.constructor === C) return x;
@@ -3033,6 +3045,8 @@ var microtask = _microtask();
 var PROMISE = 'Promise';
 var TypeError$1 = _global.TypeError;
 var process$2 = _global.process;
+var versions = process$2 && process$2.versions;
+var v8 = versions && versions.v8 || '';
 var $Promise = _global[PROMISE];
 var isNode$1 = _classof(process$2) == 'process';
 var empty = function empty() {/* empty */};
@@ -3047,7 +3061,11 @@ var USE_NATIVE$1 = !!function () {
       exec(empty, empty);
     };
     // unhandled rejections tracking support, NodeJS Promise without it fails @@species test
-    return (isNode$1 || typeof PromiseRejectionEvent == 'function') && promise.then(empty) instanceof FakePromise;
+    return (isNode$1 || typeof PromiseRejectionEvent == 'function') && promise.then(empty) instanceof FakePromise
+    // v8 6.6 (Node 10 and Chrome 66) have a bug with resolving custom thenables
+    // https://bugs.chromium.org/p/chromium/issues/detail?id=830565
+    // we can't detect it synchronously, so just check versions
+    && v8.indexOf('6.6') !== 0 && _userAgent.indexOf('Chrome/66') === -1;
   } catch (e) {/* empty */}
 }();
 
@@ -3069,7 +3087,7 @@ var notify = function notify(promise, isReject) {
       var resolve = reaction.resolve;
       var reject = reaction.reject;
       var domain = reaction.domain;
-      var result, then;
+      var result, then, exited;
       try {
         if (handler) {
           if (!ok) {
@@ -3078,8 +3096,11 @@ var notify = function notify(promise, isReject) {
           }
           if (handler === true) result = value;else {
             if (domain) domain.enter();
-            result = handler(value);
-            if (domain) domain.exit();
+            result = handler(value); // may throw
+            if (domain) {
+              domain.exit();
+              exited = true;
+            }
           }
           if (result === reaction.promise) {
             reject(TypeError$1('Promise-chain cycle'));
@@ -3088,6 +3109,7 @@ var notify = function notify(promise, isReject) {
           } else resolve(result);
         } else reject(value);
       } catch (e) {
+        if (domain && !exited) domain.exit();
         reject(e);
       }
     };
@@ -4022,12 +4044,12 @@ _export(_export.P + _export.U + _export.F * _fails(function () {
     if ($slice !== undefined && end === undefined) return $slice.call(_anObject(this), start); // FF fix
     var len = _anObject(this).byteLength;
     var first = _toAbsoluteIndex(start, len);
-    var final = _toAbsoluteIndex(end === undefined ? len : end, len);
-    var result = new (_speciesConstructor(this, $ArrayBuffer))(_toLength(final - first));
+    var fin = _toAbsoluteIndex(end === undefined ? len : end, len);
+    var result = new (_speciesConstructor(this, $ArrayBuffer))(_toLength(fin - first));
     var viewS = new $DataView(this);
     var viewT = new $DataView(result);
     var index = 0;
-    while (first < final) {
+    while (first < fin) {
       viewT.setUint8(index++, viewS.getUint8(first++));
     }return result;
   }
@@ -4799,9 +4821,11 @@ function set$1(target, propertyKey, V /* , receiver */) {
   }
   if (_has(ownDesc, 'value')) {
     if (ownDesc.writable === false || !_isObject(receiver)) return false;
-    existingDescriptor = _objectGopd.f(receiver, propertyKey) || _propertyDesc(0);
-    existingDescriptor.value = V;
-    _objectDp.f(receiver, propertyKey, existingDescriptor);
+    if (existingDescriptor = _objectGopd.f(receiver, propertyKey)) {
+      if (existingDescriptor.get || existingDescriptor.set || existingDescriptor.writable === false) return false;
+      existingDescriptor.value = V;
+      _objectDp.f(receiver, propertyKey, existingDescriptor);
+    } else _objectDp.f(receiver, propertyKey, _propertyDesc(0, V));
     return true;
   }
   return ownDesc.set === undefined ? false : (ownDesc.set.call(receiver, V), true);
@@ -4930,10 +4954,6 @@ var _stringPad = function _stringPad(that, maxLength, fillString, left) {
   if (stringFiller.length > fillLen) stringFiller = stringFiller.slice(0, fillLen);
   return left ? stringFiller + S : S + stringFiller;
 };
-
-var navigator$1 = _global.navigator;
-
-var _userAgent = navigator$1 && navigator$1.userAgent || '';
 
 // https://github.com/tc39/proposal-string-pad-start-end
 
@@ -5375,13 +5395,13 @@ _export(_export.S, 'Promise', { 'try': function _try(callbackfn) {
   } });
 
 var shared$1 = _shared('metadata');
-var store$1 = shared$1.store || (shared$1.store = new es6_weakMap());
+var store = shared$1.store || (shared$1.store = new es6_weakMap());
 
 var getOrCreateMetadataMap = function getOrCreateMetadataMap(target, targetKey, create) {
-  var targetMetadata = store$1.get(target);
+  var targetMetadata = store.get(target);
   if (!targetMetadata) {
     if (!create) return undefined;
-    store$1.set(target, targetMetadata = new es6_map());
+    store.set(target, targetMetadata = new es6_map());
   }
   var keyMetadata = targetMetadata.get(targetKey);
   if (!keyMetadata) {
@@ -5416,7 +5436,7 @@ var exp$3 = function exp(O) {
 };
 
 var _metadata = {
-  store: store$1,
+  store: store,
   map: getOrCreateMetadataMap,
   has: ordinaryHasOwnMetadata,
   get: ordinaryGetOwnMetadata,
@@ -5435,16 +5455,16 @@ _metadata.exp({ defineMetadata: function defineMetadata(metadataKey, metadataVal
 
 var toMetaKey$2 = _metadata.key;
 var getOrCreateMetadataMap$1 = _metadata.map;
-var store$2 = _metadata.store;
+var store$1 = _metadata.store;
 
 _metadata.exp({ deleteMetadata: function deleteMetadata(metadataKey, target /* , targetKey */) {
     var targetKey = arguments.length < 3 ? undefined : toMetaKey$2(arguments[2]);
     var metadataMap = getOrCreateMetadataMap$1(_anObject(target), targetKey, false);
     if (metadataMap === undefined || !metadataMap['delete'](metadataKey)) return false;
     if (metadataMap.size) return true;
-    var targetMetadata = store$2.get(target);
+    var targetMetadata = store$1.get(target);
     targetMetadata['delete'](targetKey);
-    return !!targetMetadata.size || store$2['delete'](target);
+    return !!targetMetadata.size || store$1['delete'](target);
   } });
 
 var ordinaryHasOwnMetadata$1 = _metadata.has;
@@ -7508,7 +7528,6 @@ function makeGoogleAttrControl() {
 }
 
 function makeGoogleLayerOpts(provider) {
-  console.log(provider.url);
   return {
     getTileUrl: function getTileUrl(coord, zoom) {
       var url = provider.url;
@@ -7529,8 +7548,8 @@ function makeGoogleLayerOpts(provider) {
 function getWmsTiledOptions(wmsProvider) {
   return {
     baseUrl: wmsProvider.url,
-    layers: wmsProvider.layers,
-    styles: wmsProvider.styles,
+    layers: wmsProvider.layerName,
+    styles: wmsProvider.styleName,
     format: wmsProvider.format,
     transparent: wmsProvider.transparent,
     // todo maybe: add opacity to wmsProvider params

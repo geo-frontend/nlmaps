@@ -7551,8 +7551,8 @@
 	function getWmsTiledOptions(wmsProvider) {
 	  return {
 	    baseUrl: wmsProvider.url,
-	    layers: wmsProvider.layers,
-	    styles: wmsProvider.styles,
+	    layers: wmsProvider.layerName,
+	    styles: wmsProvider.styleName,
 	    format: wmsProvider.format,
 	    transparent: wmsProvider.transparent,
 	    // todo maybe: add opacity to wmsProvider params

@@ -78,7 +78,7 @@ jobs:
       # use the read/write ssh key
       - add_ssh_keys:
           fingerprints:
-            - "aa:c3:f1:fe:8b:79:cb:f3:79:d7:1d:77:fd:79:f9:2b"
+            - "cc:4b:62:a6:13:23:21:d7:d9:8e:4b:02:00:02:61:43"
       # use the previous build
       - attach_workspace:          
           at: ~/repo/workspace
@@ -137,7 +137,7 @@ jobs:
       - checkout
       - run: echo "//registry.npmjs.org/:_authToken=$NPM_TOKEN" >> ~/.npmrc
       - run: cat ~/.npmrc
-      - run: npm publish
+      - run: npm publish --access=public
 
 workflows:
   version: 2

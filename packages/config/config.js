@@ -48,7 +48,7 @@ export default {
             },
             {
                 "name": "percelen",
-                "workSpaceName": "bkadastralekaartv3ag",
+                "workSpaceName": "kadastralekaartv3",
                 "layerName": "kadastralekaart"
             },
             {

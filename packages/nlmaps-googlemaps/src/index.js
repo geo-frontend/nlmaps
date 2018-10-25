@@ -27,7 +27,7 @@ function AttributionControl(controlDiv, attrControlText) {
 
 function geoLocatorControl (geolocator, map){
     let controlUI = document.createElement('div');
-    controlUI.id = 'nlmaps-geolocator-control';    
+    controlUI.id = 'nlmaps-geolocator-control';
     controlUI.style.backgroundColor = '#fff';
     controlUI.style.cursor = 'pointer';
     controlUI.style.boxShadow = '0 1px 5px rgba(0, 0, 0, 0.65)';
@@ -80,7 +80,12 @@ function makeGoogleAttrControl(map=map, attr){
 function makeGoogleLayerOpts(provider){
   return {
     getTileUrl: function (coord, zoom) {
-      let url = `${provider.bare_url}/${zoom}/${coord.x}/${coord.y}.png`;
+      let url = provider.url;
+      let properties = {z: zoom, x: coord.x, y: coord.y}
+      for (let i in properties)
+      {
+        url = url.replace("{"+i+"}",properties[i]);
+      }
       return url;
     },
     tileSize: new google.maps.Size(256, 256),
@@ -93,9 +98,9 @@ function makeGoogleLayerOpts(provider){
 
 function getWmsTiledOptions(wmsProvider) {
   return {
-      baseUrl: wmsProvider.url,
-      layers: wmsProvider.layers,
-      styles: wmsProvider.styles,
+      baseUrl: wmsProvider.url.indexOf('?')<0?wmsProvider.url+'?':wmsProvider.url,
+      layers: wmsProvider.layerName,
+      styles: wmsProvider.styleName,
       format: wmsProvider.format,
       transparent: wmsProvider.transparent,
       // todo maybe: add opacity to wmsProvider params

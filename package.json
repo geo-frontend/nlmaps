@@ -1,8 +1,9 @@
 {
-  "name": "nlmaps",
+  "name": "@geo-frontend/nlmaps",
   "version": "2.3.50",
   "description": "",
-  "main": "index.js",
+  "main": "dist/nlmaps.cjs.js",
+  "jsnext:main": "dist/nlmaps.es.js",
   "scripts": {
     "bootstrap": "lerna bootstrap",
     "lernapublish": "lerna publish --skip-git --skip-npm --repo-version $npm_package_version --yes",

@@ -467,3 +467,5 @@ This publishes to npm as well as creates new git tags for the releases, which ar
 To build the webpage goto the docs folder and make sure you have gulp installed. 
 
 Run `gulp build` to start the build process. When the process is finished the compiled website and assets are available in the build folder.
+
+**Notes:** the gulp build process copies nlmaps css and assets directly from `../packages/assets`.

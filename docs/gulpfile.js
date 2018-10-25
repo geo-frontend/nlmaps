@@ -14,6 +14,7 @@ var scssFiles = ['./app/scss/**/*.scss'];
 var jsFiles = ['./app/js/**/*.js'];
 var srcFiles = [scssFiles, jsFiles];
 var assets = ['./app/assets/**/*'];
+var preassets = ['../packages/assets/**/*'];
 var watch = false;
 
 var handleError = function () {
@@ -74,6 +75,9 @@ gulp.task('webpack', function () {
         .pipe(connect.reload());
 });
 
+gulp.task('preassets', function() {
+    gulp.src(preassets).pipe(gulp.dest('./app/assets'));
+});
 gulp.task('assets', function() {
     gulp.src(assets).pipe(gulp.dest('build/assets'));
 });
@@ -82,7 +86,7 @@ gulp.task('clean-build', function () {
     return gulp.src('./build').pipe(clean());
 });
 
-gulp.task('watch', ['assets', 'twig', 'webpack'], function () {
+gulp.task('watch', ['preassets', 'assets', 'twig', 'webpack'], function () {
     gulp.watch([pages], ['twig']);
 //     gulp.watch([partials], ['twig-partials', 'twig']);
     gulp.watch([srcFiles], ['webpack']);

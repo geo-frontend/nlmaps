@@ -1,6 +1,6 @@
 {
   "name": "nlmaps",
-  "version": "2.3.46",
+  "version": "2.3.51",
   "engines": {
     "node": ">=6.0.0 <=6.11"
   },

@@ -413,7 +413,7 @@ For aerial imagery:
 
 ## Developing
 
-See also [CONTRIBUTING](contributing.md)
+See also [CONTRIBUTING](CONTRIBUTING.md)
 
 ### Installation/set up
 

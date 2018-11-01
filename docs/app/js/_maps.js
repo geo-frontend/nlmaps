@@ -53,7 +53,7 @@ export default class Maps {
         this.$wizardForm.on('change', (e) => {
             // NOTE: Fallback for geocoder. This prevents the view from refreshing when clicking on a geocoding result.
             if (e.originalEvent != null) {
-                const isGeocoder = e.originalEvent.target.id == 'nlmaps-geocoder-control-input';
+                const isGeocoder = e.originalEvent.target.id === 'nlmaps-geocoder-control-input';
                 if (isGeocoder) {
                     return;
                 }
@@ -67,7 +67,7 @@ export default class Maps {
             this.wizardShowGeocoder = this.wizardFormValues[4].value;
             this.currentUrl = baseTileUrl;
             this.extension = 'png';
-            
+
             switch (this.wizardMapColor) {
                 case 'default':
                     this.backgroundLayerName = 'standaard';
@@ -304,6 +304,7 @@ export default class Maps {
 
         $(`#${this.currentMap}`).remove();
         $(`#nlmaps-geocoder-control-results`).remove();
+        /* eslint-disable-next-line single */
         let $map = $(`<div class="map" id="${this.currentMap}">`).appendTo(this.$wizardMap);
 
         return $map;

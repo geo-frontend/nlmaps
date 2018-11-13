@@ -26,6 +26,10 @@ Available map styles:
 * `grijs`: in very low saturation
 * `luchtfoto`: aerial imagery
 
+## Extending
+
+In order to create a NL Maps version for your own organisation you can extend upon this package. To see an example of this you can check out the City of Amsterdam's version [`amaps` on GitHub](https://github.com/Amsterdam/amaps).
+
 ## Getting set up
 
 ### Wizard
@@ -413,7 +417,7 @@ For aerial imagery:
 
 ## Developing
 
-See also [CONTRIBUTING](contributing.md)
+See also [CONTRIBUTING](CONTRIBUTING.md)
 
 ### Installation/set up
 

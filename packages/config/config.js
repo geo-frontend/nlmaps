@@ -93,7 +93,7 @@ export default {
         "zoomposition": "topright"
     },
     "marker": {
-      "url": "./assets/img/marker_icon.svg",
+      "url": "https://rawgit.com/geo-frontend/nlmaps/master/dist/assets/img/marker_icon.svg",
       "iconSize": [64, 64],
       "iconAnchor": [63, 32]
     },

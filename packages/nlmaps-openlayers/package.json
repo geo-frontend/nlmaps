@@ -1,6 +1,6 @@
 {
   "name": "nlmaps-openlayers",
-  "version": "2.3.46",
+  "version": "2.3.57",
   "description": "",
   "main": "build/nlmaps-openlayers.cjs.js",
   "module": "src/index.js",

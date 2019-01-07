@@ -24,7 +24,7 @@ export default {
                 "layerName": "brtachtergrondkaartpastel"
             },{
                 "name": "luchtfoto",
-                "layerName": "2016_ortho25",
+                "layerName": "Actueel_ortho25",
                 "url": "https://geodata.nationaalgeoregister.nl/luchtfoto/rgb",
                 "format": "jpeg"
             }

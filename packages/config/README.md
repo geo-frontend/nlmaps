@@ -88,7 +88,7 @@ A collection of arrays with classnames to be added to interface elements. This c
                 "layerName": "brtachtergrondkaart"
             },{
                 "name": "luchtfoto",
-                "layerName": "2016_ortho25",
+                "layerName": "Actueel_ortho25",
                 "url": "https://geodata.nationaalgeoregister.nl/luchtfoto/rgb",
                 "format": "jpeg"
             }

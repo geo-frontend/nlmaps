@@ -13,10 +13,11 @@ Dit privacybeleid is opgesteld om u te informeren over de verwerkingen van perso
 Wat is "verwerken van persoonsgegevens"?
 De AVG merkt alle informatie over een geïdentificeerde of identificeerbare natuurlijke persoon aan als "persoonsgegevens". Omdat het hier om een zeer ruime definitie gaat, valt veel informatie onder dat begrip. Je kunt denken aan de volgende voorbeelden:
 
-• overzicht van door een bezoeker bezochte websites;
-• e-mailadres van een bezoeker;
-• naam en achternaam.
+* overzicht van door een bezoeker bezochte websites;
+* e-mailadres van een bezoeker;
+* naam en achternaam.
 
-Het "verwerken" van persoonsgegevens is een erg ruim begrip en omvat eigenlijk alle handelingen met persoonsgegevens. 
-Denk aan het lezen, opslaan, doorsturen en bijvoorbeeld verwijderen van de persoonsgegevens.
+Het "verwerken" van persoonsgegevens is een erg ruim begrip en omvat eigenlijk alle handelingen met persoonsgegevens.  
+Denk aan het lezen, opslaan, doorsturen en bijvoorbeeld verwijderen van de persoonsgegevens.  
+
 Meer informatie over het begrip "verwerken van persoonsgegevens" is te vinden op de website van de Autoriteit Persoonsgegevens (de toezichthouder op het gebied persoonsgegevens), in het bijzonder op: https://autoriteitpersoonsgegevens.nl/nl/over-privacy/persoonsgegevens/wat-zijn-persoonsgegevens

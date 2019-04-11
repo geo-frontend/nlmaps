@@ -1,6 +1,6 @@
 {
   "name": "@geo-frontend/nlmaps",
-  "version": "2.3.57",
+  "version": "2.3.61",
   "description": "",
   "main": "dist/nlmaps.cjs.js",
   "jsnext:main": "dist/nlmaps.es.js",

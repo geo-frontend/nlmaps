@@ -4,7 +4,7 @@ WORKDIR /app
 
 RUN apt-get update -y
 
-RUN npm install -g lerna rollup@0.57.1
+RUN npm install -g lerna@3.22.1 rollup@0.57.1
 COPY package.json package-lock.json /app/
 COPY packages /app/packages
 RUN npm install

@@ -14,7 +14,7 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
-    "@ljharb/eslint-config": "^12.2.1",
+    "@ljharb/eslint-config": "^17.1.0",
     "babel-cli": "^6.24.1",
     "babel-plugin-external-helpers": "^6.22.0",
     "babel-plugin-transform-object-assign": "^6.22.0",

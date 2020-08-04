@@ -23,7 +23,7 @@
     "babel-register": "^6.26.0",
     "browserify": "^14.3.0",
     "buffertools": "^2.1.6",
-    "eslint": "^4.19.1",
+    "eslint": "^7.6.0",
     "leaflet-headless": "^0.2.6",
     "lerna": "^3.22.1",
     "live-server": "^1.2.0",

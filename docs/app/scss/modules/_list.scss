@@ -1,7 +1,7 @@
 .list {
-    flex-wrap: wrap;
     margin: 0 -20px;
     padding: 0;
+    flex-wrap: wrap;
     list-style: none;
 }
 
@@ -11,8 +11,8 @@
 
 .list-link {
     display: block;
-    margin-top: -1px;
     padding: 12px 0;
+    margin-top: -1px;
     border-top: 1px solid #fff;
     border-bottom: 1px solid #fff;
     color: #fff;

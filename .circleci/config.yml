@@ -105,7 +105,7 @@ jobs:
         
       # bump the version number in all the sub-package.json, using lerna
       - run: |
-          npm run lernapublish
+          npm run lernaversion
           cat packages/nlmaps/package.json
 
       # remove misc files, add&commit changes

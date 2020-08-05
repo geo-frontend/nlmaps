@@ -2,10 +2,10 @@
     position: relative;
     display: flex;
     justify-content: center;
-    flex-direction: column;
     height: 80vh;
     min-height: 430px;
     padding: 150px 0 60px;
+    flex-direction: column;
     background: url('#{$image-path}map-background.png') no-repeat center center $brand-secondary;
     background-size: cover;
     font-size: $font-size-medium;
@@ -28,8 +28,8 @@
     .spotlight {
         height: calc(60vh);
         min-height: 370px;
-        margin-bottom: 60px;
         padding: 120px 0;
+        margin-bottom: 60px;
     }
 
     .spotlight-heading {
@@ -50,8 +50,8 @@
     .spotlight {
         height: calc(70vh);
         min-height: 370px;
-        margin-bottom: 60px;
         padding: 120px 0;
+        margin-bottom: 60px;
     }
 
     .spotlight-heading {

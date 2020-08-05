@@ -2,6 +2,10 @@
   "name": "nlmaps",
   "private": true,
   "description": "NLMaps HTML - includes Twig, Webpack, and Bootstrap for Sass",
+  "scripts": {
+    "build": "gulp build",
+    "serve": "npx http-server ./build -p 8081"
+  },
   "dependencies": {
     "bootstrap-sass": "^3.3.7",
     "browser-detect": "^0.2.18",

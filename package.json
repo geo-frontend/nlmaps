@@ -45,11 +45,11 @@
     "rollup-plugin-uglify": "^1.0.2",
     "rollup-plugin-uglify-es": "0.0.1",
     "tap": "^12.0.1",
-    "tap-exit-code": "^1.0.1",
+    "tap-exit-code": "^2.0.0",
     "tap-spec": "^5.0.0",
-    "tape": "^4.9.1",
+    "tape": "^5.0.1",
     "tape-catch": "^1.0.6",
-    "tape-run": "^4.0.0"
+    "tape-run": "^8.0.0"
   },
   "dependencies": {
     "babel-polyfill": "^6.26.0",

@@ -40,10 +40,7 @@ export default config => {
         presets: [
           ["@babel/preset-env", { modules: false }]
         ],
-        babelHelpers: 'external',
-        plugins: [
-          "@babel/plugin-external-helpers"
-        ]
+        babelHelpers: 'bundled',
       }),
       replace({
         ENV: JSON.stringify(process.env.NODE_ENV || 'development'),

@@ -47,9 +47,8 @@ export default config => {
         presets: [
           ["@babel/preset-env", {modules:false}]
         ],
-        babelHelpers: 'external',
+        babelHelpers: 'bundled',
         plugins: [
-          "@babel/plugin-external-helpers",
           "@babel/plugin-transform-object-assign"
         ]
       }),

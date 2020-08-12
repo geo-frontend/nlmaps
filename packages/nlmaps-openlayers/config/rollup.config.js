@@ -5,7 +5,7 @@ import resolve from '../../../node_modules/@rollup/plugin-node-resolve/dist/es/i
 import commonjs from '../../../node_modules/@rollup/plugin-commonjs/dist/index.es.js';
 import replace from '../../../node_modules/@rollup/plugin-replace/dist/rollup-plugin-replace.es.js';
 import uglify from 'rollup-plugin-uglify-es';
-import image from 'rollup-plugin-image';
+import image from '@rollup/plugin-image';
 
 export default config => {
   return {

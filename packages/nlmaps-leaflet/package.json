@@ -28,6 +28,7 @@
   "devDependencies": {
     "babel-plugin-transform-object-assign": "^6.22.0",
     "babel-preset-env": "^1.6.1",
+    "is-reference": "^1.2.1",
     "leaflet": "^1.0.3",
     "leaflet-headless": "^0.2.6",
     "puppeteer": "^1.2.0",

@@ -40,9 +40,11 @@
     "babel-plugin-transform-object-assign": "^6.22.0",
     "babel-preset-env": "^1.6.1",
     "babelrc-rollup": "^3.0.0",
+    "is-reference": "^1.2.1",
     "leaflet-headless": "^0.2.6",
     "live-server-https": "0.0.2",
     "rollup-plugin-eslint": "^7.0.0",
+    "rollup-plugin-polyfill": "^2.0.1",
     "tape": "^4.6.3"
   },
   "bugs": {

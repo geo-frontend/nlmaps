@@ -3,7 +3,6 @@ const conf = require('./conf.json');
 const helpers = require('./helpers');
 const { spawn } = require('child_process')
 const chokidar = require('chokidar');
-
 const tasks = helpers.tasks();
 
 const rollup_args = ['-c', 'config/rollup.all.js'];

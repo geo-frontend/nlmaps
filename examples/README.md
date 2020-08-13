@@ -65,7 +65,7 @@ Create a file called `leaflet.html` and paste in the following code:
       <head>
         <meta charset="utf8"/>
         <title>NL Maps with Leaflet</title>
-        <link rel="stylesheet" href="https://unpkg.com/leaflet@1.2.0/dist/leaflet.css" />
+        <link rel="stylesheet" href="https://unpkg.com/leaflet@1.6.0/dist/leaflet.css" />
         <style>
           body {
             font-family: Helvetica, sans-serif;
@@ -75,7 +75,7 @@ Create a file called `leaflet.html` and paste in the following code:
       </head>
       <body>
         <div id="map-div"></div>
-        <script src="https://unpkg.com/leaflet@1.2.0/dist/leaflet.js"></script>
+        <script src="https://unpkg.com/leaflet@1.6.0/dist/leaflet.js"></script>
         <script src="https://rawgit.com/kadaster/nlmaps/master/dist/nlmaps-leaflet.iife.js"></script>
         <script>
             var map = L.map('map-div').setView([52, 5], 10);
@@ -197,7 +197,7 @@ And create an html file `leaflet.html` which loads your script:
           }
           #map-div{height:300px}
         </style>
-        <link rel="stylesheet" href="https://unpkg.com/leaflet@1.2.0/dist/leaflet.css" />
+        <link rel="stylesheet" href="https://unpkg.com/leaflet@1.6.0/dist/leaflet.css" />
       </head>
       <body>
         <div id="map-div"></div>

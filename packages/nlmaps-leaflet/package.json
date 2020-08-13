@@ -27,7 +27,7 @@
   "homepage": "https://github.com:kadaster/nlmaps#README",
   "devDependencies": {
     "is-reference": "^1.2.1",
-    "leaflet": "^1.0.3",
+    "leaflet": "^1.6.0",
     "leaflet-headless": "^0.2.6",
     "puppeteer": "^1.2.0",
     "rollup-plugin-eslint": "^7.0.0",

@@ -1,8 +1,10 @@
 {
     "presets": [
-        "env"
+        "@babel/preset-env"
     ],
-   "plugins": [
-      "external-helpers","transform-runtime","transform-object-assign"
+    "plugins": [
+        "@babel/external-helpers",
+        "transform-runtime",
+        "transform-object-assign"
     ]
 }

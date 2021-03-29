@@ -25,7 +25,7 @@
     <meta name="theme-color" content="#ffffff">
     <link rel="stylesheet" href="app.css">
     <link rel="stylesheet" href="assets/fonts/icon-font/css/fontello.css">
-    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.0.3/dist/leaflet.css">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.6.0/dist/leaflet.css">
     <link rel="stylesheet" href="https://api.mapbox.com/mapbox.js/v3.1.0/mapbox.css">
     <link rel="stylesheet" href="https://openlayers.org/en/v4.6.5/css/ol.css">
     <link rel="stylesheet" href="assets/css/nlmaps.css">
@@ -35,7 +35,17 @@
             google: {
                 families: ['Montserrat:400', 'Nunito:400,400i,600,600i']
             }
-        });
+        });      
+        // TODO: aankondiging verwijderen na 06 april, maar voor het geval het niet op tijd gebeurt  
+        document.addEventListener('DOMContentLoaded', (event) => {
+            if (+new Date() > Date.parse('07 Apr 2021 00:00:00 GMT+0100')){
+                let els = document.getElementsByClassName('section announcement')
+                let section = els.length ===1? els[0]: null
+                if (section){
+                section.parentElement.removeChild(section)
+                }
+            }
+        }); 
     </script>
 </head>
 <body{% block body_attributes %}{% endblock %}>
@@ -91,8 +101,8 @@
     <script type="text/template" id="leaflet-template">
 &lt;div id="nlmaps-holder">&lt;/div>
 
-&lt;link rel="stylesheet" href="https://unpkg.com/leaflet@1.0.3/dist/leaflet.css">
-&lt;script src="https://unpkg.com/leaflet@1.0.3/dist/leaflet.js">&lt;/script>
+&lt;link rel="stylesheet" href="https://unpkg.com/leaflet@1.6.0/dist/leaflet.css">
+&lt;script src="https://unpkg.com/leaflet@1.6.0/dist/leaflet.js">&lt;/script>
 &lt;script src="https://rawgit.com/geo-frontend/nlmaps/master/dist/nlmaps.iife.js">&lt;/script>
 &lt;script>
     var nlMapsHolder = document.getElementById('nlmaps-holder');
@@ -164,7 +174,7 @@
     var map = nlmaps.createMap(opts);
 &lt;/script>
     </script>
-    <script src="https://unpkg.com/leaflet@1.0.3/dist/leaflet.js"></script>
+    <script src="https://unpkg.com/leaflet@1.6.0/dist/leaflet.js"></script>
     <script src="https://api.mapbox.com/mapbox.js/v3.1.0/mapbox.js"></script>
     <script src="https://openlayers.org/en/v4.6.5/build/ol.js"></script>
     <script src="https://maps.googleapis.com/maps/api/js?v=3&key=AIzaSyAHhkVptxb8zlX0LZqkLf-RHC9Uvik_fDc"></script>

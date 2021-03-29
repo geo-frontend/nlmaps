@@ -1,7 +1,7 @@
 import $ from 'jquery';
 import Clipboard from 'clipboard';
 import geoLocator from 'nlmaps-geolocator';
-const browser = require('browser-detect')();
+const browser = require('browser-detect').default;
 
 const BRTAkAttr = 'NLMaps | Kaartgegevens &copy; <a href="https://www.kadaster.nl">Kadaster</a> | <a href="http://www.verbeterdekaart.nl">Verbeter de kaart</a>';
 const baseTileUrl = 'https://geodata.nationaalgeoregister.nl/tiles/service/wmts/brtachtergrondkaart/EPSG:3857';

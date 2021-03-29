@@ -3,7 +3,6 @@ const conf = require('./conf.json');
 const helpers = require('./helpers');
 const { spawn } = require('child_process')
 const chokidar = require('chokidar');
-
 const tasks = helpers.tasks();
 
 const rollup_args = ['-c', 'config/rollup.all.js'];
@@ -19,10 +18,10 @@ tasks.forEach(task => {
   if (!shell.test('-e', assetsdirpath)) {
     shell.mkdir('-p', assetsdirpath);
   }
-  if (! shell.test('-e', assetsdirpath + '/img')) {
+  if (!shell.test('-e', assetsdirpath + '/img')) {
     shell.mkdir('-p', assetsdirpath + '/img');
   }
-  if (! shell.test('-e', assetsdirpath + '/css')) {
+  if (!shell.test('-e', assetsdirpath + '/css')) {
     shell.mkdir('-p', assetsdirpath + '/css');
   }
 })
@@ -37,7 +36,7 @@ function main() {
   }
   if (helpers.args.config !== null) {
     console.log('using custom config file ' + helpers.args.config);
-    shell.cp(helpers.args.config, TEMPCONFDIR + '/config.js' );
+    shell.cp(helpers.args.config, TEMPCONFDIR + '/config.js');
   } else {
     console.log('using default config file ' + DEFAULTCONFIGFILE);
     shell.cp(DEFAULTCONFIGFILE, TEMPCONFDIR + '/config.js');
@@ -46,7 +45,7 @@ function main() {
   //and capture/log output
   tasks.forEach(task => {
     console.log(rollup_args)
-    const build = spawn('../../node_modules/rollup/bin/rollup', rollup_args, {cwd: 'packages/' + helpers.packagePath(task)});
+    const build = spawn('../../node_modules/rollup/dist/bin/rollup', rollup_args, { cwd: 'packages/' + helpers.packagePath(task) });
 
     build.stdout.on('data', (data) => {
       console.log(`${data}`);
@@ -70,18 +69,15 @@ function main() {
   })
   //copy assets to dist
   if (helpers.args.watch) {
-    chokidar.watch('packages/assets/').on('all',(event, path) => {
+    chokidar.watch('packages/assets/').on('all', (event, path) => {
       let newpath = path.split('/');
-      newpath.splice(0,2);
+      newpath.splice(0, 2);
       let newpathstring = newpath.join('/');
-      tasks.forEach( task => {
-        if (!shell.test('-d', path)){
+      tasks.forEach(task => {
+        if (!shell.test('-d', path)) {
           shell.cp('-ur', path, 'packages/' + helpers.packagePath(task) + '/build/assets/' + newpathstring);
         }
-           
-      
-      } )
-
+      })
     })
   }
 }
@@ -89,7 +85,7 @@ function main() {
 
 
 if (typeof require !== 'undefined' && require.main === module) {
-    main();
+  main();
 }
 
 module.exports = main; 

@@ -35,17 +35,7 @@
             google: {
                 families: ['Montserrat:400', 'Nunito:400,400i,600,600i']
             }
-        });      
-        // TODO: aankondiging verwijderen na 06 april, maar voor het geval het niet op tijd gebeurt  
-        document.addEventListener('DOMContentLoaded', (event) => {
-            if (+new Date() > Date.parse('07 Apr 2021 00:00:00 GMT+0100')){
-                let els = document.getElementsByClassName('section announcement')
-                let section = els.length ===1? els[0]: null
-                if (section){
-                section.parentElement.removeChild(section)
-                }
-            }
-        }); 
+        });
     </script>
 </head>
 <body{% block body_attributes %}{% endblock %}>

@@ -49,6 +49,7 @@ function mergeConfig(defaults,config) {
 }
 
 function parseBase(basemaps) {
+    console.log(basemaps);
     let defaults = mergeConfig(CONFIG.BASE_DEFAULTS,basemaps.defaults);
     if(!basemaps.layers || basemaps.layers.length < 0) {
         err('no basemap defined, please define a basemap in the configuration')
@@ -83,7 +84,7 @@ function parseMap(map) {
 function formatBasemapUrl(layer) {
     switch(layer.type){
         case 'wmts':
-            layer.url = `${layer.url}/${layer.type}/${layer.layerName}/${layer.crs}/{z}/{x}/{y}.${layer.format}`;
+            layer.url = `${layer.url}?layer=${layer.layerName}&style=default&tilematrixset=${layer.crs}&Service=WMTS&Request=GetTile&Version=1.0.0&Format=${layer.format}&TileMatrix={z}&TileCol={x}&TileRow={y}`;
         break;
         case 'tms':
             layer.url = `${layer.url}/${layer.layerName}/{z}/{x}/{y}.${layer.format}`;

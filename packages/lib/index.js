@@ -2,8 +2,6 @@
  * copyright (c) 2012, Stamen Design
  * under BSD 3-Clause license: https://github.com/stamen/maps.stamen.com/blob/master/LICENSE
  */
-//https://geodata.nationaalgeoregister.nl/tiles/service/wmts/
-//https://geodata.nationaalgeoregister.nl/luchtfoto/rgb/wmts/
 import { CONFIG } from './configParser';
 import { geocoder } from './geocoder.js';
 

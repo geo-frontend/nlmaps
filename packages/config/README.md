@@ -79,8 +79,8 @@ A collection of arrays with classnames to be added to interface elements. This c
             "minZoom": 6,
             "maxZoom": 19,
             "type": "wmts",
-            "format": "png",
-            "url": "https://geodata.nationaalgeoregister.nl/tiles/service"
+            "format": "image/png",
+            "url": "https://geodata.nationaalgeoregister.nl/tiles/service/wmts"
         },
         "layers": [
             {
@@ -88,9 +88,10 @@ A collection of arrays with classnames to be added to interface elements. This c
                 "layerName": "brtachtergrondkaart"
             },{
                 "name": "luchtfoto",
+                "crs": "EPSG:3857",
                 "layerName": "Actueel_ortho25",
-                "url": "https://geodata.nationaalgeoregister.nl/luchtfoto/rgb",
-                "format": "jpeg"
+                "url": "https://service.pdok.nl/hwh/luchtfotorgb/wmts/v1_0",
+                "format": "image/jpeg"
             }
         ]
     },

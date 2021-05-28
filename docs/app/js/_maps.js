@@ -65,7 +65,6 @@ export default class Maps {
             this.wizardShowMarker = this.wizardFormValues[2].value;
             this.wizardOverlay = this.wizardFormValues[3].value;
             this.wizardShowGeocoder = this.wizardFormValues[4].value;
-            this.currentUrl = baseTileUrl;
             this.extension = 'png';
 
             switch (this.wizardMapColor) {
@@ -74,15 +73,12 @@ export default class Maps {
                     break;
                 case 'pastel':
                     this.backgroundLayerName = 'pastel';
-                    this.currentUrl = 'https://geodata.nationaalgeoregister.nl/tiles/service/wmts/brtachtergrondkaartpastel/EPSG:3857';
                     break;
                 case 'grey':
                     this.backgroundLayerName = 'grijs';
-                    this.currentUrl = 'https://geodata.nationaalgeoregister.nl/tiles/service/wmts/brtachtergrondkaartgrijs/EPSG:3857';
                     break;
                 case 'air':
                     this.backgroundLayerName = 'luchtfoto';
-                    this.currentUrl = 'https://geodata.nationaalgeoregister.nl/luchtfoto/rgb/wmts/1.0.0/Actueel_ortho25/EPSG:3857';
                     this.extension = 'jpeg';
                     break;
             }
@@ -324,7 +320,6 @@ export default class Maps {
         code = code.replace(/{latitude}/g, this.latitude.toFixed(coordPrecision));
         code = code.replace(/{longitude}/g, this.longitude.toFixed(coordPrecision));
         code = code.replace(/{zoomlevel}/g, this.zoom);
-        code = code.replace(/{url}/g, this.currentUrl);
         code = code.replace(/{extension}/g, this.extension);
         code = code.replace(/{attribution}/g, BRTAkAttr);
         this.$code.html(code);

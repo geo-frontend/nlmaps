@@ -50,9 +50,10 @@
         "layerName": "brtachtergrondkaartpastel"
       }, {
         "name": "luchtfoto",
+        "crs": "EPSG:3857",
         "layerName": "Actueel_ortho25",
-        "url": "https://geodata.nationaalgeoregister.nl/luchtfoto/rgb",
-        "format": "jpeg"
+        "url": "https://service.pdok.nl/hwh/luchtfotorgb/wmts/v1_0",
+        "format": "image/jpeg"
       }]
     },
     "wms": {
@@ -210,8 +211,6 @@
   function formatBasemapUrl(layer) {
     switch (layer.type) {
       case 'wmts':
-        console.log(layer); // https://geodata.nationaalgeoregister.nl/tiles/service/wmts?layer=brtachtergrondkaartgrijs&style=default&tilematrixset=EPSG:3857&Service=WMTS&Request=GetTile&Version=1.0.0&Format=image%2Fpng&TileMatrix=18&TileCol=134490&TileRow=85680
-
         layer.url = "".concat(layer.url, "?layer=").concat(layer.layerName, "&style=default&tilematrixset=").concat(layer.crs, "&Service=WMTS&Request=GetTile&Version=1.0.0&Format=").concat(layer.format, "&TileMatrix={z}&TileCol={x}&TileRow={y}");
         break;
 
@@ -244,7 +243,7 @@
     return layer;
   }
 
-  function parseClasses$1(classes) {
+  function parseClasses(classes) {
     CONFIG.CLASSNAMES = mergeConfig(CONFIG.CLASSNAMES, classes);
   }
 
@@ -256,7 +255,7 @@
   if (config.wms !== undefined) parseWMS(config.wms);
   if (config.geocoder !== undefined) parseGeocoder(config.geocoder);
   if (config.marker !== undefined) parseMarker(config.marker);
-  if (config.classnames !== undefined) parseClasses$1(config.classnames);
+  if (config.classnames !== undefined) parseClasses(config.classnames);
 
   var geocoder = CONFIG.GEOCODER;
 
@@ -331,8 +330,8 @@
     var input = document.createElement('input');
     var button = document.createElement('button');
     var results = document.createElement('div');
-    parseClasses(container, CONFIG.CLASSNAMES.geocoderContainer);
-    parseClasses(searchDiv, CONFIG.CLASSNAMES.geocoderSearch);
+    parseClasses$1(container, CONFIG.CLASSNAMES.geocoderContainer);
+    parseClasses$1(searchDiv, CONFIG.CLASSNAMES.geocoderSearch);
     container.addEventListener('click', function (e) {
       return e.stopPropagation();
     });
@@ -387,9 +386,9 @@
       }
     });
     button.setAttribute('aria-label', geocoder.placeholder);
-    parseClasses(button, CONFIG.CLASSNAMES.geocoderButton);
+    parseClasses$1(button, CONFIG.CLASSNAMES.geocoderButton);
     results.id = 'nlmaps-geocoder-control-results';
-    parseClasses(results, CONFIG.CLASSNAMES.geocoderResultList);
+    parseClasses$1(results, CONFIG.CLASSNAMES.geocoderResultList);
     results.classList.add('nlmaps-hidden');
     container.appendChild(searchDiv);
     searchDiv.appendChild(input);
@@ -448,7 +447,7 @@
     document.getElementById('nlmaps-geocoder-control-input').value = result.weergavenaam;
   };
 
-  function parseClasses(el, classes) {
+  function parseClasses$1(el, classes) {
     classes.forEach(function (classname) {
       el.classList.add(classname);
     });
@@ -466,7 +465,7 @@
         var a = document.createElement('a');
         a.innerHTML = result.weergavenaam;
         a.id = result.id;
-        parseClasses(a, CONFIG.CLASSNAMES.geocoderResultItem);
+        parseClasses$1(a, CONFIG.CLASSNAMES.geocoderResultItem);
         a.setAttribute('href', '#');
         a.addEventListener('click', function (e) {
           e.preventDefault();
@@ -647,8 +646,6 @@
 
   exports.bgLayer = bgLayer;
   exports.geoLocatorControl = geoLocatorControl;
-
-  Object.defineProperty(exports, '__esModule', { value: true });
 
 }(this.window = this.window || {}));
 //# sourceMappingURL=nlmaps-leaflet.iife.js.map

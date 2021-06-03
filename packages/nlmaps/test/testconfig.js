@@ -12,32 +12,32 @@ export default {
         },
         "layers": [
             {
-                "url": "https://geodata.nationaalgeoregister.nl/tiles/service/wmts",
+                "url": "https://service.pdok.nl/brt/achtergrondkaart/wmts/v2_0",
                 "crs": "EPSG:3857",
-                "format": "image/png",
+                "format": "png",
                 "name": "standaard",
-                "layerName": "brtachtergrondkaart",
+                "layerName": "standaard",
             },
             {
-                "url": "https://geodata.nationaalgeoregister.nl/tiles/service/wmts",
+                "url": "https://service.pdok.nl/brt/achtergrondkaart/wmts/v2_0",
                 "crs": "EPSG:3857",
-                "format": "image/png",
+                "format": "png",
                 "name": "grijs",
-                "layerName": "brtachtergrondkaartgrijs"
+                "layerName": "grijs"
             },
             {
-                "url": "https://geodata.nationaalgeoregister.nl/tiles/service/wmts",
+                "url": "https://service.pdok.nl/brt/achtergrondkaart/wmts/v2_0",
                 "crs": "EPSG:3857",
-                "format": "image/png",
+                "format": "png",
                 "name": "pastel",
-                "layerName": "brtachtergrondkaartpastel"
+                "layerName": "pastel"
             },
             {
                 "name": "luchtfoto",
-                "layerName": "Actueel_ortho25",
                 "crs": "EPSG:3857",
+                "layerName": "Actueel_ortho25",
                 "url": "https://service.pdok.nl/hwh/luchtfotorgb/wmts/v1_0",
-                "format": "image/jpeg"
+                "format": "jpeg"
             }
         ]
     },

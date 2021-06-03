@@ -84,7 +84,7 @@ function parseMap(map) {
 function formatBasemapUrl(layer) {
     switch(layer.type){
         case 'wmts':
-            layer.url = `${layer.url}?layer=${layer.layerName}&style=default&tilematrixset=${layer.crs}&Service=WMTS&Request=GetTile&Version=1.0.0&Format=${layer.format}&TileMatrix={z}&TileCol={x}&TileRow={y}`;
+            layer.url = `${layer.url}/${layer.layerName}/${layer.crs}/{z}/{x}/{y}.${layer.format}`;
         break;
         case 'tms':
             layer.url = `${layer.url}/${layer.layerName}/{z}/{x}/{y}.${layer.format}`;

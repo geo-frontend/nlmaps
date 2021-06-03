@@ -5,7 +5,6 @@
 import { CONFIG } from './configParser';
 import { geocoder } from './geocoder.js';
 
-
 function getMarker() {
   return CONFIG.MARKER;
 }
@@ -30,7 +29,7 @@ function getProvider(name) {
     return provider;
   } else {
      // eslint-disable-next-line no-console
-    console.error('NL Maps error: You asked for a style which does not exist! Available styles: ' +  Object.keys(PROVIDERS).join(', '));
+    console.error('NL Maps error: You asked for a style which does not exist! Available styles: ' +  Object.keys(CONFIG.BASEMAP_PROVIDERS).join(', '));
   }
 }
 

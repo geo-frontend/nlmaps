@@ -409,11 +409,11 @@ The tile URLs which `nlmaps` configures for you follow these templates:
 
 For BRT-Achtergrondkaart series:
 
-  https://geodata.nationaalgeoregister.nl/tiles/service/wmts?layer=brtachtergrondkaartgrijs&style=default&tilematrixset=EPSG:3857&Service=WMTS&Request=GetTile&Version=1.0.0&Format=image/png&TileMatrix={z}&TileCol={x}&TileRow={y}
+    https://service.pdok.nl/brt/achtergrondkaart/wmts/v2_0/standaard/EPSG:3857/{z}/{x}/{y}.png
 
 For aerial imagery:
 
-  https://service.pdok.nl/hwh/luchtfotorgb/wmts/v1_0?&layer=Actueel_ortho25&style=default&tilematrixset=EPSG:3857&Service=WMTS&Request=GetTile&Version=1.0.0&Format=image/jpeg&TileMatrix={z}&TileCol={x}&TileRow={y}
+    https://service.pdok.nl/hwh/luchtfotorgb/wmts/v1_0/Actueel_ortho25/EPSG:3857/{z}/{x}/{y}.jpeg
 
 
 ## Developing

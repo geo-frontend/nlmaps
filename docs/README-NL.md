@@ -291,11 +291,10 @@ Je kunt ook de `nlmaps-geolocator` package zelf gebruiken, in plaats van deze aa
 De URL's naar de kaarttegels die `nlmaps` configureert volgen deze sjablonen:
 
 Voor de BRT-Achtergrondkaart serie:
-    https://geodata.nationaalgeoregister.nl/tiles/service/wmts?layer=brtachtergrondkaartgrijs&style=default&tilematrixset=EPSG:3857&Service=WMTS&Request=GetTile&Version=1.0.0&Format=image/png&TileMatrix={z}&TileCol={x}&TileRow={y}
+    https://service.pdok.nl/brt/achtergrondkaart/wmts/v2_0/standaard/EPSG:3857/{z}/{x}/{y}.png
 
 Voor de luchtfoto's:
-
-    https://service.pdok.nl/hwh/luchtfotorgb/wmts/v1_0?&layer=Actueel_ortho25&style=default&tilematrixset=EPSG:3857&Service=WMTS&Request=GetTile&Version=1.0.0&Format=image/jpeg&TileMatrix={z}&TileCol={x}&TileRow={y}
+    https://service.pdok.nl/hwh/luchtfotorgb/wmts/v1_0/Actueel_ortho25/EPSG:3857/{z}/{x}/{y}.jpeg
 
 ## Ontwikkelen
 

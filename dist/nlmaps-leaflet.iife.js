@@ -27,33 +27,33 @@
         "minZoom": 6,
         "maxZoom": 19,
         "type": "wmts",
-        "format": "image/png",
-        "url": "https://geodata.nationaalgeoregister.nl/tiles/service/wmts"
+        "format": "png",
+        "url": "https://service.pdok.nl/brt/achtergrondkaart/wmts/v2_0"
       },
       "layers": [{
-        "url": "https://geodata.nationaalgeoregister.nl/tiles/service/wmts",
+        "url": "https://service.pdok.nl/brt/achtergrondkaart/wmts/v2_0",
         "crs": "EPSG:3857",
-        "format": "image/png",
+        "format": "png",
         "name": "standaard",
-        "layerName": "brtachtergrondkaart"
+        "layerName": "standaard"
       }, {
-        "url": "https://geodata.nationaalgeoregister.nl/tiles/service/wmts",
+        "url": "https://service.pdok.nl/brt/achtergrondkaart/wmts/v2_0",
         "crs": "EPSG:3857",
-        "format": "image/png",
+        "format": "png",
         "name": "grijs",
-        "layerName": "brtachtergrondkaartgrijs"
+        "layerName": "grijs"
       }, {
-        "url": "https://geodata.nationaalgeoregister.nl/tiles/service/wmts",
+        "url": "https://service.pdok.nl/brt/achtergrondkaart/wmts/v2_0",
         "crs": "EPSG:3857",
-        "format": "image/png",
+        "format": "png",
         "name": "pastel",
-        "layerName": "brtachtergrondkaartpastel"
+        "layerName": "pastel"
       }, {
         "name": "luchtfoto",
         "crs": "EPSG:3857",
         "layerName": "Actueel_ortho25",
         "url": "https://service.pdok.nl/hwh/luchtfotorgb/wmts/v1_0",
-        "format": "image/jpeg"
+        "format": "jpeg"
       }]
     },
     "wms": {
@@ -211,7 +211,7 @@
   function formatBasemapUrl(layer) {
     switch (layer.type) {
       case 'wmts':
-        layer.url = "".concat(layer.url, "?layer=").concat(layer.layerName, "&style=default&tilematrixset=").concat(layer.crs, "&Service=WMTS&Request=GetTile&Version=1.0.0&Format=").concat(layer.format, "&TileMatrix={z}&TileCol={x}&TileRow={y}");
+        layer.url = "".concat(layer.url, "/").concat(layer.layerName, "/").concat(layer.crs, "/{z}/{x}/{y}.").concat(layer.format);
         break;
 
       case 'tms':
@@ -484,12 +484,15 @@
    * copyright (c) 2012, Stamen Design
    * under BSD 3-Clause license: https://github.com/stamen/maps.stamen.com/blob/master/LICENSE
    */
+  console.log(CONFIG);
   /*
    * Get the named provider, or throw an exception if it doesn't exist.
    **/
 
 
   function getProvider(name) {
+    console.log(name);
+
     if (name in CONFIG.BASEMAP_PROVIDERS) {
       var provider = CONFIG.BASEMAP_PROVIDERS[name]; // eslint-disable-next-line no-console
 
@@ -501,7 +504,7 @@
       return provider;
     } else {
       // eslint-disable-next-line no-console
-      console.error('NL Maps error: You asked for a style which does not exist! Available styles: ' + Object.keys(PROVIDERS).join(', '));
+      console.error('NL Maps error: You asked for a style which does not exist! Available styles: ' + Object.keys(CONFIG.BASEMAP_PROVIDERS).join(', '));
     }
   }
   /*

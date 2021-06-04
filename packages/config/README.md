@@ -84,14 +84,32 @@ A collection of arrays with classnames to be added to interface elements. This c
         },
         "layers": [
             {
+                "url": "https://service.pdok.nl/brt/achtergrondkaart/wmts/v2_0",
+                "crs": "EPSG:3857",
+                "format": "png",
                 "name": "standaard",
-                "layerName": "brtachtergrondkaart"
-            },{
+                "layerName": "standaard"
+            },
+            {
+                "url": "https://service.pdok.nl/brt/achtergrondkaart/wmts/v2_0",
+                "crs": "EPSG:3857",
+                "format": "png",
+                "name": "grijs",
+                "layerName": "grijs"
+            },
+            {
+                "url": "https://service.pdok.nl/brt/achtergrondkaart/wmts/v2_0",
+                "crs": "EPSG:3857",
+                "format": "png",
+                "name": "pastel",
+                "layerName": "pastel"
+            },
+            {
                 "name": "luchtfoto",
                 "crs": "EPSG:3857",
                 "layerName": "Actueel_ortho25",
                 "url": "https://service.pdok.nl/hwh/luchtfotorgb/wmts/v1_0",
-                "format": "image/jpeg"
+                "format": "jpeg"
             }
         ]
     },

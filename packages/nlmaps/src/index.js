@@ -31,7 +31,6 @@ import { bgLayer as bgGM,
 
 import {CONFIG} from '../../lib/configParser.js';
 import geoLocator from '../../nlmaps-geolocator/src/index.js';
-
 import { mapPointerStyle } from '../../lib/index.js';
 import { queryFeatures }  from '../../lib/featurequery.js';
 import {singleMarker, multiMarker, markerStore } from '../../lib/markers.js';

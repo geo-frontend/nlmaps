@@ -484,15 +484,12 @@
    * copyright (c) 2012, Stamen Design
    * under BSD 3-Clause license: https://github.com/stamen/maps.stamen.com/blob/master/LICENSE
    */
-  console.log(CONFIG);
   /*
    * Get the named provider, or throw an exception if it doesn't exist.
    **/
 
 
   function getProvider(name) {
-    console.log(name);
-
     if (name in CONFIG.BASEMAP_PROVIDERS) {
       var provider = CONFIG.BASEMAP_PROVIDERS[name]; // eslint-disable-next-line no-console
 

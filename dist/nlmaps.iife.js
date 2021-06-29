@@ -7496,8 +7496,6 @@
     }
   };
 
-  console.log(CONFIG);
-
   function getMarker() {
     return CONFIG.MARKER;
   }
@@ -7511,8 +7509,6 @@
 
 
   function getProvider(name) {
-    console.log(name);
-
     if (name in CONFIG.BASEMAP_PROVIDERS) {
       var provider = CONFIG.BASEMAP_PROVIDERS[name]; // eslint-disable-next-line no-console
 
@@ -8450,6 +8446,11 @@
             center: ol.proj.fromLonLat([opts.center.longitude, opts.center.latitude]),
             zoom: opts.zoom
           }),
+          controls: ol.control.defaults({
+            attribution: false
+          }).extend([new ol.control.Attribution({
+            collapsible: false
+          })]),
           target: opts.target
         });
         map.getTargetElement().getElementsByClassName('ol-zoom')[0].style.cssText = "left: 5px !important; bottom: 5px !important";

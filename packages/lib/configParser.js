@@ -49,7 +49,6 @@ function mergeConfig(defaults,config) {
 }
 
 function parseBase(basemaps) {
-    console.log(basemaps);
     let defaults = mergeConfig(CONFIG.BASE_DEFAULTS,basemaps.defaults);
     if(!basemaps.layers || basemaps.layers.length < 0) {
         err('no basemap defined, please define a basemap in the configuration')

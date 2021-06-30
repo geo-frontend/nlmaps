@@ -50,10 +50,9 @@
                 <div class="wizard tab">
                     <form class="js-wizard-form">
                         <ol class="wizard-steps">
-                            <li class="wizard-step">
-                                <span class="wizard-step-heading">Kies een library<span class="wizard-step-explanation">Let op de gebruiksvoorwaarden en prijzen. NLMaps / Kadaster is hiervoor niet verantwoordelijk.</span> </span>
-</span>
-                                <div class="wizard-step-content">
+                            <li class="wizard-step" role="group" aria-labelledby="step-1-label">
+                                <span id="step-1-label" class="wizard-step-heading">Kies een library<span class="wizard-step-explanation">Let op de gebruiksvoorwaarden en prijzen. NLMaps / Kadaster is hiervoor niet verantwoordelijk.</span> </span>
+                                <div role="radiogroup" class="wizard-step-content">
                                     <span class="wizard-option">
                                         <input type="radio" value="leaflet" name="service" id="service-leaflet"  />
                                         <label for="service-leaflet">Leaflet</label>
@@ -72,9 +71,9 @@
                                     </span>
                                 </div>
                             </li>
-                            <li class="wizard-step">
-                                <span class="wizard-step-heading">Kies een referentiekaart</span>
-                                <div class="wizard-step-content">
+                            <li class="wizard-step" role="group" aria-labelledby="step-2-label">
+                                <span id="step-2-label" class="wizard-step-heading">Kies een referentiekaart</span>
+                                <div role="radiogroup" class="wizard-step-content">
                                     <span class="wizard-option">
                                         <input type="radio" value="default" name="color" id="theme-default" checked="checked" />
                                         <label for="theme-default">standaard</label>
@@ -93,9 +92,9 @@
                                     </span>
                                 </div>
                             </li>
-                            <li class="wizard-step">
-                                <span class="wizard-step-heading">Kies een marker <span class="wizard-step-explanation"> De marker wordt automatisch op het midden van de kaart geplaatst. </span> </span>
-                                <div class="wizard-step-content">
+                            <li class="wizard-step" role="group" aria-labelledby="step-3-label">
+                                <span id="step-3-label" class="wizard-step-heading">Kies een marker <span class="wizard-step-explanation"> De marker wordt automatisch op het midden van de kaart geplaatst. </span> </span>
+                                <div role="radiogroup" class="wizard-step-content">
                                     <span class="wizard-option">
                                         <input type="radio" value="marker-no" name="marker" id="marker-no" checked="checked" />
                                         <label for="marker-no">geen marker</label>
@@ -106,9 +105,9 @@
                                     </span>
                                 </div>
                             </li>
-                            <li class="wizard-step">
-                                <span class="wizard-step-heading"> Kies kaartgegevens <span class="wizard-step-explanation"> Sommige lagen zijn alleen beschikbaar als de kaart verder is ingezoomd. </span> </span>                       
-                                <div class="wizard-step-content">
+                            <li class="wizard-step" role="group" aria-labelledby="step-4-label">
+                                <span id="step-4-label" class="wizard-step-heading"> Kies kaartgegevens <span class="wizard-step-explanation"> Sommige lagen zijn alleen beschikbaar als de kaart verder is ingezoomd. </span> </span>                       
+                                <div role="radiogroup" class="wizard-step-content">
                                     <span class="wizard-option">
                                         <input type="radio" value="wms-none" name="wms" id="wms-none" checked="checked" />
                                         <label for="wms-none">geen</label>
@@ -126,14 +125,14 @@
                                         <label for="wms-hoogtebestand">hoogte</label>
                                     </span>
                                     <span class="wizard-option">
-                                        <input type="radio" value="wms-drone-no-fly-zone" name="wms" id="wms-drone-no-fly-zones" />
+                                        <input  type="radio" value="wms-drone-no-fly-zone" name="wms" id="wms-drone-no-fly-zones" />
                                         <label for="wms-drone-no-fly-zones">drone-no-fly-zones</label>
                                     </span>
                                 </div>
                             </li>
-                            <li class="wizard-step">
-                                <span class="wizard-step-heading">Kies een zoekfunctie </span>
-                                <div class="wizard-step-content">
+                            <li class="wizard-step" role="group" aria-labelledby="step-5-label">
+                                <span id="step-5-label" class="wizard-step-heading">Kies een zoekfunctie </span>
+                                <div role="radiogroup" class="wizard-step-content">
                                     <span class="wizard-option">
                                         <input type="radio" value="geocoder-no" name="geocoder" id="geocoder-no" checked="checked" />
                                         <label for="geocoder-no">geen zoekbalk</label>
@@ -144,9 +143,9 @@
                                     </span>
                                 </div>
                             </li>
-                            <li class="wizard-step">
+                            <li class="wizard-step" >
                                 <span class="wizard-step-heading">Kopieer de code</span>
-                                <div class="wizard-step-content">
+                                <div   class="wizard-step-content">
                                     <div class="wizard-map js-wizard-map">
                                         <button class="wizard-geo js-get-geo">locatie</button>
                                     </div>

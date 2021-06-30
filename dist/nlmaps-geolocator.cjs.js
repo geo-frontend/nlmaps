@@ -1,7 +1,17 @@
 'use strict';
 
-function createCommonjsModule(fn, module) {
-	return module = { exports: {} }, fn(module, module.exports), module.exports;
+function createCommonjsModule(fn, basedir, module) {
+	return module = {
+	  path: basedir,
+	  exports: {},
+	  require: function (path, base) {
+      return commonjsRequire(path, (base === undefined || base === null) ? module.path : base);
+    }
+	}, fn(module, module.exports), module.exports;
+}
+
+function commonjsRequire () {
+	throw new Error('Dynamic requires are not currently supported by @rollup/plugin-commonjs');
 }
 
 var emitonoff = createCommonjsModule(function (module) {
@@ -78,23 +88,24 @@ var EmitOnOff = module.exports = function(thing){
 
 var geoLocateDefaultOpts = {
   follow: false
-
-  /* eslint-disable-next-line no-unused-vars */
 };
+
 function positionHandler(position) {
   this.emit('position', position);
 }
+
 function positionErrorHandler(error) {
   this.emit('error', error);
 }
 
 var GeoLocator = function GeoLocator(opts) {
   var state = Object.assign({}, geoLocateDefaultOpts, opts);
-
   return {
     start: function start() {
       state.started = true;
-      navigator.geolocation.getCurrentPosition(positionHandler.bind(this), positionErrorHandler.bind(this), { maximumAge: 60000 });
+      navigator.geolocation.getCurrentPosition(positionHandler.bind(this), positionErrorHandler.bind(this), {
+        maximumAge: 60000
+      });
       return this;
     },
     stop: function stop() {
@@ -114,6 +125,7 @@ var GeoLocator = function GeoLocator(opts) {
 
 function geoLocator(opts) {
   var navigator = typeof window !== 'undefined' ? window.navigator || {} : {};
+
   if (typeof navigator !== 'undefined' && 'geolocation' in navigator) {
     var geolocator = emitonoff(GeoLocator(opts));
     geolocator.on('position', function () {

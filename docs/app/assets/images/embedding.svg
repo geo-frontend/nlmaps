@@ -4,12 +4,12 @@
     <title>Combined Shape</title>
     <desc>Created with Sketch.</desc>
     <defs></defs>
-    <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-        <g id="Home_v2-Copy" transform="translate(-965.000000, -772.000000)" fill="#6C62A6">
-            <g id="Hoe-werkt-het-Copy-2" transform="translate(117.000000, 765.000000)">
-                <g id="03" transform="translate(848.000000, 0.000000)">
-                    <g id="Page-1" transform="translate(0.000000, 7.000000)">
-                        <path d="M0.4,11.4 L11.6,0.2 L22.8,11.4 L14.8,11.4 L14.8,24.2 L8.4,24.2 L8.4,11.4 L0.4,11.4 Z M35.6,30.6 L24.4,41.8 L13.2,30.6 L21.2,30.6 L21.2,17.8 L27.6,17.8 L27.6,30.6 L35.6,30.6 Z" id="Combined-Shape"></path>
+    <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g  transform="translate(-965.000000, -772.000000)" fill="#6C62A6">
+            <g transform="translate(117.000000, 765.000000)">
+                <g  transform="translate(848.000000, 0.000000)">
+                    <g transform="translate(0.000000, 7.000000)">
+                        <path d="M0.4,11.4 L11.6,0.2 L22.8,11.4 L14.8,11.4 L14.8,24.2 L8.4,24.2 L8.4,11.4 L0.4,11.4 Z M35.6,30.6 L24.4,41.8 L13.2,30.6 L21.2,30.6 L21.2,17.8 L27.6,17.8 L27.6,30.6 L35.6,30.6 Z" ></path>
                     </g>
                 </g>
             </g>

@@ -126,9 +126,10 @@ function initMap(lib, opts){
       map = new ol.Map({
         view: new ol.View({
           center: ol.proj.fromLonLat([opts.center.longitude, opts.center.latitude]),
-          zoom: opts.zoom
+          zoom: opts.zoom,
         }),
-        target: opts.target
+        controls: ol.control.defaults({attribution: false}).extend([new ol.control.Attribution({collapsible: false})]),
+        target: opts.target,
       });
       map.getTargetElement().getElementsByClassName('ol-zoom')[0].style.cssText = "left: 5px !important; bottom: 5px !important"
       map.getTargetElement().getElementsByClassName('ol-zoom')[0].classList.remove('ol-zoom');

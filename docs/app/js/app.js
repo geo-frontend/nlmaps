@@ -5,6 +5,6 @@ import Docs from './_docs';
 
 $(() => {
     new Maps();
-    new Forum('https://geoforum.nl', 'nl-maps');
+    new Forum('https://geoforum.nl', 'applicaties-en-diensten/nl-maps');
     new Docs('kadaster/nlmaps/', 'docs/README-NL.md');
 });

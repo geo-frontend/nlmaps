@@ -63,7 +63,7 @@ export default {
             },
             {
                 "name": "gebouwen",
-                "url": "https://geodata.nationaalgeoregister.nl/bag/wms/v1_1?",
+                "url": "https://service.pdok.nl/lv/bag/wms/v2_0?",
                 "layerName": "pand"
             },
             {

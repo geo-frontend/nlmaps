@@ -137,8 +137,8 @@ A collection of arrays with classnames to be added to interface elements. This c
         ]
     },
     "geocoder": {
-        "suggestUrl": "https://geodata.nationaalgeoregister.nl/locatieserver/v3/suggest?",
-        "lookupUrl": "https://geodata.nationaalgeoregister.nl/locatieserver/v3/lookup?"
+        "suggestUrl": "https://api.pdok.nl/bzk/locatieserver/search/v3_1/suggest?",
+        "lookupUrl": "https://api.pdok.nl/bzk/locatieserver/search/v3_1/lookup?"
     },
     "map": {
         "style": 'standaard',

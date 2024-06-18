@@ -63,7 +63,7 @@ export default {
             },
             {
                 "name": "gebouwen",
-                "url": "https://geodata.nationaalgeoregister.nl/bag/wms/v1_1?",
+                "url": "https://service.pdok.nl/lv/bag/wms/v2_0?",
                 "layerName": "pand"
             },
             {
@@ -92,8 +92,8 @@ export default {
         ]
     },
     "geocoder": {
-        "suggestUrl": "https://geodata.nationaalgeoregister.nl/locatieserver/v3/suggest?",
-        "lookupUrl": "https://geodata.nationaalgeoregister.nl/locatieserver/v3/lookup?"
+        "suggestUrl": "https://api.pdok.nl/bzk/locatieserver/search/v3_1/suggest?",
+        "lookupUrl": "https://api.pdok.nl/bzk/locatieserver/search/v3_1/lookup?"
     },
     "featureQuery": {
         "baseUrl": "https://api.data.amsterdam.nl/bag/nummeraanduiding/?format=json&locatie=",

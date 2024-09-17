@@ -1,0 +1,22 @@
+{
+  "name": "nlmaps-example-leaflet",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "vite",
+    "build": "vite build",
+    "serve": "vite preview"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "vite": "^1.2.0"
+  },
+  "dependencies": {
+    "leaflet": "^1.2.0",
+    "nlmaps-leaflet": "workspace:*"
+  }
+}

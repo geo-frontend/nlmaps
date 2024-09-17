@@ -1,4 +1,4 @@
-import config from '../config/.tmp/config.js';
+import config from '@geo-frontend/config';
 
 const CONFIG = {};
 

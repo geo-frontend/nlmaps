@@ -1,0 +1,6 @@
+{
+  "name": "lib",
+  "type": "module",
+  "main": "src/index.js",
+  "private": true
+}

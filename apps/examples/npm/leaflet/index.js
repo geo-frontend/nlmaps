@@ -1,4 +1,4 @@
-import 'leaflet'
+import L from 'leaflet'
 import { bgLayer } from 'nlmaps-leaflet'
 
 import 'leaflet/dist/leaflet.css'

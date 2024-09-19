@@ -12,11 +12,8 @@
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "devDependencies": {
-    "vite": "^1.2.0"
-  },
   "dependencies": {
-    "leaflet": "^1.2.0",
+    "leaflet": "^1.9.4",
     "nlmaps-leaflet": "workspace:*"
   }
 }

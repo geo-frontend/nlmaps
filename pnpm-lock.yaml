@@ -52,7 +52,11 @@ importers:
 
   packages/config: {}
 
-  packages/lib: {}
+  packages/lib:
+    devDependencies:
+      '@geo-frontend/config':
+        specifier: workspace:*
+        version: link:../config
 
   packages/nlmaps:
     dependencies:
@@ -110,9 +114,9 @@ importers:
 
   packages/nlmaps-leaflet:
     devDependencies:
-      leaflet:
-        specifier: ^1.6.0
-        version: 1.9.4
+      '@geo-frontend/lib':
+        specifier: workspace:*
+        version: link:../lib
 
   packages/nlmaps-openlayers:
     dependencies:
@@ -2515,9 +2519,6 @@ packages:
 
   keyv@4.5.4:
     resolution: {integrity: sha512-oxVHkHR/EJf2CNXnWxRLW6mg7JyCCUcG0DtEGmL2ctUo1PNTin1PUil+r/+4r5MpVgC/fn1kjsx7mjSujKqIpw==}
-
-  leaflet@1.9.4:
-    resolution: {integrity: sha512-nxS1ynzJOmOlHp+iL3FyWqK89GtNL8U8rvlMOsQdTTssxZwCXh8N2NB3GDQOL+YR3XnWyZAxwQixURb+FA74PA==}
 
   level-blobs@0.1.7:
     resolution: {integrity: sha512-n0iYYCGozLd36m/Pzm206+brIgXP8mxPZazZ6ZvgKr+8YwOZ8/PPpYC5zMUu2qFygRN8RO6WC/HH3XWMW7RMVg==}
@@ -6607,8 +6608,6 @@ snapshots:
   keyv@4.5.4:
     dependencies:
       json-buffer: 3.0.1
-
-  leaflet@1.9.4: {}
 
   level-blobs@0.1.7:
     dependencies:

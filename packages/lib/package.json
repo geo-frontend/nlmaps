@@ -1,5 +1,5 @@
 {
-  "name": "lib",
+  "name": "@geo-frontend/lib",
   "type": "module",
   "main": "src/index.js",
   "private": true,

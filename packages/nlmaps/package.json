@@ -1,51 +1,36 @@
 {
-  "name": "nlmaps",
+  "name": "@geo-frontend/nlmaps",
   "version": "2.8.0",
-  "engines": {
-    "node": ">=6.0.0 <=6.11"
-  },
   "description": "easily add PDOK sources to common Javascript mapping libaries",
-  "main": "build/nlmaps.cjs.js",
-  "module": "build/nlmaps.es.js",
-  "scripts": {
-    "test": "node test/test.js",
-    "build": "rollup -c config/rollup.es.js  && rollup -c config/rollup.cjs.js && rollup -c config/rollup.iife.js && cp build/nlmaps.iife.js ../../dist/",
-    "watch-test": "nodemon --watch test --watch build --exec 'npm run test'",
-    "watch-code": "nodemon --watch src --exec npm run build",
-    "watch-all": "npm-run-all --parallel watch-code watch-test",
-    "_watch-browser-test": "nodemon --watch test/browser-test.js --watch test/test.html --watch test/greentest.html --exec 'npm run build-browser-test'",
-    "watch-browser-test": "npm-run-all --parallel browser-test _watch-browser-test",
-    "browser-test": "node liveserver.js",
-    "build-browser-test": "rollup -c config/rollup.test.js && cp test/*.html build/"
+  "type": "module",
+  "main": "./../../dist/nlmaps.cjs.js",
+  "module": "./../../dist/nlmaps.es.js",
+  "exports": {
+    ".": {
+      "import": "./../../dist/nlmaps.es.js",
+      "require": "./../../dist/nlmaps.cjs.js"
+    }
   },
-  "repository": {
-    "type": "git",
-    "url": "git+ssh://git@github.com:kadaster/nlmaps.git"
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preinstall": "npx only-allow pnpm"
   },
   "keywords": [
+    "Kadaster",
     "Leaflet",
     "OpenLayers",
-    "Mapbox.js",
-    "GoogleMaps",
     "BRT-Achtergrondkaart"
   ],
   "author": "Hans Fast <hans@webmapper.net>",
   "license": "MIT",
-  "dependencies": {
-    "emitonoff": "^0.1.1",
-    "rollup-plugin-uglify-es": "0.0.1"
-  },
   "devDependencies": {
-    "babelrc-rollup": "^3.0.0",
-    "is-reference": "^1.2.1",
-    "leaflet-headless": "^0.2.6",
-    "live-server-https": "0.0.2",
-    "rollup-plugin-eslint": "^7.0.0",
-    "rollup-plugin-polyfill": "^2.0.1",
-    "tape": "^4.6.3"
+    "nlmaps-geolocator": "workspace:*",
+    "nlmaps-leaflet": "workspace:*",
+    "nlmaps-openlayers": "workspace:*",
+    "vite-plugin-static-copy": "^1.0.6"
   },
-  "bugs": {
-    "url": "https://github.com:kadaster/nlmaps/issues"
-  },
-  "homepage": "https://github.com:kadaster/nlmaps/README"
+  "dependencies": {
+    "emitonoff": "^0.1.1"
+  }
 }

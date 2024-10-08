@@ -1,4 +1,4 @@
-import 'leaflet'
+import L from 'leaflet'
 import { bgLayer, geoLocatorControl } from 'nlmaps-leaflet'
 import geoLocator from 'nlmaps-geolocator'
 

@@ -13,7 +13,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "leaflet": "^1.2.0",
+    "leaflet": "^1.9.4",
     "nlmaps-geolocator": "workspace:*",
     "nlmaps-leaflet": "workspace:*"
   }

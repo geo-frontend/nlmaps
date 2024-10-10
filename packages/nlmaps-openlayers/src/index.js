@@ -1,13 +1,13 @@
-import { getProvider, getWmsProvider, geocoder, getMarker } from '../../lib';
+import { getProvider, getWmsProvider, geocoder, getMarker } from '../../lib/src'
 
-function bgLayer(name='standaard') {
-  const provider = getProvider(name);
+function bgLayer(name = 'standaard') {
+  const provider = getProvider(name)
   //replace leaflet style subdomain to OL style
-  if(provider.subdomains) {
-    let sub = provider.subdomains;
-    provider.url = provider.url.replace('{s}', '{'+sub.slice(0,1)+'-'+sub.slice(-1)+'}');
+  if (provider.subdomains) {
+    let sub = provider.subdomains
+    provider.url = provider.url.replace('{s}', '{' + sub.slice(0, 1) + '-' + sub.slice(-1) + '}')
   }
-  if (typeof ol === "object") {
+  if (typeof ol === 'object') {
     return new ol.layer.Tile({
       source: new ol.source.XYZ({
         url: provider.url,
@@ -18,56 +18,53 @@ function bgLayer(name='standaard') {
         ]
       })
     })
-
   } else {
-    throw 'openlayers is not defined';
+    throw 'openlayers is not defined'
   }
 }
 function markerLayer(latLngObject) {
   let markerStyle = new ol.style.Style({
-    image: new ol.style.Icon(
-      ({
-        anchor: [32, 63],
-        anchorXUnits: 'pixels',
-        anchorYUnits: 'pixels',
-        src: getMarker().url,
-        scale: 1
-      })
-    )
-  });
-  let lat;
-  let lng;
+    image: new ol.style.Icon({
+      anchor: [32, 63],
+      anchorXUnits: 'pixels',
+      anchorYUnits: 'pixels',
+      src: getMarker().url,
+      scale: 1
+    })
+  })
+  let lat
+  let lng
 
   // eslint-disable-next-line eqeqeq
   if (typeof latLngObject == 'undefined') {
-    const mapCenter = getMapCenter(map);
-    lat = mapCenter.latitude;
+    const mapCenter = getMapCenter(map)
+    lat = mapCenter.latitude
     lng = mapCenter.longitude
   } else {
-    lat = latLngObject.latitude;
-    lng = latLngObject.longitude;
+    lat = latLngObject.latitude
+    lng = latLngObject.longitude
   }
 
-  const center = ol.proj.fromLonLat([lng, lat]);
+  const center = ol.proj.fromLonLat([lng, lat])
 
   var markerFeature = new ol.Feature({
     geometry: new ol.geom.Point(center),
     name: 'marker'
-  });
+  })
 
-  markerFeature.setStyle(markerStyle);
+  markerFeature.setStyle(markerStyle)
 
   var markerSource = new ol.source.Vector({
     features: [markerFeature]
-  });
+  })
   return new ol.layer.Vector({
     source: markerSource
-  });
+  })
 }
 
 function overlayLayer(name, options) {
-  const wmsProvider = getWmsProvider(name, options);
-  if (typeof ol === "object") {
+  const wmsProvider = getWmsProvider(name, options)
+  if (typeof ol === 'object') {
     return new ol.layer.Tile({
       source: new ol.source.TileWMS({
         url: wmsProvider.url,
@@ -79,53 +76,53 @@ function overlayLayer(name, options) {
         }
       })
     })
-
   } else {
-    throw 'openlayers is not defined';
+    throw 'openlayers is not defined'
   }
 }
 
+function geoLocatorControl(geolocator, map) {
+  let myControlEl = document.createElement('div')
+  myControlEl.className = 'nlmaps-geolocator-control ol-control'
 
-function geoLocatorControl(geolocator, map){
-  let myControlEl = document.createElement('div');
-  myControlEl.className = 'nlmaps-geolocator-control ol-control';
+  myControlEl.addEventListener('click', function () {
+    geolocator.start()
+  })
 
-  myControlEl.addEventListener('click', function(){
-    geolocator.start();
-  });
-
-  function moveMap(d, map=map){
-    let oldZoom = map.getView().getZoom();
+  function moveMap(d, map = map) {
+    let oldZoom = map.getView().getZoom()
     let view = new ol.View({
-      center: ol.proj.fromLonLat([d.coords.longitude,d.coords.latitude]),
+      center: ol.proj.fromLonLat([d.coords.longitude, d.coords.latitude]),
       zoom: oldZoom
-    });
-    map.setView(view);
+    })
+    map.setView(view)
   }
-  geolocator.on('position', function(d) { moveMap(d, map)});
-  let control = new ol.control.Control({element: myControlEl});
-  return control;
+  geolocator.on('position', function (d) {
+    moveMap(d, map)
+  })
+  let control = new ol.control.Control({ element: myControlEl })
+  return control
 }
 
 function zoomTo(point, map) {
-  const newCenter = ol.proj.fromLonLat(point.coordinates);
-  map.getView().setCenter(newCenter);
-  map.getView().setZoom(18);
+  const newCenter = ol.proj.fromLonLat(point.coordinates)
+  map.getView().setCenter(newCenter)
+  map.getView().setZoom(18)
 }
 
 function getMapCenter(map) {
-  const EPSG3857Coords = map.getView().getCenter();
-  const lngLatCoords = ol.proj.toLonLat(EPSG3857Coords);
+  const EPSG3857Coords = map.getView().getCenter()
+  const lngLatCoords = ol.proj.toLonLat(EPSG3857Coords)
   return {
     longitude: lngLatCoords[0],
     latitude: lngLatCoords[1]
-  };
+  }
 }
 
 function geocoderControl(map, nlmaps) {
-  let control = geocoder.createControl(zoomTo, map, nlmaps);
-  control = new ol.control.Control({element: control});
-  map.addControl(control);
+  let control = geocoder.createControl(zoomTo, map, nlmaps)
+  control = new ol.control.Control({ element: control })
+  map.addControl(control)
 }
 /// Until the building works properly, this is here. Should be in browser-test.js ///
 // let map = new ol.Map({
@@ -145,8 +142,6 @@ function geocoderControl(map, nlmaps) {
 
 // const control = geocoder.createControl(zoomTo, map);
 
-
-
 // geocoderControl(map);
 
-export { bgLayer, overlayLayer, markerLayer, getMapCenter, geoLocatorControl, geocoderControl };
+export { bgLayer, overlayLayer, markerLayer, getMapCenter, geoLocatorControl, geocoderControl }

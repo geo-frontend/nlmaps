@@ -22,6 +22,7 @@
   },
   "homepage": "https://github.com/geo-frontend/nlmaps#README",
   "devDependencies": {
+    "@geo-frontend/lib": "workspace:*",
     "is-reference": "^1.2.1"
   },
   "dependencies": {

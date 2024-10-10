@@ -1,4 +1,4 @@
-import { getProvider, getWmsProvider, geocoder, getMarker } from '../../lib/src'
+import { getProvider, getWmsProvider, geocoder, getMarker } from '@geo-frontend/lib'
 
 function bgLayer(name = 'standaard') {
   const provider = getProvider(name)

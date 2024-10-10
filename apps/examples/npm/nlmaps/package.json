@@ -1,0 +1,19 @@
+{
+  "name": "nlmaps-example-maplibre",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "vite",
+    "build": "vite build",
+    "serve": "vite preview"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@geo-frontend/nlmaps": "workspace:*",
+    "maplibre-gl": "^4.7.1"
+  }
+}

@@ -220,7 +220,7 @@ To use it in the `nlmaps.html` example, edit `index-nlmaps.js` to look like this
 
     var googleMapsLoader = require('google-maps');
 
-    googleMapsLoader.KEY='AIzaSyAYCu4ZY9tssUK4luavRsNyTirXdEnC3qw' //substitute with your Google Maps key, see https://developers.google.com/maps/documentation/javascript/get-api-key
+    googleMapsLoader.KEY='google-key' //substitute with your Google Maps key, see https://developers.google.com/maps/documentation/javascript/get-api-key
 
     googleMapsLoader.load(function(google) {
         var nlmaps = require('nlmaps');

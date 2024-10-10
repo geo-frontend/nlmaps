@@ -334,7 +334,7 @@ If you want to save as many bytes as possible, simply include the sub-module for
 
 **Web browser:**
 
-Download the appropriate `nlmaps-<maplib>.min.js` [release](https://github.com/kadaster/nlmaps/releases/latest) Download and extract the source code and select the appropriate file from the `dist` directory. Upon including the script in your web page, you will have a `bgLayer()` function available which works with the respective map library. In order to use the `nlmaps` library in conjunction with Mapbox, select `leaflet`.
+Download the appropriate `nlmaps-<maplib>.min.js` [release](https://github.com/geo-frontend/nlmaps/releases/latest) Download and extract the source code and select the appropriate file from the `dist` directory. Upon including the script in your web page, you will have a `bgLayer()` function available which works with the respective map library. In order to use the `nlmaps` library in conjunction with Mapbox, select `leaflet`.
 
 **NodeJS:**
 

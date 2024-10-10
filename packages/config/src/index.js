@@ -45,7 +45,7 @@ export default {
   },
   wms: {
     defaults: {
-      url: 'https://geodata.nationaalgeoregister.nl/{workSpaceName}/wms?',
+      url: 'https://service.pdok.nl/{workSpaceName}?',
       version: '1.1.1',
       transparent: true,
       format: 'image/png',

@@ -1,6 +1,6 @@
 # NLMAPS
 
-Easily create web maps pre-loaded with the BRT Achtergrondkaart. Works with Leaflet, MapLibre GL JS, and OpenLayers.
+Easily create web maps pre-loaded with the BRT-Achtergrondkaart. Works with Leaflet, MapLibre GL JS, and OpenLayers.
 
 ## How to use
 
@@ -15,4 +15,4 @@ or if you already have a map, you can use the library-specific function to creat
 
 ## Documentation
 
-See the top-level readme https://github.com/nlmaps/nlmaps for full documentation.
+See the top-level [README](https://github.com/geo-frontend/nlmaps) for full documentation.

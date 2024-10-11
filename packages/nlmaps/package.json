@@ -22,7 +22,6 @@
     "OpenLayers",
     "BRT-Achtergrondkaart"
   ],
-  "author": "Hans Fast <hans@webmapper.net>",
   "license": "MIT",
   "devDependencies": {
     "nlmaps-geolocator": "workspace:*",

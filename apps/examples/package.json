@@ -6,7 +6,8 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "vite",
     "build": "vite build",
-    "serve": "vite preview"
+    "serve": "vite preview",
+    "preinstall": "npx only-allow pnpm"
   },
-  "license": "ISC"
+  "license": "MIT"
 }

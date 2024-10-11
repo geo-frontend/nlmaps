@@ -11,7 +11,7 @@
     "url": "https://github.com/geo-frontend/nlmaps",
     "type": "GIT"
   },
-  "license": "ISC",
+  "license": "MIT",
   "devDependencies": {
     "@nx/eslint": "19.5.7",
     "@nx/eslint-plugin": "19.5.7",

@@ -39,7 +39,7 @@ function err(err) {
   throw err
 }
 
-if (config.version !== 0.3) {
+if (config.version !== 0.2) {
   err('unsupported config version')
 }
 

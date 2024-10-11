@@ -259,7 +259,7 @@ Returns an object with a `subscribe` method which can be used to handle the resp
 
 ### `nlmaps.singleMarker(map, popupCreator)`
 
-**Leaflet only**
+#### Leaflet only
 
 places a marker on the map. Meant to be used in combination with `nlmaps.clickProvider`. The default behaviour is to move the marker on every click, and remove the marker when it is clicked. An optional `popupCreator` function can be passed to specify how to create a popup on the marker.
 

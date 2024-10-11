@@ -10,8 +10,7 @@
     "serve": "vite preview"
   },
   "keywords": [],
-  "author": "",
-  "license": "ISC",
+  "license": "MIT",
   "dependencies": {
     "leaflet": "^1.9.4",
     "nlmaps-leaflet": "workspace:*"

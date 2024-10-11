@@ -64,6 +64,9 @@ importers:
         specifier: ^0.1.1
         version: 0.1.1
     devDependencies:
+      '@geo-frontend/lib':
+        specifier: workspace:*
+        version: link:../lib
       nlmaps-geolocator:
         specifier: workspace:*
         version: link:../nlmaps-geolocator
@@ -88,6 +91,12 @@ importers:
         version: 1.2.1
 
   packages/nlmaps-leaflet:
+    devDependencies:
+      '@geo-frontend/lib':
+        specifier: workspace:*
+        version: link:../lib
+
+  packages/nlmaps-maplibre:
     devDependencies:
       '@geo-frontend/lib':
         specifier: workspace:*

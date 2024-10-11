@@ -24,7 +24,7 @@ import {
 //          geoLocatorControl as glO } from 'nlmaps-openlayers';
 
 import geoLocator from 'nlmaps-geolocator'
-import { singleMarker, multiMarker, markerStore, mapPointerStyle, queryFeatures, CONFIG } from '../../lib/src'
+import { singleMarker, multiMarker, markerStore, mapPointerStyle, queryFeatures, CONFIG } from '@geo-frontend/lib'
 
 let nlmaps = {
   leaflet: {

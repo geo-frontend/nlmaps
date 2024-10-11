@@ -27,6 +27,7 @@
     "nlmaps-geolocator": "workspace:*",
     "nlmaps-leaflet": "workspace:*",
     "nlmaps-openlayers": "workspace:*",
+    "@geo-frontend/lib": "workspace:*",
     "vite-plugin-static-copy": "^1.0.6"
   },
   "dependencies": {

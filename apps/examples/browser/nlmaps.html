@@ -2,8 +2,13 @@
 <html lang="en">
   <head>
     <meta charset="utf8" />
-    <title>NL Maps with MapLibre GL JS</title>
-    <link href="https://unpkg.com/maplibre-gl@^4.7.1/dist/maplibre-gl.css" rel="stylesheet" />
+    <title>NL Maps with Leaflet</title>
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+      integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
+      crossorigin=""
+    />
     <style>
       body {
         font-family: Helvetica, sans-serif;
@@ -16,8 +21,8 @@
   <body>
     <a href="../index.html">Back</a>
     <div id="map-div"></div>
-    <script src="https://unpkg.com/maplibre-gl@^4.7.1/dist/maplibre-gl.js"></script>
-    <script src="https://github.com/geo-frontend/nlmaps/blob/master/dist/nlmaps.iife.js"></script>
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+    <script src="https://rawgit.com/geo-frontend/nlmaps/master/dist/nlmaps.iife.js"></script>
     <script src="main-nlmaps.js"></script>
   </body>
 </html>

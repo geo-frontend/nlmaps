@@ -1,9 +1,11 @@
 import { getProvider, getWmsProvider, geocoder, getMarker } from '@geo-frontend/lib'
+import Control from 'ol/control/Control.js'
 import { fromLonLat, toLonLat } from 'ol/proj.js'
 import Feature from 'ol/Feature.js'
 import Point from 'ol/geom/Point.js'
 import { Icon, Style } from 'ol/style.js'
 import { Tile as TileLayer, Vector as VectorLayer } from 'ol/layer.js'
+import View from 'ol/View.js'
 import { ImageTile as ImageTileSource, TileWMS as TileWMSSource, Vector as VectorSource } from 'ol/source.js'
 
 function bgLayer(name = 'standaard') {
@@ -73,8 +75,10 @@ function overlayLayer(name, options) {
 }
 
 function geoLocatorControl(geolocator, map) {
+  let img = document.createElement('img')
   let myControlEl = document.createElement('div')
   myControlEl.className = 'nlmaps-geolocator-control ol-control'
+  myControlEl.appendChild(img)
 
   myControlEl.addEventListener('click', function () {
     geolocator.start()
@@ -82,8 +86,8 @@ function geoLocatorControl(geolocator, map) {
 
   function moveMap(d, map = map) {
     let oldZoom = map.getView().getZoom()
-    let view = new ol.View({
-      center: ol.proj.fromLonLat([d.coords.longitude, d.coords.latitude]),
+    let view = View({
+      center: fromLonLat([d.coords.longitude, d.coords.latitude]),
       zoom: oldZoom
     })
     map.setView(view)
@@ -91,12 +95,12 @@ function geoLocatorControl(geolocator, map) {
   geolocator.on('position', function (d) {
     moveMap(d, map)
   })
-  let control = new ol.control.Control({ element: myControlEl })
+  let control = new Control({ element: myControlEl })
   return control
 }
 
 function zoomTo(point, map) {
-  const newCenter = ol.proj.fromLonLat(point.coordinates)
+  const newCenter = fromLonLat(point.coordinates)
   map.getView().setCenter(newCenter)
   map.getView().setZoom(18)
 }
@@ -112,7 +116,7 @@ function getMapCenter(map) {
 
 function geocoderControl(map, nlmaps) {
   let control = geocoder.createControl(zoomTo, map, nlmaps)
-  control = new ol.control.Control({ element: control })
+  control = new Control({ element: control })
   map.addControl(control)
 }
 

@@ -52,6 +52,9 @@ importers:
 
   apps/examples/npm/ol:
     dependencies:
+      nlmaps-geolocator:
+        specifier: workspace:*
+        version: link:../../../../packages/nlmaps-geolocator
       nlmaps-ol:
         specifier: workspace:*
         version: link:../../../../packages/nlmaps-ol

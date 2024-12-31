@@ -75,6 +75,10 @@
   box-shadow: 0 1px 5px rgba(0, 0, 0, 0.65);
 }
 
+.nlmaps-geocoder-result-list ul {
+  display: contents;
+}
+
 .nlmaps-geocoder-result-selected {
   font-weight: bold;
 }

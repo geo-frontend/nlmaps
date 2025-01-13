@@ -155,8 +155,8 @@ function zoomTo(point, map) {
   map.fitBounds(L.geoJSON(point).getBounds(), { maxZoom: 18 })
 }
 
-function geocoderControl(map, nlmaps) {
-  const control = geocoder.createControl(zoomTo, map, nlmaps)
+function geocoderControl(map) {
+  const control = geocoder.createControl(zoomTo, map)
   control.addEventListener('click', (e) => e.stopPropagation())
   map.getContainer().appendChild(control)
 }

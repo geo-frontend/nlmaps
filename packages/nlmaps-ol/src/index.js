@@ -114,8 +114,8 @@ function getMapCenter(map) {
   }
 }
 
-function geocoderControl(map, nlmaps) {
-  let control = geocoder.createControl(zoomTo, map, nlmaps)
+function geocoderControl(map) {
+  let control = geocoder.createControl(zoomTo, map)
   control = new Control({ element: control })
   map.addControl(control)
 }

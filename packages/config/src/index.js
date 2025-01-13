@@ -112,7 +112,7 @@ export default {
     zoom: 8,
     attribution: true,
     extent: [-180, -90, 180, 90],
-    zoomposition: 'topright'
+    zoomposition: 'topleft'
   },
   marker: {
     url: 'https://rawgit.com/geo-frontend/nlmaps/master/dist/assets/img/marker_icon.svg',

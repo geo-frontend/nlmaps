@@ -6,6 +6,13 @@
 import L from 'leaflet'
 import { bgLayer } from 'nlmaps-leaflet'
 export default {
+  props: {
+    bgmap: {
+      type: String,
+      required: true,
+      default: 'standaard',
+    },
+  },
   data() {
     return {
       mapId: 'leaflet',
@@ -14,9 +21,18 @@ export default {
   },
   methods: {
     initMap() {
+      if (this.mapInstance) {
+        this.mapInstance.remove()
+      }
       const leafletMap = L.map(this.mapId).setView([52, 5], 10)
-      var layer = bgLayer().addTo(leafletMap)
+      var layer = bgLayer(this.bgmap).addTo(leafletMap)
       this.mapInstance = leafletMap
+    },
+    updateBgMap(style) {
+      if (this.mapInstance) {
+        bgLayer(style).addTo(this.mapInstance)
+        console.log(this.bgmap)
+      }
     },
   },
   mounted() {
@@ -26,6 +42,12 @@ export default {
     if (this.mapInstance) {
       this.mapInstance.remove()
     }
+  },
+  watch: {
+    bgmap() {
+      //console.log(this.bgmap)
+      this.initMap()
+    },
   },
 }
 </script>

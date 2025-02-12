@@ -4,13 +4,18 @@
 
 <script>
 import L from 'leaflet'
-import { bgLayer } from 'nlmaps-leaflet'
+import { bgLayer, overlayLayer } from 'nlmaps-leaflet'
 export default {
   props: {
-    bgmap: {
-      type: String,
+    mapOptions: {
+      type: Object,
       required: true,
-      default: 'standaard',
+      default: () => {
+        return {
+          backgroundLayerName: 'standaard',
+          overlay: 'false',
+        }
+      },
     },
     viewPort: {
       type: Object,
@@ -35,9 +40,17 @@ export default {
       const { lng, lat, zoom } = this.viewPort
       if (this.mapInstance) {
         this.mapInstance.remove()
+        this.mapInstance = null
       }
       const leafletMap = L.map(this.mapId).setView([lat, lng], zoom)
-      var layer = bgLayer(this.bgmap).addTo(leafletMap)
+      var layer = bgLayer(this.mapOptions.backgroundLayerName)
+      layer.addTo(leafletMap)
+
+      if (this.mapOptions.overlay !== 'false') {
+        var wms = overlayLayer(this.mapOptions.overlay)
+        wms.addTo(leafletMap)
+      }
+
       const updateLocation = () =>
         this.$emit('update:viewPort', this.getLocation())
 
@@ -57,14 +70,18 @@ export default {
     const { lng, lat, zoom } = this.viewPort
     this.initMap()
   },
-  destroyed() {
+  unmounted() {
     if (this.mapInstance) {
       this.mapInstance.remove()
+      this.mapInstance = null
     }
   },
   watch: {
-    bgmap() {
-      this.initMap()
+    mapOptions: {
+      handler() {
+        this.initMap()
+      },
+      deep: true,
     },
   },
 }

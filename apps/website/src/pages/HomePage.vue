@@ -11,7 +11,10 @@ export default {
   },
   data() {
     return {
-      backgroundLayerName: 'standaard',
+      options: {
+        backgroundLayerName: 'standaard',
+        overlay: 'false',
+      },
       location: {
         lng: 5,
         lat: 52,
@@ -79,7 +82,7 @@ export default {
                         value="standaard"
                         name="backgroundLayerName"
                         id="theme-default"
-                        v-model="backgroundLayerName"
+                        v-model="options.backgroundLayerName"
                       />
                       <label for="theme-default">standaard</label>
                     </span>
@@ -89,7 +92,7 @@ export default {
                         value="pastel"
                         name="backgroundLayerName"
                         id="theme-pastel"
-                        v-model="backgroundLayerName"
+                        v-model="options.backgroundLayerName"
                       />
                       <label for="theme-pastel">pastel</label>
                     </span>
@@ -99,7 +102,7 @@ export default {
                         value="grijs"
                         name="backgroundLayerName"
                         id="theme-grey"
-                        v-model="backgroundLayerName"
+                        v-model="options.backgroundLayerName"
                       />
                       <label for="theme-grey">grijs</label>
                     </span>
@@ -109,7 +112,7 @@ export default {
                         value="luchtfoto"
                         name="backgroundLayerName"
                         id="theme-air"
-                        v-model="backgroundLayerName"
+                        v-model="options.backgroundLayerName"
                       />
                       <label for="theme-air">luchtfoto</label>
                     </span>
@@ -165,48 +168,72 @@ export default {
                     <span class="wizard-option">
                       <input
                         type="radio"
-                        value="wms-none"
-                        name="wms"
-                        id="wms-none"
-                        checked="checked"
+                        value="false"
+                        name="overlay"
+                        id="overlay-false"
+                        v-model="options.overlay"
                       />
-                      <label for="wms-none">geen</label>
+                      <label for="overlay-false">geen</label>
                     </span>
                     <span class="wizard-option">
                       <input
                         type="radio"
-                        value="wms-percelen"
-                        name="wms"
-                        id="wms-percelen"
+                        value="percelen"
+                        name="overlay"
+                        id="overlay-percelen"
+                        v-model="options.overlay"
                       />
-                      <label for="wms-percelen">percelen</label>
+                      <label for="overlay-percelen">percelen</label>
                     </span>
                     <span class="wizard-option">
                       <input
                         type="radio"
-                        value="wms-adressen"
-                        name="wms"
-                        id="wms-adressen"
+                        value="adressen"
+                        name="overlay"
+                        id="overlay-adressen"
+                        v-model="options.overlay"
                       />
-                      <label for="wms-adressen">adressen</label>
+                      <label for="overlay-adressen">adressen</label>
                     </span>
                     <span class="wizard-option">
                       <input
                         type="radio"
-                        value="wms-gebouwen"
-                        name="wms"
-                        id="wms-gebouwen"
+                        value="gebouwen"
+                        name="overlay"
+                        id="overlay-gebouwen"
+                        v-model="options.overlay"
                       />
-                      <label for="wms-gebouwen">gebouwen</label>
+                      <label for="overlay-gebouwen">gebouwen</label>
                     </span>
                     <span class="wizard-option">
                       <input
                         type="radio"
-                        value="wms-bestuurlijkegebieden"
-                        name="wms"
-                        id="wms-bestuurlijkegebieden"
+                        value="gemeenten"
+                        name="overlay"
+                        id="overlay-gemeenten"
+                        v-model="options.overlay"
                       />
-                      <label for="wms-bestuurlijkegebieden">grenzen</label>
+                      <label for="overlay-gemeenten">gemeenten</label>
+                    </span>
+                    <span class="wizard-option">
+                      <input
+                        type="radio"
+                        value="provincies"
+                        name="overlay"
+                        id="overlay-provincies"
+                        v-model="options.overlay"
+                      />
+                      <label for="overlay-provincies">provincies</label>
+                    </span>
+                    <span class="wizard-option">
+                      <input
+                        type="radio"
+                        value="land"
+                        name="overlay"
+                        id="overlay-land"
+                        v-model="options.overlay"
+                      />
+                      <label for="overlay-land">land</label>
                     </span>
                   </div>
                 </li>
@@ -245,7 +272,7 @@ export default {
                   <div class="wizard-step-content">
                     <div class="wizard-map js-wizard-map">
                       <LeafletMap
-                        v-bind:bgmap="backgroundLayerName"
+                        v-bind:mapOptions="options"
                         v-model:viewPort="location"
                       />
                       <button class="wizard-geo js-get-geo">locatie</button>
@@ -269,13 +296,13 @@ export default {
     nlMapsHolder.style.height = '300px'; // Change to required height
     
     var opts = {
-        style: '{{ backgroundLayerName }}',
+        style: '{{ options.backgroundLayerName }}',
         target: 'nlmaps-holder',
         center: {
-            longitude: {{ location.lng.toFixed(4) }},
-            latitude: {{ location.lat.toFixed(4) }}
+            longitude: {{ location.lng.toFixed(6) }},
+            latitude: {{ location.lat.toFixed(6) }}
         },
-        overlay: '{overlay}',
+        overlay: '{{ options.overlay }}',
         marker: {marker},
         zoom: {{ location.zoom }},
         search: {geocoder}

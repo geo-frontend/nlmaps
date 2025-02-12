@@ -46,11 +46,6 @@ export default {
 
       this.mapInstance = leafletMap
     },
-    updateBgMap(style) {
-      if (this.mapInstance) {
-        bgLayer(style).addTo(this.mapInstance)
-      }
-    },
     getLocation() {
       return {
         ...this.mapInstance.getCenter(),

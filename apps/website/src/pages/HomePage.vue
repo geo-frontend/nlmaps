@@ -12,6 +12,11 @@ export default {
   data() {
     return {
       backgroundLayerName: 'standaard',
+      location: {
+        lng: 5,
+        lat: 52,
+        zoom: 10,
+      },
     }
   },
 }
@@ -239,7 +244,10 @@ export default {
                   <span class="wizard-step-heading">Kopieer de code</span>
                   <div class="wizard-step-content">
                     <div class="wizard-map js-wizard-map">
-                      <LeafletMap v-bind:bgmap="backgroundLayerName" />
+                      <LeafletMap
+                        v-bind:bgmap="backgroundLayerName"
+                        v-model:viewPort="location"
+                      />
                       <button class="wizard-geo js-get-geo">locatie</button>
                     </div>
                     <div class="wizard-code-block">
@@ -264,12 +272,12 @@ export default {
         style: '{{ backgroundLayerName }}',
         target: 'nlmaps-holder',
         center: {
-            longitude: {longitude},
-            latitude: {latitude}
+            longitude: {{ location.lng.toFixed(4) }},
+            latitude: {{ location.lat.toFixed(4) }}
         },
         overlay: '{overlay}',
         marker: {marker},
-        zoom: {zoomlevel},
+        zoom: {{ location.zoom }},
         search: {geocoder}
     };
     var map = nlmaps.createMap(opts);

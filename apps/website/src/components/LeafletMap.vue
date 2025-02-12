@@ -12,6 +12,17 @@ export default {
       required: true,
       default: 'standaard',
     },
+    viewPort: {
+      type: Object,
+      required: true,
+      default: () => {
+        return {
+          lng: 5,
+          lat: 52,
+          zoom: 10,
+        }
+      },
+    },
   },
   data() {
     return {
@@ -21,21 +32,34 @@ export default {
   },
   methods: {
     initMap() {
+      const { lng, lat, zoom } = this.viewPort
       if (this.mapInstance) {
         this.mapInstance.remove()
       }
-      const leafletMap = L.map(this.mapId).setView([52, 5], 10)
+      const leafletMap = L.map(this.mapId).setView([lat, lng], zoom)
       var layer = bgLayer(this.bgmap).addTo(leafletMap)
+      const updateLocation = () =>
+        this.$emit('update:viewPort', this.getLocation())
+
+      leafletMap.on('move', updateLocation)
+      leafletMap.on('zoom', updateLocation)
+
       this.mapInstance = leafletMap
     },
     updateBgMap(style) {
       if (this.mapInstance) {
         bgLayer(style).addTo(this.mapInstance)
-        console.log(this.bgmap)
+      }
+    },
+    getLocation() {
+      return {
+        ...this.mapInstance.getCenter(),
+        zoom: this.mapInstance.getZoom(),
       }
     },
   },
   mounted() {
+    const { lng, lat, zoom } = this.viewPort
     this.initMap()
   },
   destroyed() {
@@ -45,7 +69,6 @@ export default {
   },
   watch: {
     bgmap() {
-      //console.log(this.bgmap)
       this.initMap()
     },
   },

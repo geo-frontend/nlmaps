@@ -13,6 +13,7 @@ export default {
     return {
       options: {
         backgroundLayerName: 'standaard',
+        marker: 'false',
         overlay: 'false',
       },
       location: {
@@ -134,19 +135,20 @@ export default {
                     <span class="wizard-option">
                       <input
                         type="radio"
-                        value="marker-no"
+                        value="false"
                         name="marker"
                         id="marker-no"
-                        checked="checked"
+                        v-model="options.marker"
                       />
                       <label for="marker-no">geen marker</label>
                     </span>
                     <span class="wizard-option">
                       <input
                         type="radio"
-                        value="marker-yes"
+                        value="true"
                         name="marker"
                         id="marker-yes"
+                        v-model="options.marker"
                       />
                       <label for="marker-yes">marker</label>
                     </span>
@@ -303,7 +305,7 @@ export default {
             latitude: {{ location.lat.toFixed(6) }}
         },
         overlay: '{{ options.overlay }}',
-        marker: {marker},
+        marker: {{ options.marker }},
         zoom: {{ location.zoom }},
         search: {geocoder}
     };

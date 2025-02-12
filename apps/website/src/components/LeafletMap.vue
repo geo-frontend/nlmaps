@@ -4,7 +4,7 @@
 
 <script>
 import L from 'leaflet'
-import { bgLayer, overlayLayer } from 'nlmaps-leaflet'
+import { bgLayer, markerLayer, overlayLayer } from 'nlmaps-leaflet'
 export default {
   props: {
     mapOptions: {
@@ -13,6 +13,7 @@ export default {
       default: () => {
         return {
           backgroundLayerName: 'standaard',
+          marker: 'false',
           overlay: 'false',
         }
       },
@@ -50,9 +51,18 @@ export default {
         var wms = overlayLayer(this.mapOptions.overlay)
         wms.addTo(leafletMap)
       }
+      var marker = null
+      if (this.mapOptions.marker !== 'false') {
+        marker = markerLayer({ longitude: lng, latitude: lat })
+        marker.addTo(leafletMap)
+      }
 
-      const updateLocation = () =>
+      const updateLocation = () => {
         this.$emit('update:viewPort', this.getLocation())
+        if (marker) {
+          marker.setLatLng(this.mapInstance.getCenter()).update()
+        }
+      }
 
       leafletMap.on('move', updateLocation)
       leafletMap.on('zoom', updateLocation)

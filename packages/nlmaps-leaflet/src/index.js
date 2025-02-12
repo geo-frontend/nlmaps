@@ -36,7 +36,6 @@ if (typeof L !== 'undefined' && typeof L === 'object') {
     initialize: function (name = '', options) {
       const wmsProvider = getWmsProvider(name, options)
       const url = wmsProvider.url
-      delete wmsProvider.url
       const wmsParams = L.Util.extend({}, options, {
         layers: wmsProvider.layerName,
         maxZoom: 24,

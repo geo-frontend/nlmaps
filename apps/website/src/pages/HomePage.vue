@@ -257,7 +257,6 @@ export default {
                         :value="false"
                         name="geocoder"
                         id="geocoder-no"
-                        checked="checked"
                         v-model="options.geocoder"
                       />
                       <label for="geocoder-no">geen zoekbalk</label>

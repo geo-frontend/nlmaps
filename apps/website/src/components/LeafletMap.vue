@@ -4,7 +4,12 @@
 
 <script>
 import L from 'leaflet'
-import { bgLayer, markerLayer, overlayLayer } from 'nlmaps-leaflet'
+import {
+  bgLayer,
+  geocoderControl,
+  markerLayer,
+  overlayLayer,
+} from 'nlmaps-leaflet'
 export default {
   props: {
     mapOptions: {
@@ -13,7 +18,8 @@ export default {
       default: () => {
         return {
           backgroundLayerName: 'standaard',
-          marker: 'false',
+          geocoder: false,
+          marker: false,
           overlay: 'false',
         }
       },
@@ -52,9 +58,13 @@ export default {
         wms.addTo(leafletMap)
       }
       var marker = null
-      if (this.mapOptions.marker !== 'false') {
+      if (this.mapOptions.marker) {
         marker = markerLayer({ longitude: lng, latitude: lat })
         marker.addTo(leafletMap)
+      }
+
+      if (this.mapOptions.geocoder) {
+        const searchControl = geocoderControl(leafletMap)
       }
 
       const updateLocation = () => {

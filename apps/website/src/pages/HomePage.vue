@@ -3,6 +3,8 @@ import DefaultLayout from '@/layouts/DefaultLayout.vue'
 import BenefitsBlock from '@/components/Benefits.vue'
 import LeafletMap from '@/components/LeafletMap.vue'
 
+import '@/assets/css/nlmaps.css'
+
 export default {
   components: {
     DefaultLayout,
@@ -13,7 +15,8 @@ export default {
     return {
       options: {
         backgroundLayerName: 'standaard',
-        marker: 'false',
+        geocoder: false,
+        marker: false,
         overlay: 'false',
       },
       location: {
@@ -46,7 +49,7 @@ export default {
           </a>
         </div>
       </div>
-      <img src="@/assets/images/map.png" alt="" class="spotlight-map" />
+      <img src="@/assets/img/map.png" alt="" class="spotlight-map" />
     </section>
 
     <section id="benefits">
@@ -135,7 +138,7 @@ export default {
                     <span class="wizard-option">
                       <input
                         type="radio"
-                        value="false"
+                        :value="false"
                         name="marker"
                         id="marker-no"
                         v-model="options.marker"
@@ -145,7 +148,7 @@ export default {
                     <span class="wizard-option">
                       <input
                         type="radio"
-                        value="true"
+                        :value="true"
                         name="marker"
                         id="marker-yes"
                         v-model="options.marker"
@@ -251,19 +254,21 @@ export default {
                     <span class="wizard-option">
                       <input
                         type="radio"
-                        value="geocoder-no"
+                        :value="false"
                         name="geocoder"
                         id="geocoder-no"
                         checked="checked"
+                        v-model="options.geocoder"
                       />
                       <label for="geocoder-no">geen zoekbalk</label>
                     </span>
                     <span class="wizard-option">
                       <input
                         type="radio"
-                        value="geocoder-yes"
+                        :value="true"
                         name="geocoder"
                         id="geocoder-yes"
+                        v-model="options.geocoder"
                       />
                       <label for="geocoder-yes">zoekbalk</label>
                     </span>
@@ -307,7 +312,7 @@ export default {
         overlay: '{{ options.overlay }}',
         marker: {{ options.marker }},
         zoom: {{ location.zoom }},
-        search: {geocoder}
+        search: {{ options.geocoder }}
     };
     var map = nlmaps.createMap(opts);
 &lt;/script>
@@ -362,7 +367,7 @@ export default {
   min-height: 430px;
   padding: 150px 0 60px;
   flex-direction: column;
-  background: url('@/assets/images/map-background.png') no-repeat center center
+  background: url('@/assets/img/map-background.png') no-repeat center center
     #006486;
   background-size: cover;
   text-align: center;

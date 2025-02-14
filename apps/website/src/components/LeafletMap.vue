@@ -56,6 +56,7 @@ export default {
         }
       }
       const leafletMap = L.map(this.mapId).setView([lat, lng], zoom)
+      leafletMap.attributionControl.setPrefix('')
       var layer = bgLayer(this.mapOptions.backgroundLayerName)
       layer.addTo(leafletMap)
 

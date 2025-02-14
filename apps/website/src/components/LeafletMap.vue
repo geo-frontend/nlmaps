@@ -48,6 +48,12 @@ export default {
       if (this.mapInstance) {
         this.mapInstance.remove()
         this.mapInstance = null
+        const geocodercontrol = document.getElementsByClassName(
+          'nlmaps-geocoder-control-container',
+        )
+        if (geocodercontrol.length > 0) {
+          geocodercontrol[0].remove()
+        }
       }
       const leafletMap = L.map(this.mapId).setView([lat, lng], zoom)
       var layer = bgLayer(this.mapOptions.backgroundLayerName)

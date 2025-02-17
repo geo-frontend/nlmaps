@@ -363,6 +363,10 @@ button {
   line-height: inherit;
   cursor: pointer;
 }
+.container {
+  box-sizing: border-box;
+  width: 1180px;
+}
 .section {
   padding: 10vh 0;
 }

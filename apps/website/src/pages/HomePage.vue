@@ -522,7 +522,7 @@ button {
 
 .wizard-step {
   display: flex;
-  padding: 20px;
+  padding: 40px;
   counter-increment: step;
 
   & + & {

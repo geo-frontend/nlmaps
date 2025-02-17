@@ -357,6 +357,12 @@ export default {
   </DefaultLayout>
 </template>
 <style lang="css" scoped>
+button {
+  font-family: inherit;
+  font-size: inherit;
+  line-height: inherit;
+  cursor: pointer;
+}
 .section {
   padding: 10vh 0;
 }

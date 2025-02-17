@@ -26,14 +26,14 @@ body {
 
 @font-face {
   font-family: 'Montserrat';
-  src: url('@/assets/fonts/montserrat/montserrat-thin.eot');
+  src: url('@/assets/fonts/montserrat/Montserrat-Regular.eot');
   src:
-    url('@/assets/fonts/montserrat/montserrat-thin.eot?#iefix')
+    url('@/assets/fonts/montserrat/Montserrat-Regular.eot?#iefix')
       format('embedded-opentype'),
-    url('@/assets/fonts/montserrat/montserrat-thin.woff2') format('woff2'),
-    url('@/assets/fonts/montserrat/montserrat-thin.woff') format('woff'),
-    url('@/assets/fonts/montserrat/montserrat-thin.ttf') format('truetype'),
-    url('@/assets/fonts/montserrat/montserrat-thin.svg#montserrat-thin')
+    url('@/assets/fonts/montserrat/Montserrat-Regular.woff2') format('woff2'),
+    url('@/assets/fonts/montserrat/Montserrat-Regular.woff') format('woff'),
+    url('@/assets/fonts/montserrat/Montserrat-Regular.ttf') format('truetype'),
+    url('@/assets/fonts/montserrat/Montserrat-Regular.svg#Montserrat-Regular')
       format('svg');
   font-weight: normal;
   font-style: normal;

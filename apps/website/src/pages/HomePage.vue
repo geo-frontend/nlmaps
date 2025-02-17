@@ -398,6 +398,10 @@ export default {
   grid-area: benefits;
 }
 
+.section-intro {
+  margin: 0 0 60px;
+}
+
 #wizard {
   grid-area: wizard;
 }
@@ -431,6 +435,17 @@ export default {
   background-color: #564d88;
   border-color: #474071;
   text-decoration: none;
+}
+
+.btn-secondary {
+  background: #006486;
+  color: #fff;
+}
+
+.btn-secondary:hover,
+.btn-secondary:focus {
+  background: #6c62a6;
+  color: #fff;
 }
 
 .btn-inverted {
@@ -490,7 +505,7 @@ export default {
   padding: 0;
   list-style: none;
   background: #fff;
-  box-shadow: 0 10px 40px 10px rgba(#000, 0.08);
+  box-shadow: 0 10px 40px 10px rgba(0, 0, 0, 0.08);
   counter-reset: step;
 }
 

@@ -26,6 +26,11 @@ export default {
       },
     }
   },
+  methods: {
+    copySourceCode() {
+      navigator.clipboard.writeText(this.$refs.elText.innerText)
+    },
+  },
 }
 </script>
 <template>
@@ -287,11 +292,11 @@ export default {
                       <button
                         type="button"
                         class="wizard-copy js-copy-code"
-                        data-clipboard-target="#map-code"
+                        @click="copySourceCode"
                       >
                         Kopieer code
                       </button>
-                      <pre class="wizard-code" id="map-code">
+                      <pre class="wizard-code" id="map-code" ref="elText">
 &lt;div id="nlmaps-holder">&lt;/div>
 
 &lt;link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">

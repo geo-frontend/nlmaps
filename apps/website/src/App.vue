@@ -14,7 +14,6 @@ body {
 .wrapper {
   display: grid;
   grid-template-columns: 1fr;
-  grid-template-rows: 0.3fr 0.9fr 2.3fr 0.5fr 1fr;
   gap: 0px 0px;
   grid-template-areas:
     'header'

@@ -334,7 +334,6 @@ export default {
               </a>
             </div>
           </div>
-          <div class="docs tab"></div>
         </div>
       </div>
     </section>
@@ -353,6 +352,10 @@ export default {
   </DefaultLayout>
 </template>
 <style lang="css" scoped>
+.section {
+  padding: 10vh 0;
+}
+
 .section-brand {
   background: #006486;
   color: #fff;
@@ -430,8 +433,23 @@ export default {
   text-decoration: none;
 }
 
-.section-actions .btn + .btn {
-  margin: 0 0 0 20px;
+.btn-inverted {
+  background: #fff;
+  color: #6c62a6;
+}
+
+.section-actions {
+  position: relative;
+  margin: 60px 0 0;
+  text-align: center;
+
+  .btn + .btn {
+    margin-top: 20px;
+  }
+
+  .section-wizard & {
+    color: #fff;
+  }
 }
 
 .btn-github {
@@ -459,7 +477,7 @@ export default {
     position: absolute;
     left: 50%;
     width: 100vw;
-    height: calc(100% - 60px);
+    height: 100%;
     margin: 60px 0 0;
     transform: translateX(-50%);
     background: #6c62a6;

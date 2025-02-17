@@ -4,6 +4,7 @@
 <style lang="css">
 body {
   margin: 0;
+  overflow-x: hidden;
   font-family: 'Nunito', sans-serif;
   font-size: 16px;
   line-height: 1.5;

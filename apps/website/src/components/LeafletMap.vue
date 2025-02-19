@@ -29,8 +29,8 @@ export default {
       required: true,
       default: () => {
         return {
-          lng: 5,
-          lat: 52,
+          lng: 5.9699,
+          lat: 52.2112,
           zoom: 10,
         }
       },

@@ -27,7 +27,6 @@ nav {
 
 header {
   grid-area: header;
-  text-align: center;
   position: absolute;
   z-index: 1;
   left: 0;

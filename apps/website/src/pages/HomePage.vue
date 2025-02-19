@@ -20,8 +20,8 @@ export default {
         overlay: 'false',
       },
       location: {
-        lng: 5,
-        lat: 52,
+        lng: 5.9699,
+        lat: 52.2112,
         zoom: 10,
       },
     }
@@ -364,18 +364,94 @@ button {
   cursor: pointer;
 }
 .container {
-  box-sizing: border-box;
-  width: 1180px;
+  padding-right: 20px;
+  padding-left: 20px;
+  margin-right: auto;
+  margin-left: auto;
 }
-.section {
-  padding: 10vh 0;
+.container:before,
+.container:after {
+  display: table;
+  content: ' ';
+}
+.container:after {
+  clear: both;
+}
+@media (min-width: 768px) {
+  .container {
+    width: 760px;
+  }
+}
+@media (min-width: 992px) {
+  .container {
+    width: 980px;
+  }
+}
+@media (min-width: 1200px) {
+  .container {
+    width: 1180px;
+  }
 }
 
+.section {
+  padding: 32px 0;
+}
 .section-brand {
   background: #006486;
   color: #fff;
 }
-
+.section-wizard {
+  padding: 32px 0 0;
+}
+.section-intro {
+  margin: 0 0 30px;
+  text-align: center;
+}
+.section-heading {
+  font-size: 20px;
+  text-align: center;
+}
+.section-actions {
+  position: relative;
+  margin: 60px 0 0;
+  text-align: center;
+}
+.section-actions .btn + .btn {
+  margin-top: 20px;
+}
+.section-wizard .section-actions {
+  color: #fff;
+}
+@media (min-width: 30em) {
+  .section {
+    padding: 60px 0;
+  }
+  .section-actions .btn + .btn {
+    margin: 0 0 0 20px;
+  }
+}
+@media (min-width: 48em) {
+  .section {
+    padding: 7vh 0;
+  }
+  .section-intro {
+    margin: 0 0 48px;
+  }
+  .section-heading {
+    font-size: 24px;
+  }
+}
+@media (min-width: 75em) {
+  .section {
+    padding: 10vh 0;
+  }
+  .section-intro {
+    margin: 0 0 60px;
+  }
+  .section-heading {
+    font-size: 32px;
+  }
+}
 .spotlight {
   position: relative;
   display: flex;

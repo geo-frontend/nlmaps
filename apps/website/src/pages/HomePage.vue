@@ -58,7 +58,9 @@ export default {
     </section>
 
     <section id="benefits">
-      <BenefitsBlock />
+      <div class="container">
+        <BenefitsBlock />
+      </div>
     </section>
     <section class="section section-wizard" id="wizard">
       <div class="container">

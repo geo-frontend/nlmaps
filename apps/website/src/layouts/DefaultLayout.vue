@@ -27,14 +27,26 @@ nav {
 
 header {
   grid-area: header;
-  padding-top: 55px;
   text-align: center;
   position: absolute;
   z-index: 1;
   left: 0;
   right: 0;
   top: 0;
+  padding: 20px 0 0;
 }
+
+@media (min-width: 48em) {
+  header {
+    padding-top: 24px;
+  }
+}
+@media (min-width: 75em) {
+  header {
+    padding-top: 55px;
+  }
+}
+
 nav {
   background-color: rgb(0, 100, 134);
   grid-area: navigation;

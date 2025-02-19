@@ -359,6 +359,53 @@ export default {
   </DefaultLayout>
 </template>
 <style lang="css" scoped>
+html {
+  font-size: 10px;
+}
+
+body {
+  font-family: 'Nunito', sans-serif;
+  font-size: 16px;
+  line-height: 1.5;
+  color: #333;
+  background-color: #fff;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: 'Montserrat', 'Nunito', sans-serif;
+  font-weight: 700;
+  line-height: 1.25;
+  color: inherit;
+}
+h1 {
+  font-size: 32px;
+  margin-top: 24px;
+  margin-bottom: 12px;
+}
+h2 {
+  font-size: 24px;
+  margin-top: 24px;
+  margin-bottom: 12px;
+}
+h3 {
+  font-size: 20px;
+  margin-top: 24px;
+  margin-bottom: 12px;
+}
+h4 {
+  font-size: 20px;
+}
+h5 {
+  font-size: 16px;
+}
+h6 {
+  font-size: 14px;
+}
 button {
   font-family: inherit;
   font-size: inherit;
@@ -394,7 +441,11 @@ button {
     width: 1180px;
   }
 }
-
+.heading {
+  margin-top: 0;
+  font-size: inherit;
+  font-weight: normal;
+}
 .section {
   padding: 32px 0;
 }

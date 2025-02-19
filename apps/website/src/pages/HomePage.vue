@@ -509,7 +509,7 @@ button {
   position: relative;
   display: flex;
   justify-content: center;
-  height: calc(10vh);
+  height: 80vh;
   min-height: 430px;
   padding: 150px 0 60px;
   flex-direction: column;
@@ -521,7 +521,7 @@ button {
 }
 
 .spotlight-heading {
-  font-size: 42px;
+  font-size: 28px;
 }
 
 .spotlight-description {

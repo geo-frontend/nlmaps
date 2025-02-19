@@ -478,13 +478,38 @@ button {
 }
 
 .spotlight-map {
-  position: absolute;
-  left: 50%;
-  bottom: 0;
   display: none;
-  -webkit-transform: translate(-50%, 50%) perspective(1000px) rotateX(70deg);
-  transform: translate(-50%, 50%) perspective(1000px) rotateX(70deg);
-  box-shadow: 0 10px 40px 10px rgba(0, 0, 0, 0.05);
+}
+@media (min-width: 48em) {
+  .spotlight {
+    height: calc(60vh);
+    min-height: 370px;
+    padding: 120px 0;
+    margin-bottom: 60px;
+  }
+  .spotlight-heading {
+    font-size: 36px;
+  }
+  .spotlight-map {
+    position: absolute;
+    left: 50%;
+    bottom: 0;
+    display: none;
+    -webkit-transform: translate(-50%, 50%) perspective(1000px) rotateX(70deg);
+    transform: translate(-50%, 50%) perspective(1000px) rotateX(70deg);
+    box-shadow: 0 10px 40px 10px rgba(0, 0, 0, 0.05);
+  }
+}
+@media (min-width: 75em) {
+  .spotlight {
+    height: calc(70vh);
+    min-height: 370px;
+    padding: 120px 0;
+    margin-bottom: 60px;
+  }
+  .spotlight-heading {
+    font-size: 42px;
+  }
 }
 
 #benefits {

@@ -358,7 +358,7 @@ export default {
     </section>
   </DefaultLayout>
 </template>
-<style lang="css" scoped>
+<style lang="css">
 html {
   font-size: 10px;
 }
@@ -411,6 +411,13 @@ button {
   font-size: inherit;
   line-height: inherit;
   cursor: pointer;
+}
+
+label {
+  display: inline-block;
+  max-width: 100%;
+  margin-bottom: 5px;
+  font-weight: 700;
 }
 .container {
   padding-right: 20px;
@@ -575,10 +582,6 @@ button {
   grid-area: wizard;
 }
 
-.wizard-step-content {
-  text-align: left;
-}
-
 .btn {
   margin-bottom: 0;
   font-weight: normal;
@@ -655,19 +658,19 @@ button {
 .wizard {
   position: relative;
   padding: 0 0 15px;
-
-  &:before {
-    content: '';
-    position: absolute;
-    left: 50%;
-    width: 100vw;
-    height: 100%;
-    margin: 60px 0 0;
-    transform: translateX(-50%);
-    background: #6c62a6;
-  }
 }
-
+.wizard:before {
+  content: '';
+  position: absolute;
+  left: 50%;
+  width: 100vw;
+  height: calc(100% - 60px);
+  margin: 60px 0 0;
+  -webkit-transform: translateX(-50%);
+  -ms-transform: translateX(-50%);
+  transform: translateX(-50%);
+  background: #6c62a6;
+}
 .wizard-steps {
   position: relative;
   margin: 0;
@@ -677,92 +680,93 @@ button {
   box-shadow: 0 10px 40px 10px rgba(0, 0, 0, 0.08);
   counter-reset: step;
 }
-
 .wizard-step {
-  display: flex;
-  padding: 40px;
+  padding: 20px;
   counter-increment: step;
-
-  & + & {
-    border-top: 1px solid #333;
-  }
-
-  &:before {
-    content: counter(step);
-    display: inline-block;
-    width: 32px;
-    height: 32px;
-    margin: 0 15px 0 0;
-    border-radius: 100%;
-    line-height: 32px;
-    font-style: normal;
-    text-align: center;
-    background: #6c62a6;
-    color: #fff;
-  }
 }
-
+.wizard-step + .wizard-step {
+  border-top: 1px solid #e5e5e5;
+}
+.wizard-step:before {
+  content: counter(step);
+  display: inline-block;
+  width: 24px;
+  height: 24px;
+  margin: 0 6px 0 0;
+  border-radius: 100%;
+  line-height: 24px;
+  font-style: normal;
+  text-align: center;
+  background: #6c62a6;
+  color: #fff;
+}
 .wizard-step-heading {
-  flex: 1;
-  font-size: 1.5em;
-  line-height: 1.2;
   font-family: 'Montserrat', 'Nunito', sans-serif;
-  text-align: left;
+  font-size: 16px;
+  line-height: 1;
 }
-
 .wizard-step-explanation {
   display: block;
   margin-right: 15px;
   color: #00387d;
   font-size: 13px;
 }
-
 .wizard-step-content {
-  flex: 2;
-  padding: 0;
+  padding: 30px 0 0;
+  text-align: left;
 }
-
 .wizard-map {
   position: relative;
 }
-
+.wizard-map .map {
+  position: relative;
+  display: block;
+  width: 100%;
+  height: 30vh;
+}
 .wizard-geo {
   position: absolute;
   z-index: 1000;
   top: 10px;
   right: 10px;
   border: none;
-  background-color: #6c62a6;
+  background: #6c62a6;
   color: #fff;
-
-  &:before {
-    content: '\e802';
-    font-family: fontello;
-    margin: 0 10px 0 0;
-    padding: 0;
-  }
-
-  &:hover {
-    background-color: #006486;
-  }
-
-  &:disabled {
-    &:hover {
-      background-color: #6c62a6;
-      cursor: default;
-    }
-
-    &:before {
-      content: '\e803';
-      animation: spin 2s infinite linear;
-    }
-  }
 }
-
+.wizard-geo:before {
+  content: '\e802';
+  display: inline-block;
+  width: 1em;
+  font-family: 'fontello';
+  font-style: normal;
+  font-weight: normal;
+  text-decoration: inherit;
+  text-align: center;
+  font-variant: normal;
+  text-transform: none;
+  line-height: 1em;
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-font-smoothing: antialiased;
+  margin-right: 0.2em;
+  margin-left: 0.2em;
+  margin: 0 10px 0 0;
+  padding: 0;
+}
+.wizard-geo:hover {
+  background: #006486;
+}
+.wizard-geo:disabled:hover {
+  background: #6c62a6;
+  cursor: default;
+}
+.wizard-geo:disabled:before {
+  content: '\e803';
+  -webkit-animation: spin 2s infinite linear;
+  animation: spin 2s infinite linear;
+}
 .wizard-code-block {
   position: relative;
 }
-
 .wizard-copy {
   position: absolute;
   top: 0;
@@ -772,59 +776,105 @@ button {
   border: none;
   background: #6c62a6;
   color: #fff;
-
-  &:after {
-    content: '\f0c5';
-    font-family: 'fontello';
-    margin: 0 0 0 10px;
-  }
-
-  &:hover,
-  &:focus {
-    background: #fff;
-    color: #6c62a6;
-    text-decoration: none;
-  }
 }
-
+.wizard-copy:after {
+  content: '\f0c5';
+  display: inline-block;
+  width: 1em;
+  font-family: 'fontello';
+  font-style: normal;
+  font-weight: normal;
+  text-decoration: inherit;
+  text-align: center;
+  font-variant: normal;
+  text-transform: none;
+  line-height: 1em;
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-font-smoothing: antialiased;
+  margin-right: 0.2em;
+  margin-left: 0.2em;
+  margin: 0 0 0 10px;
+}
+.wizard-copy:hover,
+.wizard-copy:focus {
+  background: #fff;
+  color: #6c62a6;
+  text-decoration: none;
+}
 .wizard-code {
   display: block;
   padding: 50px 20px 20px;
   background: #f3f3f3;
-  font-size: 1em;
+  font-size: 14px;
   white-space: pre-wrap;
   word-break: break-word;
 }
-
 .wizard-option {
   position: relative;
-
-  input {
-    position: absolute;
-    width: 1px;
-    height: 1px;
-    padding: 0;
-    margin: -1px;
-    border: 0;
-    overflow: hidden;
-    clip: rect(0, 0, 0, 0);
-
-    &:checked + label {
-      border-color: #006486;
-    }
+}
+.wizard-option input {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  border: 0;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+}
+.wizard-option input:checked + label {
+  border-color: #006486;
+}
+.wizard-option label {
+  width: 100%;
+  padding: 10px 16px;
+  border: 2px solid transparent;
+  border-radius: 10px;
+  cursor: pointer;
+}
+.wizard-option label:focus,
+.wizard-option label:hover {
+  border-color: #b3d1db;
+}
+@media (min-width: 48em) {
+  .wizard:before {
+    height: 100%;
   }
-
-  label {
-    width: 100%;
-    padding: 10px 16px;
-    border: 2px solid transparent;
-    border-radius: 10px;
-    cursor: pointer;
-
-    &:focus,
-    &:hover {
-      border-color: mix(#fff, #006486, 70%);
-    }
+  .wizard-step {
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    padding: 40px;
+  }
+  .wizard-step:before {
+    width: 32px;
+    height: 32px;
+    margin: 0 15px 0 0;
+    font-size: 20px;
+    line-height: 32px;
+  }
+  .wizard-step-heading {
+    display: block;
+    -webkit-flex: 1;
+    -ms-flex: 1;
+    flex: 1;
+    font-size: 24px;
+    line-height: 1.25;
+  }
+  .wizard-step-content {
+    -webkit-flex: 2;
+    -ms-flex: 2;
+    flex: 2;
+    padding: 0;
+  }
+  .wizard-option + .wizard-option {
+    margin: 0 0 0 15px;
+  }
+  .wizard-option label {
+    width: auto;
+  }
+  .wizard-code {
+    padding: 20px;
   }
 }
 </style>

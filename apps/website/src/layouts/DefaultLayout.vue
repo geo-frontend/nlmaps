@@ -18,6 +18,13 @@ import AppNavigation from '@/components/AppNavigation.vue'
   </footer>
 </template>
 <style lang="css">
+* {
+  box-sizing: border-box;
+}
+*:before,
+*:after {
+  box-sizing: border-box;
+}
 html {
   font-size: 10px;
 }

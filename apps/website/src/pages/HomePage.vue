@@ -689,20 +689,6 @@ fieldset[disabled] .btn-primary.focus {
   color: #6c62a6;
 }
 
-.section-actions {
-  position: relative;
-  margin: 60px 0 0;
-  text-align: center;
-
-  .btn + .btn {
-    margin-top: 20px;
-  }
-
-  .section-wizard & {
-    color: #fff;
-  }
-}
-
 .wizard {
   position: relative;
   padding: 0 0 15px;

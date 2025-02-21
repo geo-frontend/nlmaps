@@ -35,7 +35,7 @@ export default {
 </script>
 <template>
   <DefaultLayout>
-    <section class="section section-brand spotlight">
+    <section class="section-brand spotlight">
       <div class="container">
         <h1 class="heading spotlight-heading">
           Dé officiële kaart van Nederland
@@ -62,7 +62,7 @@ export default {
         <BenefitsBlock />
       </div>
     </section>
-    <section class="section section-wizard" id="wizard">
+    <section class="section-wizard" id="wizard">
       <div class="container">
         <div class="section-intro">
           <h2 class="heading section-heading">Gebruik NL Maps nu</h2>
@@ -395,7 +395,8 @@ export default {
   font-size: inherit;
   font-weight: normal;
 }
-.section {
+section,
+nav {
   padding: 32px 0;
 }
 .section-brand {
@@ -425,7 +426,8 @@ export default {
   color: #fff;
 }
 @media (min-width: 30em) {
-  .section {
+  section,
+  nav {
     padding: 60px 0;
   }
   .section-actions .btn + .btn {
@@ -433,7 +435,8 @@ export default {
   }
 }
 @media (min-width: 48em) {
-  .section {
+  section,
+  nav {
     padding: 7vh 0;
   }
   .section-intro {
@@ -444,7 +447,8 @@ export default {
   }
 }
 @media (min-width: 75em) {
-  .section {
+  section,
+  nav {
     padding: 10vh 0;
   }
   .section-intro {

@@ -10,7 +10,7 @@ import AppNavigation from '@/components/AppNavigation.vue'
   <main>
     <slot />
   </main>
-  <nav class="section section-brand">
+  <nav class="section-brand">
     <AppNavigation />
   </nav>
   <footer>
@@ -91,6 +91,10 @@ label {
 
 a {
   text-decoration: none;
+}
+
+svg:not(:root) {
+  overflow: hidden;
 }
 
 .wrapper {

@@ -11,14 +11,6 @@ footer .logo-kadaster {
   display: inline-block;
   width: 60px;
 }
-footer .logo-kadaster svg {
-  width: 100%;
-  height: auto;
-}
-
-svg:not(:root) {
-  overflow: hidden;
-}
 
 footer .logo-kadaster polyline,
 footer .logo-kadaster path {
@@ -34,5 +26,9 @@ footer .logo-kadaster path {
   footer .logo-kadaster {
     width: 90px;
   }
+}
+footer .logo-kadaster svg {
+  width: 80%;
+  height: auto;
 }
 </style>

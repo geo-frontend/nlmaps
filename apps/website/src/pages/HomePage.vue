@@ -352,7 +352,9 @@ export default {
         </div>
         <ul class="forum js-forum"></ul>
         <div class="section-actions">
-          <a href="#" class="btn js-forum-link" target="_blank">Alles tonen</a>
+          <a href="#" class="btn btn-primary js-forum-link" target="_blank"
+            >Alles tonen</a
+          >
         </div>
       </div>
     </section>
@@ -519,30 +521,45 @@ export default {
 }
 
 .btn {
+  display: inline-block;
   margin-bottom: 0;
   font-weight: normal;
   text-align: center;
+  white-space: nowrap;
   vertical-align: middle;
+  -ms-touch-action: manipulation;
+  touch-action: manipulation;
   cursor: pointer;
   background-image: none;
   border: 1px solid transparent;
   padding: 6px 12px;
   font-size: 16px;
-  height: 45px;
-  padding-left: 32px;
-  padding-right: 32px;
-  border-radius: 40px;
-  line-height: 32px;
-  color: #fff;
-  background-color: #6c62a6;
-  border-color: #605698;
+  line-height: 1.5;
+  border-radius: 4px;
+  -webkit-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
 }
-
-.btn:hover {
-  color: #fff;
-  background-color: #564d88;
-  border-color: #474071;
+.btn:focus,
+.btn.focus,
+.btn:active:focus,
+.btn:active.focus,
+.btn.active:focus,
+.btn.active.focus {
+  outline: 5px auto -webkit-focus-ring-color;
+  outline-offset: -2px;
+}
+.btn:hover,
+.btn:focus,
+.btn.focus {
+  color: #333;
   text-decoration: none;
+}
+.btn:active,
+.btn.active {
+  background-image: none;
+  outline: 0;
+  box-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125);
 }
 
 .btn-secondary {
@@ -554,6 +571,113 @@ export default {
 .btn-secondary:focus {
   background: #6c62a6;
   color: #fff;
+}
+.btn-primary {
+  color: #fff;
+  background-color: #6c62a6;
+  border-color: #605698;
+}
+.btn-primary:focus,
+.btn-primary.focus {
+  color: #fff;
+  background-color: #564d88;
+  border-color: #2d2847;
+}
+.btn-primary:hover {
+  color: #fff;
+  background-color: #564d88;
+  border-color: #474071;
+}
+.btn-primary:active,
+.btn-primary.active,
+.open > .btn-primary.dropdown-toggle {
+  color: #fff;
+  background-color: #564d88;
+  background-image: none;
+  border-color: #474071;
+}
+.btn-primary:active:hover,
+.btn-primary:active:focus,
+.btn-primary:active.focus,
+.btn-primary.active:hover,
+.btn-primary.active:focus,
+.btn-primary.active.focus,
+.open > .btn-primary.dropdown-toggle:hover,
+.open > .btn-primary.dropdown-toggle:focus,
+.open > .btn-primary.dropdown-toggle.focus {
+  color: #fff;
+  background-color: #474071;
+  border-color: #2d2847;
+}
+.btn-primary.disabled:hover,
+.btn-primary.disabled:focus,
+.btn-primary.disabled.focus,
+.btn-primary[disabled]:hover,
+.btn-primary[disabled]:focus,
+.btn-primary[disabled].focus,
+fieldset[disabled] .btn-primary:hover,
+fieldset[disabled] .btn-primary:focus,
+fieldset[disabled] .btn-primary.focus {
+  background-color: #6c62a6;
+  border-color: #605698;
+}
+.btn-primary .badge {
+  color: #6c62a6;
+  background-color: #fff;
+}
+
+.btn {
+  height: 45px;
+  padding-left: 32px;
+  padding-right: 32px;
+  border-radius: 40px;
+  line-height: 32px;
+}
+
+.btn-small {
+  height: 32px;
+  padding: 3px 16px;
+  line-height: 24px;
+}
+
+.btn-mobile {
+  margin-top: 10px;
+}
+@media (min-width: 27.5625em) {
+  .btn-mobile {
+    margin-top: 0;
+  }
+}
+
+.btn-icon {
+  padding-left: 8px;
+}
+
+.btn-github:before {
+  content: '\f09b';
+  display: inline-block;
+  width: 1em;
+  font-family: 'fontello';
+  font-style: normal;
+  font-weight: normal;
+  text-decoration: inherit;
+  text-align: center;
+  font-variant: normal;
+  text-transform: none;
+  line-height: 1em;
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-font-smoothing: antialiased;
+  margin-right: 0.2em;
+  margin-left: 0.2em;
+  position: absolute;
+  vertical-align: sub;
+  margin: 0 10px 0 0;
+  font-size: 2em;
+  line-height: 1;
+}
+
+.btn-github span {
+  padding-left: 45px;
 }
 
 .btn-inverted {
@@ -573,22 +697,6 @@ export default {
   .section-wizard & {
     color: #fff;
   }
-}
-
-.btn-github {
-  &:before {
-    content: '\f09b';
-    font-family: 'fontello';
-    position: absolute;
-    vertical-align: sub;
-    margin: 0 10px 0 0;
-    font-size: 2em;
-    line-height: 1;
-  }
-}
-
-.btn-github span {
-  padding-left: 45px;
 }
 
 .wizard {

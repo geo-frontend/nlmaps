@@ -514,10 +514,6 @@ export default {
   grid-area: benefits;
 }
 
-.section-intro {
-  margin: 0 0 60px;
-}
-
 #wizard {
   grid-area: wizard;
 }

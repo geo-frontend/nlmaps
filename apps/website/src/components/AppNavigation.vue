@@ -45,17 +45,6 @@
   </div>
 </template>
 <style lang="css" scoped>
-.container {
-  text-align: center;
-  max-width: 84em;
-  margin: 0 auto;
-  padding: 0 20px;
-}
-h2 {
-  color: #fff;
-  font-size: 2em;
-  font-weight: 400;
-}
 ul {
   margin: 0 -20px;
   padding: 0;

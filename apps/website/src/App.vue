@@ -2,28 +2,6 @@
   <router-view />
 </template>
 <style lang="css">
-body {
-  margin: 0;
-  overflow-x: hidden;
-  font-family: 'Nunito', sans-serif;
-  font-size: 16px;
-  line-height: 1.5;
-  color: #333;
-  background-color: #fff;
-}
-
-.wrapper {
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: 0px 0px;
-  grid-template-areas:
-    'header'
-    'benefits'
-    'wizard'
-    'navigation'
-    'footer';
-}
-
 @font-face {
   font-family: 'Montserrat';
   src: url('@/assets/fonts/montserrat/Montserrat-Regular.eot');
@@ -129,26 +107,4 @@ body {
 .icon-docs:before {
   content: '\f0c5';
 } /* '' */
-
-h1,
-h2,
-h3,
-h4,
-h5,
-h6 {
-  font-family: 'Montserrat', 'Nunito', sans-serif;
-  font-weight: 400;
-  line-height: 1.25;
-  color: inherit;
-}
-
-a {
-  text-decoration: none;
-}
-
-nav,
-section {
-  padding: 10vh 0;
-  text-align: center;
-}
 </style>

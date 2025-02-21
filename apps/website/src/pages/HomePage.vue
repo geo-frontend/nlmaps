@@ -359,66 +359,6 @@ export default {
   </DefaultLayout>
 </template>
 <style lang="css">
-html {
-  font-size: 10px;
-}
-
-body {
-  font-family: 'Nunito', sans-serif;
-  font-size: 16px;
-  line-height: 1.5;
-  color: #333;
-  background-color: #fff;
-}
-
-h1,
-h2,
-h3,
-h4,
-h5,
-h6 {
-  font-family: 'Montserrat', 'Nunito', sans-serif;
-  font-weight: 700;
-  line-height: 1.25;
-  color: inherit;
-}
-h1 {
-  font-size: 32px;
-  margin-top: 24px;
-  margin-bottom: 12px;
-}
-h2 {
-  font-size: 24px;
-  margin-top: 24px;
-  margin-bottom: 12px;
-}
-h3 {
-  font-size: 20px;
-  margin-top: 24px;
-  margin-bottom: 12px;
-}
-h4 {
-  font-size: 20px;
-}
-h5 {
-  font-size: 16px;
-}
-h6 {
-  font-size: 14px;
-}
-button {
-  font-family: inherit;
-  font-size: inherit;
-  line-height: inherit;
-  cursor: pointer;
-}
-
-label {
-  display: inline-block;
-  max-width: 100%;
-  margin-bottom: 5px;
-  font-weight: 700;
-}
 .container {
   padding-right: 20px;
   padding-left: 20px;

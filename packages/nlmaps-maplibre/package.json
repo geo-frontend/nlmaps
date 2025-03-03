@@ -1,0 +1,22 @@
+{
+  "name": "nlmaps-maplibre",
+  "version": "2.8.0",
+  "description": "",
+  "type": "module",
+  "main": "./../../dist/nlmaps-maplibre.cjs.js",
+  "module": "./../../dist/nlmaps-maplibre.es.js",
+  "exports": {
+    ".": {
+      "import": "./../../dist/nlmaps-maplibre.es.js",
+      "require": "./../../dist/nlmaps-maplibre.cjs.js"
+    }
+  },
+  "scripts": {
+    "build": "vite build",
+    "preinstall": "npx only-allow pnpm"
+  },
+  "license": "MIT",
+  "devDependencies": {
+    "@geo-frontend/lib": "workspace:*"
+  }
+}

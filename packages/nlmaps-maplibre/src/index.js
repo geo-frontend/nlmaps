@@ -1,5 +1,5 @@
 //import { getProvider, getWmsProvider, geocoder, getMarker } from '@geo-frontend/lib'
-import { getProvider, getWmsProvider } from '@geo-frontend/lib'
+import { getProvider, getWmsProvider, getMarker } from '@geo-frontend/lib'
 
 function bgLayer(name = 'standaard') {
   const provider = getProvider(name)
@@ -77,5 +77,79 @@ class overlayLayer {
   }
 }
 
-export { bgLayer, overlayLayer }
+function loadImage(svg) {
+  const img = new Image(svg.iconSize[0], svg.iconSize[1])
+  img.crossOrigin = 'Anonymous'
+  return new Promise((resolve) => {
+    img.onload = () => {
+      img.decode().then(() => resolve(img))
+    }
+    img.src = svg.url
+  })
+}
+
+class markerLayer {
+  addTo(map) {
+    const addLayer = () => {
+      if (map.getImage('nlmaps-marker')) {
+        map.removeImage('nlmaps-marker')
+      }
+      if (map.getLayer(this.layerId)) {
+        map.removeLayer(this.layerId)
+      }
+      if (map.getSource(this.sourceId)) {
+        map.removeSource(this.sourceId)
+      }
+      const nlmapsMarker = getMarker(this.options)
+      loadImage(nlmapsMarker)
+        .then((img) => map.addImage('nlmaps-marker', img))
+        .then(() => {
+          map.addSource(this.sourceId, this.sourceDef)
+          let coordinates = map.getCenter()
+          if (this.options && this.options.longitude && this.options.latitude) {
+            coordinates = { lng: this.options.longitude, lat: this.options.latitude }
+          }
+          map.getSource(this.sourceId).setData({
+            type: 'FeatureCollection',
+            features: [
+              {
+                type: 'Feature',
+                geometry: {
+                  type: 'Point',
+                  coordinates: [coordinates.lng, coordinates.lat]
+                }
+              }
+            ]
+          })
+          map.addLayer(this.layer)
+        })
+    }
+    this._map = map
+    addLayer()
+    return this
+  }
+  constructor(options) {
+    this.options = options
+    this.layerId = 'marker-layer'
+    this.sourceId = 'marker-source'
+    this.sourceDef = {
+      type: 'geojson',
+      data: {
+        type: 'FeatureCollection',
+        features: []
+      }
+    }
+    this.layer = {
+      id: this.layerId,
+      type: 'symbol',
+      source: this.sourceId,
+      layout: {
+        'icon-image': 'nlmaps-marker',
+        'icon-anchor': 'bottom'
+      }
+    }
+  }
+}
+
+export { bgLayer, overlayLayer, markerLayer }
 //export { bgLayer, overlayLayer, markerLayer, getMapCenter, geoLocatorControl, geocoderControl }

@@ -1,5 +1,5 @@
 //import { getProvider, getWmsProvider, geocoder, getMarker } from '@geo-frontend/lib'
-import { getProvider, getWmsProvider, getMarker } from '@geo-frontend/lib'
+import { getProvider, getWmsProvider, geocoder, getMarker } from '@geo-frontend/lib'
 
 function bgLayer(name = 'standaard') {
   const provider = getProvider(name)
@@ -151,5 +151,27 @@ class markerLayer {
   }
 }
 
-export { bgLayer, overlayLayer, markerLayer }
+function zoomTo(point, map) {
+  map.jumpTo({
+    center: point.coordinates,
+    zoom: 18
+  })
+}
+
+class geocoderControl {
+  onAdd(map) {
+    this._map = map
+    this._container = document.createElement('div')
+    this._container.className = 'maplibregl-ctrl'
+    let control = geocoder.createControl(zoomTo, map)
+    this._container.appendChild(control)
+    return this._container
+  }
+  onRemove() {
+    this._container.parentNode.removeChild(this._container)
+    this._map = undefined
+  }
+}
+
+export { bgLayer, overlayLayer, markerLayer, geocoderControl }
 //export { bgLayer, overlayLayer, markerLayer, getMapCenter, geoLocatorControl, geocoderControl }

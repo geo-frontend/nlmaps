@@ -162,7 +162,7 @@ class geocoderControl {
   onAdd(map) {
     this._map = map
     this._container = document.createElement('div')
-    this._container.className = 'maplibregl-ctrl'
+    this._container.className = 'maplibregl-ctrl maplibregl-ctrl-geocoder'
     let control = geocoder.createControl(zoomTo, map)
     this._container.appendChild(control)
     return this._container

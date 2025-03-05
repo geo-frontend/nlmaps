@@ -25,6 +25,15 @@
 /*myControlEl.className = 'ol-control';*/
 
 /*** Geocoder control ***/
+
+.maplibregl-ctrl-geocoder {
+  position: absolute;
+}
+
+.maplibregl-ctrl-geocoder .nlmaps-geocoder-control-container {
+  top: 0;
+}
+
 .nlmaps-geocoder-control-container {
   width: 326px;
   z-index: 1000000;

@@ -1,7 +1,7 @@
 /* eslint-disable no-unused-vars */
 import maplibregl from 'maplibre-gl'
 /* eslint-enable no-unused-vars */
-import { bgLayer, overlayLayer, markerLayer } from 'nlmaps-maplibre'
+import { bgLayer, overlayLayer, markerLayer, geocoderControl } from 'nlmaps-maplibre'
 
 import 'maplibre-gl/dist/maplibre-gl.css'
 
@@ -27,4 +27,5 @@ map.on('load', () => {
     latitude: 51.5
   }).addTo(map)
   /* eslint-enable no-unused-vars */
+  map.addControl(new geocoderControl(), 'top-left')
 })

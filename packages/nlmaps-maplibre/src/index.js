@@ -1,5 +1,6 @@
 //import { getProvider, getWmsProvider, geocoder, getMarker } from '@geo-frontend/lib'
 import { getProvider, getWmsProvider, geocoder, getMarker } from '@geo-frontend/lib'
+import { GeolocateControl } from 'maplibre-gl'
 
 function bgLayer(name = 'standaard') {
   const provider = getProvider(name)
@@ -151,6 +152,30 @@ class markerLayer {
   }
 }
 
+class geoLocatorControl extends GeolocateControl {
+  _onSuccess(position) {
+    this.map.flyTo({
+      center: [position.coords.longitude, position.coords.latitude],
+      zoom: 18,
+      bearing: 0,
+      pitch: 0
+    })
+  }
+
+  onAdd(map) {
+    this.map = map
+    this.container = document.createElement('div')
+    this.container.className = 'maplibregl-ctrl nlmaps-geolocator-control'
+    const img = document.createElement('img')
+    this.container.appendChild(img)
+    this.container.addEventListener('click', () => {
+      this.trigger()
+    })
+    this._setup = true
+    return this.container
+  }
+}
+
 function zoomTo(point, map) {
   map.jumpTo({
     center: point.coordinates,
@@ -173,5 +198,5 @@ class geocoderControl {
   }
 }
 
-export { bgLayer, overlayLayer, markerLayer, geocoderControl }
+export { bgLayer, overlayLayer, markerLayer, geocoderControl, geoLocatorControl }
 //export { bgLayer, overlayLayer, markerLayer, getMapCenter, geoLocatorControl, geocoderControl }

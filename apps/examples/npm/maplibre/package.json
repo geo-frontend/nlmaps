@@ -5,14 +5,14 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "vite",
+    "dev": "vite --force",
     "build": "vite build",
     "serve": "vite preview"
   },
   "keywords": [],
   "license": "MIT",
   "dependencies": {
-    "nlmaps-maplibre": "workspace:*",
-    "maplibre-gl": "^5.0.1"
+    "maplibre-gl": "^5.2.0",
+    "nlmaps-maplibre": "workspace:*"
   }
 }

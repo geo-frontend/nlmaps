@@ -9,7 +9,7 @@
   box-shadow: 0 1px 5px rgba(0, 0, 0, 0.65);
   height: 26px;
   width: 26px;
-  border-radius: 26px 26px !important;
+  border-radius: 50% !important;
   right: 0.5em;
   top: 0.5em;
 }
@@ -21,10 +21,23 @@
   width: 26px;
   height: 26px;
   content: none;
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  background-position: center;
 }
 /*myControlEl.className = 'ol-control';*/
 
 /*** Geocoder control ***/
+
+.maplibregl-ctrl-geocoder {
+  position: absolute;
+}
+
+.maplibregl-ctrl-geocoder .nlmaps-geocoder-control-container {
+  top: 0;
+}
+
 .nlmaps-geocoder-control-container {
   width: 326px;
   z-index: 1000000;

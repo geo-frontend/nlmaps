@@ -1,4 +1,3 @@
-//import { getProvider, getWmsProvider, geocoder, getMarker } from '@geo-frontend/lib'
 import { getProvider, getWmsProvider, geocoder, getMarker } from '@geo-frontend/lib'
 import { GeolocateControl } from 'maplibre-gl'
 
@@ -199,4 +198,3 @@ class geocoderControl {
 }
 
 export { bgLayer, overlayLayer, markerLayer, geocoderControl, geoLocatorControl }
-//export { bgLayer, overlayLayer, markerLayer, getMapCenter, geoLocatorControl, geocoderControl }

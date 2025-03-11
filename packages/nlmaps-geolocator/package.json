@@ -8,7 +8,8 @@
   "exports": {
     ".": {
       "import": "./../../dist/nlmaps-geolocator.es.js",
-      "require": "./../../dist/nlmaps-geolocator.cjs.js"
+      "require": "./../../dist/nlmaps-geolocator.cjs.js",
+      "default": "./../../dist/nlmaps-geolocator.iife.js"
     }
   },
   "scripts": {
@@ -17,9 +18,6 @@
     "preinstall": "npx only-allow pnpm"
   },
   "license": "MIT",
-  "devDependencies": {
-    "is-reference": "^1.2.1"
-  },
   "dependencies": {
     "emitonoff": "^0.1.1"
   }

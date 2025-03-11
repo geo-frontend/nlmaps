@@ -6,7 +6,7 @@ import {
   getMapCenter as centerL,
   geocoderControl as geocoderL,
   extentLeafletFormat,
-  geoLocatorControl as glL
+  geoLocatorControl as glL,
 } from 'nlmaps-leaflet'
 
 import {
@@ -15,7 +15,7 @@ import {
   markerLayer as markerOL,
   getMapCenter as centerOL,
   geocoderControl as geocoderOL,
-  geoLocatorControl as glO
+  geoLocatorControl as glO,
 } from 'nlmaps-openlayers'
 
 // import { bgLayer as bgL, geoLocatorControl as glL } from 'nlmaps-leaflet';
@@ -24,7 +24,14 @@ import {
 //          geoLocatorControl as glO } from 'nlmaps-openlayers';
 
 import geoLocator from 'nlmaps-geolocator'
-import { singleMarker, multiMarker, markerStore, mapPointerStyle, queryFeatures, CONFIG } from '@geo-frontend/lib'
+import {
+  singleMarker,
+  multiMarker,
+  markerStore,
+  mapPointerStyle,
+  queryFeatures,
+  CONFIG,
+} from '@geo-frontend/lib'
 
 let nlmaps = {
   leaflet: {
@@ -32,15 +39,15 @@ let nlmaps = {
     overlayLayer: overlayL,
     markerLayer: markerL,
     geocoderControl: geocoderL,
-    geoLocatorControl: glL
+    geoLocatorControl: glL,
   },
   openlayers: {
     bgLayer: bgOL,
     overlayLayer: overlayOL,
     markerLayer: markerOL,
     geocoderControl: geocoderOL,
-    geoLocatorControl: glO
-  }
+    geoLocatorControl: glO,
+  },
 }
 
 //set nlmaps up as event bus
@@ -83,7 +90,10 @@ function initMap(lib, opts) {
       el.style.height = '100%'
       rootdiv.appendChild(el)
       options.maxBounds = extentLeafletFormat()
-      map = L.map(el, options).setView([opts.center.latitude, opts.center.longitude], opts.zoom)
+      map = L.map(el, options).setView(
+        [opts.center.latitude, opts.center.longitude],
+        opts.zoom,
+      )
       if (opts.attribution) {
         map.attributionControl.setPrefix(false)
       }
@@ -92,14 +102,25 @@ function initMap(lib, opts) {
     case 'openlayers':
       map = new ol.Map({
         view: new ol.View({
-          center: ol.proj.fromLonLat([opts.center.longitude, opts.center.latitude]),
-          zoom: opts.zoom
+          center: ol.proj.fromLonLat([
+            opts.center.longitude,
+            opts.center.latitude,
+          ]),
+          zoom: opts.zoom,
         }),
-        controls: ol.control.defaults({ attribution: false }).extend([new ol.control.Attribution({ collapsible: false })]),
-        target: opts.target
+        controls: ol.control
+          .defaults({ attribution: false })
+          .extend([new ol.control.Attribution({ collapsible: false })]),
+        target: opts.target,
       })
-      map.getTargetElement().getElementsByClassName('ol-zoom')[0].style.cssText = 'left: 5px !important; bottom: 5px !important'
-      map.getTargetElement().getElementsByClassName('ol-zoom')[0].classList.remove('ol-zoom')
+      map
+        .getTargetElement()
+        .getElementsByClassName('ol-zoom')[0].style.cssText =
+        'left: 5px !important; bottom: 5px !important'
+      map
+        .getTargetElement()
+        .getElementsByClassName('ol-zoom')[0]
+        .classList.remove('ol-zoom')
       break
   }
   return map
@@ -121,7 +142,7 @@ function setMapLoc(lib, opts, map) {
       oldZoom = map.getView().getZoom()
       view = new ol.View({
         center: ol.proj.fromLonLat([opts.lon, opts.lat]),
-        zoom: opts.zoom ? opts.zoom : oldZoom
+        zoom: opts.zoom ? opts.zoom : oldZoom,
       })
       map.setView(view)
   }
@@ -199,7 +220,10 @@ nlmaps.createMap = function (useropts = {}) {
   const opts = mergeOpts(CONFIG.MAP, useropts)
   try {
     if (nlmaps.lib === 'too many libs' || nlmaps.lib === 'too few libs') {
-      throw { message: 'one and only one map library can be defined. Please Refer to the documentation to see which map libraries are supported.' }
+      throw {
+        message:
+          'one and only one map library can be defined. Please Refer to the documentation to see which map libraries are supported.',
+      }
     }
   } catch (e) {
     // eslint-disable-next-line no-console

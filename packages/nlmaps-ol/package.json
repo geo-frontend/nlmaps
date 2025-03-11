@@ -23,13 +23,6 @@
   "homepage": "https://github.com/geo-frontend/nlmaps#README",
   "devDependencies": {
     "@geo-frontend/lib": "workspace:*",
-    "is-reference": "^1.2.1"
-  },
-  "peerDependencies": {
-    "ol": "^10.3.1"
-  },
-  "dependencies": {
-    "ajv": "^6.5.0",
-    "fast-deep-equal": "^2.0.1"
+    "ol": "^10.4.0"
   }
 }

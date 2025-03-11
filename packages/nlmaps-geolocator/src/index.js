@@ -1,9 +1,8 @@
-const geoLocateDefaultOpts = {
-  follow: false
-}
-
-/* eslint-disable-next-line no-unused-vars */
 import emitonoff from 'emitonoff'
+
+const geoLocateDefaultOpts = {
+  follow: false,
+}
 
 function positionHandler(position) {
   this.emit('position', position)
@@ -18,7 +17,11 @@ const GeoLocator = function (opts) {
   return {
     start() {
       state.started = true
-      navigator.geolocation.getCurrentPosition(positionHandler.bind(this), positionErrorHandler.bind(this), { maximumAge: 60000 })
+      navigator.geolocation.getCurrentPosition(
+        positionHandler.bind(this),
+        positionErrorHandler.bind(this),
+        { maximumAge: 60000 },
+      )
       return this
     },
     stop() {
@@ -32,7 +35,7 @@ const GeoLocator = function (opts) {
       // eslint-disable-next-line no-console
       console.log(state)
       return this
-    }
+    },
   }
 }
 
@@ -47,6 +50,14 @@ function geoLocator(opts) {
   } else {
     let error = 'geolocation is not available in your browser.'
     throw error
+  }
+}
+
+if (typeof window !== 'undefined') {
+  for (const [key, value] of Object.entries({
+    geoLocator,
+  })) {
+    window[key] = value
   }
 }
 

@@ -1,4 +1,10 @@
-import { getProvider, getWmsProvider, geocoder, getMarker, getExtent } from '@geo-frontend/lib'
+import {
+  getProvider,
+  getWmsProvider,
+  geocoder,
+  getMarker,
+  getExtent,
+} from '@geo-frontend/lib'
 
 function extentLeafletFormat() {
   let extent = getExtent()
@@ -19,10 +25,10 @@ if (typeof L !== 'undefined' && typeof L === 'object') {
         scheme: 'xyz',
         attribution: provider.attribution,
         subdomains: provider.subdomains ? provider.subdomains : 'abc',
-        sa_id: name
+        sa_id: name,
       })
       L.TileLayer.prototype.initialize.call(this, provider.url, opts)
-    }
+    },
   })
 
   /*
@@ -43,10 +49,10 @@ if (typeof L !== 'undefined' && typeof L === 'object') {
         styles: wmsProvider.styleName,
         version: wmsProvider.version,
         transparent: wmsProvider.transparent,
-        format: wmsProvider.format
+        format: wmsProvider.format,
       })
       L.TileLayer.WMS.prototype.initialize.call(this, url, wmsParams)
-    }
+    },
   })
 
   /*
@@ -58,7 +64,7 @@ if (typeof L !== 'undefined' && typeof L === 'object') {
 
   L.Control.GeoLocatorControl = L.Control.extend({
     options: {
-      position: 'topright'
+      position: 'topright',
     },
     initialize: function (options) {
       // set default options if nothing is set (merge one step deep)
@@ -90,7 +96,7 @@ if (typeof L !== 'undefined' && typeof L === 'object') {
           this.options.geolocator.start()
           L.DomUtil.addClass(div, 'started')
         },
-        this
+        this,
       )
       this.options.geolocator.on('position', function (d) {
         L.DomUtil.removeClass(div, 'started')
@@ -101,7 +107,7 @@ if (typeof L !== 'undefined' && typeof L === 'object') {
     },
     onRemove: function (map) {
       return map
-    }
+    },
   })
 
   L.geoLocatorControl = function (geolocator) {
@@ -114,7 +120,7 @@ function markerLayer(latLngObject) {
     let lng
     // LatLngObject should always be defined when it is called from the main package.
     // eslint-disable-next-line eqeqeq
-    if (typeof latLngObject == 'undefined') {
+    if (typeof latLngObject === 'undefined') {
       const center = getMapCenter(map)
       lat = center.latitude
       lng = center.longitude
@@ -127,8 +133,8 @@ function markerLayer(latLngObject) {
       icon: new L.icon({
         iconUrl: getMarker().url,
         iconSize: getMarker().iconSize,
-        iconAnchor: getMarker().iconAnchor
-      })
+        iconAnchor: getMarker().iconAnchor,
+      }),
     })
   }
 }
@@ -164,8 +170,30 @@ function getMapCenter(map) {
   const latLngObject = map.getCenter()
   return {
     latitude: latLngObject.lat,
-    longitude: latLngObject.lng
+    longitude: latLngObject.lng,
   }
 }
 
-export { bgLayer, overlayLayer, markerLayer, extentLeafletFormat, getMapCenter, geoLocatorControl, geocoderControl }
+if (typeof window !== 'undefined') {
+  for (const [key, value] of Object.entries({
+    bgLayer,
+    overlayLayer,
+    markerLayer,
+    extentLeafletFormat,
+    getMapCenter,
+    geoLocatorControl,
+    geocoderControl,
+  })) {
+    window[key] = value
+  }
+}
+
+export {
+  bgLayer,
+  overlayLayer,
+  markerLayer,
+  extentLeafletFormat,
+  getMapCenter,
+  geoLocatorControl,
+  geocoderControl,
+}

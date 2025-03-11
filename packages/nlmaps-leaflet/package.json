@@ -8,7 +8,8 @@
   "exports": {
     ".": {
       "import": "./../../dist/nlmaps-leaflet.es.js",
-      "require": "./../../dist/nlmaps-leaflet.cjs.js"
+      "require": "./../../dist/nlmaps-leaflet.cjs.js",
+      "default": "./../../dist/nlmaps-leaflet.iife.js"
     }
   },
   "scripts": {

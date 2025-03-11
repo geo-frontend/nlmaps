@@ -1,7 +1,13 @@
 import Map from 'ol/Map.js'
 import View from 'ol/View.js'
 import { fromLonLat } from 'ol/proj.js'
-import { bgLayer, geocoderControl, geoLocatorControl, markerLayer, overlayLayer } from 'nlmaps-ol'
+import {
+  bgLayer,
+  geocoderControl,
+  geoLocatorControl,
+  markerLayer,
+  overlayLayer,
+} from 'nlmaps-ol'
 import geoLocator from 'nlmaps-geolocator'
 
 import 'ol/ol.css'
@@ -10,8 +16,8 @@ const map = new Map({
   target: 'map-div',
   view: new View({
     center: fromLonLat([5.5, 52.5]),
-    zoom: 10
-  })
+    zoom: 10,
+  }),
 })
 
 let layer = bgLayer()

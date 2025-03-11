@@ -1,5 +1,5 @@
 {
-  "name": "nlmaps-example-ols",
+  "name": "nlmaps-example-npm-ol",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
@@ -12,8 +12,8 @@
   "keywords": [],
   "license": "MIT",
   "dependencies": {
-    "ol": "10.3.1",
     "nlmaps-geolocator": "workspace:*",
-    "nlmaps-ol": "workspace:*"
+    "nlmaps-ol": "workspace:*",
+    "ol": "^10.4.0"
   }
 }

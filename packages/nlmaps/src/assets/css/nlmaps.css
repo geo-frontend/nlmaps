@@ -23,7 +23,6 @@
   content: none;
   background-size: cover;
   background-repeat: no-repeat;
-  background-attachment: fixed;
   background-position: center;
 }
 /*myControlEl.className = 'ol-control';*/

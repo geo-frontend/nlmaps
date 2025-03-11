@@ -8,7 +8,8 @@
   "exports": {
     ".": {
       "import": "./../../dist/nlmaps.es.js",
-      "require": "./../../dist/nlmaps.cjs.js"
+      "require": "./../../dist/nlmaps.cjs.js",
+      "default": "./../../dist/nlmaps.iife.js"
     }
   },
   "scripts": {

@@ -313,3 +313,7 @@ nlmaps.singleMarker = singleMarker
 nlmaps.multiMarker = multiMarker
 
 export { nlmaps }
+
+if (typeof window !== 'undefined') {
+  window.nlmaps = nlmaps
+}

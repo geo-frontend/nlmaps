@@ -13,7 +13,7 @@ export default defineConfig({
     },
     lib: {
       entry: 'src/index.js',
-      name: 'nlmaps',
+      name: 'window',
       fileName: (format) => `nlmaps.${format}.js`,
       formats: ['es', 'cjs', 'iife'],
     },

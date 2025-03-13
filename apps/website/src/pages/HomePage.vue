@@ -38,7 +38,7 @@ export default {
     <section class="section-brand spotlight">
       <div class="container">
         <h1 class="heading spotlight-heading">
-          Dé officiële kaart van Nederland
+          {{ $route.meta.description }}
         </h1>
         <p class="spotlight-description">
           De meest actuele kaart nu beschikbaar
@@ -68,7 +68,7 @@ export default {
           <h2 class="heading section-heading">Gebruik NL Maps nu</h2>
           <p>
             Ben jij een developer? Bekijk de&nbsp;&nbsp;<a
-              href="{{ routes.docs }}"
+              href="./docs"
               class="btn btn-secondary btn-small"
               >NL Maps Library</a
             >

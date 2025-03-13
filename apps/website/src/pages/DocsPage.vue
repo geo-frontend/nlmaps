@@ -321,7 +321,7 @@ marker.addTo(map);</code></pre>
   styleName: 'fysischgeografischeregios'
 };
 const overlay = nlmaps.leaflet.overlayLayer('fysisch-geografische-regios', endpoint);
-map.addLayer(overlay);</code></pre>
+overlay.addTo(map);</code></pre>
           <h4>
             <code>nlmaps.leaflet.geoLocatorControl(geolocator)</code>
           </h4>

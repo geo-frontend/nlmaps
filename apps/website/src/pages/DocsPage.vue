@@ -362,7 +362,7 @@ control.addTo(map);</code></pre>
             kaartbeeld instellen. Dit is wat <code>createMap</code> onder water
             doet met wat standaardinstellingen.
           </p>
-          <h4>Leaflet</h4>
+          <p><strong>Voorbeeld</strong></p>
           <pre><code>let map = L.map('map').setView( new L.LatLng(52.20936, 5.970745), 10);
 let mylayer = nlmaps.leaflet.bgLayer('grijs').addTo(map);
 let marker = nlmaps.leaflet.markerLayer({longitude: 5.5, latitude: 52.5}).addTo(map);</code></pre>

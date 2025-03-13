@@ -30,13 +30,11 @@
         <p class="usp-description">
           Ondersteuning voor Leaflet, OpenLayers &amp; MapLibre GL JS. Mis je
           een dienst?
-          <a href="https://forum.pdok.nl/c/applicaties-en-diensten/nl-maps"
+          <a href="https://geoforum.nl/c/applicaties-en-diensten/nl-maps"
             >Laat het ons weten</a
           >
-          of
-          <a href="https://github.com/geo-frontend/nlmaps/"
-            >dien je eigen voorbeeldcode op Github in</a
-          >.
+          of dien je eigen voorbeeldcode op
+          <a href="https://github.com/geo-frontend/nlmaps/">Github in</a>.
         </p>
       </article>
     </li>

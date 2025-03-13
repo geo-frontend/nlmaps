@@ -355,7 +355,7 @@ const control = geoLocatorControl(geolocator);
 control.addTo(map);</code></pre>
           <h3 id="geavanceerd-gebruik">Geavanceerd gebruik</h3>
           <p>
-            Als je Leaflet al gebruikt in jouw project, kan je de
+            Als je al een kaartbibliotheek gebruikt in jouw project, kan je de
             <code>bgLayer()</code> functie van de betreffende bibliotheek
             gebruiken om een layer object te maken die je aan je bestaande kaart
             kunt toevoegen. Daarvoor moet je eerst zelf een kaart maken en het
@@ -369,8 +369,8 @@ let marker = nlmaps.leaflet.markerLayer({longitude: 5.5, latitude: 52.5}).addTo(
           <h4>Neem alleen bibliotheek-specifieke functies op</h4>
           <p>
             Als je zoveel mogelijk bytes wil besparen, kun je in plaats van de
-            hele <code>nlmaps</code> package de sub-module voor Leaflet direct
-            toevoegen. Elk van deze modules heeft een
+            hele <code>nlmaps</code> package de sub-module voor jouw
+            kaartbibliotheek direct toevoegen. Deze module heeft een
             <code>bgLayer()</code> functie die een laag voor de betreffende
             bibliotheek teruggeeft, en een
             <code>geoLocatorControl()</code> functie die een control voor de
@@ -378,24 +378,24 @@ let marker = nlmaps.leaflet.markerLayer({longitude: 5.5, latitude: 52.5}).addTo(
           </p>
           <p><strong>Web browser:</strong></p>
           <p>
-            Download de betreffende <code>nlmaps-&lt;maplib&gt;.iife.js</code>
+            Download de betreffende <code>nlmaps-leaflet.iife.js</code>
             <a href="https://github.com/kadaster/nlmaps/releases/latest"
               >release</a
             >
             Download de broncode en pak het uit, en selecteer het betreffende
             bestand uit de <code>dist</code> map. Als je deze nu als script
             laadt in je webpagina, zul je een <code>bgLayer()</code> en
-            <code>geoLocatorControl()</code> functie hebben die werkt met de
-            betreffende kaartbibliotheek.
+            <code>geoLocatorControl()</code> functie hebben die werkt met
+            Leaflet.
           </p>
           <p><strong>Node.js:</strong></p>
-          <pre><code>npm install --save nlmaps-leaflet
+          <pre><code>npm install --save nlmaps-ol
 //CommonJS
-let bgLayer = require('nlmaps-leaflet').bgLayer; //note the use of property off of require
-let marker = require('nlmaps-leaflet').markerLayer;
+let bgLayer = require('nlmaps-ol').bgLayer; //note the use of property off of require
+let marker = require('nlmaps-ol').markerLayer;
 
 //ES2015
-import { bgLayer, markerLayer } from 'nlmaps-leaflet';</code></pre>
+import { bgLayer, markerLayer } from 'nlmaps-ol';</code></pre>
 
           <p>
             Deze functies kunnen vervolgens op dezelfde manier worden gebruikt

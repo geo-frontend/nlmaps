@@ -378,13 +378,13 @@ let marker = nlmaps.leaflet.markerLayer({longitude: 5.5, latitude: 52.5}).addTo(
           </p>
           <p><strong>Web browser:</strong></p>
           <p>
-            Download de betreffende <code>nlmaps-leaflet.iife.js</code>
+            Download de <code>nlmaps-leaflet.iife.js</code>
             <a href="https://github.com/kadaster/nlmaps/releases/latest"
               >release</a
             >
-            Download de broncode en pak het uit, en selecteer het betreffende
-            bestand uit de <code>dist</code> map. Als je deze nu als script
-            laadt in je webpagina, zul je een <code>bgLayer()</code> en
+            Download de broncode en pak het uit, en selecteer het bestand uit de
+            <code>dist</code> map. Als je deze nu als script laadt in je
+            webpagina, zul je een <code>bgLayer()</code> en
             <code>geoLocatorControl()</code> functie hebben die werkt met
             Leaflet.
           </p>
@@ -439,10 +439,17 @@ import { bgLayer, markerLayer } from 'nlmaps-ol';</code></pre>
             https://service.pdok.nl/hwh/luchtfotorgb/wmts/v1<em>0/Actueel</em>ortho25/EPSG:3857/{z}/{x}/{y}.jpeg
           </p>
           <h3 id="ontwikkelen">Ontwikkelen</h3>
+          <p>
+            Zie ook
+            <a
+              href="https://github.com/geo-frontend/nlmaps/blob/master/CONTRIBUTING.md"
+              >CONTRIBUTING</a
+            >.
+          </p>
           <h4>Algemene informatie over ontwikkelen</h4>
           <code>nlmaps</code> is ontwikkeld als monorepo met behulp van
           <code>Nx</code> and <code>pnpm</code>. De website is gemaakt op basis
-          van <code>Vue JS</code>.
+          van <code>Vue.js</code>.
           <h4>Installatie/configuratie</h4>
           <p>
             Om aan <code>nlmaps</code> te werken, installeer je

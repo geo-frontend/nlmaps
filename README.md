@@ -13,7 +13,7 @@
 
 ## Purpose
 
-The `nlmaps` JavaScript library allows you to create layers for Leaflet, MapLibre GL JS, or OpenLayers pre-configured to use the BRT-Achtergrondkaart layers. You don't need to figure out the tile URLs yourself. To make it even easier, it automatically detects the map library you're using and creates a map pre-loaded with one of the BRT-Achtergrondkaart layers.
+The `nlmaps` JavaScript library allows you to create layers for Leaflet, MapLibre GL JS, and OpenLayers pre-configured to use the BRT-Achtergrondkaart layers. You don't need to figure out the tile URLs yourself.
 
 ## Usage example
 
@@ -26,31 +26,23 @@ Available map styles:
 - `grijs`: in very low saturation
 - `luchtfoto`: aerial imagery
 
-## Extending
-
-In order to create a NL Maps version for your own organisation you can extend upon this package. To see an example of this you can check out the City of Amsterdam's version [`amaps` on GitHub](https://github.com/Amsterdam/amaps).
-
 ## Getting set up
 
 ### Wizard
 
-The [NL Maps wizard](https://nlmaps.nl/#wizard) makes it super easy to get started with your choice of map library and map style. It gives you a code example that shows you how to include the HTML and JavaScript code to get a working map. It is recommended that you refer to the wizard output even if you are doing things manually.
+The [NL Maps wizard](https://nlmaps.nl/#wizard) makes it super easy to get started. It gives you a code example that shows you how to include the HTML and JavaScript code to get a working map. It is recommended that you refer to the wizard output even if you are doing things manually.
 
 ### Manual browser configuration
 
-You need _one_ of Leaflet, MapLibre GL JS, or OpenLayers available in your web page. `nlmaps` autodetects which one is present (and currently considers it an error if more than one is present). For further information on using the respective libraries, refer to their documentation:
-
-- [Leaflet](http://leafletjs.com/examples.html)
-- [MapLibre GL JS](https://maplibre.org/maplibre-gl-js/docs/)
-- [OpenLayers](http://openlayers.org/en/latest/doc/quickstart.html)
+You need Leaflet available in your web page. `nlmaps` autodetects if Leaflet is present (and currently considers it an error if more than one is present). For further information on using Leaflet, refer to its [documentation](http://leafletjs.com/examples.html).
 
 Finally, you will need the `nlmaps` library itself, which you can download from the [latest release on Github](https://github.com/geo-frontend/nlmaps/releases/latest). Download and extract the source code and select the file `dist/nlmaps.iife.js` Include it on your web page like this:
 
     <script src="url_of_nlmaps.iife.js"></script>
 
-### NodeJS
+### Node.js
 
-`nlmaps` has been developed against NodeJS version 6.x.
+`nlmaps` has been developed against Node.js version 20.14.0.
 
     npm install -S nlmaps
 
@@ -66,7 +58,7 @@ Leaflet, MapLibre GL JS, or OpenLayers will also need to be available in your fi
 
 ### `nlmaps.createMap(options<object>)`
 
-Creates a map using Leaflet, MapLibre GL JS, or OpenLayers with a given BRT-Achtergrondkaart layer already added as a background layer. Configured with an `options` object with the following properties:
+Creates a map using Leaflet with a given BRT-Achtergrondkaart layer already added as a background layer. Configured with an `options` object with the following properties:
 
 - target: _string_ (**required**). This is the id of the `div` in which to create the map.
 - center: _object_ (optional). This object contains latitude and longitude properties for setting the initial viewpoint. Defaults to a position near the centre of the Netherlands.
@@ -89,7 +81,7 @@ Returns a `map` object.
       },
       zoom: 15,
       marker: true,
-      overlay: 'hoogte',
+      overlay: 'gemeenten',
       search: true
     };
     let map = nlmaps.createMap(opts);
@@ -108,9 +100,9 @@ Returns a `geolocator` object. See the [nlmaps-geolocator](https://www.npmjs.com
     const map = nlmaps.createMap();
     const geolocator = nlmaps.geoLocate(map, {start: true})
 
-### `nlmaps.<leaflet|openlayers>.bgLayer([style<string>])`
+### `nlmaps.leaflet.bgLayer([style<string>])`
 
-Creates a layer for the given library configured to fetch tiles for `style` tile source, or if `style` is omitted, for the 'standaard' tilesource. In order to use the `nlmaps` library in conjunction with Mapbox, select `nlmaps.leaflet`.
+Creates a layer for Leaflet configured to fetch tiles for `style` tile source, or if `style` is omitted, for the 'standaard' tilesource.
 
 Arguments:
 
@@ -118,14 +110,14 @@ Arguments:
 
 Returns a `layer` object.
 
-#### Example (OpenLayers)
+#### Example
 
-    const layer = nlmaps.openlayers.bgLayer();
+    const layer = nlmaps.leaflet.bgLayer();
     layer.addLayer(map);
 
-### `nlmaps.<leaflet|maplibre|openlayers>.markerLayer([coords<object>])`
+### `nlmaps.leaflet.markerLayer([coords<object>])`
 
-Creates a layer for the given library configured to position a marker at the location `coords`. In order to use the `nlmaps` library in conjunction with Mapbox, select `nlmaps.leaflet`.
+Creates a layer for Leaflet configured to position a marker at the location `coords`.
 
 Arguments:
 
@@ -133,7 +125,7 @@ Arguments:
 
 Returns a `layer` object.
 
-#### Example (Leaflet)
+#### Example
 
     const marker = nlmaps.leaflet.markerLayer({
       longitude: 5.4534,
@@ -141,23 +133,23 @@ Returns a `layer` object.
     });
     marker.addTo(map);
 
-### `nlmaps.<leaflet|openlayers>.overlayLayer([overlay<string>])`
+### `nlmaps.leaflet.overlayLayer([overlay<string>])`
 
-Creates a layer for the given library configured to fetch tiles for one of the pre-defined `overlay` map sources. In order to use the `nlmaps` library in conjunction with Mapbox, select `nlmaps.leaflet`.
+Creates a layer for Leaflet configured to fetch tiles for one of the pre-defined `overlay` map sources.
 
 Arguments:
 
-- overlay: _string_ (**required**). Name of map source to load. One of `'drone-no-fly-zones'`, `'gebouwen'`, `'gemeenten'`, `'hoogte'`, `'percelen'` or '`provincies`'.
+- overlay: _string_ (**required**). Name of map source to load. One of `'adressen'`, `'drone-no-fly-zones'`, `'gebouwen'`, `'gemeenten'`, `'hoogte'`, `'land'`, `'percelen'` or '`provincies`'.
 
 Returns a `layer` object.
 
-#### Example (Leaflet)
+#### Example
 
-    const overlay = nlmaps.leaflet.overlayLayer(map, 'drone-no-fly-zones');
+    const overlay = nlmaps.leaflet.overlayLayer(map, 'gemeenten');
 
-### `nlmaps.<leaflet|openlayers>.overlayLayer([overlay<string>],[endpoint<object>])`
+### `nlmaps.leaflet.overlayLayer([overlay<string>],[endpoint<object>])`
 
-Creates a layer for the given library configured to fetch tiles for a custom `overlay` **W**eb **M**apping **S**ervice (WMS). The service must follow the [OGC WMS specification](http://www.opengeospatial.org/standards/wms) and support the Spherical Mercator (EPSG:3857) projection. In order to use the `nlmaps` library in conjunction with Mapbox, select `nlmaps.leaflet`.
+Creates a layer for Leaflet configured to fetch tiles for a custom `overlay` **W**eb **M**apping **S**ervice (WMS). The service must follow the [OGC WMS specification](http://www.opengeospatial.org/standards/wms) and support the Spherical Mercator (EPSG:3857) projection.
 
 Arguments:
 
@@ -166,19 +158,19 @@ Arguments:
 
 Returns a `layer` object.
 
-#### Example (OpenLayers)
+#### Example
 
     const endpoint = {
-      url: 'https://geodata.nationaalgeoregister.nl/fysischgeografischeregios/ows?',
+      url: 'https://service.pdok.nl/ez/fysischgeografischeregios/wms/v1_0?',
       layerName: 'fysischgeografischeregios',
-      styleName: 'fysischgeografischeregios:fysischgeografischeregios'
+      styleName: 'fysischgeografischeregios'
     };
-    const overlay = nlmaps.openlayers.overlayLayer('fysisch-geografische-regios', endpoint);
-    map.addLayer(overlay);
+    const overlay = nlmaps.leaflet.overlayLayer('fysisch-geografische-regios', endpoint);
+    overlay.addTo(map);
 
-### `nlmaps.<leaflet|openlayers>.geoLocatorControl(geolocator)`
+### `nlmaps.leaflet.geoLocatorControl(geolocator)`
 
-Creates a control for the given library which talks to the given `geolocator`. The control has a very simple interface: click to initiate a geolocation request and have the map be centered on the resulting location. You need to add the control to the map yourself. Arguments:
+Creates a control for Leaflet which talks to the given `geolocator`. The control has a very simple interface: click to initiate a geolocation request and have the map be centered on the resulting location. You need to add the control to the map yourself. Arguments:
 
 Arguments:
 
@@ -186,7 +178,7 @@ Arguments:
 
 Returns a `geolocator` control.
 
-#### Example (Leaflet)
+#### Example
 
     import geoLocator from 'nlmaps-geolocator';
     import geoLocatorControl from 'nlmaps-leaflet';
@@ -196,19 +188,17 @@ Returns a `geolocator` control.
 
 ### `nlmaps.clickProvider(map)`
 
-#### only Leaflet
+Creates an event provider for clicks on the map, which can be subscribed to with a listener function or used as input to `nlmaps.queryFeatures`.
 
-creates an event provider for clicks on the map, which can be subscribed to with a listener function or used as input to `nlmaps.queryFeatures`.
-
-The click events returned are original [Leaflet click events](http://leafletjs.com/reference-1.3.0.html#map-click)
+The click events returned are original [Leaflet click events](https://leafletjs.com/reference.html#map-click)
 
 Arguments:
 
 - map _object map_ (**required**). The map for which to emit click events.
 
-returns an object with a `subscribe` function which takes as an argument the callback that should handle the events. `clickProvider` follows the [callbag spec](https://github.com/callbag/callbag) so this callback should have the signature `callback(type, data)` and should expect `type` to be `1`.
+Returns an object with a `subscribe` function which takes as an argument the callback that should handle the events. `clickProvider` follows the [callbag spec](https://github.com/callbag/callbag) so this callback should have the signature `callback(type, data)` and should expect `type` to be `1`.
 
-#### Example (Leaflet)
+#### Example
 
     const clicks = nlmaps.clickProvider(map);
     function myHandler(type, data) {
@@ -259,16 +249,14 @@ Returns an object with a `subscribe` method which can be used to handle the resp
 
 ### `nlmaps.singleMarker(map, popupCreator)`
 
-#### Leaflet only
-
-places a marker on the map. Meant to be used in combination with `nlmaps.clickProvider`. The default behaviour is to move the marker on every click, and remove the marker when it is clicked. An optional `popupCreator` function can be passed to specify how to create a popup on the marker.
+Places a marker on the map. Meant to be used in combination with `nlmaps.clickProvider`. The default behaviour is to move the marker on every click, and remove the marker when it is clicked. An optional `popupCreator` function can be passed to specify how to create a popup on the marker.
 
 Arguments:
 
 - map _object map_ (**required**). The map on which the marker should be placed.
 - popuCreator _function(data) => htmlElement_ (**optional**). A function which receives data and creates a popup based on it. The function should return an html element to be used by Leaflet to create the popup.
 
-returns an function which can be used to subscribe to `nlmaps.clickProvider`.
+Returns an function which can be used to subscribe to `nlmaps.clickProvider`.
 
 Example with default functionality:
 
@@ -295,7 +283,7 @@ Example with a custom popupCreator. Note that this function is bound to an objec
 
 ## Events
 
-the `nlmaps` object produces the following events:
+The `nlmaps` object produces the following events:
 
 - `mapclick` when the map is clicked. Returns the click event from the underlying map library.
 - `search-select` when the user selects a search result. Returns the lat/lon location of the result and the 'weergavenaam' of the result.
@@ -314,38 +302,24 @@ If you're already using a mapping library in your project, you can use the libra
     let mylayer = nlmaps.leaflet.bgLayer('grijs').addTo(map);
     let marker = nlmaps.leaflet.markerLayer({longitude: 5.5, latitude: 52.5}).addTo(map);
 
-### OpenLayers
-
-    let map = new ol.Map({
-      view: new ol.View({
-        center: ol.proj.fromLonLat([5.97075, 52.20936]),
-        zoom: 10
-      }),
-      target: 'map'
-    });
-    let layer = nlmaps.openlayers.bgLayer();
-    map.addLayer(layer);
-    let marker = nlmaps.openlayers.markerLayer(true)
-    map.addLayer(marker);
-
 ### Include only your library-specific functions
 
 If you want to save as many bytes as possible, simply include the sub-module for your map library instead of the whole `nlmaps` package. Each of these modules provides a `bgLayer()` function which will return a layer for the corresponding map library, a markerLayer() function which will return a marker on the map, and a `geoLocatorControl()` function which returns a control for the geolocator.
 
 **Web browser:**
 
-Download the appropriate `nlmaps-<maplib>.min.js` [release](https://github.com/geo-frontend/nlmaps/releases/latest) Download and extract the source code and select the appropriate file from the `dist` directory. Upon including the script in your web page, you will have a `bgLayer()` function available which works with the respective map library. In order to use the `nlmaps` library in conjunction with Mapbox, select `leaflet`.
+Download the `nlmaps-leaflet.iife.js` [release](https://github.com/geo-frontend/nlmaps/releases/latest) Download and extract the source code and select the file from the `dist` directory. Upon including the script in your web page, you will have a `bgLayer()` function available which works with Leaflet.
 
 **NodeJS:**
 
-    npm install --save nlmaps-leaflet
+    npm install --save nlmaps-ol
 
     //CommonJS
-    let bgLayer = require('nlmaps-leaflet').bgLayer; //note the use of property off of require
-    let marker = require('nlmaps-leaflet').markerLayer;
+    let bgLayer = require('nlmaps-ol').bgLayer; //note the use of property off of require
+    let marker = require('nlmaps-ol').markerLayer;
 
     //ES2015
-    import { bgLayer, markerLayer } from 'nlmaps-leaflet';
+    import { bgLayer, markerLayer } from 'nlmaps-ol';
 
 These functions can subsequently be used in the same way as the functions from the parent package.
 
@@ -373,66 +347,37 @@ For aerial imagery:
 
 See also [CONTRIBUTING](CONTRIBUTING.md)
 
-### Installation/set up
-
-To develop `nlmaps`, clone the repository and then in the directory run:
-
-    lerna bootstrap
-    npm install
-
-`lerna bootstrap` symlinks cross-dependencies between the subpackages into each others' `node_modules` directory so that they can `require()` or `import` each other without having to actually download from npmjs.com
-
 ### General development notes
 
-Development is most stable in Node version 10.x.
+`nlmaps` is a monorepo using `Nx` and `pnpm`. De website is gemaakt op basis van `Vue.js`.
 
-There are some issues when trying to call rollup from npm scripts, so there is a set of scripts in `scripts/` that should be called directly. The usage is as follows (note that rollup needs to installed as global):
+### Installation/set up
 
-- `node scripts/build` to build the source from `packages/PACKAGE/src` into `packages/PACKAGE/build`
-- `node scripts/test` to run tests in `packages/PACKAGE/test` -- runs `unit-test.js` with Node and copies/compiles browser test js and html to build.
-- `node scripts/serve` to run live-reload servers watching `build`, for use with the test html pages.
-- `node scripts/serve-dev` to build, test and serve.
-- `node scripts/publish` doesn't actually publish, but copies the build output to the top-level `dist/` directory.
+To start development of `nlmaps`, install `pnpm` globally:
 
-All the above scripts can either operate on all subpackages (the default), or on a subset of packages by using the `-p` flag:
+    npm install -g pnpm
 
-    //only builds nlmaps-leaflet and nlmaps-openlayers
-    node scripts/build -p leaflet,openlayers
+Then install `Nx` globally:
 
-The list of packages to consider is specified in `scripts/conf.json`.
+    pnpm add -g nx
 
-The scripts can be run in watch mode to recompile/retest when source/test files change:
+Clone the repository:
 
-    //build leaflet, and rebuild on source file changes
-    node scripts/build --watch -p leaflet
+    git clone git@github.com:geo-frontend/nlmaps.git
+    cd nlmaps
 
-This is not applicable to the `serve` script, which always live-reloads.
+Install its dependencies:
 
-You can use the wrapper `serve-dev` to run the whole development setup, but note that all logging will go to one terminal and may be out of order, making it difficult to interpret. You may therefore want to run different combinations of commands for different subpackages in separate terminals for clarity.
+    pnpm install
 
-**Note on testing:** The test script looks for a file called 'unit-test.js' to execute; this is meant for testing in nodejs. For the browser, it copies everything matching the glob `*test.html` to the build dir; and for the actual test scripts, it calls rollup with `rollup.test.js` as the config file for each package. These currently use `browser-test.js` as the main entrypoint.
+To serve the website locally:
 
-**Also, NOTE:** the live server runs with basic SSL. You have to open the test pages with `https://` or they won't work. You will also need to add an exception for the self-signed security certificates the first time you open them.
+    npx nx dev nlmaps-website
 
-### Publishing
+To serve the examples locally:
 
-[Lerna](https://lernajs.io/) is used for optimising the workflow around managing multi-package JavaScript projects with git and npm. Because of some seeming subtleties of Rollup's interaction with Lerna or NPM, there is a different build script. Use the following procedure to publish the packages.
+    npx nx dev nlmaps-examples
 
-1. `lerna exec npm -- install` If you need to update dependencies
-2. `node scripts/build` can't use npm run or lerna run because rollup can't handle non-externalized dependencies when lerna is symlinking them.
-3. `node scripts/publish` this doesn't actually publish yet, but copies the transpiled output from `packages/*/build/` to the top-level `dist/` directory.
-4. git `add` and `commit`
-5. `lerna version` to choose version numbers for each changed package.
-6. `lerna publish` to publish to the NPM repository.
+To build the website, examples, and packages:
 
-This publishes to npm as well as creates new git tags for the releases, which are pushed to Github. To finish the release, go to the Github repo's release page and annotate the latest release for the 'nlmaps' package (this makes it show up under the 'latest' path on Github).
-
-**Note:** publishing usually happens automatically via CircleCI.
-
-### Building the webpage
-
-To build the webpage goto the docs folder and make sure you have gulp installed.
-
-Run `gulp build` to start the build process. When the process is finished the compiled website and assets are available in the build folder.
-
-**Note:** the gulp build process copies nlmaps css and assets directly from `../packages/assets`.
+    npx nx run-many --target=build --all

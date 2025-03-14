@@ -57,6 +57,9 @@ importers:
       nlmaps-leaflet:
         specifier: workspace:*
         version: link:../../packages/nlmaps-leaflet
+      vite:
+        specifier: ^5.4.14
+        version: 5.4.14(@types/node@22.13.5)(terser@5.39.0)
       vue:
         specifier: ^3.5.13
         version: 3.5.13(typescript@5.7.3)

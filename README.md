@@ -13,7 +13,7 @@
 
 ## Purpose
 
-The `nlmaps` JavaScript library allows you to create layers for Leaflet, MapLibre GL JS, and OpenLayers pre-configured to use the BRT-Achtergrondkaart layers. You don't need to figure out the tile URLs yourself.
+The `nlmaps` JavaScript library allows you to create layers for [Leaflet](https://leafletjs.com/), [MapLibre GL JS](https://maplibre.org/maplibre-gl-js/docs/), and [OpenLayers](https://openlayers.org/) pre-configured to use the BRT-Achtergrondkaart layers. You don't need to figure out the tile URLs yourself.
 
 ## Usage example
 

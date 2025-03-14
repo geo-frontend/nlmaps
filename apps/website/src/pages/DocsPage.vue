@@ -49,8 +49,8 @@ export default {
           <h3 id="doel">Doel</h3>
           <p>
             Met de <code>nlmaps</code> JavaScript-bibliotheek kun je kaartlagen
-            van de BRT-Achtergrondkaart maken voor Leaflet, Maplibre GL JS en
-            OpenLayers. Je hoeft daardoor niet zelf de tegel-URL's te kennen.
+            van de BRT-Achtergrondkaart maken voor <a href="https://leafletjs.com/">Leaflet</a>, <a href="https://maplibre.org/maplibre-gl-js/docs/">Maplibre GL JS</a> en
+            <a href="https://openlayers.org/">OpenLayers</a>. Je hoeft daardoor niet zelf de tegel-URL's te kennen.
           </p>
           <h3 id="gebruiksvoorbeeld">Gebruiksvoorbeeld</h3>
           <pre><code>let map = nlmaps.createMap({style: 'grijs', target: 'nlmaps-holder'});</code></pre>

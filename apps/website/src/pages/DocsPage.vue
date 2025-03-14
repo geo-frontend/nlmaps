@@ -512,8 +512,6 @@ cd nlmaps</code></pre>
   }
 }
 .heading {
-  margin-top: 0;
-  font-size: inherit;
   font-weight: normal;
 }
 section,

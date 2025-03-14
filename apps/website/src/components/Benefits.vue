@@ -46,11 +46,6 @@ ol {
   margin-top: 0;
   margin-bottom: 12px;
 }
-.heading {
-  margin-top: 0;
-  font-size: inherit;
-  font-weight: normal;
-}
 .usps {
   margin: 0;
   padding: 0;

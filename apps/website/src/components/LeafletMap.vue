@@ -3,13 +3,10 @@
 </template>
 
 <script>
-import L from 'leaflet'
-import {
-  bgLayer,
-  geocoderControl,
-  markerLayer,
-  overlayLayer,
-} from 'nlmaps-leaflet'
+import { ref } from 'vue'
+
+const map = ref(null)
+
 export default {
   props: {
     mapOptions: {
@@ -38,8 +35,10 @@ export default {
   },
   data() {
     return {
+      map: null,
       mapId: 'leaflet',
       mapInstance: null,
+      nlmaps: null,
     }
   },
   methods: {
@@ -93,9 +92,14 @@ export default {
       }
     },
   },
-  mounted() {
-    const { lng, lat, zoom } = this.viewPort
-    this.initMap()
+  async mounted() {
+    if (typeof window !== 'undefined') {
+      const L = (await import('leaflet')).default
+      const nlmaps = await import('nlmaps-leaflet')
+      this.nlmaps = nlmaps
+      const { lng, lat, zoom } = this.viewPort
+      this.initMap()
+    }
   },
   unmounted() {
     if (this.mapInstance) {

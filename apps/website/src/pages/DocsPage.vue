@@ -13,9 +13,7 @@ export default {
   <DefaultLayout>
     <section class="section-brand spotlight">
       <div class="container">
-        <h1 class="heading spotlight-heading">
-          {{ $route.meta.description }}
-        </h1>
+        <h1 class="heading spotlight-heading">NL Maps Library</h1>
         <p class="spotlight-description">
           De meest actuele kaart nu beschikbaar
         </p>

@@ -1,7 +1,11 @@
 <script>
+import { defineAsyncComponent } from 'vue'
 import DefaultLayout from '@/layouts/DefaultLayout.vue'
 import BenefitsBlock from '@/components/Benefits.vue'
-import LeafletMap from '@/components/LeafletMap.vue'
+
+const LeafletMap = defineAsyncComponent(
+  () => import('@/components/LeafletMap.vue'),
+)
 
 import '@/assets/css/nlmaps.css'
 
@@ -38,7 +42,7 @@ export default {
     <section class="section-brand spotlight">
       <div class="container">
         <h1 class="heading spotlight-heading">
-          {{ $route.meta.description }}
+          Dé officiële kaart van Nederland
         </h1>
         <p class="spotlight-description">
           De meest actuele kaart nu beschikbaar
@@ -284,10 +288,12 @@ export default {
                   <span class="wizard-step-heading">Kopieer de code</span>
                   <div class="wizard-step-content">
                     <div class="wizard-map js-wizard-map">
-                      <LeafletMap
-                        v-bind:mapOptions="options"
-                        v-model:viewPort="location"
-                      />
+                      <client-only>
+                        <LeafletMap
+                          v-bind:mapOptions="options"
+                          v-model:viewPort="location"
+                        />
+                      </client-only>
                       <button class="wizard-geo js-get-geo">locatie</button>
                     </div>
                     <div class="wizard-code-block">

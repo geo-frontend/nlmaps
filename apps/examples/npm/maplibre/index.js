@@ -1,5 +1,5 @@
 import maplibregl from 'maplibre-gl'
-import { bgLayer, overlayLayer, markerLayer, geocoderControl, geoLocatorControl } from 'nlmaps-maplibre'
+import { bgLayer, overlayLayer, markerLayer, geocoderControl, geoLocatorControl } from '@geo-frontend/nlmaps-maplibre'
 
 import 'maplibre-gl/dist/maplibre-gl.css'
 

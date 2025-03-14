@@ -13,6 +13,6 @@
   "license": "MIT",
   "dependencies": {
     "leaflet": "^1.9.4",
-    "nlmaps-leaflet": "workspace:*"
+    "@geo-frontend/nlmaps-leaflet": "workspace:*"
   }
 }

@@ -1,5 +1,5 @@
 {
-  "name": "nlmaps-leaflet",
+  "name": "@geo-frontend/nlmaps-leaflet",
   "version": "2.8.0",
   "description": "",
   "type": "module",

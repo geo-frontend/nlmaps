@@ -12,8 +12,8 @@
   "keywords": [],
   "license": "MIT",
   "dependencies": {
-    "nlmaps-geolocator": "workspace:*",
-    "nlmaps-ol": "workspace:*",
+    "@geo-frontend/nlmaps-geolocator": "workspace:*",
+    "@geo-frontend/nlmaps-ol": "workspace:*",
     "ol": "^10.4.0"
   }
 }

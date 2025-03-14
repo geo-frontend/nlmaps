@@ -7,9 +7,9 @@ import {
   geocoderControl as geocoderL,
   extentLeafletFormat,
   geoLocatorControl as glL,
-} from 'nlmaps-leaflet'
+} from '@geo-frontend/nlmaps-leaflet'
 
-import geoLocator from 'nlmaps-geolocator'
+import geoLocator from '@geo-frontend/nlmaps-geolocator'
 import {
   singleMarker,
   multiMarker,

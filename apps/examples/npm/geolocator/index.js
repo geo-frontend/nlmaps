@@ -1,6 +1,6 @@
 import { Map } from 'leaflet'
-import { bgLayer, geoLocatorControl } from 'nlmaps-leaflet'
-import geoLocator from 'nlmaps-geolocator'
+import { bgLayer, geoLocatorControl } from '@geo-frontend/nlmaps-leaflet'
+import geoLocator from '@geo-frontend/nlmaps-geolocator'
 
 import 'leaflet/dist/leaflet.css'
 

@@ -7,8 +7,8 @@ import {
   geoLocatorControl,
   markerLayer,
   overlayLayer,
-} from 'nlmaps-ol'
-import geoLocator from 'nlmaps-geolocator'
+} from '@geo-frontend/nlmaps-ol'
+import geoLocator from '@geo-frontend/nlmaps-geolocator'
 
 import 'ol/ol.css'
 

@@ -1,5 +1,5 @@
 {
-  "name": "nlmaps-website",
+  "name": "@geo-frontend/nlmaps-website",
   "private": true,
   "version": "0.0.0",
   "type": "module",
@@ -10,7 +10,7 @@
   },
   "dependencies": {
     "leaflet": "^1.9.4",
-    "nlmaps-leaflet": "workspace:*",
+    "@geo-frontend/nlmaps-leaflet": "workspace:*",
     "vite": "^5.4.14",
     "vue": "^3.5.13"
   },

@@ -1,4 +1,9 @@
-import { getProvider, getWmsProvider, geocoder, getMarker } from '@geo-frontend/lib'
+import {
+  getProvider,
+  getWmsProvider,
+  geocoder,
+  getMarker,
+} from '@geo-frontend/lib'
 import Control from 'ol/control/Control.js'
 import { fromLonLat, toLonLat } from 'ol/proj.js'
 import Feature from 'ol/Feature.js'
@@ -6,20 +11,27 @@ import Point from 'ol/geom/Point.js'
 import { Icon, Style } from 'ol/style.js'
 import { Tile as TileLayer, Vector as VectorLayer } from 'ol/layer.js'
 import View from 'ol/View.js'
-import { ImageTile as ImageTileSource, TileWMS as TileWMSSource, Vector as VectorSource } from 'ol/source.js'
+import {
+  ImageTile as ImageTileSource,
+  TileWMS as TileWMSSource,
+  Vector as VectorSource,
+} from 'ol/source.js'
 
 function bgLayer(name = 'standaard') {
   const provider = getProvider(name)
   //replace leaflet style subdomain to OL style
   if (provider.subdomains) {
     let sub = provider.subdomains
-    provider.url = provider.url.replace('{s}', '{' + sub.slice(0, 1) + '-' + sub.slice(-1) + '}')
+    provider.url = provider.url.replace(
+      '{s}',
+      '{' + sub.slice(0, 1) + '-' + sub.slice(-1) + '}',
+    )
   }
   return new TileLayer({
     source: new ImageTileSource({
       attributions: [provider.attribution],
-      url: provider.url
-    })
+      url: provider.url,
+    }),
   })
 }
 
@@ -29,8 +41,8 @@ function markerLayer(latLngObject) {
       anchor: getMarker().iconAnchor,
       anchorXUnits: 'pixels',
       anchorYUnits: 'pixels',
-      src: getMarker().url
-    })
+      src: getMarker().url,
+    }),
   })
   let lat
   let lng
@@ -48,15 +60,15 @@ function markerLayer(latLngObject) {
 
   var markerFeature = new Feature({
     geometry: new Point(center),
-    name: 'marker'
+    name: 'marker',
   })
   markerFeature.setStyle(markerStyle)
 
   var markerSource = new VectorSource({
-    features: [markerFeature]
+    features: [markerFeature],
   })
   return new VectorLayer({
-    source: markerSource
+    source: markerSource,
   })
 }
 
@@ -68,9 +80,9 @@ function overlayLayer(name, options) {
       params: {
         LAYERS: wmsProvider.layerName,
         VERSION: wmsProvider.version,
-        STYLES: wmsProvider.styleName
-      }
-    })
+        STYLES: wmsProvider.styleName,
+      },
+    }),
   })
 }
 
@@ -88,7 +100,7 @@ function geoLocatorControl(geolocator, map) {
     let oldZoom = map.getView().getZoom()
     let view = View({
       center: fromLonLat([d.coords.longitude, d.coords.latitude]),
-      zoom: oldZoom
+      zoom: oldZoom,
     })
     map.setView(view)
   }
@@ -110,7 +122,7 @@ function getMapCenter(map) {
   const lngLatCoords = toLonLat(EPSG3857Coords)
   return {
     longitude: lngLatCoords[0],
-    latitude: lngLatCoords[1]
+    latitude: lngLatCoords[1],
   }
 }
 
@@ -120,4 +132,11 @@ function geocoderControl(map) {
   map.addControl(control)
 }
 
-export { bgLayer, overlayLayer, markerLayer, getMapCenter, geoLocatorControl, geocoderControl }
+export {
+  bgLayer,
+  overlayLayer,
+  markerLayer,
+  getMapCenter,
+  geoLocatorControl,
+  geocoderControl,
+}

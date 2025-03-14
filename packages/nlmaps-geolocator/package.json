@@ -1,5 +1,5 @@
 {
-  "name": "nlmaps-geolocator",
+  "name": "@geo-frontend/nlmaps-geolocator",
   "version": "2.8.0",
   "description": "",
   "type": "module",

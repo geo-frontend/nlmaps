@@ -95,7 +95,7 @@ export default {
   async mounted() {
     if (typeof window !== 'undefined') {
       const L = (await import('leaflet')).default
-      const nlmaps = await import('nlmaps-leaflet')
+      const nlmaps = await import('@geo-frontend/nlmaps-leaflet')
       this.nlmaps = nlmaps
       const { lng, lat, zoom } = this.viewPort
       this.initMap()

@@ -13,7 +13,7 @@
   "license": "MIT",
   "dependencies": {
     "leaflet": "^1.9.4",
-    "nlmaps-geolocator": "workspace:*",
-    "nlmaps-leaflet": "workspace:*"
+    "@geo-frontend/nlmaps-geolocator": "workspace:*",
+    "@geo-frontend/nlmaps-leaflet": "workspace:*"
   }
 }

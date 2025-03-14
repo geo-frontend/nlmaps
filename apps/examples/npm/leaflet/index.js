@@ -1,5 +1,5 @@
 import { Map } from 'leaflet'
-import { bgLayer, geocoderControl } from 'nlmaps-leaflet'
+import { bgLayer, geocoderControl } from '@geo-frontend/nlmaps-leaflet'
 
 import 'leaflet/dist/leaflet.css'
 

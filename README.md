@@ -93,7 +93,7 @@ Creates a geolocator control and adds it to the map. Clicking on the control wil
 - map: _object map_ (**required**). the `map` that the geolocator control should be added to.
 - options _object_ (optional). An object with one allowed property, `start: true|false`. If set to `true`, the geolocator is initialized on page load.
 
-Returns a `geolocator` object. See the [nlmaps-geolocator](https://www.npmjs.com/package/nlmaps-geolocator) package for more information.
+Returns a `geolocator` object. See the [@geo-frontend/nlmaps-geolocator](https://www.npmjs.com/package/@geo-frontend/nlmaps-geolocator) package for more information.
 
 #### Example
 
@@ -174,14 +174,14 @@ Creates a control for Leaflet which talks to the given `geolocator`. The control
 
 Arguments:
 
-- geolocator _object geolocator_ (**required**). The `geolocator` to which the control should be connected. If you are using this method, you will probably be creating the geolocator yourself with the [nlmaps-geolocator](https://www.npmjs.com/package/nlmaps-geolocator) package.
+- geolocator _object geolocator_ (**required**). The `geolocator` to which the control should be connected. If you are using this method, you will probably be creating the geolocator yourself with the [@geo-frontend/nlmaps-geolocator](https://www.npmjs.com/package/@geo-frontend/nlmaps-geolocator) package.
 
 Returns a `geolocator` control.
 
 #### Example
 
-    import geoLocator from 'nlmaps-geolocator';
-    import geoLocatorControl from 'nlmaps-leaflet';
+    import geoLocator from '@geo-frontend/nlmaps-geolocator';
+    import geoLocatorControl from '@geo-frontend/nlmaps-leaflet';
     const geolocator = geoLocator();
     const control = geoLocatorControl(geolocator);
     control.addTo(map);
@@ -304,7 +304,7 @@ If you're already using a mapping library in your project, you can use the libra
 
 ### Include only your library-specific functions
 
-If you want to save as many bytes as possible, simply include the sub-module for your map library instead of the whole `nlmaps` package. Each of these modules provides a `bgLayer()` function which will return a layer for the corresponding map library, a markerLayer() function which will return a marker on the map, and a `geoLocatorControl()` function which returns a control for the geolocator.
+If you want to save as many bytes as possible, simply include the sub-module for your map library instead of the whole `@geo-frontend/nlmaps` package. Each of these modules provides a `bgLayer()` function which will return a layer for the corresponding map library, a markerLayer() function which will return a marker on the map, and a `geoLocatorControl()` function which returns a control for the geolocator.
 
 **Web browser:**
 
@@ -312,14 +312,14 @@ Download the `nlmaps-leaflet.iife.js` [release](https://github.com/geo-frontend/
 
 **NodeJS:**
 
-    npm install --save nlmaps-ol
+    npm install --save @geo-frontend/nlmaps-ol
 
     //CommonJS
-    let bgLayer = require('nlmaps-ol').bgLayer; //note the use of property off of require
-    let marker = require('nlmaps-ol').markerLayer;
+    let bgLayer = require('@geo-frontend/nlmaps-ol').bgLayer; //note the use of property off of require
+    let marker = require('@geo-frontend/nlmaps-ol').markerLayer;
 
     //ES2015
-    import { bgLayer, markerLayer } from 'nlmaps-ol';
+    import { bgLayer, markerLayer } from '@geo-frontend/nlmaps-ol';
 
 These functions can subsequently be used in the same way as the functions from the parent package.
 
@@ -329,7 +329,7 @@ If you want to remove your map object or layer, you can just use the standard me
 
 ### The geolocator and the geoLocatorControls
 
-You can also use the `nlmaps-geolocator` package directly instead of calling it with `nlmaps.geoLocate`. This gives you flexibility to implement your own control. Each of the library-specific sub-packages provides a control which interfaces with the `nlmaps-geolocator` API, but these are quite simple controls with, at the moment, hard-coded CSS styling. In the future `nlmaps` may provide a CSS file but for now, if you want to modify the placement, you should provide your own CSS and/or create your own control.
+You can also use the `@geo-frontend/nlmaps-geolocator` package directly instead of calling it with `nlmaps.geoLocate`. This gives you flexibility to implement your own control. Each of the library-specific sub-packages provides a control which interfaces with the `nlmaps-geolocator` API, but these are quite simple controls with, at the moment, hard-coded CSS styling. In the future `nlmaps` may provide a CSS file but for now, if you want to modify the placement, you should provide your own CSS and/or create your own control.
 
 ## Raw tile URLs
 
@@ -372,11 +372,11 @@ Install its dependencies:
 
 To serve the website locally:
 
-    npx nx dev nlmaps-website
+    npx nx dev @geo-frontend/nlmaps-website
 
 To serve the examples locally:
 
-    npx nx dev nlmaps-examples
+    npx nx dev @geo-frontend/nlmaps-examples
 
 To build the website, examples, and packages:
 

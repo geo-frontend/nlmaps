@@ -99,10 +99,10 @@ export default {
           <p><code>nlmaps</code> is ontwikkeld met Node.js versie 20.14.0</p>
           <pre><code>npm install -S @geo-frontend/nlmaps
 //CommonJS
-let nlmaps = require('nlmaps');
+let nlmaps = require('@geo-frontend/nlmaps');
 
 //ES2015 Modules
-import nlmaps from 'nlmaps';</code></pre>
+import nlmaps from '@geo-frontend/nlmaps';</code></pre>
           <p>
             Leaflet, MapLibre GL JS of OpenLayers zullen ook beschikbaar moeten
             zijn in je webpagina. Een manier om dit voor elkaar te krijgen is om
@@ -214,7 +214,7 @@ let map = nlmaps.createMap(opts);
           </ul>
           <p>
             Geeft een <code>geolocator</code> object terug. Zie de
-            <a href="https://www.npmjs.com/package/nlmaps-geolocator"
+            <a href="https://www.npmjs.com/package/@geo-frontend/nlmaps-geolocator"
               >nlmaps-geolocator</a
             >
             package voor meer informatie.
@@ -343,16 +343,16 @@ overlay.addTo(map);</code></pre>
               <code>geolocator</code> waar de control mee verbonden moet worden.
               Als je deze methode gebuikt, zul je waarschijnlijk de geolocator
               ook zelf aanmaken met de
-              <a href="https://www.npmjs.com/package/nlmaps-geolocator"
-                >nlmaps-geolocator</a
+              <a href="https://www.npmjs.com/package/@geo-frontend/nlmaps-geolocator"
+                >@geo-frontend/nlmaps-geolocator</a
               >
               package.
             </li>
           </ul>
           <p>Geeft een <code>geolocator</code> control terug.</p>
           <p><strong>Voorbeeld</strong></p>
-          <pre><code>import geoLocator from 'nlmaps-geolocator';
-import geoLocatorControl from 'nlmaps-leaflet';
+          <pre><code>import geoLocator from '@geo-frontend/nlmaps-geolocator';
+import geoLocatorControl from '@geo-frontend/nlmaps-leaflet';
 const geolocator = geoLocator();
 const control = geoLocatorControl(geolocator);
 control.addTo(map);</code></pre>
@@ -381,24 +381,22 @@ let marker = nlmaps.leaflet.markerLayer({longitude: 5.5, latitude: 52.5}).addTo(
           </p>
           <p><strong>Web browser:</strong></p>
           <p>
-            Download de <code>nlmaps-leaflet.iife.js</code>
+            Download de <code>nlmaps-leaflet.iife.js</code> 
             <a href="https://github.com/kadaster/nlmaps/releases/latest"
-              >release</a
-            >
-            Download de broncode en pak het uit, en selecteer het bestand uit de
+              >release</a>. Download de broncode en pak het uit, en selecteer het bestand uit de
             <code>dist</code> map. Als je deze nu als script laadt in je
             webpagina, zul je een <code>bgLayer()</code> en
             <code>geoLocatorControl()</code> functie hebben die werkt met
             Leaflet.
           </p>
           <p><strong>Node.js:</strong></p>
-          <pre><code>npm install --save nlmaps-ol
+          <pre><code>npm install --save @geo-frontend/nlmaps-ol
 //CommonJS
-let bgLayer = require('nlmaps-ol').bgLayer; //note the use of property off of require
-let marker = require('nlmaps-ol').markerLayer;
+let bgLayer = require('@geo-frontend/nlmaps-ol').bgLayer;
+let marker = require('@geo-frontend/nlmaps-ol').markerLayer;
 
 //ES2015
-import { bgLayer, markerLayer } from 'nlmaps-ol';</code></pre>
+import { bgLayer, markerLayer } from '@geo-frontend/nlmaps-ol';</code></pre>
 
           <p>
             Deze functies kunnen vervolgens op dezelfde manier worden gebruikt
@@ -468,9 +466,9 @@ cd nlmaps</code></pre>
           <p>Installeer de dependencies:</p>
           <pre><code>pnpm install</code></pre>
           <p>Om de website lokaal te serveren:</p>
-          <pre><code>npx nx dev nlmaps-website</code></pre>
+          <pre><code>npx nx dev @geo-frontend/nlmaps-website</code></pre>
           <p>Om de voorbeelden lokaal te serveren:</p>
-          <pre><code>npx nx dev nlmaps-examples</code></pre>
+          <pre><code>npx nx dev @geo-frontend/nlmaps-examples</code></pre>
           <p>Om de website, voorbeelden en packages te bouwen:</p>
           <pre><code>npx nx run-many --target=build --all</code></pre>
         </div>

@@ -49,8 +49,13 @@ export default {
           <h3 id="doel">Doel</h3>
           <p>
             Met de <code>nlmaps</code> JavaScript-bibliotheek kun je kaartlagen
-            van de BRT-Achtergrondkaart maken voor <a href="https://leafletjs.com/">Leaflet</a>, <a href="https://maplibre.org/maplibre-gl-js/docs/">Maplibre GL JS</a> en
-            <a href="https://openlayers.org/">OpenLayers</a>. Je hoeft daardoor niet zelf de tegel-URL's te kennen.
+            van de BRT-Achtergrondkaart maken voor
+            <a href="https://leafletjs.com/">Leaflet</a>,
+            <a href="https://maplibre.org/maplibre-gl-js/docs/"
+              >Maplibre GL JS</a
+            >
+            en <a href="https://openlayers.org/">OpenLayers</a>. Je hoeft
+            daardoor niet zelf de tegel-URL's te kennen.
           </p>
           <h3 id="gebruiksvoorbeeld">Gebruiksvoorbeeld</h3>
           <pre><code>let map = nlmaps.createMap({style: 'grijs', target: 'nlmaps-holder'});</code></pre>
@@ -430,18 +435,15 @@ import { bgLayer, markerLayer } from 'nlmaps-ol';</code></pre>
             De URL's naar de kaarttegels die <code>nlmaps</code> configureert
             volgen deze sjablonen:
           </p>
-          <p>
-            Voor de BRT-Achtergrondkaart serie:
-            <pre><code
+          <p>Voor de BRT-Achtergrondkaart serie:</p>
+          <pre><code
               >https://service.pdok.nl/brt/achtergrondkaart/wmts/v2_0/standaard/EPSG:3857/{z}/{x}/{y}.png</code
             ></pre>
-          </p>
-          <p>
-            Voor de luchtfoto's:
-            <pre><code
+
+          <p>Voor de luchtfoto's:</p>
+          <pre><code
               >https://service.pdok.nl/hwh/luchtfotorgb/wmts/v1<em>0/Actueel</em>ortho25/EPSG:3857/{z}/{x}/{y}.jpeg</code
             ></pre>
-          </p>
           <h3 id="ontwikkelen">Ontwikkelen</h3>
           <p>
             Zie ook
@@ -862,5 +864,4 @@ code {
   font-size: 85%;
   background-color: rgba(0, 0, 0, 0);
 }
-
 </style>

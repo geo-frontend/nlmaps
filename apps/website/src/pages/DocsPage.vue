@@ -91,7 +91,7 @@ export default {
             <code>dist/nlmaps.iife.js</code>. Voeg het toe aan je webpagina als
             volgt:
           </p>
-          <code>&lt;script src="url_of_nlmaps.iife.js"&gt;&lt;/script&gt;</code>
+          <pre><code>&lt;script src="url_of_nlmaps.iife.js"&gt;&lt;/script&gt;</code></pre>
           <h4>Node.js</h4>
           <p><code>nlmaps</code> is ontwikkeld met Node.js versie 20.14.0</p>
           <pre><code>npm install -S @geo-frontend/nlmaps
@@ -432,11 +432,15 @@ import { bgLayer, markerLayer } from 'nlmaps-ol';</code></pre>
           </p>
           <p>
             Voor de BRT-Achtergrondkaart serie:
-            https://service.pdok.nl/brt/achtergrondkaart/wmts/v2_0/standaard/EPSG:3857/{z}/{x}/{y}.png
+            <pre><code
+              >https://service.pdok.nl/brt/achtergrondkaart/wmts/v2_0/standaard/EPSG:3857/{z}/{x}/{y}.png</code
+            ></pre>
           </p>
           <p>
             Voor de luchtfoto's:
-            https://service.pdok.nl/hwh/luchtfotorgb/wmts/v1<em>0/Actueel</em>ortho25/EPSG:3857/{z}/{x}/{y}.jpeg
+            <pre><code
+              >https://service.pdok.nl/hwh/luchtfotorgb/wmts/v1<em>0/Actueel</em>ortho25/EPSG:3857/{z}/{x}/{y}.jpeg</code
+            ></pre>
           </p>
           <h3 id="ontwikkelen">Ontwikkelen</h3>
           <p>
@@ -489,6 +493,11 @@ cd nlmaps</code></pre>
 .container:after {
   clear: both;
 }
+
+.container-narrow {
+  max-width: 840px;
+}
+
 @media (min-width: 768px) {
   .container {
     width: 760px;
@@ -628,14 +637,6 @@ nav {
   .spotlight-heading {
     font-size: 42px;
   }
-}
-
-#benefits {
-  grid-area: benefits;
-}
-
-#wizard {
-  grid-area: wizard;
 }
 
 .btn {
@@ -802,4 +803,64 @@ fieldset[disabled] .btn-primary.focus {
   background: #fff;
   color: #6c62a6;
 }
+
+.markdown h1,
+.markdown h2,
+.markdown h3,
+.markdown h4,
+.markdown h5,
+.markdown h6 {
+  margin-top: 24px;
+  margin-bottom: 16px;
+  font-weight: 600;
+  line-height: 1.25;
+}
+.markdown h1 {
+  padding-bottom: 0.3em;
+  border-bottom: 1px solid #eaecef;
+  font-size: 2em;
+}
+.markdown h2 {
+  padding-bottom: 0.3em;
+  border-bottom: 1px solid #eaecef;
+  font-size: 1.5em;
+}
+.markdown h3 {
+  font-size: 1.25em;
+}
+.markdown p,
+.markdown blockquote,
+.markdown ul,
+.markdown ol,
+.markdown dl,
+.markdown table,
+.markdown pre {
+  margin-top: 0;
+  margin-bottom: 16px;
+}
+.markdown ul,
+.markdown ol {
+  padding-left: 2em;
+}
+.markdown pre {
+  padding: 16px;
+  overflow: auto;
+  border-radius: 3px;
+  line-height: 1.45;
+  background-color: #f6f8fa;
+}
+
+code {
+  display: inline;
+  max-width: auto;
+  padding: 0;
+  margin: 0;
+  border: 0;
+  overflow: visible;
+  line-height: inherit;
+  word-wrap: normal;
+  font-size: 85%;
+  background-color: rgba(0, 0, 0, 0);
+}
+
 </style>

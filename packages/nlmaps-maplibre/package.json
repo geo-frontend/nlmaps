@@ -19,5 +19,8 @@
   "devDependencies": {
     "@geo-frontend/lib": "workspace:*",
     "maplibre-gl": "^5.2.0"
+  },
+  "dependencies": {
+    "vite": "^6.2.2"
   }
 }

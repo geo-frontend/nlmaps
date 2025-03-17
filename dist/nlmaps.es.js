@@ -203,13 +203,17 @@ function y(e, t) {
 function Y(e) {
   let t = y(s.BASE_DEFAULTS, e.defaults);
   (!e.layers || e.layers.length < 0) && v("no basemap defined, please define a basemap in the configuration"), e.layers.forEach((o) => {
-    (!o.name || s.BASEMAP_PROVIDERS[o.name] !== void 0) && v("basemap names need to be defined and unique: " + o.name), s.BASEMAP_PROVIDERS[o.name] = oe(y(t, o));
+    (!o.name || s.BASEMAP_PROVIDERS[o.name] !== void 0) && v("basemap names need to be defined and unique: " + o.name), s.BASEMAP_PROVIDERS[o.name] = oe(
+      y(t, o)
+    );
   });
 }
 function X(e) {
   let t = y(s.WMS_DEFAULTS, e.defaults);
   e.layers && e.layers.forEach((o) => {
-    (!o.name || s.WMS_PROVIDERS[o.name] !== void 0) && v("wms names need to be defined and unique: " + o.name), s.WMS_PROVIDERS[o.name] = re(y(t, o));
+    (!o.name || s.WMS_PROVIDERS[o.name] !== void 0) && v("wms names need to be defined and unique: " + o.name), s.WMS_PROVIDERS[o.name] = re(
+      y(t, o)
+    );
   });
 }
 function ee(e) {
@@ -725,13 +729,17 @@ function k(e, t) {
 function ye(e) {
   let t = k(a.BASE_DEFAULTS, e.defaults);
   (!e.layers || e.layers.length < 0) && E("no basemap defined, please define a basemap in the configuration"), e.layers.forEach((o) => {
-    (!o.name || a.BASEMAP_PROVIDERS[o.name] !== void 0) && E("basemap names need to be defined and unique: " + o.name), a.BASEMAP_PROVIDERS[o.name] = ve(k(t, o));
+    (!o.name || a.BASEMAP_PROVIDERS[o.name] !== void 0) && E("basemap names need to be defined and unique: " + o.name), a.BASEMAP_PROVIDERS[o.name] = ve(
+      k(t, o)
+    );
   });
 }
 function ke(e) {
   let t = k(a.WMS_DEFAULTS, e.defaults);
   e.layers && e.layers.forEach((o) => {
-    (!o.name || a.WMS_PROVIDERS[o.name] !== void 0) && E("wms names need to be defined and unique: " + o.name), a.WMS_PROVIDERS[o.name] = Ee(k(t, o));
+    (!o.name || a.WMS_PROVIDERS[o.name] !== void 0) && E("wms names need to be defined and unique: " + o.name), a.WMS_PROVIDERS[o.name] = Ee(
+      k(t, o)
+    );
   });
 }
 function Se(e) {

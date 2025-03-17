@@ -1,4 +1,4 @@
-import config from '@geo-frontend/config'
+import config from '../../config/src/index.js'
 
 const CONFIG = {}
 
@@ -9,7 +9,7 @@ CONFIG.BASE_DEFAULTS = {
   maxZoom: 19,
   type: 'wmts',
   format: 'png',
-  url: ''
+  url: '',
 }
 CONFIG.WMS_DEFAULTS = {
   url: '',
@@ -18,13 +18,13 @@ CONFIG.WMS_DEFAULTS = {
   format: 'image/png',
   minZoom: 0,
   maxZoom: 24,
-  styleName: ''
+  styleName: '',
 }
 CONFIG.BASEMAP_PROVIDERS = {}
 CONFIG.WMS_PROVIDERS = {}
 CONFIG.GEOCODER = {}
 CONFIG.MAP = {
-  zoomposition: 'bottomleft'
+  zoomposition: 'bottomleft',
 }
 CONFIG.MARKER = {}
 CONFIG.CLASSNAMES = {
@@ -32,7 +32,7 @@ CONFIG.CLASSNAMES = {
   geocoderSearch: ['nlmaps-geocoder-control-search'],
   geocoderButton: ['nlmaps-geocoder-control-button'],
   geocoderResultList: ['nlmaps-geocoder-result-list'],
-  geocoderResultItem: ['nlmaps-geocoder-result-item']
+  geocoderResultItem: ['nlmaps-geocoder-result-item'],
 }
 
 function err(err) {
@@ -56,7 +56,9 @@ function parseBase(basemaps) {
     if (!layer.name || CONFIG.BASEMAP_PROVIDERS[layer.name] !== undefined) {
       err('basemap names need to be defined and unique: ' + layer.name)
     }
-    CONFIG.BASEMAP_PROVIDERS[layer.name] = formatBasemapUrl(mergeConfig(defaults, layer))
+    CONFIG.BASEMAP_PROVIDERS[layer.name] = formatBasemapUrl(
+      mergeConfig(defaults, layer),
+    )
   })
 }
 function parseWMS(wms) {
@@ -66,7 +68,9 @@ function parseWMS(wms) {
       if (!layer.name || CONFIG.WMS_PROVIDERS[layer.name] !== undefined) {
         err('wms names need to be defined and unique: ' + layer.name)
       }
-      CONFIG.WMS_PROVIDERS[layer.name] = applyTemplate(mergeConfig(defaults, layer))
+      CONFIG.WMS_PROVIDERS[layer.name] = applyTemplate(
+        mergeConfig(defaults, layer),
+      )
     })
   }
 }
@@ -100,7 +104,10 @@ function applyTemplate(layer) {
     let end = layer.url.indexOf('}')
     let template = layer.url.slice(start + 1, end)
     if (template.toLowerCase() === 'workspacename') {
-      layer.url = layer.url.slice(0, start) + layer.workSpaceName + layer.url.slice(end + 1, -1)
+      layer.url =
+        layer.url.slice(0, start) +
+        layer.workSpaceName +
+        layer.url.slice(end + 1, -1)
     } else {
       err('only workspacename templates are supported for now')
     }
@@ -120,7 +127,8 @@ function parseMarker(marker) {
   CONFIG.MARKER = marker
 }
 
-if (config.featureQuery !== undefined) parseFeatureQuery(config.featureQuery.baseUrl)
+if (config.featureQuery !== undefined)
+  parseFeatureQuery(config.featureQuery.baseUrl)
 if (config.map !== undefined) parseMap(config.map)
 parseBase(config.basemaps)
 if (config.wms !== undefined) parseWMS(config.wms)

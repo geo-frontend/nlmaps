@@ -166,13 +166,17 @@ function Ua(Me, Ee) {
 function of(Me) {
   let Ee = Ua(tt.BASE_DEFAULTS, Me.defaults);
   (!Me.layers || Me.layers.length < 0) && Sc("no basemap defined, please define a basemap in the configuration"), Me.layers.forEach((Ne) => {
-    (!Ne.name || tt.BASEMAP_PROVIDERS[Ne.name] !== void 0) && Sc("basemap names need to be defined and unique: " + Ne.name), tt.BASEMAP_PROVIDERS[Ne.name] = uf(Ua(Ee, Ne));
+    (!Ne.name || tt.BASEMAP_PROVIDERS[Ne.name] !== void 0) && Sc("basemap names need to be defined and unique: " + Ne.name), tt.BASEMAP_PROVIDERS[Ne.name] = uf(
+      Ua(Ee, Ne)
+    );
   });
 }
 function lf(Me) {
   let Ee = Ua(tt.WMS_DEFAULTS, Me.defaults);
   Me.layers && Me.layers.forEach((Ne) => {
-    (!Ne.name || tt.WMS_PROVIDERS[Ne.name] !== void 0) && Sc("wms names need to be defined and unique: " + Ne.name), tt.WMS_PROVIDERS[Ne.name] = df(Ua(Ee, Ne));
+    (!Ne.name || tt.WMS_PROVIDERS[Ne.name] !== void 0) && Sc("wms names need to be defined and unique: " + Ne.name), tt.WMS_PROVIDERS[Ne.name] = df(
+      Ua(Ee, Ne)
+    );
   });
 }
 function cf(Me) {
@@ -21063,7 +21067,10 @@ class Mf {
       wf(et).then((mt) => Ee.addImage("nlmaps-marker", mt)).then(() => {
         Ee.addSource(this.sourceId, this.sourceDef);
         let mt = Ee.getCenter();
-        this.options && this.options.longitude && this.options.latitude && (mt = { lng: this.options.longitude, lat: this.options.latitude }), Ee.getSource(this.sourceId).setData({
+        this.options && this.options.longitude && this.options.latitude && (mt = {
+          lng: this.options.longitude,
+          lat: this.options.latitude
+        }), Ee.getSource(this.sourceId).setData({
           type: "FeatureCollection",
           features: [
             {

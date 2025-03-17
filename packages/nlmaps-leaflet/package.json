@@ -16,8 +16,5 @@
     "build": "vite build",
     "preinstall": "npx only-allow pnpm"
   },
-  "license": "MIT",
-  "devDependencies": {
-    "@geo-frontend/lib": "workspace:*"
-  }
+  "license": "MIT"
 }

@@ -1,7 +1,21 @@
+# compiled output
+dist
+
+# dependencies
 node_modules
+
+# IDE - VSCode
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+
+# misc
 npm-debug.log
-**/**/build/*
-lerna-debug.log
-.vscode
-.nyc_output
-packages/config/.tmp
+
+.nx/cache
+.nx/workspace-data
+
+vite.config.*.timestamp*
+vitest.config.*.timestamp*

@@ -17,8 +17,9 @@
     "max-len": ["error", { "code": 160 }],
     "no-else-return": "off",
     "eqeqeq": ["error", "always", { "null": "ignore" }],
-    "arrow-body-style": "off", 
+    "arrow-body-style": "off",
     "no-plusplus": "off",
-    "no-undef": "off" 
-  }
+    "no-undef": "off"
+  },
+  "eslintIgnore": ["dist"]
 }

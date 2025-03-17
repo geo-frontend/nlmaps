@@ -1,0 +1,28 @@
+{
+  "name": "@geo-frontend/nlmaps-ol",
+  "version": "1.0.0",
+  "description": "",
+  "type": "module",
+  "main": "./../../dist/nlmaps-ol.cjs.js",
+  "module": "./../../dist/nlmaps-ol.es.js",
+  "export": {
+    ".": {
+      "import": "./../../dist/nlmaps-ol.es.js",
+      "require": "./../../dist/nlmaps-ol.cjs.js"
+    }
+  },
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preinstall": "npx only-allow pnpm"
+  },
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/geo-frontend/nlmaps/issues"
+  },
+  "homepage": "https://github.com/geo-frontend/nlmaps#README",
+  "devDependencies": {
+    "@geo-frontend/lib": "workspace:*",
+    "ol": "^10.4.0"
+  }
+}

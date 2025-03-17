@@ -1,0 +1,27 @@
+{
+  "name": "@geo-frontend/nlmaps-website",
+  "private": true,
+  "version": "2.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite-ssg build",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "leaflet": "^1.9.4",
+    "@geo-frontend/nlmaps-leaflet": "workspace:*",
+    "vite": "^5.4.14",
+    "vue": "^3.5.13"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-vue": "^5.2.1",
+    "stylelint": "^16.14.0",
+    "stylelint-config-standard": "^37.0.0",
+    "stylelint-order": "^6.0.4",
+    "vite-plugin-sass": "^0.1.0",
+    "vite-ssg": "^25.2.0",
+    "vite-svg-loader": "^5.1.0",
+    "vue-router": "4"
+  }
+}

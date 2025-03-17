@@ -108,10 +108,10 @@ importers:
         specifier: workspace:*
         version: link:../lib
       '@geo-frontend/nlmaps-geolocator':
-        specifier: workspace:*
+        specifier: 1.0.0
         version: link:../nlmaps-geolocator
       '@geo-frontend/nlmaps-leaflet':
-        specifier: workspace:*
+        specifier: 1.0.0
         version: link:../nlmaps-leaflet
       emitonoff:
         specifier: ^0.1.1

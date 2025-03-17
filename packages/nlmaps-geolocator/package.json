@@ -1,6 +1,6 @@
 {
   "name": "@geo-frontend/nlmaps-geolocator",
-  "version": "2.8.0",
+  "version": "1.0.0",
   "description": "",
   "type": "module",
   "main": "./../../dist/nlmaps-geolocator.cjs.js",

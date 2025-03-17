@@ -1,6 +1,6 @@
 {
   "name": "@geo-frontend/nlmaps",
-  "version": "2.8.0",
+  "version": "3.0.0",
   "description": "easily add PDOK sources to common Javascript mapping libaries",
   "type": "module",
   "main": "./../../dist/nlmaps.cjs.js",
@@ -27,8 +27,8 @@
   "devDependencies": {
     "@geo-frontend/lib": "workspace:*",
     "emitonoff": "^0.1.1",
-    "@geo-frontend/nlmaps-geolocator": "workspace:*",
-    "@geo-frontend/nlmaps-leaflet": "workspace:*",
+    "@geo-frontend/nlmaps-geolocator": "1.0.0",
+    "@geo-frontend/nlmaps-leaflet": "1.0.0",
     "vite-plugin-static-copy": "^2.3.0"
   },
   "dependencies": {

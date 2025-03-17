@@ -1,6 +1,6 @@
 {
   "name": "@geo-frontend/source",
-  "version": "2.3.63",
+  "version": "3.0.0",
   "description": "",
   "scripts": {
     "build": "npx nx run-many --target=build",

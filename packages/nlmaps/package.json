@@ -25,7 +25,6 @@
   ],
   "license": "MIT",
   "devDependencies": {
-    "@geo-frontend/lib": "workspace:*",
     "emitonoff": "^0.1.1",
     "@geo-frontend/nlmaps-geolocator": "1.0.0",
     "@geo-frontend/nlmaps-leaflet": "1.0.0",

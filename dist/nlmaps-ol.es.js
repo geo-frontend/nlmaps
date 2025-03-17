@@ -169,13 +169,17 @@ function ui(n, t) {
 function ll(n) {
   let t = ui(j.BASE_DEFAULTS, n.defaults);
   (!n.layers || n.layers.length < 0) && gn("no basemap defined, please define a basemap in the configuration"), n.layers.forEach((e) => {
-    (!e.name || j.BASEMAP_PROVIDERS[e.name] !== void 0) && gn("basemap names need to be defined and unique: " + e.name), j.BASEMAP_PROVIDERS[e.name] = dl(ui(t, e));
+    (!e.name || j.BASEMAP_PROVIDERS[e.name] !== void 0) && gn("basemap names need to be defined and unique: " + e.name), j.BASEMAP_PROVIDERS[e.name] = dl(
+      ui(t, e)
+    );
   });
 }
 function hl(n) {
   let t = ui(j.WMS_DEFAULTS, n.defaults);
   n.layers && n.layers.forEach((e) => {
-    (!e.name || j.WMS_PROVIDERS[e.name] !== void 0) && gn("wms names need to be defined and unique: " + e.name), j.WMS_PROVIDERS[e.name] = fl(ui(t, e));
+    (!e.name || j.WMS_PROVIDERS[e.name] !== void 0) && gn("wms names need to be defined and unique: " + e.name), j.WMS_PROVIDERS[e.name] = fl(
+      ui(t, e)
+    );
   });
 }
 function cl(n) {

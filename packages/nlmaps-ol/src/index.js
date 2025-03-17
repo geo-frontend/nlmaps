@@ -3,7 +3,8 @@ import {
   getWmsProvider,
   geocoder,
   getMarker,
-} from '@geo-frontend/lib'
+} from '../../lib/src/index.js'
+
 import Control from 'ol/control/Control.js'
 import { fromLonLat, toLonLat } from 'ol/proj.js'
 import Feature from 'ol/Feature.js'

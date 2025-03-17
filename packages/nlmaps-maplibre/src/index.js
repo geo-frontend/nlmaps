@@ -1,4 +1,9 @@
-import { getProvider, getWmsProvider, geocoder, getMarker } from '@geo-frontend/lib'
+import {
+  getProvider,
+  getWmsProvider,
+  geocoder,
+  getMarker,
+} from '../../lib/src/index.js'
 import { GeolocateControl } from 'maplibre-gl'
 
 function bgLayer(name = 'standaard') {
@@ -12,7 +17,7 @@ function bgLayer(name = 'standaard') {
       provider.maxZoom +
       ',"minzoom":' +
       provider.minZoom +
-      '}},"layers":[{"id":"bg","type":"raster","source":"bg_source","paint":{}}]}'
+      '}},"layers":[{"id":"bg","type":"raster","source":"bg_source","paint":{}}]}',
   )
   return styleJSON
 }
@@ -63,16 +68,16 @@ class overlayLayer {
           '&format=' +
           wmsProvider.format +
           '&transparent=' +
-          wmsProvider.transparent
+          wmsProvider.transparent,
       ],
       maxzoom: wmsProvider.maxZoom,
-      minzoom: wmsProvider.minZoom
+      minzoom: wmsProvider.minZoom,
     }
     this.layer = {
       id: this.layerId,
       type: 'raster',
       source: this.sourceId,
-      paint: {}
+      paint: {},
     }
   }
 }
@@ -107,7 +112,10 @@ class markerLayer {
           map.addSource(this.sourceId, this.sourceDef)
           let coordinates = map.getCenter()
           if (this.options && this.options.longitude && this.options.latitude) {
-            coordinates = { lng: this.options.longitude, lat: this.options.latitude }
+            coordinates = {
+              lng: this.options.longitude,
+              lat: this.options.latitude,
+            }
           }
           map.getSource(this.sourceId).setData({
             type: 'FeatureCollection',
@@ -116,10 +124,10 @@ class markerLayer {
                 type: 'Feature',
                 geometry: {
                   type: 'Point',
-                  coordinates: [coordinates.lng, coordinates.lat]
-                }
-              }
-            ]
+                  coordinates: [coordinates.lng, coordinates.lat],
+                },
+              },
+            ],
           })
           map.addLayer(this.layer)
         })
@@ -136,8 +144,8 @@ class markerLayer {
       type: 'geojson',
       data: {
         type: 'FeatureCollection',
-        features: []
-      }
+        features: [],
+      },
     }
     this.layer = {
       id: this.layerId,
@@ -145,8 +153,8 @@ class markerLayer {
       source: this.sourceId,
       layout: {
         'icon-image': 'nlmaps-marker',
-        'icon-anchor': 'bottom'
-      }
+        'icon-anchor': 'bottom',
+      },
     }
   }
 }
@@ -157,7 +165,7 @@ class geoLocatorControl extends GeolocateControl {
       center: [position.coords.longitude, position.coords.latitude],
       zoom: 18,
       bearing: 0,
-      pitch: 0
+      pitch: 0,
     })
   }
 
@@ -178,7 +186,7 @@ class geoLocatorControl extends GeolocateControl {
 function zoomTo(point, map) {
   map.jumpTo({
     center: point.coordinates,
-    zoom: 18
+    zoom: 18,
   })
 }
 
@@ -197,4 +205,10 @@ class geocoderControl {
   }
 }
 
-export { bgLayer, overlayLayer, markerLayer, geocoderControl, geoLocatorControl }
+export {
+  bgLayer,
+  overlayLayer,
+  markerLayer,
+  geocoderControl,
+  geoLocatorControl,
+}

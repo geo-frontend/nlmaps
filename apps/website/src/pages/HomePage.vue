@@ -309,7 +309,7 @@ export default {
 
 &lt;link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
 &lt;script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js">&lt;/script>
-&lt;script src="https://rawgit.com/geo-frontend/nlmaps/master/dist/nlmaps.iife.js">&lt;/script>
+&lt;script src="https://rawgit.com/geo-frontend/nlmaps/main/dist/nlmaps.iife.js">&lt;/script>
 &lt;script>
     var nlMapsHolder = document.getElementById('nlmaps-holder');
     nlMapsHolder.style.height = '300px'; // Change to required height

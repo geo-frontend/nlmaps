@@ -1,0 +1,14 @@
+{
+  "name": "@geo-frontend/nlmaps-examples",
+  "private": true,
+  "version": "2.0.0",
+  "description": "",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "vite",
+    "build": "vite build",
+    "serve": "vite preview",
+    "preinstall": "npx only-allow pnpm"
+  },
+  "license": "MIT"
+}

@@ -1,0 +1,9 @@
+{
+  "name": "@geo-frontend/lib",
+  "type": "module",
+  "main": "src/index.js",
+  "private": true,
+  "devDependencies": {
+    "@geo-frontend/config": "workspace:*"
+  }
+}

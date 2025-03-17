@@ -1,0 +1,19 @@
+{
+  "name": "nlmaps-examples-npm-geolocator",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "vite",
+    "build": "vite build",
+    "serve": "vite preview"
+  },
+  "keywords": [],
+  "license": "MIT",
+  "dependencies": {
+    "leaflet": "^1.9.4",
+    "@geo-frontend/nlmaps-geolocator": "workspace:*",
+    "@geo-frontend/nlmaps-leaflet": "workspace:*"
+  }
+}

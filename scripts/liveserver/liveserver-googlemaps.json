@@ -1,8 +1,0 @@
-{
-    "root": "build",
-    "port": "8083",
-    "open": false, 
-    "ignore": "",
-    "logLevel": 2,
-    "https": "node_modules/live-server-https"
-}

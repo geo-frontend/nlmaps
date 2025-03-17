@@ -1,140 +1,83 @@
-function createCommonjsModule(fn, basedir, module) {
-	return module = {
-	  path: basedir,
-	  exports: {},
-	  require: function (path, base) {
-      return commonjsRequire(path, (base === undefined || base === null) ? module.path : base);
+function u(o) {
+  return o && o.__esModule && Object.prototype.hasOwnProperty.call(o, "default") ? o.default : o;
+}
+var t = { exports: {} };
+t.exports = function(o) {
+  return o || (o = {}), o._subs = [], o._paused = !1, o._pending = [], o.on = function(e, r) {
+    o._subs[e] = o._subs[e] || [], o._subs[e].push(r);
+  }, o.off = function(e, r) {
+    if (o._subs[e]) {
+      for (var s in o._subs[e])
+        if (o._subs[e][s] === r) {
+          o._subs[e].splice(s);
+          break;
+        }
     }
-	}, fn(module, module.exports), module.exports;
-}
-
-function commonjsRequire () {
-	throw new Error('Dynamic requires are not currently supported by @rollup/plugin-commonjs');
-}
-
-var emitonoff = createCommonjsModule(function (module) {
-var EmitOnOff = module.exports = function(thing){
-  if (!thing) thing = {};
-
-  thing._subs = [];
-  thing._paused = false;
-  thing._pending = [];
-
-  /**
-   * Sub of pubsub
-   * @param  {String}   name name of event
-   * @param  {Function} cb   your callback
-   */
-  thing.on = function(name, cb){
-    thing._subs[name] = thing._subs[name] || [];
-    thing._subs[name].push(cb);
-  };
-
-  /**
-   * remove sub of pubsub
-   * @param  {String}   name name of event
-   * @param  {Function} cb   your callback
-   */
-  thing.off = function(name, cb){
-    if (!thing._subs[name]) return;
-    for (var i in thing._subs[name]){
-      if (thing._subs[name][i] === cb){
-        thing._subs[name].splice(i);
-        break;
+  }, o.emit = function(e) {
+    if (o._subs[e]) {
+      var r = Array.prototype.slice.call(arguments, 1);
+      if (o._paused) {
+        o._pending[e] = o._pending[e] || [], o._pending[e].push(r);
+        return;
       }
+      for (var s in o._subs[e])
+        o._subs[e][s].apply(o, r);
     }
-  };
-
-  /**
-   * Pub of pubsub
-   * @param  {String}   name name of event
-   * @param  {Mixed}    data the data to publish
-   */
-  thing.emit = function(name){
-    if (!thing._subs[name]) return;
-
-    var args = Array.prototype.slice.call(arguments, 1);
-
-    if (thing._paused) {
-      thing._pending[name] = thing._pending[name] || [];
-      thing._pending[name].push(args);
-      return
-    }
-
-    for (var i in thing._subs[name]){
-      thing._subs[name][i].apply(thing, args);
-    }
-  };
-
-  thing.pause = function() {
-    thing._paused = true;
-  };
-
-  thing.resume = function() {
-    thing._paused = false;
-
-    for (var name in thing._pending) {
-      for (var i = 0; i < thing._pending[name].length; i++) {
-        thing.emit(name, thing._pending[name][i]);
-      }
-    }
-  };
-
-  return thing;
+  }, o.pause = function() {
+    o._paused = !0;
+  }, o.resume = function() {
+    o._paused = !1;
+    for (var e in o._pending)
+      for (var r = 0; r < o._pending[e].length; r++)
+        o.emit(e, o._pending[e][r]);
+  }, o;
 };
-});
-
-var geoLocateDefaultOpts = {
-  follow: false
+var n = t.exports;
+const f = /* @__PURE__ */ u(n), a = {
+  follow: !1
 };
-
-function positionHandler(position) {
-  this.emit('position', position);
+function i(o) {
+  this.emit("position", o);
 }
-
-function positionErrorHandler(error) {
-  this.emit('error', error);
+function p(o) {
+  this.emit("error", o);
 }
-
-var GeoLocator = function GeoLocator(opts) {
-  var state = Object.assign({}, geoLocateDefaultOpts, opts);
+const l = function(o) {
+  const e = Object.assign({}, a, o);
   return {
-    start: function start() {
-      state.started = true;
-      navigator.geolocation.getCurrentPosition(positionHandler.bind(this), positionErrorHandler.bind(this), {
-        maximumAge: 60000
-      });
-      return this;
+    start() {
+      return e.started = !0, navigator.geolocation.getCurrentPosition(
+        i.bind(this),
+        p.bind(this),
+        { maximumAge: 6e4 }
+      ), this;
     },
-    stop: function stop() {
-      state.started = false;
-      return this;
+    stop() {
+      return e.started = !1, this;
     },
-    isStarted: function isStarted() {
-      return state.started;
+    isStarted() {
+      return e.started;
     },
-    log: function log() {
-      // eslint-disable-next-line no-console
-      console.log(state);
-      return this;
+    log() {
+      return console.log(e), this;
     }
   };
 };
-
-function geoLocator(opts) {
-  var navigator = typeof window !== 'undefined' ? window.navigator || {} : {};
-
-  if (typeof navigator !== 'undefined' && 'geolocation' in navigator) {
-    var geolocator = emitonoff(GeoLocator(opts));
-    geolocator.on('position', function () {
+function d(o) {
+  let e = typeof window < "u" ? window.navigator || {} : {};
+  if (typeof e < "u" && "geolocation" in e) {
+    let r = f(l(o));
+    return r.on("position", function() {
       this.stop();
-    });
-    return geolocator;
-  } else {
-    var error = 'geolocation is not available in your browser.';
-    throw error;
-  }
+    }), r;
+  } else
+    throw "geolocation is not available in your browser.";
 }
-
-export default geoLocator;
-//# sourceMappingURL=nlmaps-geolocator.es.js.map
+if (typeof window < "u")
+  for (const [o, e] of Object.entries({
+    geoLocator: d
+  }))
+    window[o] = e;
+export {
+  d as default
+};

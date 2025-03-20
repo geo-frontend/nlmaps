@@ -358,7 +358,10 @@ export default {
         </div>
         <ul class="forum js-forum"></ul>
         <div class="section-actions">
-          <a href="#" class="btn btn-primary js-forum-link" target="_blank"
+          <a
+            href="https://geoforum.nl/c/applicaties-en-diensten/nl-maps"
+            class="btn btn-primary js-forum-link"
+            target="_blank"
             >Alles tonen</a
           >
         </div>

@@ -28,13 +28,11 @@
           Makkelijk te integreren met tal van services
         </h2>
         <p class="usp-description">
-          Ondersteuning voor Leaflet, OpenLayers &amp; MapLibre GL JS. Mis je
-          een dienst?
-          <a href="https://geoforum.nl/c/applicaties-en-diensten/nl-maps"
-            >Laat het ons weten</a
-          >
-          of dien je eigen voorbeeldcode op
-          <a href="https://github.com/geo-frontend/nlmaps/">Github in</a>.
+          Ondersteuning voor Leaflet, OpenLayers &amp; MapLibre GL JS. Gebruik
+          de online versie met Leaflet direct in je
+          <abbr title="Hypertext Markup Language">HTML</abbr>-broncode of
+          download een Node.js-package om je applicatie te bouwen met Leaflet,
+          OpenLayers en MapLibre GL JS.
         </p>
       </article>
     </li>

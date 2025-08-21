@@ -28,7 +28,7 @@
     "emitonoff": "^0.1.1",
     "@geo-frontend/nlmaps-geolocator": "1.0.0",
     "@geo-frontend/nlmaps-leaflet": "1.0.0",
-    "vite-plugin-static-copy": "^2.3.0"
+    "vite-plugin-static-copy": "^2.3.2"
   },
   "dependencies": {
     "vite": "^6.2.2"

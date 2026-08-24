@@ -53,7 +53,7 @@ importers:
   apps/website:
     dependencies:
       '@geo-frontend/nlmaps-leaflet':
-        specifier: workspace:*
+        specifier: 1.0.0
         version: link:../../packages/nlmaps-leaflet
       leaflet:
         specifier: ^1.9.4

@@ -1,5 +1,6 @@
 packages:
   - apps/*
+  - apps/examples/npm/*
   - packages/*
 catalog:
   vite: 8.2.2

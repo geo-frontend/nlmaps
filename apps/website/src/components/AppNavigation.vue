@@ -32,14 +32,6 @@
       </li>
       <li class="list-item">
         <a
-          href="https://www.pdok.nl/diensten#PDOK%20Fair%20Use"
-          target="_blank"
-          class="list-link"
-          >PDOK fair-use</a
-        >
-      </li>
-      <li class="list-item">
-        <a
           href="https://github.com/geo-frontend/nlmaps/"
           target="_blank"
           class="list-link"

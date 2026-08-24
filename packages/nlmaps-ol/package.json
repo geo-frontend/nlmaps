@@ -3,14 +3,9 @@
   "version": "1.0.0",
   "description": "",
   "type": "module",
-  "main": "./../../dist/nlmaps-ol.cjs.js",
-  "module": "./../../dist/nlmaps-ol.es.js",
-  "export": {
-    ".": {
-      "import": "./../../dist/nlmaps-ol.es.js",
-      "require": "./../../dist/nlmaps-ol.cjs.js"
-    }
-  },
+  "main": "./dist/nlmaps-ol.cjs.js",
+  "module": "./dist/nlmaps-ol.es.js",
+  "files": ["dist"],
   "scripts": {
     "dev": "vite",
     "build": "vite build",
@@ -22,6 +17,7 @@
   },
   "homepage": "https://github.com/geo-frontend/nlmaps#README",
   "devDependencies": {
-    "ol": "^10.4.0"
+    "ol": "^10.4.0",
+    "vite": "catalog:"
   }
 }

@@ -15,5 +15,8 @@
     "@geo-frontend/nlmaps-geolocator": "workspace:*",
     "@geo-frontend/nlmaps-ol": "workspace:*",
     "ol": "^10.4.0"
+  },
+  "devDependencies": {
+    "vite": "catalog:"
   }
 }

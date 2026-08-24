@@ -14,5 +14,8 @@
   "dependencies": {
     "leaflet": "^1.9.4",
     "@geo-frontend/nlmaps-leaflet": "workspace:*"
+  },
+  "devDependencies": {
+    "vite": "catalog:"
   }
 }

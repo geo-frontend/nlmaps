@@ -3,10 +3,10 @@ import { viteStaticCopy } from 'vite-plugin-static-copy'
 import * as path from 'path'
 
 export default defineConfig({
-  root: __dirname,
+  root: import.meta.dirname,
   build: {
-    outDir: '../../dist',
-    emptyOutDir: false,
+    outDir: 'dist',
+    emptyOutDir: true,
     reportCompressedSize: true,
     commonjsOptions: {
       transformMixedEsModules: true,
@@ -25,8 +25,9 @@ export default defineConfig({
     viteStaticCopy({
       targets: [
         {
-          src: path.resolve(__dirname, './src/assets') + '/[!.]*',
+          src: path.resolve(import.meta.dirname, './src/assets') + '/**/[!.]*',
           dest: './assets/',
+          rename: { stripBase: 2 },
         },
       ],
     }),

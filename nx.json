@@ -22,5 +22,5 @@
     }
   ],
   "packageManager": "pnpm",
-  "useLegacyCache": true
+  "analytics": false
 }

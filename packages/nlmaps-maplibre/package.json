@@ -3,12 +3,13 @@
   "version": "1.0.0",
   "description": "",
   "type": "module",
-  "main": "./../../dist/nlmaps-maplibre.cjs.js",
-  "module": "./../../dist/nlmaps-maplibre.es.js",
+  "main": "./dist/nlmaps-maplibre.cjs.js",
+  "module": "./dist/nlmaps-maplibre.es.js",
+  "files": ["dist"],
   "exports": {
     ".": {
-      "import": "./../../dist/nlmaps-maplibre.es.js",
-      "require": "./../../dist/nlmaps-maplibre.cjs.js"
+      "import": "./dist/nlmaps-maplibre.es.js",
+      "require": "./dist/nlmaps-maplibre.cjs.js"
     }
   },
   "scripts": {
@@ -17,9 +18,7 @@
   },
   "license": "MIT",
   "devDependencies": {
-    "maplibre-gl": "^5.2.0"
-  },
-  "dependencies": {
-    "vite": "^6.2.2"
+    "maplibre-gl": "^5.2.0",
+    "vite": "catalog:"
   }
 }

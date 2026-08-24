@@ -1,10 +1,10 @@
 import { defineConfig } from 'vite'
 
 export default defineConfig({
-  root: __dirname,
+  root: import.meta.dirname,
   build: {
-    outDir: '../../dist',
-    emptyOutDir: false,
+    outDir: 'dist',
+    emptyOutDir: true,
     reportCompressedSize: true,
     commonjsOptions: {
       transformMixedEsModules: true,

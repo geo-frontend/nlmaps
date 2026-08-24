@@ -13,7 +13,7 @@
   "license": "MIT",
   "dependencies": {
     "@geo-frontend/nlmaps": "workspace:*",
-    "maplibre-gl": "^4.7.1"
+    "maplibre-gl": "^5.2.0"
   },
   "devDependencies": {
     "vite": "catalog:"

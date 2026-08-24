@@ -17,7 +17,7 @@ import {
   mapPointerStyle,
   queryFeatures,
   CONFIG,
-} from '../../lib/src/index.js'
+} from '@geo-frontend/lib'
 
 let nlmaps = {
   leaflet: {

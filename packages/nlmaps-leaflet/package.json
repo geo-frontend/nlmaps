@@ -1,6 +1,6 @@
 {
   "name": "@geo-frontend/nlmaps-leaflet",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "",
   "type": "module",
   "main": "./dist/nlmaps-leaflet.cjs.js",
@@ -10,5 +10,8 @@
     "build": "vite build",
     "preinstall": "npx only-allow pnpm"
   },
-  "license": "MIT"
+  "license": "MIT",
+  "devDependencies": {
+    "@geo-frontend/lib": "workspace:*"
+  }
 }

@@ -3,7 +3,7 @@ import {
   getWmsProvider,
   geocoder,
   getMarker,
-} from '../../lib/src/index.js'
+} from '@geo-frontend/lib'
 import { GeolocateControl } from 'maplibre-gl'
 
 function bgLayer(name = 'standaard') {

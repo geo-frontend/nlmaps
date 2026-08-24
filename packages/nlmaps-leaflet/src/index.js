@@ -4,7 +4,7 @@ import {
   geocoder,
   getMarker,
   getExtent,
-} from '../../lib/src/index.js'
+} from '@geo-frontend/lib'
 
 function extentLeafletFormat() {
   let extent = getExtent()

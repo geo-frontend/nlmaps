@@ -102,10 +102,17 @@ importers:
 
   packages/config: {}
 
-  packages/lib: {}
+  packages/lib:
+    devDependencies:
+      '@geo-frontend/config':
+        specifier: workspace:*
+        version: link:../config
 
   packages/nlmaps:
     devDependencies:
+      '@geo-frontend/lib':
+        specifier: workspace:*
+        version: link:../lib
       '@geo-frontend/nlmaps-geolocator':
         specifier: workspace:*
         version: link:../nlmaps-geolocator
@@ -132,10 +139,17 @@ importers:
         specifier: 'catalog:'
         version: 8.2.2(@types/node@22.13.10)(terser@5.50.0)(yaml@2.9.0)
 
-  packages/nlmaps-leaflet: {}
+  packages/nlmaps-leaflet:
+    devDependencies:
+      '@geo-frontend/lib':
+        specifier: workspace:*
+        version: link:../lib
 
   packages/nlmaps-maplibre:
     devDependencies:
+      '@geo-frontend/lib':
+        specifier: workspace:*
+        version: link:../lib
       maplibre-gl:
         specifier: ^5.2.0
         version: 5.2.0
@@ -145,6 +159,9 @@ importers:
 
   packages/nlmaps-ol:
     devDependencies:
+      '@geo-frontend/lib':
+        specifier: workspace:*
+        version: link:../lib
       ol:
         specifier: ^10.4.0
         version: 10.4.0

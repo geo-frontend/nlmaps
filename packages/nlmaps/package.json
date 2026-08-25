@@ -1,6 +1,6 @@
 {
   "name": "@geo-frontend/nlmaps",
-  "version": "3.0.1",
+  "version": "3.0.2",
   "description": "easily add PDOK sources to common Javascript mapping libaries",
   "type": "module",
   "main": "./dist/nlmaps.cjs.js",

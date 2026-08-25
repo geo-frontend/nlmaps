@@ -115,7 +115,7 @@ export default {
     zoomposition: 'topleft',
   },
   marker: {
-    url: 'https://unpkg.com/@geo-frontend/nlmaps@3.0.1/dist/assets/img/marker_icon.svg',
+    url: 'https://unpkg.com/@geo-frontend/nlmaps@3.0.2/dist/assets/img/marker_icon.svg',
     iconSize: [64, 64],
     iconAnchor: [32, 64],
   },

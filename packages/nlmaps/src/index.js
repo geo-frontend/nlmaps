@@ -43,20 +43,19 @@ function testWhichLib() {
 }
 
 function initMap(opts) {
-  let map, rootdiv, el, options
-  rootdiv = document.getElementById(opts.target)
+  const rootdiv = document.getElementById(opts.target)
   rootdiv.style.position = 'relative'
   rootdiv.style.padding = '0px'
   rootdiv.style.margin = '0px'
-  options = {}
+  const options = {}
   if (!opts.attribution) {
     options.attributionControl = false
   }
-  el = L.DomUtil.create('div')
+  const el = L.DomUtil.create('div')
   el.style.height = '100%'
   rootdiv.appendChild(el)
   options.maxBounds = extentLeafletFormat()
-  map = L.map(el, options).setView(
+  const map = L.map(el, options).setView(
     [opts.center.latitude, opts.center.longitude],
     opts.zoom,
   )
@@ -164,6 +163,8 @@ nlmaps.clickProvider = function (map) {
       map.on('click', function (e) {
         sink(1, e)
       })
+      // no-op: this source doesn't support pull/cancel from the sink
+      // eslint-disable-next-line @typescript-eslint/no-empty-function
       const talkback = () => {}
       sink(0, talkback)
     }

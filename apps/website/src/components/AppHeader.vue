@@ -59,6 +59,7 @@ header .logo-nlmaps svg {
 header .logo-kadaster {
   display: inline-block;
   width: 60px;
+  float: right;
 }
 
 header .logo-kadaster svg {
@@ -69,10 +70,6 @@ header .logo-kadaster svg {
 header .logo-kadaster polyline,
 header .logo-kadaster path {
   fill: #fff;
-}
-
-header .logo-kadaster {
-  float: right;
 }
 
 @media (width >= 48em) {

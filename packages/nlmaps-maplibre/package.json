@@ -5,7 +5,9 @@
   "type": "module",
   "main": "./dist/nlmaps-maplibre.cjs.js",
   "module": "./dist/nlmaps-maplibre.es.js",
-  "files": ["dist"],
+  "files": [
+    "dist"
+  ],
   "exports": {
     ".": {
       "import": "./dist/nlmaps-maplibre.es.js",
@@ -18,11 +20,11 @@
   },
   "license": "MIT",
   "peerDependencies": {
-    "maplibre-gl": "^5.2.0"
+    "maplibre-gl": "^5.24.0"
   },
   "devDependencies": {
     "@geo-frontend/lib": "workspace:*",
-    "maplibre-gl": "^5.2.0",
+    "maplibre-gl": "^5.24.0",
     "vite": "catalog:"
   }
 }

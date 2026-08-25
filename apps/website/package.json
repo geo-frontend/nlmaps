@@ -6,7 +6,8 @@
   "scripts": {
     "dev": "vite",
     "build": "vite-ssg build",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "stylelint": "stylelint 'src/**/*.{css,vue}'"
   },
   "dependencies": {
     "@geo-frontend/nlmaps-leaflet": "workspace:*",
@@ -15,6 +16,7 @@
   },
   "devDependencies": {
     "@vitejs/plugin-vue": "^6.0.8",
+    "postcss-html": "^2.0.0",
     "stylelint": "^17.14.1",
     "stylelint-config-standard": "^40.0.0",
     "stylelint-order": "^8.1.1",

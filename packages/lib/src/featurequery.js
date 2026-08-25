@@ -1,4 +1,3 @@
-import { CONFIG } from './configParser.js'
 function query(url) {
   const promise = new Promise((resolve, reject) => {
     fetch(url)

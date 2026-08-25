@@ -1,7 +1,4 @@
-import maplibregl from 'maplibre-gl'
-
 import { nlmaps } from '@geo-frontend/nlmaps'
-import 'maplibre-gl/dist/maplibre-gl.css'
 
 const opts = {
   style: 'standaard',
@@ -16,4 +13,4 @@ const opts = {
   zoom: 10,
 }
 
-const map = nlmaps.createMap(opts)
+nlmaps.createMap(opts)

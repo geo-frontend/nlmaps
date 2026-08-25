@@ -8,4 +8,4 @@ const mapOptions = {
   overlay: 'gemeenten',
 }
 
-const map = nlmaps.createMap(mapOptions)
+nlmaps.createMap(mapOptions)

@@ -26,7 +26,7 @@ const marker = markerLayer({ longitude: 5.5, latitude: 52.5 })
 const geo = geoLocator()
 const geolocator = geoLocatorControl(geo, map)
 
-const geocoder = geocoderControl(map)
+geocoderControl(map)
 
 map.addLayer(layer)
 map.addLayer(overlay)

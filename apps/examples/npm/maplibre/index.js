@@ -24,8 +24,8 @@ map.addControl(
 )
 
 map.on('load', () => {
-  const gemeentekaart = new overlayLayer('gemeenten').addTo(map)
-  const marker = new markerLayer({
+  new overlayLayer('gemeenten').addTo(map)
+  new markerLayer({
     longitude: 5.5,
     latitude: 51.5,
   }).addTo(map)

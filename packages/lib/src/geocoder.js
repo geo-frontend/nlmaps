@@ -3,7 +3,7 @@ import { CONFIG } from './configParser'
 const geocoder = CONFIG.GEOCODER
 
 function httpGetAsync(url) {
-  return new Promise((resolve, reject) => {
+  return new Promise((resolve) => {
     const xmlHttp = new XMLHttpRequest()
     xmlHttp.onreadystatechange = function () {
       // eslint-disable-next-line eqeqeq

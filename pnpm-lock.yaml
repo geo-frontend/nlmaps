@@ -115,9 +115,6 @@ importers:
       '@geo-frontend/nlmaps':
         specifier: workspace:*
         version: link:../../../../packages/nlmaps
-      maplibre-gl:
-        specifier: ^5.24.0
-        version: 5.24.0
     devDependencies:
       vite:
         specifier: 'catalog:'

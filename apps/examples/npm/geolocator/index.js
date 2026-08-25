@@ -7,7 +7,7 @@ import 'leaflet/dist/leaflet.css'
 const map = new Map('map-div').setView([52, 5], 10)
 map.attributionControl.setPrefix('')
 
-const layer = bgLayer().addTo(map)
+bgLayer().addTo(map)
 
 const geo = geoLocator()
 geoLocatorControl(geo).addTo(map)

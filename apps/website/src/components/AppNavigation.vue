@@ -91,7 +91,6 @@
 
 @media (width >= 48em) {
   .list {
-    display: flexbox;
     display: flex;
   }
 

@@ -141,7 +141,6 @@ ol {
 
 @media (width >= 48em) {
   .usps {
-    display: flexbox;
     display: flex;
     margin: 0 -20px;
   }

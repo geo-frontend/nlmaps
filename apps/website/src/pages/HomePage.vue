@@ -898,7 +898,7 @@ fieldset[disabled] .btn-primary.focus {
   background: #f3f3f3;
   font-size: 14px;
   white-space: pre-wrap;
-  word-break: break-word;
+  overflow-wrap: anywhere;
 }
 
 .wizard-option {
@@ -913,7 +913,7 @@ fieldset[disabled] .btn-primary.focus {
   margin: -1px;
   border: 0;
   overflow: hidden;
-  clip: rect(0, 0, 0, 0);
+  clip-path: inset(50%);
 }
 
 .wizard-option input:checked + label {
@@ -939,7 +939,6 @@ fieldset[disabled] .btn-primary.focus {
   }
 
   .wizard-step {
-    display: flexbox;
     display: flex;
     padding: 40px;
   }

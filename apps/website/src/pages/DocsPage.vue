@@ -890,7 +890,6 @@ fieldset[disabled] .btn-primary.focus {
 
 code {
   display: inline;
-  max-width: auto;
   padding: 0;
   margin: 0;
   border: 0;

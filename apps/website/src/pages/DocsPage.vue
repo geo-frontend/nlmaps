@@ -1,6 +1,6 @@
 <script>
 import DefaultLayout from '@/layouts/DefaultLayout.vue'
-import BenefitsBlock from '@/components/Benefits.vue'
+import BenefitsBlock from '@/components/BenefitsBlock.vue'
 import LeafletMap from '@/components/LeafletMap.vue'
 
 export default {
@@ -214,7 +214,8 @@ let map = nlmaps.createMap(opts);
           </ul>
           <p>
             Geeft een <code>geolocator</code> object terug. Zie de
-            <a href="https://www.npmjs.com/package/@geo-frontend/nlmaps-geolocator"
+            <a
+              href="https://www.npmjs.com/package/@geo-frontend/nlmaps-geolocator"
               >nlmaps-geolocator</a
             >
             package voor meer informatie.
@@ -343,7 +344,8 @@ overlay.addTo(map);</code></pre>
               <code>geolocator</code> waar de control mee verbonden moet worden.
               Als je deze methode gebuikt, zul je waarschijnlijk de geolocator
               ook zelf aanmaken met de
-              <a href="https://www.npmjs.com/package/@geo-frontend/nlmaps-geolocator"
+              <a
+                href="https://www.npmjs.com/package/@geo-frontend/nlmaps-geolocator"
                 >@geo-frontend/nlmaps-geolocator</a
               >
               package.
@@ -381,10 +383,11 @@ let marker = nlmaps.leaflet.markerLayer({longitude: 5.5, latitude: 52.5}).addTo(
           </p>
           <p><strong>Web browser:</strong></p>
           <p>
-            Download de <code>nlmaps-leaflet.iife.js</code> 
+            Download de <code>nlmaps-leaflet.iife.js</code>
             <a href="https://github.com/kadaster/nlmaps/releases/latest"
-              >release</a>. Download de broncode en pak het uit, en selecteer het bestand uit de
-            <code>dist</code> map. Als je deze nu als script laadt in je
+              >release</a
+            >. Download de broncode en pak het uit, en selecteer het bestand uit
+            de <code>dist</code> map. Als je deze nu als script laadt in je
             webpagina, zul je een <code>bgLayer()</code> en
             <code>geoLocatorControl()</code> functie hebben die werkt met
             Leaflet.
@@ -483,12 +486,14 @@ cd nlmaps</code></pre>
   margin-right: auto;
   margin-left: auto;
 }
-.container:before,
-.container:after {
+
+.container::before,
+.container::after {
   display: table;
   content: ' ';
 }
-.container:after {
+
+.container::after {
   clear: both;
 }
 
@@ -496,87 +501,272 @@ cd nlmaps</code></pre>
   max-width: 840px;
 }
 
-@media (min-width: 768px) {
+@media (width >= 768px) {
   .container {
     width: 760px;
   }
 }
-@media (min-width: 992px) {
+
+@media (width >= 992px) {
   .container {
     width: 980px;
   }
 }
-@media (min-width: 1200px) {
+
+@media (width >= 1200px) {
   .container {
     width: 1180px;
   }
 }
+
 .heading {
   font-weight: normal;
 }
+
 section,
 nav {
   padding: 32px 0;
 }
+
 .section-brand {
   background: #006486;
   color: #fff;
 }
+
 .section-wizard {
   padding: 32px 0 0;
 }
+
 .section-intro {
   margin: 0 0 30px;
   text-align: center;
 }
+
 .section-heading {
   font-size: 20px;
   text-align: center;
 }
+
+.btn {
+  display: inline-block;
+  margin-bottom: 0;
+  font-weight: normal;
+  text-align: center;
+  white-space: nowrap;
+  vertical-align: middle;
+  touch-action: manipulation;
+  cursor: pointer;
+  background-image: none;
+  border: 1px solid transparent;
+  padding: 6px 12px;
+  font-size: 16px;
+  user-select: none;
+  height: 45px;
+  padding-left: 32px;
+  padding-right: 32px;
+  border-radius: 40px;
+  line-height: 32px;
+}
+
+.btn:hover,
+.btn:focus,
+.btn.focus {
+  color: #333;
+  text-decoration: none;
+}
+
+.btn:active,
+.btn.active {
+  background-image: none;
+  outline: 0;
+  box-shadow: inset 0 3px 5px rgb(0 0 0 / 12.5%);
+}
+
+.btn:focus,
+.btn.focus,
+.btn:active:focus,
+.btn:active.focus,
+.btn.active:focus,
+.btn.active.focus {
+  outline: 5px auto -webkit-focus-ring-color;
+  outline-offset: -2px;
+}
+
+.btn-secondary {
+  background: #006486;
+  color: #fff;
+}
+
+.btn-secondary:hover,
+.btn-secondary:focus {
+  background: #6c62a6;
+  color: #fff;
+}
+
+.btn-primary {
+  color: #fff;
+  background-color: #6c62a6;
+  border-color: #605698;
+}
+
+.btn-primary:focus,
+.btn-primary.focus {
+  color: #fff;
+  background-color: #564d88;
+  border-color: #2d2847;
+}
+
+.btn-primary:hover {
+  color: #fff;
+  background-color: #564d88;
+  border-color: #474071;
+}
+
+.btn-primary:active,
+.btn-primary.active,
+.open > .btn-primary.dropdown-toggle {
+  color: #fff;
+  background-color: #564d88;
+  background-image: none;
+  border-color: #474071;
+}
+
+.btn-primary:active:hover,
+.btn-primary:active:focus,
+.btn-primary:active.focus,
+.btn-primary.active:hover,
+.btn-primary.active:focus,
+.btn-primary.active.focus,
+.open > .btn-primary.dropdown-toggle:hover,
+.open > .btn-primary.dropdown-toggle:focus,
+.open > .btn-primary.dropdown-toggle.focus {
+  color: #fff;
+  background-color: #474071;
+  border-color: #2d2847;
+}
+
+.btn-primary.disabled:hover,
+.btn-primary.disabled:focus,
+.btn-primary.disabled.focus,
+.btn-primary[disabled]:hover,
+.btn-primary[disabled]:focus,
+.btn-primary[disabled].focus,
+fieldset[disabled] .btn-primary:hover,
+fieldset[disabled] .btn-primary:focus,
+fieldset[disabled] .btn-primary.focus {
+  background-color: #6c62a6;
+  border-color: #605698;
+}
+
+.btn-primary .badge {
+  color: #6c62a6;
+  background-color: #fff;
+}
+
+.btn-small {
+  height: 32px;
+  padding: 3px 16px;
+  line-height: 24px;
+}
+
+.btn-mobile {
+  margin-top: 10px;
+}
+
+@media (width >= 27.5625em) {
+  .btn-mobile {
+    margin-top: 0;
+  }
+}
+
+.btn-icon {
+  padding-left: 8px;
+}
+
+.btn-github::before {
+  content: '\f09b';
+  display: inline-block;
+  width: 1em;
+  font-family: fontello, sans-serif;
+  font-style: normal;
+  font-weight: normal;
+  text-decoration: inherit;
+  text-align: center;
+  font-variant: normal;
+  text-transform: none;
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-font-smoothing: antialiased;
+  position: absolute;
+  vertical-align: sub;
+  margin: 0 10px 0 0;
+  font-size: 2em;
+  line-height: 1;
+}
+
+.btn-github span {
+  padding-left: 45px;
+}
+
+.btn-inverted {
+  background: #fff;
+  color: #6c62a6;
+}
+
 .section-actions {
   position: relative;
   margin: 60px 0 0;
   text-align: center;
 }
+
 .section-actions .btn + .btn {
   margin-top: 20px;
 }
+
 .section-wizard .section-actions {
   color: #fff;
 }
-@media (min-width: 30em) {
+
+@media (width >= 30em) {
   section,
   nav {
     padding: 60px 0;
   }
+
   .section-actions .btn + .btn {
     margin: 0 0 0 20px;
   }
 }
-@media (min-width: 48em) {
+
+@media (width >= 48em) {
   section,
   nav {
     padding: 7vh 0;
   }
+
   .section-intro {
     margin: 0 0 48px;
   }
+
   .section-heading {
     font-size: 24px;
   }
 }
-@media (min-width: 75em) {
+
+@media (width >= 75em) {
   section,
   nav {
     padding: 10vh 0;
   }
+
   .section-intro {
     margin: 0 0 60px;
   }
+
   .section-heading {
     font-size: 32px;
   }
 }
+
 .spotlight {
   position: relative;
   display: flex;
@@ -603,201 +793,40 @@ nav {
 .spotlight-map {
   display: none;
 }
-@media (min-width: 48em) {
+
+@media (width >= 48em) {
   .spotlight {
     height: calc(60vh);
     min-height: 370px;
     padding: 120px 0;
     margin-bottom: 60px;
   }
+
   .spotlight-heading {
     font-size: 36px;
   }
+
   .spotlight-map {
     position: absolute;
     left: 50%;
     bottom: 0;
     display: none;
-    -webkit-transform: translate(-50%, 50%) perspective(1000px) rotateX(70deg);
     transform: translate(-50%, 50%) perspective(1000px) rotateX(70deg);
-    box-shadow: 0 10px 40px 10px rgba(0, 0, 0, 0.05);
+    box-shadow: 0 10px 40px 10px rgb(0 0 0 / 5%);
   }
 }
-@media (min-width: 75em) {
+
+@media (width >= 75em) {
   .spotlight {
     height: calc(70vh);
     min-height: 370px;
     padding: 120px 0;
     margin-bottom: 60px;
   }
+
   .spotlight-heading {
     font-size: 42px;
   }
-}
-
-.btn {
-  display: inline-block;
-  margin-bottom: 0;
-  font-weight: normal;
-  text-align: center;
-  white-space: nowrap;
-  vertical-align: middle;
-  -ms-touch-action: manipulation;
-  touch-action: manipulation;
-  cursor: pointer;
-  background-image: none;
-  border: 1px solid transparent;
-  padding: 6px 12px;
-  font-size: 16px;
-  line-height: 1.5;
-  border-radius: 4px;
-  -webkit-user-select: none;
-  -ms-user-select: none;
-  user-select: none;
-}
-.btn:focus,
-.btn.focus,
-.btn:active:focus,
-.btn:active.focus,
-.btn.active:focus,
-.btn.active.focus {
-  outline: 5px auto -webkit-focus-ring-color;
-  outline-offset: -2px;
-}
-.btn:hover,
-.btn:focus,
-.btn.focus {
-  color: #333;
-  text-decoration: none;
-}
-.btn:active,
-.btn.active {
-  background-image: none;
-  outline: 0;
-  box-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125);
-}
-
-.btn-secondary {
-  background: #006486;
-  color: #fff;
-}
-
-.btn-secondary:hover,
-.btn-secondary:focus {
-  background: #6c62a6;
-  color: #fff;
-}
-.btn-primary {
-  color: #fff;
-  background-color: #6c62a6;
-  border-color: #605698;
-}
-.btn-primary:focus,
-.btn-primary.focus {
-  color: #fff;
-  background-color: #564d88;
-  border-color: #2d2847;
-}
-.btn-primary:hover {
-  color: #fff;
-  background-color: #564d88;
-  border-color: #474071;
-}
-.btn-primary:active,
-.btn-primary.active,
-.open > .btn-primary.dropdown-toggle {
-  color: #fff;
-  background-color: #564d88;
-  background-image: none;
-  border-color: #474071;
-}
-.btn-primary:active:hover,
-.btn-primary:active:focus,
-.btn-primary:active.focus,
-.btn-primary.active:hover,
-.btn-primary.active:focus,
-.btn-primary.active.focus,
-.open > .btn-primary.dropdown-toggle:hover,
-.open > .btn-primary.dropdown-toggle:focus,
-.open > .btn-primary.dropdown-toggle.focus {
-  color: #fff;
-  background-color: #474071;
-  border-color: #2d2847;
-}
-.btn-primary.disabled:hover,
-.btn-primary.disabled:focus,
-.btn-primary.disabled.focus,
-.btn-primary[disabled]:hover,
-.btn-primary[disabled]:focus,
-.btn-primary[disabled].focus,
-fieldset[disabled] .btn-primary:hover,
-fieldset[disabled] .btn-primary:focus,
-fieldset[disabled] .btn-primary.focus {
-  background-color: #6c62a6;
-  border-color: #605698;
-}
-.btn-primary .badge {
-  color: #6c62a6;
-  background-color: #fff;
-}
-
-.btn {
-  height: 45px;
-  padding-left: 32px;
-  padding-right: 32px;
-  border-radius: 40px;
-  line-height: 32px;
-}
-
-.btn-small {
-  height: 32px;
-  padding: 3px 16px;
-  line-height: 24px;
-}
-
-.btn-mobile {
-  margin-top: 10px;
-}
-@media (min-width: 27.5625em) {
-  .btn-mobile {
-    margin-top: 0;
-  }
-}
-
-.btn-icon {
-  padding-left: 8px;
-}
-
-.btn-github:before {
-  content: '\f09b';
-  display: inline-block;
-  width: 1em;
-  font-family: 'fontello';
-  font-style: normal;
-  font-weight: normal;
-  text-decoration: inherit;
-  text-align: center;
-  font-variant: normal;
-  text-transform: none;
-  line-height: 1em;
-  -moz-osx-font-smoothing: grayscale;
-  -webkit-font-smoothing: antialiased;
-  margin-right: 0.2em;
-  margin-left: 0.2em;
-  position: absolute;
-  vertical-align: sub;
-  margin: 0 10px 0 0;
-  font-size: 2em;
-  line-height: 1;
-}
-
-.btn-github span {
-  padding-left: 45px;
-}
-
-.btn-inverted {
-  background: #fff;
-  color: #6c62a6;
 }
 
 .markdown h1,
@@ -811,19 +840,23 @@ fieldset[disabled] .btn-primary.focus {
   font-weight: 600;
   line-height: 1.25;
 }
+
 .markdown h1 {
   padding-bottom: 0.3em;
   border-bottom: 1px solid #eaecef;
   font-size: 2em;
 }
+
 .markdown h2 {
   padding-bottom: 0.3em;
   border-bottom: 1px solid #eaecef;
   font-size: 1.5em;
 }
+
 .markdown h3 {
   font-size: 1.25em;
 }
+
 .markdown p,
 .markdown blockquote,
 .markdown ul,
@@ -834,10 +867,12 @@ fieldset[disabled] .btn-primary.focus {
   margin-top: 0;
   margin-bottom: 16px;
 }
+
 .markdown ul,
 .markdown ol {
   padding-left: 2em;
 }
+
 .markdown pre {
   padding: 16px;
   overflow: auto;
@@ -848,14 +883,13 @@ fieldset[disabled] .btn-primary.focus {
 
 code {
   display: inline;
-  max-width: auto;
   padding: 0;
   margin: 0;
   border: 0;
   overflow: visible;
   line-height: inherit;
-  word-wrap: normal;
+  overflow-wrap: normal;
   font-size: 85%;
-  background-color: rgba(0, 0, 0, 0);
+  background-color: rgb(0 0 0 / 0%);
 }
 </style>

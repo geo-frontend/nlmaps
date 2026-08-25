@@ -3,7 +3,7 @@ import {
   getWmsProvider,
   geocoder,
   getMarker,
-} from '../../lib/src/index.js'
+} from '@geo-frontend/lib'
 
 import Control from 'ol/control/Control.js'
 import { fromLonLat, toLonLat } from 'ol/proj.js'
@@ -22,7 +22,7 @@ function bgLayer(name = 'standaard') {
   const provider = getProvider(name)
   //replace leaflet style subdomain to OL style
   if (provider.subdomains) {
-    let sub = provider.subdomains
+    const sub = provider.subdomains
     provider.url = provider.url.replace(
       '{s}',
       '{' + sub.slice(0, 1) + '-' + sub.slice(-1) + '}',
@@ -37,7 +37,7 @@ function bgLayer(name = 'standaard') {
 }
 
 function markerLayer(latLngObject) {
-  let markerStyle = new Style({
+  const markerStyle = new Style({
     image: new Icon({
       anchor: getMarker().iconAnchor,
       anchorXUnits: 'pixels',
@@ -47,7 +47,7 @@ function markerLayer(latLngObject) {
   })
   let lat
   let lng
-  // eslint-disable-next-line eqeqeq
+
   if (typeof latLngObject !== 'object') {
     const mapCenter = getMapCenter(map)
     lat = mapCenter.latitude
@@ -59,13 +59,13 @@ function markerLayer(latLngObject) {
 
   const center = fromLonLat([lng, lat])
 
-  var markerFeature = new Feature({
+  const markerFeature = new Feature({
     geometry: new Point(center),
     name: 'marker',
   })
   markerFeature.setStyle(markerStyle)
 
-  var markerSource = new VectorSource({
+  const markerSource = new VectorSource({
     features: [markerFeature],
   })
   return new VectorLayer({
@@ -88,8 +88,8 @@ function overlayLayer(name, options) {
 }
 
 function geoLocatorControl(geolocator, map) {
-  let img = document.createElement('img')
-  let myControlEl = document.createElement('div')
+  const img = document.createElement('img')
+  const myControlEl = document.createElement('div')
   myControlEl.className = 'nlmaps-geolocator-control ol-control'
   myControlEl.appendChild(img)
 
@@ -98,8 +98,8 @@ function geoLocatorControl(geolocator, map) {
   })
 
   function moveMap(d, map = map) {
-    let oldZoom = map.getView().getZoom()
-    let view = View({
+    const oldZoom = map.getView().getZoom()
+    const view = View({
       center: fromLonLat([d.coords.longitude, d.coords.latitude]),
       zoom: oldZoom,
     })
@@ -108,7 +108,7 @@ function geoLocatorControl(geolocator, map) {
   geolocator.on('position', function (d) {
     moveMap(d, map)
   })
-  let control = new Control({ element: myControlEl })
+  const control = new Control({ element: myControlEl })
   return control
 }
 

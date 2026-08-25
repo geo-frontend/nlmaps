@@ -3,7 +3,7 @@ import {
   getWmsProvider,
   geocoder,
   getMarker,
-} from '../../lib/src/index.js'
+} from '@geo-frontend/lib'
 import { GeolocateControl } from 'maplibre-gl'
 
 function bgLayer(name = 'standaard') {
@@ -195,7 +195,7 @@ class geocoderControl {
     this._map = map
     this._container = document.createElement('div')
     this._container.className = 'maplibregl-ctrl maplibregl-ctrl-geocoder'
-    let control = geocoder.createControl(zoomTo, map)
+    const control = geocoder.createControl(zoomTo, map)
     this._container.appendChild(control)
     return this._container
   }

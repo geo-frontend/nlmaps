@@ -4,7 +4,7 @@
   "description": "",
   "scripts": {
     "build": "npx nx run-many --target=build",
-    "lint": "pnpm exec nx run-many --target=lint --all",
+    "lint": "pnpm exec nx run-many --target=lint --all && pnpm exec nx run-many --target=stylelint --all",
     "preinstall": "npx only-allow pnpm"
   },
   "repository": {
@@ -13,18 +13,22 @@
   },
   "license": "MIT",
   "devDependencies": {
-    "@nx/eslint": "20.4.6",
-    "@nx/eslint-plugin": "20.4.6",
-    "@nx/js": "20.4.6",
-    "@nx/vite": "20.4.6",
-    "@nx/web": "20.4.6",
-    "@nx/workspace": "20.4.6",
-    "eslint": "~8.57.1",
-    "eslint-config-prettier": "^9.1.0",
-    "eslint-plugin-prettier": "^5.2.1",
-    "nx": "20.4.6",
-    "prettier": "^3.5.2",
-    "prettier-eslint": "^16.3.0",
-    "vite": "^5.4.14"
+    "@eslint/js": "^10.0.1",
+    "@nx/eslint": "23.1.1",
+    "@nx/eslint-plugin": "23.1.1",
+    "@nx/js": "23.1.1",
+    "@nx/vite": "23.1.1",
+    "@nx/web": "23.1.1",
+    "@nx/workspace": "23.1.1",
+    "eslint": "~10.9.0",
+    "eslint-config-prettier": "^10.1.8",
+    "eslint-plugin-prettier": "^5.5.6",
+    "eslint-plugin-vue": "^10.10.0",
+    "globals": "^17.11.0",
+    "nx": "23.1.1",
+    "prettier": "^3.9.6",
+    "prettier-eslint": "^17.1.2",
+    "typescript-eslint": "^8.67.0",
+    "vite": "catalog:"
   }
 }

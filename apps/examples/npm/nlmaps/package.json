@@ -12,7 +12,9 @@
   "keywords": [],
   "license": "MIT",
   "dependencies": {
-    "@geo-frontend/nlmaps": "workspace:*",
-    "maplibre-gl": "^4.7.1"
+    "@geo-frontend/nlmaps": "workspace:*"
+  },
+  "devDependencies": {
+    "vite": "catalog:"
   }
 }

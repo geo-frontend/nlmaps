@@ -10,5 +10,8 @@
     "serve": "vite preview",
     "preinstall": "npx only-allow pnpm"
   },
-  "license": "MIT"
+  "license": "MIT",
+  "devDependencies": {
+    "vite": "catalog:"
+  }
 }

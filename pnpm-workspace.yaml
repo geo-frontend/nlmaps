@@ -1,3 +1,11 @@
 packages:
-  - 'apps/*'
-  - 'packages/*'
+  - apps/*
+  - apps/examples/npm/*
+  - packages/*
+catalog:
+  vite: 8.2.2
+allowBuilds:
+  '@geo-frontend/nlmaps-geolocator': true
+  '@geo-frontend/nlmaps-leaflet': true
+  esbuild: true
+  nx: true

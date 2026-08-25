@@ -40,6 +40,4 @@ const marker_icon = `<?xml version="1.0" encoding="utf-8"?>
 </g>
 </svg>`
 
-const markerUrl = 'https://rawgit.com/geo-frontend/nlmaps/master/dist/assets/rijksoverheid-marker.png'
-
-export { geolocator_icon, search_icon, marker_icon, markerUrl }
+export { geolocator_icon, search_icon, marker_icon }

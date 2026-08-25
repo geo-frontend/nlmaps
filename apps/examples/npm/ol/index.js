@@ -20,14 +20,14 @@ const map = new Map({
   }),
 })
 
-let layer = bgLayer()
-let overlay = overlayLayer('gemeenten')
-let marker = markerLayer({ longitude: 5.5, latitude: 52.5 })
-let geo = geoLocator()
-let geolocator = geoLocatorControl(geo, map)
-/* eslint-disable no-unused-vars */
-let geocoder = geocoderControl(map)
-/* eslint-enable no-unused-vars */
+const layer = bgLayer()
+const overlay = overlayLayer('gemeenten')
+const marker = markerLayer({ longitude: 5.5, latitude: 52.5 })
+const geo = geoLocator()
+const geolocator = geoLocatorControl(geo, map)
+
+geocoderControl(map)
+
 map.addLayer(layer)
 map.addLayer(overlay)
 map.addLayer(marker)

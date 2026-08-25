@@ -1,14 +1,17 @@
 {
   "name": "@geo-frontend/nlmaps-maplibre",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "",
   "type": "module",
-  "main": "./../../dist/nlmaps-maplibre.cjs.js",
-  "module": "./../../dist/nlmaps-maplibre.es.js",
+  "main": "./dist/nlmaps-maplibre.cjs.js",
+  "module": "./dist/nlmaps-maplibre.es.js",
+  "files": [
+    "dist"
+  ],
   "exports": {
     ".": {
-      "import": "./../../dist/nlmaps-maplibre.es.js",
-      "require": "./../../dist/nlmaps-maplibre.cjs.js"
+      "import": "./dist/nlmaps-maplibre.es.js",
+      "require": "./dist/nlmaps-maplibre.cjs.js"
     }
   },
   "scripts": {
@@ -16,10 +19,12 @@
     "preinstall": "npx only-allow pnpm"
   },
   "license": "MIT",
-  "devDependencies": {
-    "maplibre-gl": "^5.2.0"
+  "peerDependencies": {
+    "maplibre-gl": "^5.24.0"
   },
-  "dependencies": {
-    "vite": "^6.2.2"
+  "devDependencies": {
+    "@geo-frontend/lib": "workspace:*",
+    "maplibre-gl": "^5.24.0",
+    "vite": "catalog:"
   }
 }

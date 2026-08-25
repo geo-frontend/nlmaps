@@ -11,7 +11,6 @@ export default {
   props: {
     mapOptions: {
       type: Object,
-      required: true,
       default: () => {
         return {
           backgroundLayerName: 'standaard',
@@ -23,7 +22,6 @@ export default {
     },
     viewPort: {
       type: Object,
-      required: true,
       default: () => {
         return {
           lng: 5.9699,
@@ -33,12 +31,36 @@ export default {
       },
     },
   },
+  emits: ['update:viewPort'],
   data() {
     return {
       map: null,
       mapId: 'leaflet',
       mapInstance: null,
       nlmaps: null,
+    }
+  },
+  watch: {
+    mapOptions: {
+      handler() {
+        this.initMap()
+      },
+      deep: true,
+    },
+  },
+  async mounted() {
+    if (typeof window !== 'undefined') {
+      const L = (await import('leaflet')).default
+      const nlmaps = await import('@geo-frontend/nlmaps-leaflet')
+      this.nlmaps = nlmaps
+      const { lng, lat, zoom } = this.viewPort
+      this.initMap()
+    }
+  },
+  unmounted() {
+    if (this.mapInstance) {
+      this.mapInstance.remove()
+      this.mapInstance = null
     }
   },
   methods: {
@@ -92,41 +114,20 @@ export default {
       }
     },
   },
-  async mounted() {
-    if (typeof window !== 'undefined') {
-      const L = (await import('leaflet')).default
-      const nlmaps = await import('@geo-frontend/nlmaps-leaflet')
-      this.nlmaps = nlmaps
-      const { lng, lat, zoom } = this.viewPort
-      this.initMap()
-    }
-  },
-  unmounted() {
-    if (this.mapInstance) {
-      this.mapInstance.remove()
-      this.mapInstance = null
-    }
-  },
-  watch: {
-    mapOptions: {
-      handler() {
-        this.initMap()
-      },
-      deep: true,
-    },
-  },
 }
 </script>
 
 <style>
-@import 'leaflet/dist/leaflet.css';
+@import url('leaflet/dist/leaflet.css');
+
 .map {
   /* position: relative;
   display: block; */
   width: 100%;
   height: 30vh;
-  padding: 0px;
-  margin: 0px;
+  padding: 0;
+  margin: 0;
+
   /* overflow: hidden; */
 }
 </style>

@@ -4,13 +4,13 @@ import {
   geocoder,
   getMarker,
   getExtent,
-} from '../../lib/src/index.js'
+} from '@geo-frontend/lib'
 
 function extentLeafletFormat() {
-  let extent = getExtent()
-  let lowerLeft = L.latLng(extent[0], extent[1])
-  let upperRight = L.latLng(extent[2], extent[3])
-  let bounds = L.latLngBounds(lowerLeft, upperRight)
+  const extent = getExtent()
+  const lowerLeft = L.latLng(extent[0], extent[1])
+  const upperRight = L.latLng(extent[2], extent[3])
+  const bounds = L.latLngBounds(lowerLeft, upperRight)
   return bounds
 }
 
@@ -68,7 +68,7 @@ if (typeof L !== 'undefined' && typeof L === 'object') {
     },
     initialize: function (options) {
       // set default options if nothing is set (merge one step deep)
-      for (let i in options) {
+      for (const i in options) {
         if (typeof this.options[i] === 'object') {
           L.extend(this.options[i], options[i])
         } else {
@@ -78,10 +78,10 @@ if (typeof L !== 'undefined' && typeof L === 'object') {
     },
 
     onAdd: function (map) {
-      let div = L.DomUtil.create('div')
+      const div = L.DomUtil.create('div')
       div.id = 'nlmaps-geolocator-control'
       div.className = 'nlmaps-geolocator-control'
-      let img = document.createElement('img')
+      const img = document.createElement('img')
       div.append(img)
       if (this.options.geolocator.isStarted()) {
         L.DomUtil.addClass(div, 'started')
@@ -119,7 +119,7 @@ function markerLayer(latLngObject) {
     let lat
     let lng
     // LatLngObject should always be defined when it is called from the main package.
-    // eslint-disable-next-line eqeqeq
+
     if (typeof latLngObject === 'undefined') {
       const center = getMapCenter(map)
       lat = center.latitude

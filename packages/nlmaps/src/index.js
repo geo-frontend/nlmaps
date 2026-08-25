@@ -17,9 +17,9 @@ import {
   mapPointerStyle,
   queryFeatures,
   CONFIG,
-} from '../../lib/src/index.js'
+} from '@geo-frontend/lib'
 
-let nlmaps = {
+const nlmaps = {
   leaflet: {
     bgLayer: bgL,
     overlayLayer: overlayL,
@@ -43,20 +43,19 @@ function testWhichLib() {
 }
 
 function initMap(opts) {
-  let map, rootdiv, el, options
-  rootdiv = document.getElementById(opts.target)
+  const rootdiv = document.getElementById(opts.target)
   rootdiv.style.position = 'relative'
   rootdiv.style.padding = '0px'
   rootdiv.style.margin = '0px'
-  options = {}
+  const options = {}
   if (!opts.attribution) {
     options.attributionControl = false
   }
-  el = L.DomUtil.create('div')
+  const el = L.DomUtil.create('div')
   el.style.height = '100%'
   rootdiv.appendChild(el)
   options.maxBounds = extentLeafletFormat()
-  map = L.map(el, options).setView(
+  const map = L.map(el, options).setView(
     [opts.center.latitude, opts.center.longitude],
     opts.zoom,
   )
@@ -102,7 +101,6 @@ nlmaps.createMap = function (useropts = {}) {
       }
     }
   } catch (e) {
-    // eslint-disable-next-line no-console
     console.error(e.message)
   }
   const map = initMap(opts)
@@ -121,7 +119,7 @@ nlmaps.createMap = function (useropts = {}) {
     if (typeof opts.marker === 'boolean') {
       markerLocation = getMapCenter(map)
     }
-    let marker = createMarkerLayer(markerLocation)
+    const marker = createMarkerLayer(markerLocation)
 
     markerStore.addMarker(marker, true)
     addLayerToMap(marker, map)
@@ -165,6 +163,8 @@ nlmaps.clickProvider = function (map) {
       map.on('click', function (e) {
         sink(1, e)
       })
+      // no-op: this source doesn't support pull/cancel from the sink
+      // eslint-disable-next-line @typescript-eslint/no-empty-function
       const talkback = () => {}
       sink(0, talkback)
     }

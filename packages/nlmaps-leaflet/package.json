@@ -1,20 +1,17 @@
 {
   "name": "@geo-frontend/nlmaps-leaflet",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "",
   "type": "module",
-  "main": "./../../dist/nlmaps-leaflet.cjs.js",
-  "module": "./../../dist/nlmaps-leaflet.es.js",
-  "exports": {
-    ".": {
-      "import": "./../../dist/nlmaps-leaflet.es.js",
-      "require": "./../../dist/nlmaps-leaflet.cjs.js",
-      "default": "./../../dist/nlmaps-leaflet.iife.js"
-    }
-  },
+  "main": "./dist/nlmaps-leaflet.cjs.js",
+  "module": "./dist/nlmaps-leaflet.es.js",
+  "files": ["dist"],
   "scripts": {
     "build": "vite build",
     "preinstall": "npx only-allow pnpm"
   },
-  "license": "MIT"
+  "license": "MIT",
+  "devDependencies": {
+    "@geo-frontend/lib": "workspace:*"
+  }
 }

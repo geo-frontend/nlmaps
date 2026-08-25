@@ -1,4 +1,4 @@
-import config from '../../config/src/index.js'
+import config from '@geo-frontend/config'
 
 const CONFIG = {}
 
@@ -48,7 +48,7 @@ function mergeConfig(defaults, config) {
 }
 
 function parseBase(basemaps) {
-  let defaults = mergeConfig(CONFIG.BASE_DEFAULTS, basemaps.defaults)
+  const defaults = mergeConfig(CONFIG.BASE_DEFAULTS, basemaps.defaults)
   if (!basemaps.layers || basemaps.layers.length < 0) {
     err('no basemap defined, please define a basemap in the configuration')
   }
@@ -62,7 +62,7 @@ function parseBase(basemaps) {
   })
 }
 function parseWMS(wms) {
-  let defaults = mergeConfig(CONFIG.WMS_DEFAULTS, wms.defaults)
+  const defaults = mergeConfig(CONFIG.WMS_DEFAULTS, wms.defaults)
   if (wms.layers) {
     wms.layers.forEach((layer) => {
       if (!layer.name || CONFIG.WMS_PROVIDERS[layer.name] !== undefined) {
@@ -99,10 +99,10 @@ function formatBasemapUrl(layer) {
 
 function applyTemplate(layer) {
   //Check if the url is templated
-  let start = layer.url.indexOf('{')
+  const start = layer.url.indexOf('{')
   if (start > -1) {
-    let end = layer.url.indexOf('}')
-    let template = layer.url.slice(start + 1, end)
+    const end = layer.url.indexOf('}')
+    const template = layer.url.slice(start + 1, end)
     if (template.toLowerCase() === 'workspacename') {
       layer.url =
         layer.url.slice(0, start) +

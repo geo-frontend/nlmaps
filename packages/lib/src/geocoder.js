@@ -3,9 +3,8 @@ import { CONFIG } from './configParser'
 const geocoder = CONFIG.GEOCODER
 
 function httpGetAsync(url) {
-  // eslint-disable-next-line no-unused-vars
-  return new Promise((resolve, reject) => {
-    var xmlHttp = new XMLHttpRequest()
+  return new Promise((resolve) => {
+    const xmlHttp = new XMLHttpRequest()
     xmlHttp.onreadystatechange = function () {
       // eslint-disable-next-line eqeqeq
       if (xmlHttp.readyState == 4 && xmlHttp.status == 200) {
@@ -27,7 +26,7 @@ function wktPointToGeoJson(wktPoint) {
 
   return {
     type: 'Point',
-    coordinates: [x, y]
+    coordinates: [x, y],
   }
 }
 
@@ -48,13 +47,15 @@ geocoder.doSuggestRequest = function (searchTerm) {
  * @param {string} id The id of the feature that is to be looked up.
  */
 geocoder.doLookupRequest = function (id) {
-  return httpGetAsync(`${this.lookupUrl}id=${encodeURIComponent(id)}`).then((lookupResult) => {
-    // A lookup request should always return 1 result
-    const geocodeResult = lookupResult.response.docs[0]
-    geocodeResult.centroide_ll = wktPointToGeoJson(geocodeResult.centroide_ll)
-    geocodeResult.centroide_rd = wktPointToGeoJson(geocodeResult.centroide_rd)
-    return geocodeResult
-  })
+  return httpGetAsync(`${this.lookupUrl}id=${encodeURIComponent(id)}`).then(
+    (lookupResult) => {
+      // A lookup request should always return 1 result
+      const geocodeResult = lookupResult.response.docs[0]
+      geocodeResult.centroide_ll = wktPointToGeoJson(geocodeResult.centroide_ll)
+      geocodeResult.centroide_rd = wktPointToGeoJson(geocodeResult.centroide_rd)
+      return geocodeResult
+    },
+  )
 }
 
 geocoder.createControl = function (zoomFunction, map) {
@@ -82,7 +83,7 @@ geocoder.createControl = function (zoomFunction, map) {
   input.setAttribute('spellcheck', 'false')
 
   input.addEventListener('keydown', (e) => {
-    let results = this.resultList
+    const results = this.resultList
     if (this.resultList.length > 0) {
       if (e.code === 'ArrowDown' || e.keyCode === 40) {
         if (this.selectedResult < this.resultList.length - 1) {
@@ -111,7 +112,9 @@ geocoder.createControl = function (zoomFunction, map) {
   searchDiv.addEventListener('submit', (e) => {
     e.preventDefault()
     if (this.resultList.length > 0) {
-      this.lookup(this.resultList[this.selectedResult < 0 ? 0 : this.selectedResult].id)
+      this.lookup(
+        this.resultList[this.selectedResult < 0 ? 0 : this.selectedResult].id,
+      )
     }
   })
   button.setAttribute('aria-label', geocoder.placeholder)
@@ -152,15 +155,23 @@ geocoder.clearSuggestResults = function (input) {
   this.selectedResult = -1
   if (input) document.getElementById('nlmaps-geocoder-control-input').value = ''
   document.getElementById('nlmaps-geocoder-control-results').innerHTML = ''
-  document.getElementById('nlmaps-geocoder-control-results').classList.add('nlmaps-hidden')
+  document
+    .getElementById('nlmaps-geocoder-control-results')
+    .classList.add('nlmaps-hidden')
 }
 
 geocoder.showLookupResult = function (result) {
-  let resultNodes = document.getElementsByClassName(CONFIG.CLASSNAMES.geocoderResultItem)
-  Array.prototype.map.call(resultNodes, (i) => i.classList.remove(CONFIG.CLASSNAMES.geocoderResultSelected))
-  let resultNode = document.getElementById(result.id)
-  if (resultNode) resultNode.classList.add(CONFIG.CLASSNAMES.geocoderResultSelected)
-  document.getElementById('nlmaps-geocoder-control-input').value = result.weergavenaam
+  const resultNodes = document.getElementsByClassName(
+    CONFIG.CLASSNAMES.geocoderResultItem,
+  )
+  Array.prototype.map.call(resultNodes, (i) =>
+    i.classList.remove(CONFIG.CLASSNAMES.geocoderResultSelected),
+  )
+  const resultNode = document.getElementById(result.id)
+  if (resultNode)
+    resultNode.classList.add(CONFIG.CLASSNAMES.geocoderResultSelected)
+  document.getElementById('nlmaps-geocoder-control-input').value =
+    result.weergavenaam
 }
 
 function parseClasses(el, classes) {
@@ -187,8 +198,12 @@ geocoder.showSuggestResults = function (results) {
       li.appendChild(a)
       resultList.appendChild(li)
     })
-    document.getElementById('nlmaps-geocoder-control-results').classList.remove('nlmaps-hidden')
-    document.getElementById('nlmaps-geocoder-control-results').appendChild(resultList)
+    document
+      .getElementById('nlmaps-geocoder-control-results')
+      .classList.remove('nlmaps-hidden')
+    document
+      .getElementById('nlmaps-geocoder-control-results')
+      .appendChild(resultList)
   }
 }
 

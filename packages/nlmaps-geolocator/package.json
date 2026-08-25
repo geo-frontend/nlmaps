@@ -1,17 +1,11 @@
 {
   "name": "@geo-frontend/nlmaps-geolocator",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "",
   "type": "module",
-  "main": "./../../dist/nlmaps-geolocator.cjs.js",
-  "module": "./../../dist/nlmaps-geolocator.es.js",
-  "exports": {
-    ".": {
-      "import": "./../../dist/nlmaps-geolocator.es.js",
-      "require": "./../../dist/nlmaps-geolocator.cjs.js",
-      "default": "./../../dist/nlmaps-geolocator.iife.js"
-    }
-  },
+  "main": "./dist/nlmaps-geolocator.cjs.js",
+  "module": "./dist/nlmaps-geolocator.es.js",
+  "files": ["dist"],
   "scripts": {
     "dev": "vite",
     "build": "vite build",
@@ -20,5 +14,8 @@
   "license": "MIT",
   "dependencies": {
     "emitonoff": "^0.1.1"
+  },
+  "devDependencies": {
+    "vite": "catalog:"
   }
 }

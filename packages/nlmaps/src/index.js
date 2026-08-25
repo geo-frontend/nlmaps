@@ -19,7 +19,7 @@ import {
   CONFIG,
 } from '@geo-frontend/lib'
 
-let nlmaps = {
+const nlmaps = {
   leaflet: {
     bgLayer: bgL,
     overlayLayer: overlayL,
@@ -102,7 +102,6 @@ nlmaps.createMap = function (useropts = {}) {
       }
     }
   } catch (e) {
-    // eslint-disable-next-line no-console
     console.error(e.message)
   }
   const map = initMap(opts)
@@ -121,7 +120,7 @@ nlmaps.createMap = function (useropts = {}) {
     if (typeof opts.marker === 'boolean') {
       markerLocation = getMapCenter(map)
     }
-    let marker = createMarkerLayer(markerLocation)
+    const marker = createMarkerLayer(markerLocation)
 
     markerStore.addMarker(marker, true)
     addLayerToMap(marker, map)

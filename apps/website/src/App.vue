@@ -3,7 +3,7 @@
 </template>
 <style lang="css">
 @font-face {
-  font-family: 'Montserrat';
+  font-family: Montserrat;
   src: url('@/assets/fonts/montserrat/Montserrat-Regular.eot');
   src:
     url('@/assets/fonts/montserrat/Montserrat-Regular.eot?#iefix')
@@ -18,7 +18,7 @@
 }
 
 @font-face {
-  font-family: 'Nunito';
+  font-family: Nunito;
   src: url('@/assets/fonts/nunito/Nunito-Regular.eot');
   src:
     url('@/assets/fonts/nunito/Nunito-Regular.eot?#iefix')
@@ -32,7 +32,7 @@
 }
 
 @font-face {
-  font-family: 'fontello';
+  font-family: fontello;
   src: url('@/assets/fonts/fontello/fontello.eot?73410984');
   src:
     url('@/assets/fonts/fontello/fontello.eot?73410984#iefix')
@@ -45,20 +45,20 @@
   font-style: normal;
 }
 
-[class^='icon-']:before,
-[class*=' icon-']:before {
-  font-family: 'fontello';
+[class^='icon-']::before,
+[class*=' icon-']::before {
+  font-family: fontello;
   font-style: normal;
   font-weight: normal;
-
   display: inline-block;
   text-decoration: inherit;
   width: 1em;
   margin-right: 0.2em;
   text-align: center;
+
   /* opacity: .8; */
 
-  /* For safety - reset parent styles, that can break glyph codes*/
+  /* For safety - reset parent styles, that can break glyph codes */
   font-variant: normal;
   text-transform: none;
 
@@ -66,10 +66,12 @@
   line-height: 1em;
 
   /* Animation center compensation - margins should be symmetric */
+
   /* remove if not needed */
   margin-left: 0.2em;
 
   /* you can be more comfortable with increased icons size */
+
   /* font-size: 120%; */
 
   /* Font smoothing. That was taken from TWBS */
@@ -77,34 +79,35 @@
   -moz-osx-font-smoothing: grayscale;
 
   /* Uncomment for 3D effect */
+
   /* text-shadow: 1px 1px 1px rgba(127, 127, 127, 0.3); */
 }
 
-.icon-comments:before {
+.icon-comments::before {
   content: '\e800';
 } /* '' */
-.icon-upvote:before {
+.icon-upvote::before {
   content: '\e801';
 } /* '' */
-.icon-target:before {
+.icon-target::before {
   content: '\e802';
 } /* '' */
-.icon-spin5:before {
+.icon-spin5::before {
   content: '\e803';
 } /* '' */
-.icon-precise:before {
+.icon-precise::before {
   content: '\e837';
 } /* '' */
-.icon-embedding:before {
+.icon-embedding::before {
   content: '\e838';
 } /* '' */
-.icon-official:before {
+.icon-official::before {
   content: '\e839';
 } /* '' */
-.icon-github-circled:before {
+.icon-github-circled::before {
   content: '\f09b';
 } /* '' */
-.icon-docs:before {
+.icon-docs::before {
   content: '\f0c5';
 } /* '' */
 </style>

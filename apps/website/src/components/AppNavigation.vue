@@ -61,14 +61,14 @@
 .list {
   margin: 0 -20px;
   padding: 0;
-  -webkit-flex-wrap: wrap;
-  -ms-flex-wrap: wrap;
   flex-wrap: wrap;
   list-style: none;
 }
+
 .list-item {
   padding: 0 20px;
 }
+
 .list-link {
   display: block;
   padding: 12px 0;
@@ -80,6 +80,7 @@
     background 0.3s linear,
     padding 0.3s linear;
 }
+
 .list-link:focus,
 .list-link:hover {
   padding: 12px;
@@ -87,12 +88,13 @@
   background: #fff;
   color: #006486;
 }
-@media (min-width: 48em) {
+
+@media (width >= 48em) {
   .list {
-    display: -webkit-flex;
-    display: -ms-flexbox;
+    display: flexbox;
     display: flex;
   }
+
   .list-item {
     width: 33.33333%;
   }

@@ -1,7 +1,7 @@
 <script>
 import { defineAsyncComponent } from 'vue'
 import DefaultLayout from '@/layouts/DefaultLayout.vue'
-import BenefitsBlock from '@/components/Benefits.vue'
+import BenefitsBlock from '@/components/BenefitsBlock.vue'
 
 const LeafletMap = defineAsyncComponent(
   () => import('@/components/LeafletMap.vue'),
@@ -66,7 +66,7 @@ export default {
         <BenefitsBlock />
       </div>
     </section>
-    <section class="section-wizard" id="wizard">
+    <section id="wizard" class="section-wizard">
       <div class="container">
         <div class="section-intro">
           <h2 class="heading section-heading">Gebruik NL Maps nu</h2>
@@ -93,41 +93,41 @@ export default {
                   <div role="radiogroup" class="wizard-step-content">
                     <span class="wizard-option">
                       <input
+                        id="theme-default"
+                        v-model="options.backgroundLayerName"
                         type="radio"
                         value="standaard"
                         name="backgroundLayerName"
-                        id="theme-default"
-                        v-model="options.backgroundLayerName"
                       />
                       <label for="theme-default">standaard</label>
                     </span>
                     <span class="wizard-option">
                       <input
+                        id="theme-pastel"
+                        v-model="options.backgroundLayerName"
                         type="radio"
                         value="pastel"
                         name="backgroundLayerName"
-                        id="theme-pastel"
-                        v-model="options.backgroundLayerName"
                       />
                       <label for="theme-pastel">pastel</label>
                     </span>
                     <span class="wizard-option">
                       <input
+                        id="theme-grey"
+                        v-model="options.backgroundLayerName"
                         type="radio"
                         value="grijs"
                         name="backgroundLayerName"
-                        id="theme-grey"
-                        v-model="options.backgroundLayerName"
                       />
                       <label for="theme-grey">grijs</label>
                     </span>
                     <span class="wizard-option">
                       <input
+                        id="theme-air"
+                        v-model="options.backgroundLayerName"
                         type="radio"
                         value="luchtfoto"
                         name="backgroundLayerName"
-                        id="theme-air"
-                        v-model="options.backgroundLayerName"
                       />
                       <label for="theme-air">luchtfoto</label>
                     </span>
@@ -148,21 +148,21 @@ export default {
                   <div role="radiogroup" class="wizard-step-content">
                     <span class="wizard-option">
                       <input
+                        id="marker-no"
+                        v-model="options.marker"
                         type="radio"
                         :value="false"
                         name="marker"
-                        id="marker-no"
-                        v-model="options.marker"
                       />
                       <label for="marker-no">geen marker</label>
                     </span>
                     <span class="wizard-option">
                       <input
+                        id="marker-yes"
+                        v-model="options.marker"
                         type="radio"
                         :value="true"
                         name="marker"
-                        id="marker-yes"
-                        v-model="options.marker"
                       />
                       <label for="marker-yes">marker</label>
                     </span>
@@ -183,71 +183,71 @@ export default {
                   <div role="radiogroup" class="wizard-step-content">
                     <span class="wizard-option">
                       <input
+                        id="overlay-false"
+                        v-model="options.overlay"
                         type="radio"
                         value="false"
                         name="overlay"
-                        id="overlay-false"
-                        v-model="options.overlay"
                       />
                       <label for="overlay-false">geen</label>
                     </span>
                     <span class="wizard-option">
                       <input
+                        id="overlay-percelen"
+                        v-model="options.overlay"
                         type="radio"
                         value="percelen"
                         name="overlay"
-                        id="overlay-percelen"
-                        v-model="options.overlay"
                       />
                       <label for="overlay-percelen">percelen</label>
                     </span>
                     <span class="wizard-option">
                       <input
+                        id="overlay-adressen"
+                        v-model="options.overlay"
                         type="radio"
                         value="adressen"
                         name="overlay"
-                        id="overlay-adressen"
-                        v-model="options.overlay"
                       />
                       <label for="overlay-adressen">adressen</label>
                     </span>
                     <span class="wizard-option">
                       <input
+                        id="overlay-gebouwen"
+                        v-model="options.overlay"
                         type="radio"
                         value="gebouwen"
                         name="overlay"
-                        id="overlay-gebouwen"
-                        v-model="options.overlay"
                       />
                       <label for="overlay-gebouwen">gebouwen</label>
                     </span>
                     <span class="wizard-option">
                       <input
+                        id="overlay-gemeenten"
+                        v-model="options.overlay"
                         type="radio"
                         value="gemeenten"
                         name="overlay"
-                        id="overlay-gemeenten"
-                        v-model="options.overlay"
                       />
                       <label for="overlay-gemeenten">gemeenten</label>
                     </span>
                     <span class="wizard-option">
                       <input
+                        id="overlay-provincies"
+                        v-model="options.overlay"
                         type="radio"
                         value="provincies"
                         name="overlay"
-                        id="overlay-provincies"
-                        v-model="options.overlay"
                       />
                       <label for="overlay-provincies">provincies</label>
                     </span>
                     <span class="wizard-option">
                       <input
+                        id="overlay-land"
+                        v-model="options.overlay"
                         type="radio"
                         value="land"
                         name="overlay"
-                        id="overlay-land"
-                        v-model="options.overlay"
                       />
                       <label for="overlay-land">land</label>
                     </span>
@@ -264,21 +264,21 @@ export default {
                   <div role="radiogroup" class="wizard-step-content">
                     <span class="wizard-option">
                       <input
+                        id="geocoder-no"
+                        v-model="options.geocoder"
                         type="radio"
                         :value="false"
                         name="geocoder"
-                        id="geocoder-no"
-                        v-model="options.geocoder"
                       />
                       <label for="geocoder-no">geen zoekbalk</label>
                     </span>
                     <span class="wizard-option">
                       <input
+                        id="geocoder-yes"
+                        v-model="options.geocoder"
                         type="radio"
                         :value="true"
                         name="geocoder"
-                        id="geocoder-yes"
-                        v-model="options.geocoder"
                       />
                       <label for="geocoder-yes">zoekbalk</label>
                     </span>
@@ -290,8 +290,8 @@ export default {
                     <div class="wizard-map js-wizard-map">
                       <client-only>
                         <LeafletMap
-                          v-bind:mapOptions="options"
-                          v-model:viewPort="location"
+                          v-model:view-port="location"
+                          :map-options="options"
                         />
                       </client-only>
                       <button class="wizard-geo js-get-geo">locatie</button>
@@ -304,7 +304,7 @@ export default {
                       >
                         Kopieer code
                       </button>
-                      <pre class="wizard-code" id="map-code" ref="elText">
+                      <pre id="map-code" ref="elText" class="wizard-code">
 &lt;div id="nlmaps-holder">&lt;/div>
 
 &lt;link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
@@ -328,8 +328,7 @@ export default {
     };
     var map = nlmaps.createMap(opts);
 &lt;/script>
-</pre
-                      >
+</pre>
                     </div>
                   </div>
                 </li>
@@ -376,95 +375,118 @@ export default {
   margin-right: auto;
   margin-left: auto;
 }
-.container:before,
-.container:after {
+
+.container::before,
+.container::after {
   display: table;
   content: ' ';
 }
-.container:after {
+
+.container::after {
   clear: both;
 }
-@media (min-width: 768px) {
+
+@media (width >= 768px) {
   .container {
     width: 760px;
   }
 }
-@media (min-width: 992px) {
+
+@media (width >= 992px) {
   .container {
     width: 980px;
   }
 }
-@media (min-width: 1200px) {
+
+@media (width >= 1200px) {
   .container {
     width: 1180px;
   }
 }
+
 .heading {
   font-weight: normal;
 }
+
 section,
 nav {
   padding: 32px 0;
 }
+
 .section-brand {
   background: #006486;
   color: #fff;
 }
+
 .section-wizard {
   padding: 32px 0 0;
 }
+
 .section-intro {
   margin: 0 0 30px;
   text-align: center;
 }
+
 .section-heading {
   font-size: 20px;
   text-align: center;
 }
+
 .section-actions {
   position: relative;
   margin: 60px 0 0;
   text-align: center;
 }
+
 .section-actions .btn + .btn {
   margin-top: 20px;
 }
+
 .section-wizard .section-actions {
   color: #fff;
 }
-@media (min-width: 30em) {
+
+@media (width >= 30em) {
   section,
   nav {
     padding: 60px 0;
   }
+
   .section-actions .btn + .btn {
     margin: 0 0 0 20px;
   }
 }
-@media (min-width: 48em) {
+
+@media (width >= 48em) {
   section,
   nav {
     padding: 7vh 0;
   }
+
   .section-intro {
     margin: 0 0 48px;
   }
+
   .section-heading {
     font-size: 24px;
   }
 }
-@media (min-width: 75em) {
+
+@media (width >= 75em) {
   section,
   nav {
     padding: 10vh 0;
   }
+
   .section-intro {
     margin: 0 0 60px;
   }
+
   .section-heading {
     font-size: 32px;
   }
 }
+
 .spotlight {
   position: relative;
   display: flex;
@@ -491,33 +513,37 @@ nav {
 .spotlight-map {
   display: none;
 }
-@media (min-width: 48em) {
+
+@media (width >= 48em) {
   .spotlight {
     height: calc(60vh);
     min-height: 370px;
     padding: 120px 0;
     margin-bottom: 60px;
   }
+
   .spotlight-heading {
     font-size: 36px;
   }
+
   .spotlight-map {
     position: absolute;
     left: 50%;
     bottom: 0;
     display: none;
-    -webkit-transform: translate(-50%, 50%) perspective(1000px) rotateX(70deg);
     transform: translate(-50%, 50%) perspective(1000px) rotateX(70deg);
-    box-shadow: 0 10px 40px 10px rgba(0, 0, 0, 0.05);
+    box-shadow: 0 10px 40px 10px rgb(0 0 0 / 5%);
   }
 }
-@media (min-width: 75em) {
+
+@media (width >= 75em) {
   .spotlight {
     height: calc(70vh);
     min-height: 370px;
     padding: 120px 0;
     margin-bottom: 60px;
   }
+
   .spotlight-heading {
     font-size: 42px;
   }
@@ -538,7 +564,6 @@ nav {
   text-align: center;
   white-space: nowrap;
   vertical-align: middle;
-  -ms-touch-action: manipulation;
   touch-action: manipulation;
   cursor: pointer;
   background-image: none;
@@ -547,10 +572,9 @@ nav {
   font-size: 16px;
   line-height: 1.5;
   border-radius: 4px;
-  -webkit-user-select: none;
-  -ms-user-select: none;
   user-select: none;
 }
+
 .btn:focus,
 .btn.focus,
 .btn:active:focus,
@@ -560,17 +584,19 @@ nav {
   outline: 5px auto -webkit-focus-ring-color;
   outline-offset: -2px;
 }
+
 .btn:hover,
 .btn:focus,
 .btn.focus {
   color: #333;
   text-decoration: none;
 }
+
 .btn:active,
 .btn.active {
   background-image: none;
   outline: 0;
-  box-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125);
+  box-shadow: inset 0 3px 5px rgb(0 0 0 / 12.5%);
 }
 
 .btn-secondary {
@@ -583,22 +609,26 @@ nav {
   background: #6c62a6;
   color: #fff;
 }
+
 .btn-primary {
   color: #fff;
   background-color: #6c62a6;
   border-color: #605698;
 }
+
 .btn-primary:focus,
 .btn-primary.focus {
   color: #fff;
   background-color: #564d88;
   border-color: #2d2847;
 }
+
 .btn-primary:hover {
   color: #fff;
   background-color: #564d88;
   border-color: #474071;
 }
+
 .btn-primary:active,
 .btn-primary.active,
 .open > .btn-primary.dropdown-toggle {
@@ -607,6 +637,7 @@ nav {
   background-image: none;
   border-color: #474071;
 }
+
 .btn-primary:active:hover,
 .btn-primary:active:focus,
 .btn-primary:active.focus,
@@ -620,6 +651,7 @@ nav {
   background-color: #474071;
   border-color: #2d2847;
 }
+
 .btn-primary.disabled:hover,
 .btn-primary.disabled:focus,
 .btn-primary.disabled.focus,
@@ -632,6 +664,7 @@ fieldset[disabled] .btn-primary.focus {
   background-color: #6c62a6;
   border-color: #605698;
 }
+
 .btn-primary .badge {
   color: #6c62a6;
   background-color: #fff;
@@ -654,7 +687,8 @@ fieldset[disabled] .btn-primary.focus {
 .btn-mobile {
   margin-top: 10px;
 }
-@media (min-width: 27.5625em) {
+
+@media (width >= 27.5625em) {
   .btn-mobile {
     margin-top: 0;
   }
@@ -664,18 +698,17 @@ fieldset[disabled] .btn-primary.focus {
   padding-left: 8px;
 }
 
-.btn-github:before {
+.btn-github::before {
   content: '\f09b';
   display: inline-block;
   width: 1em;
-  font-family: 'fontello';
+  font-family: fontello;
   font-style: normal;
   font-weight: normal;
   text-decoration: inherit;
   text-align: center;
   font-variant: normal;
   text-transform: none;
-  line-height: 1em;
   -moz-osx-font-smoothing: grayscale;
   -webkit-font-smoothing: antialiased;
   margin-right: 0.2em;
@@ -700,35 +733,38 @@ fieldset[disabled] .btn-primary.focus {
   position: relative;
   padding: 0 0 15px;
 }
-.wizard:before {
+
+.wizard::before {
   content: '';
   position: absolute;
   left: 50%;
   width: 100vw;
   height: calc(100% - 60px);
   margin: 60px 0 0;
-  -webkit-transform: translateX(-50%);
-  -ms-transform: translateX(-50%);
   transform: translateX(-50%);
   background: #6c62a6;
 }
+
 .wizard-steps {
   position: relative;
   margin: 0;
   padding: 0;
   list-style: none;
   background: #fff;
-  box-shadow: 0 10px 40px 10px rgba(0, 0, 0, 0.08);
+  box-shadow: 0 10px 40px 10px rgb(0 0 0 / 8%);
   counter-reset: step;
 }
+
 .wizard-step {
   padding: 20px;
   counter-increment: step;
 }
+
 .wizard-step + .wizard-step {
   border-top: 1px solid #e5e5e5;
 }
-.wizard-step:before {
+
+.wizard-step::before {
   content: counter(step);
   display: inline-block;
   width: 24px;
@@ -741,30 +777,36 @@ fieldset[disabled] .btn-primary.focus {
   background: #6c62a6;
   color: #fff;
 }
+
 .wizard-step-heading {
-  font-family: 'Montserrat', 'Nunito', sans-serif;
+  font-family: Montserrat, Nunito, sans-serif;
   font-size: 16px;
   line-height: 1;
 }
+
 .wizard-step-explanation {
   display: block;
   margin-right: 15px;
   color: #00387d;
   font-size: 13px;
 }
+
 .wizard-step-content {
   padding: 30px 0 0;
   text-align: left;
 }
+
 .wizard-map {
   position: relative;
 }
+
 .wizard-map .map {
   position: relative;
   display: block;
   width: 100%;
   height: 30vh;
 }
+
 .wizard-geo {
   position: absolute;
   z-index: 1000;
@@ -774,11 +816,12 @@ fieldset[disabled] .btn-primary.focus {
   background: #6c62a6;
   color: #fff;
 }
-.wizard-geo:before {
+
+.wizard-geo::before {
   content: '\e802';
   display: inline-block;
   width: 1em;
-  font-family: 'fontello';
+  font-family: fontello;
   font-style: normal;
   font-weight: normal;
   text-decoration: inherit;
@@ -793,21 +836,25 @@ fieldset[disabled] .btn-primary.focus {
   margin: 0 10px 0 0;
   padding: 0;
 }
+
 .wizard-geo:hover {
   background: #006486;
 }
+
 .wizard-geo:disabled:hover {
   background: #6c62a6;
   cursor: default;
 }
-.wizard-geo:disabled:before {
+
+.wizard-geo:disabled::before {
   content: '\e803';
-  -webkit-animation: spin 2s infinite linear;
   animation: spin 2s infinite linear;
 }
+
 .wizard-code-block {
   position: relative;
 }
+
 .wizard-copy {
   position: absolute;
   top: 0;
@@ -818,11 +865,12 @@ fieldset[disabled] .btn-primary.focus {
   background: #6c62a6;
   color: #fff;
 }
-.wizard-copy:after {
+
+.wizard-copy::after {
   content: '\f0c5';
   display: inline-block;
   width: 1em;
-  font-family: 'fontello';
+  font-family: fontello;
   font-style: normal;
   font-weight: normal;
   text-decoration: inherit;
@@ -836,12 +884,14 @@ fieldset[disabled] .btn-primary.focus {
   margin-left: 0.2em;
   margin: 0 0 0 10px;
 }
+
 .wizard-copy:hover,
 .wizard-copy:focus {
   background: #fff;
   color: #6c62a6;
   text-decoration: none;
 }
+
 .wizard-code {
   display: block;
   padding: 50px 20px 20px;
@@ -850,9 +900,11 @@ fieldset[disabled] .btn-primary.focus {
   white-space: pre-wrap;
   word-break: break-word;
 }
+
 .wizard-option {
   position: relative;
 }
+
 .wizard-option input {
   position: absolute;
   width: 1px;
@@ -863,9 +915,11 @@ fieldset[disabled] .btn-primary.focus {
   overflow: hidden;
   clip: rect(0, 0, 0, 0);
 }
+
 .wizard-option input:checked + label {
   border-color: #006486;
 }
+
 .wizard-option label {
   width: 100%;
   padding: 10px 16px;
@@ -873,47 +927,51 @@ fieldset[disabled] .btn-primary.focus {
   border-radius: 10px;
   cursor: pointer;
 }
+
 .wizard-option label:focus,
 .wizard-option label:hover {
   border-color: #b3d1db;
 }
-@media (min-width: 48em) {
-  .wizard:before {
+
+@media (width >= 48em) {
+  .wizard::before {
     height: 100%;
   }
+
   .wizard-step {
-    display: -webkit-flex;
-    display: -ms-flexbox;
+    display: flexbox;
     display: flex;
     padding: 40px;
   }
-  .wizard-step:before {
+
+  .wizard-step::before {
     width: 32px;
     height: 32px;
     margin: 0 15px 0 0;
     font-size: 20px;
     line-height: 32px;
   }
+
   .wizard-step-heading {
     display: block;
-    -webkit-flex: 1;
-    -ms-flex: 1;
     flex: 1;
     font-size: 24px;
     line-height: 1.25;
   }
+
   .wizard-step-content {
-    -webkit-flex: 2;
-    -ms-flex: 2;
     flex: 2;
     padding: 0;
   }
+
   .wizard-option + .wizard-option {
     margin: 0 0 0 15px;
   }
+
   .wizard-option label {
     width: auto;
   }
+
   .wizard-code {
     padding: 20px;
   }

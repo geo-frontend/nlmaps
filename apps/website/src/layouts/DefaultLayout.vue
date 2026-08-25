@@ -21,10 +21,12 @@ import AppNavigation from '@/components/AppNavigation.vue'
 * {
   box-sizing: border-box;
 }
-*:before,
-*:after {
+
+*::before,
+*::after {
   box-sizing: border-box;
 }
+
 html {
   font-size: 10px;
 }
@@ -32,7 +34,7 @@ html {
 body {
   margin: 0;
   overflow-x: hidden;
-  font-family: 'Nunito', sans-serif;
+  font-family: Nunito, sans-serif;
   font-size: 16px;
   line-height: 1.5;
   color: #333;
@@ -45,7 +47,7 @@ h3,
 h4,
 h5,
 h6 {
-  font-family: 'Montserrat', 'Nunito', sans-serif;
+  font-family: Montserrat, Nunito, sans-serif;
   font-weight: 700;
   line-height: 1.25;
   color: inherit;
@@ -56,25 +58,31 @@ h1 {
   margin-top: 24px;
   margin-bottom: 12px;
 }
+
 h2 {
   font-size: 24px;
   margin-top: 24px;
   margin-bottom: 12px;
 }
+
 h3 {
   font-size: 20px;
   margin-top: 24px;
   margin-bottom: 12px;
 }
+
 h4 {
   font-size: 20px;
 }
+
 h5 {
   font-size: 16px;
 }
+
 h6 {
   font-size: 14px;
 }
+
 button {
   font-family: inherit;
   font-size: inherit;
@@ -100,7 +108,7 @@ svg:not(:root) {
 .wrapper {
   display: grid;
   grid-template-columns: 1fr;
-  gap: 0px 0px;
+  gap: 0;
   grid-template-areas:
     'header'
     'benefits'
@@ -126,24 +134,25 @@ header {
   padding: 20px 0 0;
 }
 
-@media (min-width: 48em) {
+@media (width >= 48em) {
   header {
     padding-top: 24px;
   }
 }
-@media (min-width: 75em) {
+
+@media (width >= 75em) {
   header {
     padding-top: 55px;
   }
 }
 
 nav {
-  background-color: rgb(0, 100, 134);
+  background-color: rgb(0 100 134);
   grid-area: navigation;
 }
 
 footer {
-  background-color: rgb(0, 100, 134);
+  background-color: rgb(0 100 134);
   grid-area: footer;
   padding: 30px 0 20px;
   text-align: center;

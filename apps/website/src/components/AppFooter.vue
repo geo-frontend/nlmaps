@@ -17,16 +17,18 @@ footer .logo-kadaster path {
   fill: #fff;
 }
 
-@media (min-width: 48em) {
+@media (width >= 48em) {
   footer .logo-kadaster {
     width: 90px;
   }
 }
-@media (min-width: 75em) {
+
+@media (width >= 75em) {
   footer .logo-kadaster {
     width: 90px;
   }
 }
+
 footer .logo-kadaster svg {
   width: 80%;
   height: auto;

@@ -1,8 +1,8 @@
 import { getMarker, mapPointerStyle } from './index.js'
-let markerStore = {
+const markerStore = {
   markers: [],
   removeMarker: function (marker) {
-    let idx = markerStore.markers.findIndex((x) => x === marker)
+    const idx = markerStore.markers.findIndex((x) => x === marker)
     markerStore.markers[idx].remove()
     markerStore.markers.splice(idx, 1)
   },
@@ -15,22 +15,22 @@ let markerStore = {
         })
       }
     }
-  }
+  },
 }
 
 function createAndAddMarker(map, d, popupCreator, unclickable) {
-  let newmarker = L.marker([d.latlng.lat, d.latlng.lng], {
+  const newmarker = L.marker([d.latlng.lat, d.latlng.lng], {
     alt: 'marker',
     icon: new L.icon({
       iconUrl: getMarker().url,
       iconSize: getMarker().iconSize,
-      iconAnchor: getMarker().iconAnchor
-    })
+      iconAnchor: getMarker().iconAnchor,
+    }),
   })
   newmarker.addTo(map)
   if (popupCreator) {
-    let div = popupCreator.call(markerStore, d, newmarker)
-    let popup = L.popup({ offset: [0, -50] }).setContent(div)
+    const div = popupCreator.call(markerStore, d, newmarker)
+    const popup = L.popup({ offset: [0, -50] }).setContent(div)
     newmarker.bindPopup(popup).openPopup()
     markerStore.addMarker(newmarker)
   } else if (unclickable) {

@@ -32,7 +32,6 @@ const GeoLocator = function (opts) {
       return state.started
     },
     log() {
-      // eslint-disable-next-line no-console
       console.log(state)
       return this
     },
@@ -40,15 +39,15 @@ const GeoLocator = function (opts) {
 }
 
 function geoLocator(opts) {
-  let navigator = typeof window !== 'undefined' ? window.navigator || {} : {}
+  const navigator = typeof window !== 'undefined' ? window.navigator || {} : {}
   if (typeof navigator !== 'undefined' && 'geolocation' in navigator) {
-    let geolocator = emitonoff(GeoLocator(opts))
+    const geolocator = emitonoff(GeoLocator(opts))
     geolocator.on('position', function () {
       this.stop()
     })
     return geolocator
   } else {
-    let error = 'geolocation is not available in your browser.'
+    const error = 'geolocation is not available in your browser.'
     throw error
   }
 }

@@ -1,9 +1,7 @@
-var map = L.map('map-div').setView([52, 5], 10)
+const map = L.map('map-div').setView([52, 5], 10)
 map.attributionControl.setPrefix('')
 
-/* eslint-disable no-unused-vars */
-var layer = bgLayer().addTo(map)
-/* eslint-enable no-unused-vars */
+const layer = bgLayer().addTo(map)
 
-var geo = geoLocator()
+const geo = geoLocator()
 geoLocatorControl(geo).addTo(map)

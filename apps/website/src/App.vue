@@ -47,7 +47,7 @@
 
 [class^='icon-']::before,
 [class*=' icon-']::before {
-  font-family: fontello;
+  font-family: fontello, sans-serif;
   font-style: normal;
   font-weight: normal;
   display: inline-block;

@@ -809,7 +809,7 @@ fieldset[disabled] .btn-primary.focus {
   content: '\f09b';
   display: inline-block;
   width: 1em;
-  font-family: fontello;
+  font-family: fontello, sans-serif;
   font-style: normal;
   font-weight: normal;
   text-decoration: inherit;
@@ -818,8 +818,6 @@ fieldset[disabled] .btn-primary.focus {
   text-transform: none;
   -moz-osx-font-smoothing: grayscale;
   -webkit-font-smoothing: antialiased;
-  margin-right: 0.2em;
-  margin-left: 0.2em;
   position: absolute;
   vertical-align: sub;
   margin: 0 10px 0 0;

@@ -95,7 +95,7 @@
   }
 
   .list-item {
-    width: 33.33333%;
+    width: 33.3333%;
   }
 }
 </style>

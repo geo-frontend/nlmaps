@@ -83,7 +83,7 @@ ol {
 .usp::after {
   content: '';
   display: inline-block;
-  font-family: fontello;
+  font-family: fontello, sans-serif;
   font-style: normal;
   font-weight: normal;
   text-decoration: inherit;
@@ -91,8 +91,6 @@ ol {
   text-transform: none;
   -moz-osx-font-smoothing: grayscale;
   -webkit-font-smoothing: antialiased;
-  margin-right: 0.2em;
-  margin-left: 0.2em;
   position: absolute;
   top: 0;
   left: 50%;
